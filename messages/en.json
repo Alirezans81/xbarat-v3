@@ -1,0 +1,48 @@
+{
+  "Navbar": {
+    "xbarat": "Xbarat"
+  },
+  "LoginSignupDialog": {
+    "logIn": "Log In",
+    "signUp": "Sign Up",
+    "email": "Email",
+    "password": "Password",
+    "confirmPassword": "Confirm Password",
+    "firstName": "First Name",
+    "lastName": "Last Name",
+    "phoneNumber": "Phone Number",
+    "emailRequired": "Email is required",
+    "invalidEmail": "Invalid email address",
+    "passwordRequired": "Password is required",
+    "passwordStrength": "Password must be at least 8 characters long and contain at least one uppercase letter, one lowercase letter, one number, and one special character.",
+    "confirmPasswordRequired": "Confirm password is required",
+    "passwordsDoNotMatch": "Passwords do not match",
+    "firstNameRequired": "First name is required",
+    "lastNameRequired": "Last name is required",
+    "countryCodeRequired": "Country code is required",
+    "phoneNumberRequired": "Phone number is required",
+    "invalidPhoneNumber": "Invalid phone number",
+    "submit": "Submit"
+  },
+  "Sidebar": {
+    "menu": "Menu",
+    "home": "Home",
+    "wallet": "Wallet",
+    "deposit": "Deposit",
+    "withdrawal": "Withdrawal",
+    "report": "Report",
+    "socialMedia": "Social Media",
+    "instagram": "Instagram",
+    "whatsApp": "WhatsApp",
+    "telegram": "Telegram",
+    "x": "X"
+  },
+  "HomePage": {
+    "title": "Hello world!",
+    "about": "Go to the about page"
+  },
+  "ApiErrors": {
+    "serverError": "An error has occurred, Please try again later.",
+    "wrongEmailPassword": "Wrong email or password."
+  }
+}

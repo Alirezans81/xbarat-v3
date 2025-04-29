@@ -1,0 +1,48 @@
+{
+  "Navbar": {
+    "xbarat": "ایکس برات"
+  },
+  "LoginSignupDialog": {
+    "logIn": "ورود",
+    "signUp": "ثبت نام",
+    "email": "ایمیل",
+    "password": "رمز عبور",
+    "confirmPassword": "تایید رمز عبور",
+    "firstName": "نام",
+    "lastName": "نام خانوادگی",
+    "phoneNumber": "شماره تلفن",
+    "emailRequired": "ایمیل الزامی است",
+    "invalidEmail": "ایمیل نامعتبر است",
+    "passwordRequired": "رمز عبور الزامی است",
+    "passwordStrength": "رمز عبور باید حداقل 8 کاراکتر باشد و شامل حداقل یک حرف بزرگ، یک حرف کوچک، یک عدد و یک کاراکتر خاص باشد.",
+    "confirmPasswordRequired": "تایید رمز عبور الزامی است",
+    "passwordsDoNotMatch": "رمزهای عبور مطابقت ندارند",
+    "firstNameRequired": "نام الزامی است",
+    "lastNameRequired": "نام خانوادگی الزامی است",
+    "countryCodeRequired": "کد کشور الزامی است",
+    "phoneNumberRequired": "شماره تلفن الزامی است",
+    "invalidPhoneNumber": "شماره تلفن نامعتبر است",
+    "submit": "تایید"
+  },
+  "Sidebar": {
+    "menu": "منو",
+    "home": "صفحه اصلی",
+    "wallet": "کیف پول",
+    "deposit": "واریز",
+    "withdrawal": "برداشت",
+    "report": "گزارشات",
+    "socialMedia": "شبکه های اجتماعی",
+    "instagram": "اینستاگرام",
+    "whatsApp": "واتساپ",
+    "telegram": "تلگرام",
+    "x": "ایکس"
+  },
+  "HomePage": {
+    "title": "سلام دنیا!",
+    "about": "رفتن به صفحه درباره"
+  },
+  "ApiErrors": {
+    "serverError": "خطایی رخ داده است، لطفا بعدا دوباره تلاش کنید.",
+    "wrongEmailPassword": "ایمیل یا رمز عبور اشتباه است."
+  }
+}
