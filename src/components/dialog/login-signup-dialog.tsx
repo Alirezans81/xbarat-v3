@@ -19,7 +19,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "../ui/select";
-import { countryCodes } from "@/constants/constants";
+import { countryCodes } from "@/constants/globals";
 import { CountryCode, parsePhoneNumberFromString } from "libphonenumber-js";
 
 export default function LoginSignupDialog() {
