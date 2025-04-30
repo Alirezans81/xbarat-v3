@@ -139,8 +139,10 @@ Follow these steps to get the project running locally:
    Create a `.env` file based on `.env.example` and update the values:
 
    ```env
-   DATABASE_URL=postgresql://user:password@localhost:5432/dbname
-   NEXT_PUBLIC_API_URL=http://localhost:3000/api
+   APP_MODE="development"
+   DATABASE_URL="postgresql://user:password@localhost:5432/dbname"
+   API_DEV_DOMAIN="http://localhost:3000/api/v1"
+   API_PROD_DOMAIN="http://localhost:3000/api/v1"
    ```
 
 4. **Setup the database**
