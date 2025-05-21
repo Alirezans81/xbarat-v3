@@ -2,6 +2,11 @@
   "Navbar": {
     "xbarat": "Xbarat"
   },
+  "ThemeToggle": {
+    "light": "Light",
+    "dark": "dark",
+    "system": "System"
+  },
   "LoginSignupDialog": {
     "logIn": "Log In",
     "signUp": "Sign Up",
@@ -31,6 +36,8 @@
     "deposit": "Deposit",
     "withdrawal": "Withdrawal",
     "report": "Report",
+    "dashboard": "Dashboard",
+    "logout": "Logout",
     "socialMedia": "Social Media",
     "instagram": "Instagram",
     "whatsApp": "WhatsApp",
@@ -41,8 +48,24 @@
     "title": "Hello world!",
     "about": "Go to the about page"
   },
+  "WalletPage": {
+    "Wallet": "Wallet"
+  },
   "ApiErrors": {
     "serverError": "An error has occurred, Please try again later.",
-    "wrongEmailPassword": "Wrong email or password."
+    "wrongEmailPassword": "Wrong email or password.",
+    "unauthorized": "You are unauthorized.",
+    "userNotFound": "User not found"
+  },
+  "Other": {
+    "mustLoginAgain": "Your session has expired. Please log in again."
+  },
+  "Footer": {
+    "xbarat": "Xbarat",
+    "slogan": "When You Are Enough!",
+    "instagram": "Instagram",
+    "whatsApp": "WhatsApp",
+    "telegram": "Telegram",
+    "x": "X"
   }
 }

@@ -8,7 +8,7 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { Button } from "../ui/button";
-import { useLoginSignupDialogStore } from "@/lib/store";
+import { useLoginSignupDialogStore } from "@/lib/front/stores/dialog";
 import { useTranslations } from "next-intl";
 import { Input } from "../ui/input";
 import { useState } from "react";
@@ -21,6 +21,7 @@ import {
 } from "../ui/select";
 import { countryCodes } from "@/constants/globals";
 import { CountryCode, parsePhoneNumberFromString } from "libphonenumber-js";
+import { useCreateUser, useLoginUser } from "@/api/user/hook";
 
 export default function LoginSignupDialog() {
   const { open, setOpen, mode, setMode } = useLoginSignupDialogStore();
@@ -41,7 +42,7 @@ export default function LoginSignupDialog() {
   const [countryCodeError, setCountryCodeError] = useState("");
   const [phoneNumberError, setPhoneNumberError] = useState("");
 
-  const [isLoading, setIsLoading] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   const t = useTranslations("LoginSignupDialog");
 
@@ -157,20 +158,52 @@ export default function LoginSignupDialog() {
     setPhoneNumberError("");
   };
 
+  const loginUser = useLoginUser();
+  const createUser = useCreateUser();
+
+  const login = () => {
+    setLoading(true);
+    loginUser({
+      user: {
+        email,
+        password,
+      },
+      onSuccess() {
+        setOpen(false);
+      },
+      onFinally() {
+        setLoading(false);
+      },
+    });
+  };
+  const signup = () => {
+    setLoading(true);
+    createUser({
+      user: {
+        email,
+        password,
+        fullName: firstName + " " + lastName,
+        phoneNumber: phoneNumber,
+        countryCode: countryCode,
+      },
+      onSuccess() {
+        setOpen(false);
+      },
+      onFinally() {
+        setLoading(false);
+      },
+    });
+  };
+
   const handleLogin = (e: React.FormEvent) => {
     e.preventDefault();
-    console.log("Logging in:", { email, password });
-    // Your login logic here
+
+    login();
   };
   const handleSignup = (e: React.FormEvent) => {
     e.preventDefault();
-    console.log("Signing up:", {
-      email,
-      password,
-      firstName,
-      lastName,
-      phoneNumber,
-    });
+
+    signup();
   };
 
   return (
@@ -181,10 +214,12 @@ export default function LoginSignupDialog() {
         setOpen(value);
       }}
     >
-      <DialogTrigger>
-        <Button className="text-white">
-          {t("logIn") + " / " + t("signUp")}
-        </Button>
+      <DialogTrigger asChild>
+        <div>
+          <Button className="text-white">
+            {t("logIn") + " / " + t("signUp")}
+          </Button>
+        </div>
       </DialogTrigger>
       <DialogContent className="sm:max-w-[400px]">
         <DialogHeader>
@@ -224,7 +259,11 @@ export default function LoginSignupDialog() {
               />
             </div>
             <div className="w-full space-y-2">
-              <Button type="submit" className="w-full text-white">
+              <Button
+                type="submit"
+                className="w-full text-white"
+                disabled={loading}
+              >
                 {t("submit")}
               </Button>
               <Button
@@ -362,7 +401,11 @@ export default function LoginSignupDialog() {
                 ))}
             </div>
             <div className="w-full space-y-2">
-              <Button type="submit" className="w-full text-white">
+              <Button
+                type="submit"
+                className="w-full text-white"
+                disabled={loading}
+              >
                 {t("submit")}
               </Button>
               <Button

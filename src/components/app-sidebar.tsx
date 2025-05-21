@@ -1,14 +1,6 @@
 "use client";
 
 import {
-  BanknoteArrowDown,
-  BanknoteArrowUp,
-  FileStack,
-  Home,
-  Wallet,
-} from "lucide-react";
-
-import {
   Sidebar,
   SidebarContent,
   SidebarGroup,
@@ -20,7 +12,7 @@ import {
 } from "@/components/ui/sidebar";
 import Link from "next/link";
 import { useTranslations } from "next-intl";
-import { useAuthStore } from "@/lib/store";
+import { useAuthStore } from "@/lib/front/stores/auth";
 import LocaleToggle from "./locale-toggle";
 import { ThemeToggle } from "./theme-toggle";
 import Image from "next/image";
@@ -30,6 +22,11 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "./ui/tooltip";
+import {
+  adminLoggedInNavbarItems,
+  loggedInNavabarItems,
+  notLoggedInNavbarItems,
+} from "@/constants/globals";
 
 import Instagram from "@/assets/SocialMedia/instagram.svg";
 import WhatsApp from "@/assets/SocialMedia/whatsapp.svg";
@@ -40,45 +37,15 @@ interface Props {
   side?: "right" | "left";
 }
 export function AppSidebar({ side }: Props) {
-  const isLoggedIn = useAuthStore((state) => state.isLoggedIn);
+  const { isLoggedIn, user } = useAuthStore();
 
   const t = useTranslations("Sidebar");
 
   const items = isLoggedIn
-    ? [
-        {
-          title: t("home"),
-          url: "/",
-          icon: Home,
-        },
-        {
-          title: t("wallet"),
-          url: "/wallet",
-          icon: Wallet,
-        },
-        {
-          title: t("deposit"),
-          url: "/deposit",
-          icon: BanknoteArrowDown,
-        },
-        {
-          title: t("withdrawal"),
-          url: "/withdrawal",
-          icon: BanknoteArrowUp,
-        },
-        {
-          title: t("report"),
-          url: "/report",
-          icon: FileStack,
-        },
-      ]
-    : [
-        {
-          title: t("home"),
-          url: "/",
-          icon: Home,
-        },
-      ];
+    ? user?.role === "ADMIN"
+      ? adminLoggedInNavbarItems
+      : loggedInNavabarItems
+    : notLoggedInNavbarItems;
 
   return (
     <Sidebar side={side}>
@@ -92,7 +59,7 @@ export function AppSidebar({ side }: Props) {
                   <SidebarMenuButton asChild>
                     <Link href={item.url}>
                       <item.icon />
-                      <span>{item.title}</span>
+                      <span>{t(item.title)}</span>
                     </Link>
                   </SidebarMenuButton>
                 </SidebarMenuItem>

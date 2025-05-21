@@ -7,9 +7,10 @@ import { routing } from "@/i18n/routing";
 import Navbar from "@/components/navbar";
 import Footer from "@/components/footer";
 import { getFontByLocale } from "@/fonts/fonts";
-import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
+import { SidebarProvider } from "@/components/ui/sidebar";
 import { AppSidebar } from "@/components/app-sidebar";
 import { Toaster } from "@/components/ui/sonner";
+import HandleCookies from "@/components/handle-cookies";
 
 export const metadata: Metadata = {
   title: "Xbarat",
@@ -46,6 +47,7 @@ export default async function RootLayout({
             disableTransitionOnChange
           >
             <Toaster />
+            <HandleCookies />
             <SidebarProvider defaultOpen={false}>
               <AppSidebar
                 side={rtlLocales.includes(locale) ? "right" : "left"}

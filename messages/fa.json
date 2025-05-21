@@ -2,6 +2,11 @@
   "Navbar": {
     "xbarat": "ایکس برات"
   },
+  "ThemeToggle": {
+    "light": "روز",
+    "dark": "شب",
+    "system": "سیستم"
+  },
   "LoginSignupDialog": {
     "logIn": "ورود",
     "signUp": "ثبت نام",
@@ -31,6 +36,8 @@
     "deposit": "واریز",
     "withdrawal": "برداشت",
     "report": "گزارشات",
+    "dashboard": "داشبورد",
+    "logout": "خروج از حساب",
     "socialMedia": "شبکه های اجتماعی",
     "instagram": "اینستاگرام",
     "whatsApp": "واتساپ",
@@ -41,8 +48,24 @@
     "title": "سلام دنیا!",
     "about": "رفتن به صفحه درباره"
   },
+  "WalletPage": {
+    "Wallet": "کیف پول"
+  },
   "ApiErrors": {
-    "serverError": "خطایی رخ داده است، لطفا بعدا دوباره تلاش کنید.",
-    "wrongEmailPassword": "ایمیل یا رمز عبور اشتباه است."
+    "serverError": "خطایی رخ داده است. لطفاً بعداً دوباره تلاش کنید.",
+    "wrongEmailPassword": "ایمیل یا رمز عبور اشتباه است.",
+    "unauthorized": "شما مجاز نیستید.",
+    "userNotFound": "کاربر پیدا نشد."
+  },
+  "Other": {
+    "mustLoginAgain": "نشست شما به پایان رسیده است. لطفاً دوباره وارد شوید."
+  },
+  "Footer": {
+    "xbarat": "ایکس برات",
+    "slogan": "وقتی خودت کافی هستی!",
+    "instagram": "اینستاگرام",
+    "whatsApp": "واتساپ",
+    "telegram": "تلگرام",
+    "x": "ایکس"
   }
 }

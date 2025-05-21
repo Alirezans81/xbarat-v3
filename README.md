@@ -143,6 +143,7 @@ Follow these steps to get the project running locally:
    DATABASE_URL="postgresql://user:password@localhost:5432/dbname"
    API_DEV_DOMAIN="http://localhost:3000/api/v1"
    API_PROD_DOMAIN="http://localhost:3000/api/v1"
+   JWT_SECRET="123"
    ```
 
 4. **Setup the database**

@@ -1,14 +1,10 @@
 export type Token = {
-  access: string;
-  access_exp: string;
-  refresh: string;
-  refresh_exp: string;
+  value: string;
+  expiration: string;
 };
 export const defaultToken: Token = {
-  access: "",
-  access_exp: "",
-  refresh: "",
-  refresh_exp: "",
+  value: "",
+  expiration: "",
 };
 
 export type CountryCode = {

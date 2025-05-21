@@ -1,0 +1,49 @@
+import { getCurrencies } from "@/api/currency/action";
+import { getPaymentChannels } from "@/api/payment-channel/action";
+import {
+  Card, CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle
+} from "@/components/ui/card";
+import { Link } from "@/i18n/navigation";
+
+export default async function page() {
+  const { data: currencies } = await getCurrencies();
+  const { data: paymentChannels } = await getPaymentChannels();
+
+  return (
+    <div className="w-full">
+      <div className="container mx-auto px-5 py-8 flex flex-col gap-4">
+        <span className="text-3xl">Panel Admin</span>
+        <div className="grid grid-cols-4 gap-3">
+          <Link href="/panel-admin/payment-channel">
+            <Card className="hover:shadow-xl h-full transition-all duration-300 dark:hover:shadow-secondary/10">
+              <CardHeader>
+                <CardTitle>Payment Channel</CardTitle>
+                <CardDescription>
+                  Users can send their money thruogh payment channels{" "}
+                  {"(Platofrms like: PayPal, Shaba, HesabPay...)"}
+                </CardDescription>
+              </CardHeader>
+              <CardFooter className="mt-auto">
+                <p className="">{paymentChannels.length} channels</p>
+              </CardFooter>
+            </Card>
+          </Link>
+          <Link href="/panel-admin/currency">
+            <Card className="hover:shadow-xl h-full transition-all duration-300 dark:hover:shadow-secondary/10">
+              <CardHeader>
+                <CardTitle>Currency</CardTitle>
+                <CardDescription>All Currency Settings</CardDescription>
+              </CardHeader>
+              <CardFooter className="mt-auto">
+                <p className="">{currencies.length} currencies</p>
+              </CardFooter>
+            </Card>
+          </Link>
+        </div>
+      </div>
+    </div>
+  );
+}

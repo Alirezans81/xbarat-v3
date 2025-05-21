@@ -1,13 +1,17 @@
-import { User } from "@/generated/prisma";
-import { createUser } from "./api";
-import { FetchProps } from "@/types/globals";
-import { useAuthStore } from "@/lib/store";
+import { createUser, loginUser } from "./api";
+import { FetchProps, Token } from "@/types/globals";
+import { CreateUser, LoginUser } from "@/types/user";
+import { toast } from "sonner";
+import { useTranslations } from "next-intl";
+import { useAuthStore } from "@/lib/front/stores/auth";
 
 type CreateUserProps = {
-  user: User;
+  user: CreateUser;
 };
 export const useCreateUser = () => {
-  const { token, setUser, setIsLoggedIn } = useAuthStore((state) => state);
+  const t = useTranslations("ApiErrors");
+
+  const { setToken, setIsLoggedIn, setUser } = useAuthStore();
 
   const fetch = async ({
     user,
@@ -15,14 +19,68 @@ export const useCreateUser = () => {
     onSuccess,
     onFinally,
   }: CreateUserProps & FetchProps) => {
-    await createUser(token.access, user)
+    await createUser(user)
       .then((res) => {
-        setUser(res.data);
+        const { data } = res;
+
+        const token: Token = {
+          value: data.token,
+          expiration: data.token_exp,
+        };
+        setToken(token);
+
+        setUser(data.user);
+
         setIsLoggedIn(true);
-        onSuccess?.(res.data);
+        onSuccess?.(data);
       })
       .catch((err) => {
-        process.env.APP_MODE === "development" && console.error(err);
+        process.env.NEXT_PUBLIC_APP_MODE === "development" &&
+          console.error(err.response);
+        toast(t(err.response.data.error.message));
+        onError?.(err);
+      })
+      .finally(() => {
+        onFinally?.();
+      });
+  };
+
+  return fetch;
+};
+
+type LoginUserProps = {
+  user: LoginUser;
+};
+export const useLoginUser = () => {
+  const t = useTranslations("ApiErrors");
+
+  const { setToken, setIsLoggedIn, setUser } = useAuthStore();
+
+  const fetch = async ({
+    user,
+    onError,
+    onSuccess,
+    onFinally,
+  }: LoginUserProps & FetchProps) => {
+    await loginUser(user)
+      .then((res) => {
+        const { data } = res;
+
+        const token: Token = {
+          value: data.token,
+          expiration: data.token_exp,
+        };
+        setToken(token);
+
+        setUser(data.user);
+
+        setIsLoggedIn(true);
+        onSuccess?.(data);
+      })
+      .catch((err) => {
+        process.env.NEXT_PUBLIC_APP_MODE === "development" &&
+          console.error(err.response);
+        toast(t(err.response.data.error.message));
         onError?.(err);
       })
       .finally(() => {

@@ -1,33 +1,28 @@
-import { prisma } from "@/lib/prisma";
-import { NextRequest, NextResponse } from "next/server";
-import bcrypt from "bcrypt";
+import { userService } from "@/lib/back/services/user.service";
+import { ServerErrorResponse } from "@/lib/back/utils/global-responses";
+import { NextResponse } from "next/server";
 
-export async function POST(req: NextRequest) {
+export async function POST(request: Request) {
   try {
-    const { email, password } = await req.json();
-
-    const hashedPassword = await bcrypt.hash(password, 10);
-
-    const user = await prisma.user.findUnique({
-      where: {
-        email,
-        passwordHash: hashedPassword,
-      },
+    const { email, password } = await request.json();
+    const { user, token, token_exp } = await userService.login({
+      email,
+      password,
     });
 
-    if (!user) {
-      return NextResponse.json(
-        { error: { message: "wrongEmailPassword" } },
-        { status: 400 }
-      );
-    }
-
-    return NextResponse.json(user);
+    return NextResponse.json({ user, token, token_exp });
   } catch (error) {
     console.error("[LOGIN]", error);
-    return NextResponse.json(
-      { error: { message: "serverError" } },
-      { status: 500 }
-    );
+    const isServerError =
+      error instanceof Error && error.message === "wrongEmailPassword"
+        ? false
+        : true;
+
+    return isServerError
+      ? ServerErrorResponse
+      : NextResponse.json(
+          { error: { message: "wrongEmailPassword" } },
+          { status: 401 }
+        );
   }
 }

@@ -2,6 +2,11 @@
   "Navbar": {
     "xbarat": "Xbarat"
   },
+  "ThemeToggle": {
+    "light": "Hell",
+    "dark": "Dunkel",
+    "system": "System"
+  },
   "LoginSignupDialog": {
     "logIn": "Einloggen",
     "signUp": "Melden Sie sich an",
@@ -31,6 +36,8 @@
     "deposit": "Einzahlung",
     "withdrawal": "Auszahlung",
     "report": "Bericht",
+    "dashboard": "Armaturenbrett",
+    "logout": "Abmelden",
     "socialMedia": "Soziale Medien",
     "instagram": "Instagram",
     "whatsApp": "WhatsApp",
@@ -41,8 +48,24 @@
     "title": "Hallo Welt!",
     "about": "Zur Infoseite"
   },
+  "WalletPage": {
+    "Wallet": "Wallet"
+  },
   "ApiErrors": {
-    "serverError": "Ein Fehler ist aufgetreten, bitte versuchen Sie es später noch einmal.",
-    "wrongEmailPassword": "Falsche E-Mail oder Passwort."
+    "serverError": "Ein Fehler ist aufgetreten. Bitte versuchen Sie es später erneut.",
+    "wrongEmailPassword": "Falsche E-Mail-Adresse oder falsches Passwort.",
+    "unauthorized": "Sie sind nicht autorisiert.",
+    "userNotFound": "Benutzer nicht gefunden."
+  },
+  "Other": {
+    "mustLoginAgain": "Ihre Sitzung ist abgelaufen. Bitte melden Sie sich erneut an."
+  },
+  "Footer": {
+    "xbarat": "Xbarat",
+    "slogan": "Wenn du genug bist!",
+    "instagram": "Instagram",
+    "whatsApp": "WhatsApp",
+    "telegram": "Telegram",
+    "x": "X"
   }
 }
