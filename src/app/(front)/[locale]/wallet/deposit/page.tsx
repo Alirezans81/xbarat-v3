@@ -1,6 +1,7 @@
 import { getDeposits } from "@/api/wallet/deposit/action";
 import AddDepositDialog from "@/components/dialog/wallet/deposit/add-deposit-dialog";
 import DepositTable from "@/components/wallet/deposit/deposit-table";
+import { Deposit } from "@/types/deposit";
 
 export default async function page() {
   try {

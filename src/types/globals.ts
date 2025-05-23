@@ -1,3 +1,5 @@
+import { User } from "@/generated/prisma";
+
 export type Token = {
   value: string;
   expiration: string;
@@ -5,6 +7,33 @@ export type Token = {
 export const defaultToken: Token = {
   value: "",
   expiration: "",
+};
+
+export const defaultUser: User = {
+  id: "",
+  email: "",
+  phoneNumber: "",
+  fullName: "",
+  avatarUrl: "",
+  passwordHash: "",
+  countryCode: "",
+  nationality: "",
+  language: "",
+  kycStatus: "PENDING",
+  documentType: null,
+  documentNumber: "",
+  documentPhotoUrl: "",
+  dateOfBirth: null,
+  address: "",
+  postalCode: "",
+  city: "",
+  state: "",
+  isPhoneVerified: false,
+  isEmailVerified: false,
+  role: "CUSTOMER",
+  createdAt: new Date(),
+  updatedAt: new Date(),
+  deletedAt: null,
 };
 
 export type CountryCode = {

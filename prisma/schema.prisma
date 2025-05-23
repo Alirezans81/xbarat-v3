@@ -235,6 +235,7 @@ enum UserRole {
   CUSTOMER
   ADMIN
   SUPPORT
+  PROVIDER
 }
 
 enum KycStatus {

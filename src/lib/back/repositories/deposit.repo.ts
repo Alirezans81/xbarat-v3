@@ -41,11 +41,17 @@ export const depositRepository = {
       },
       include: {
         wallet: {
-          include: {
+          select: {
             currency: {
               select: {
                 code: true,
                 symbol: true,
+                paymentChannels: {
+                  select: {
+                    id: true,
+                    name: true,
+                  },
+                },
               },
             },
           },

@@ -1,14 +1,19 @@
 import axios from "axios";
 import routes from "@/api/routes";
 import { CreateOrUpdateDeposit } from "@/types/deposit";
+import qs from "query-string";
 
 const api = routes();
 
-export const getDeposits = (token: string) => {
+export const getDeposits = (token: string, filters?: any) => {
+  const url = filters
+    ? qs.stringifyUrl({ url: api["deposit"], query: filters })
+    : api["deposit"];
+
   const headers = {
     Authorization: `Bearer ${token}`,
   };
-  return axios.get(api["deposit"], { headers });
+  return axios.get(url, { headers });
 };
 
 export const createDeposit = (

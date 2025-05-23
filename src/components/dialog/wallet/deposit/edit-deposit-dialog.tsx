@@ -11,8 +11,6 @@ import {
 } from "../../../ui/dialog";
 import { Input } from "../../../ui/input";
 import { useRouter } from "@/i18n/navigation";
-import { useAuthStore } from "@/lib/front/stores/auth";
-import { Wallet } from "@/types/wallet";
 import {
   Select,
   SelectContent,
@@ -20,13 +18,13 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { useCreateDeposit } from "@/api/wallet/deposit/hook";
+import { useUpdateDeposit } from "@/api/wallet/deposit/hook";
 import { Deposit } from "@/types/deposit";
 
 interface Props {
   data: Deposit;
 }
-export default function EditDepositDialog({ data }: Props) {
+export default function AddWalletDepositDialog({ data }: Props) {
   const router = useRouter();
 
   const [open, setOpen] = useState(false);
@@ -49,23 +47,23 @@ export default function EditDepositDialog({ data }: Props) {
   const [paymentChannelIdError, setPaymentChannelIdError] = useState("");
   const validatePaymentChannelId = (value: string) => {
     if (!value) {
-      setPaymentChannelIdError("PaymentChannel required!");
+      setPaymentChannelIdError("Payment channel required!");
       return false;
     }
     setAmountError("");
     return true;
   };
 
-  const createDeposit = useCreateDeposit();
+  const updateDeposit = useUpdateDeposit();
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
 
     setLoading(true);
-    createDeposit({
+    updateDeposit({
+      deposit_id: data.id,
       deposit: {
         amount: +amount,
-        walletId: data.walletId,
         paymentChannelId,
       },
       onSuccess() {
@@ -82,14 +80,14 @@ export default function EditDepositDialog({ data }: Props) {
     <Dialog open={open} onOpenChange={(value) => setOpen(value)}>
       <DialogTrigger asChild>
         <div>
-          <Button className="text-foreground cursor-pointer">
-            Edit
-          </Button>
+          <Button className="text-foreground cursor-pointer">Edit</Button>
         </div>
       </DialogTrigger>
       <DialogContent className="sm:max-w-[400px]">
         <DialogHeader>
-          <DialogTitle>Deposit</DialogTitle>
+          <DialogTitle>
+            Deposit {"(" + data.wallet.currency.code + ")"}
+          </DialogTitle>
         </DialogHeader>
 
         <form onSubmit={handleSubmit} className="space-y-2">
@@ -109,24 +107,24 @@ export default function EditDepositDialog({ data }: Props) {
             )}
           </div>
           <div>
-            {/* <Select
-                value={paymentChannelId}
-                onValueChange={(value) => {
-                  validatePaymentChannelId(value);
-                  setPaymentChannelId(value);
-                }}
-              >
-                <SelectTrigger className="w-full">
-                  <SelectValue placeholder="Payment Channel" />
-                </SelectTrigger>
-                <SelectContent>
-                  {currency.paymentChannels.map((channel) => (
-                    <SelectItem key={channel.id} value={channel.id}>
-                      {channel.name}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select> */}
+            <Select
+              value={paymentChannelId}
+              onValueChange={(value) => {
+                validatePaymentChannelId(value);
+                setPaymentChannelId(value);
+              }}
+            >
+              <SelectTrigger className="w-full">
+                <SelectValue placeholder="Payment Channel" />
+              </SelectTrigger>
+              <SelectContent>
+                {data.wallet.currency.paymentChannels.map((channel) => (
+                  <SelectItem key={channel.id} value={channel.id}>
+                    {channel.name}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
             {paymentChannelIdError && (
               <span className="block text-sm mt-2 text-chart-5">
                 {paymentChannelIdError}
@@ -135,7 +133,7 @@ export default function EditDepositDialog({ data }: Props) {
           </div>
           <div className="w-full flex items-center justify-between text-sm">
             <span>Fee:</span>
-            {/* <span>{currency.symbol + " 2.25"}</span> */}
+            <span>{data.wallet.currency.symbol + " 2.25"}</span>
           </div>
           <div className="mt-4">
             <Button

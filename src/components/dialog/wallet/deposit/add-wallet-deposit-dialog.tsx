@@ -11,7 +11,6 @@ import {
 } from "../../../ui/dialog";
 import { Input } from "../../../ui/input";
 import { useRouter } from "@/i18n/navigation";
-import { useAuthStore } from "@/lib/front/stores/auth";
 import { Wallet } from "@/types/wallet";
 import {
   Select,

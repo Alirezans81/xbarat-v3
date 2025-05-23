@@ -13,6 +13,9 @@ import { CreateOrUpdateDeposit, Deposit } from "@/types/deposit";
 
 type GetDepositsProps = {
   setDeposits: (value: Deposit[]) => void;
+  filters?: {
+    userId: string;
+  };
 };
 export const useGetDeposits = () => {
   const t = useTranslations("ApiErrors");
@@ -21,13 +24,14 @@ export const useGetDeposits = () => {
   const { token } = useAuthStore();
 
   const fetch = ({
+    filters,
     setDeposits,
     onError,
     onSuccess,
     onFinally,
   }: GetDepositsProps & FetchProps) => {
     checkTokenExpiration(async () => {
-      await getDeposits(token.value)
+      await getDeposits(token.value, filters)
         .then((res) => {
           setDeposits(res.data);
           onSuccess?.(res);

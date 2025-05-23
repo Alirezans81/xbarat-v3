@@ -317,7 +317,8 @@ exports.DocumentType = exports.$Enums.DocumentType = {
 exports.UserRole = exports.$Enums.UserRole = {
   CUSTOMER: 'CUSTOMER',
   ADMIN: 'ADMIN',
-  SUPPORT: 'SUPPORT'
+  SUPPORT: 'SUPPORT',
+  PROVIDER: 'PROVIDER'
 };
 
 exports.DepositStatus = exports.$Enums.DepositStatus = {

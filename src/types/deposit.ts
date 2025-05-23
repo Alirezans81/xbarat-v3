@@ -3,7 +3,7 @@ import { Currency } from "./currency";
 
 export type CreateOrUpdateDeposit = {
   amount: number;
-  walletId: string;
+  walletId?: string;
   paymentChannelId: string;
 };
 
@@ -16,6 +16,6 @@ export type Deposit = Omit<
   completedAt: string;
 } & {
   wallet: {
-    currency: Pick<Currency, "code" | "symbol">;
+    currency: Pick<Currency, "code" | "symbol" | "paymentChannels">;
   };
 };
