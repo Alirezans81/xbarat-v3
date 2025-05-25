@@ -49,6 +49,51 @@ model User {
   @@index([documentNumber])
 }
 
+model PaymentChannel {
+  id          String   @id @default(uuid())
+  name        String   @unique
+  description String?
+  createdAt   DateTime @default(now())
+
+  bridgeTransfers BridgeTransfer?
+
+  currencies Currency[] @relation("PaymentChannelCurrencies")
+
+  Deposit    Deposit[]
+  Withdrawal Withdrawal[]
+
+  LiquidityPool LiquidityPool[]
+}
+
+model Currency {
+  id        String   @id @default(uuid())
+  code      String   @unique
+  name      String
+  symbol    String
+  decimals  Int      @default(2)
+  createdAt DateTime @default(now())
+
+  wallets         Wallet[]
+  exchangesFrom   Exchange[]       @relation("FromCurrency")
+  exchangesTo     Exchange[]       @relation("ToCurrency")
+  FeeSetting      FeeSetting[]
+  paymentChannels PaymentChannel[] @relation("PaymentChannelCurrencies")
+  LiquidityPool   LiquidityPool[]
+}
+
+model LiquidityPool {
+  id               String   @id @default(uuid())
+  paymentChannelId String   @unique
+  currencyId       String
+  address          String
+  balance          Decimal  @default(0.00)
+  frozen           Decimal  @default(0.00)
+  updatedAt        DateTime @updatedAt
+
+  paymentChannel PaymentChannel @relation(fields: [paymentChannelId], references: [id])
+  currency       Currency       @relation(fields: [currencyId], references: [id])
+}
+
 model Wallet {
   id         String   @id @default(uuid())
   userId     String
@@ -68,21 +113,6 @@ model Wallet {
 
   @@unique([userId, currencyId])
   @@index([currencyId])
-}
-
-model Currency {
-  id        String   @id @default(uuid())
-  code      String   @unique
-  name      String
-  symbol    String
-  decimals  Int      @default(2)
-  createdAt DateTime @default(now())
-
-  wallets         Wallet[]
-  exchangesFrom   Exchange[]       @relation("FromCurrency")
-  exchangesTo     Exchange[]       @relation("ToCurrency")
-  FeeSetting      FeeSetting[]
-  paymentChannels PaymentChannel[] @relation("PaymentChannelCurrencies")
 }
 
 model Deposit {
@@ -127,20 +157,6 @@ model Withdrawal {
 
   user   User   @relation(fields: [userId], references: [id])
   wallet Wallet @relation(fields: [walletId], references: [id])
-}
-
-model PaymentChannel {
-  id          String   @id @default(uuid())
-  name        String   @unique
-  description String?
-  createdAt   DateTime @default(now())
-
-  bridgeTransfers BridgeTransfer?
-
-  currencies Currency[] @relation("PaymentChannelCurrencies")
-
-  Deposit    Deposit[]
-  Withdrawal Withdrawal[]
 }
 
 model BridgeTransfer {
@@ -255,19 +271,18 @@ enum DocumentType {
 
 enum DepositStatus {
   PENDING
-  COMPLETED
+  PAYMENT
   FAILED
+  COMPLETED
   REJECTED
-  CANCELED
 }
 
 enum WithdrawalStatus {
   PENDING
   APPROVED
-  COMPLETED
   FAILED
+  COMPLETED
   REJECTED
-  CANCELED
 }
 
 enum BridgeStatus {
@@ -281,14 +296,12 @@ enum TransferStatus {
   PENDING
   COMPLETED
   FAILED
-  CANCELED
 }
 
 enum ExchangeStatus {
   PENDING
   COMPLETED
   FAILED
-  CANCELED
 }
 
 enum RefundStatus {

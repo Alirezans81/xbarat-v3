@@ -147,14 +147,11 @@ exports.Prisma.UserScalarFieldEnum = {
   deletedAt: 'deletedAt'
 };
 
-exports.Prisma.WalletScalarFieldEnum = {
+exports.Prisma.PaymentChannelScalarFieldEnum = {
   id: 'id',
-  userId: 'userId',
-  currencyId: 'currencyId',
-  balance: 'balance',
-  frozen: 'frozen',
-  createdAt: 'createdAt',
-  updatedAt: 'updatedAt'
+  name: 'name',
+  description: 'description',
+  createdAt: 'createdAt'
 };
 
 exports.Prisma.CurrencyScalarFieldEnum = {
@@ -164,6 +161,26 @@ exports.Prisma.CurrencyScalarFieldEnum = {
   symbol: 'symbol',
   decimals: 'decimals',
   createdAt: 'createdAt'
+};
+
+exports.Prisma.LiquidityPoolScalarFieldEnum = {
+  id: 'id',
+  paymentChannelId: 'paymentChannelId',
+  currencyId: 'currencyId',
+  address: 'address',
+  balance: 'balance',
+  frozen: 'frozen',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.WalletScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  currencyId: 'currencyId',
+  balance: 'balance',
+  frozen: 'frozen',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
 };
 
 exports.Prisma.DepositScalarFieldEnum = {
@@ -194,13 +211,6 @@ exports.Prisma.WithdrawalScalarFieldEnum = {
   failedAt: 'failedAt',
   paymentChannelId: 'paymentChannelId',
   bridgeTransferid: 'bridgeTransferid'
-};
-
-exports.Prisma.PaymentChannelScalarFieldEnum = {
-  id: 'id',
-  name: 'name',
-  description: 'description',
-  createdAt: 'createdAt'
 };
 
 exports.Prisma.BridgeTransferScalarFieldEnum = {
@@ -323,19 +333,18 @@ exports.UserRole = exports.$Enums.UserRole = {
 
 exports.DepositStatus = exports.$Enums.DepositStatus = {
   PENDING: 'PENDING',
-  COMPLETED: 'COMPLETED',
+  PAYMENT: 'PAYMENT',
   FAILED: 'FAILED',
-  REJECTED: 'REJECTED',
-  CANCELED: 'CANCELED'
+  COMPLETED: 'COMPLETED',
+  REJECTED: 'REJECTED'
 };
 
 exports.WithdrawalStatus = exports.$Enums.WithdrawalStatus = {
   PENDING: 'PENDING',
   APPROVED: 'APPROVED',
-  COMPLETED: 'COMPLETED',
   FAILED: 'FAILED',
-  REJECTED: 'REJECTED',
-  CANCELED: 'CANCELED'
+  COMPLETED: 'COMPLETED',
+  REJECTED: 'REJECTED'
 };
 
 exports.BridgeStatus = exports.$Enums.BridgeStatus = {
@@ -348,8 +357,7 @@ exports.BridgeStatus = exports.$Enums.BridgeStatus = {
 exports.TransferStatus = exports.$Enums.TransferStatus = {
   PENDING: 'PENDING',
   COMPLETED: 'COMPLETED',
-  FAILED: 'FAILED',
-  CANCELED: 'CANCELED'
+  FAILED: 'FAILED'
 };
 
 exports.RefundStatus = exports.$Enums.RefundStatus = {
@@ -362,8 +370,7 @@ exports.RefundStatus = exports.$Enums.RefundStatus = {
 exports.ExchangeStatus = exports.$Enums.ExchangeStatus = {
   PENDING: 'PENDING',
   COMPLETED: 'COMPLETED',
-  FAILED: 'FAILED',
-  CANCELED: 'CANCELED'
+  FAILED: 'FAILED'
 };
 
 exports.TransactionKind = exports.$Enums.TransactionKind = {
@@ -376,11 +383,12 @@ exports.TransactionKind = exports.$Enums.TransactionKind = {
 
 exports.Prisma.ModelName = {
   User: 'User',
-  Wallet: 'Wallet',
+  PaymentChannel: 'PaymentChannel',
   Currency: 'Currency',
+  LiquidityPool: 'LiquidityPool',
+  Wallet: 'Wallet',
   Deposit: 'Deposit',
   Withdrawal: 'Withdrawal',
-  PaymentChannel: 'PaymentChannel',
   BridgeTransfer: 'BridgeTransfer',
   Transfer: 'Transfer',
   Refund: 'Refund',

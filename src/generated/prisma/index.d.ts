@@ -19,15 +19,25 @@ export type PrismaPromise<T> = $Public.PrismaPromise<T>
  */
 export type User = $Result.DefaultSelection<Prisma.$UserPayload>
 /**
- * Model Wallet
+ * Model PaymentChannel
  * 
  */
-export type Wallet = $Result.DefaultSelection<Prisma.$WalletPayload>
+export type PaymentChannel = $Result.DefaultSelection<Prisma.$PaymentChannelPayload>
 /**
  * Model Currency
  * 
  */
 export type Currency = $Result.DefaultSelection<Prisma.$CurrencyPayload>
+/**
+ * Model LiquidityPool
+ * 
+ */
+export type LiquidityPool = $Result.DefaultSelection<Prisma.$LiquidityPoolPayload>
+/**
+ * Model Wallet
+ * 
+ */
+export type Wallet = $Result.DefaultSelection<Prisma.$WalletPayload>
 /**
  * Model Deposit
  * 
@@ -38,11 +48,6 @@ export type Deposit = $Result.DefaultSelection<Prisma.$DepositPayload>
  * 
  */
 export type Withdrawal = $Result.DefaultSelection<Prisma.$WithdrawalPayload>
-/**
- * Model PaymentChannel
- * 
- */
-export type PaymentChannel = $Result.DefaultSelection<Prisma.$PaymentChannelPayload>
 /**
  * Model BridgeTransfer
  * 
@@ -110,10 +115,10 @@ export type DocumentType = (typeof DocumentType)[keyof typeof DocumentType]
 
 export const DepositStatus: {
   PENDING: 'PENDING',
-  COMPLETED: 'COMPLETED',
+  PAYMENT: 'PAYMENT',
   FAILED: 'FAILED',
-  REJECTED: 'REJECTED',
-  CANCELED: 'CANCELED'
+  COMPLETED: 'COMPLETED',
+  REJECTED: 'REJECTED'
 };
 
 export type DepositStatus = (typeof DepositStatus)[keyof typeof DepositStatus]
@@ -122,10 +127,9 @@ export type DepositStatus = (typeof DepositStatus)[keyof typeof DepositStatus]
 export const WithdrawalStatus: {
   PENDING: 'PENDING',
   APPROVED: 'APPROVED',
-  COMPLETED: 'COMPLETED',
   FAILED: 'FAILED',
-  REJECTED: 'REJECTED',
-  CANCELED: 'CANCELED'
+  COMPLETED: 'COMPLETED',
+  REJECTED: 'REJECTED'
 };
 
 export type WithdrawalStatus = (typeof WithdrawalStatus)[keyof typeof WithdrawalStatus]
@@ -144,8 +148,7 @@ export type BridgeStatus = (typeof BridgeStatus)[keyof typeof BridgeStatus]
 export const TransferStatus: {
   PENDING: 'PENDING',
   COMPLETED: 'COMPLETED',
-  FAILED: 'FAILED',
-  CANCELED: 'CANCELED'
+  FAILED: 'FAILED'
 };
 
 export type TransferStatus = (typeof TransferStatus)[keyof typeof TransferStatus]
@@ -154,8 +157,7 @@ export type TransferStatus = (typeof TransferStatus)[keyof typeof TransferStatus
 export const ExchangeStatus: {
   PENDING: 'PENDING',
   COMPLETED: 'COMPLETED',
-  FAILED: 'FAILED',
-  CANCELED: 'CANCELED'
+  FAILED: 'FAILED'
 };
 
 export type ExchangeStatus = (typeof ExchangeStatus)[keyof typeof ExchangeStatus]
@@ -359,14 +361,14 @@ export class PrismaClient<
   get user(): Prisma.UserDelegate<ExtArgs, ClientOptions>;
 
   /**
-   * `prisma.wallet`: Exposes CRUD operations for the **Wallet** model.
+   * `prisma.paymentChannel`: Exposes CRUD operations for the **PaymentChannel** model.
     * Example usage:
     * ```ts
-    * // Fetch zero or more Wallets
-    * const wallets = await prisma.wallet.findMany()
+    * // Fetch zero or more PaymentChannels
+    * const paymentChannels = await prisma.paymentChannel.findMany()
     * ```
     */
-  get wallet(): Prisma.WalletDelegate<ExtArgs, ClientOptions>;
+  get paymentChannel(): Prisma.PaymentChannelDelegate<ExtArgs, ClientOptions>;
 
   /**
    * `prisma.currency`: Exposes CRUD operations for the **Currency** model.
@@ -377,6 +379,26 @@ export class PrismaClient<
     * ```
     */
   get currency(): Prisma.CurrencyDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.liquidityPool`: Exposes CRUD operations for the **LiquidityPool** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more LiquidityPools
+    * const liquidityPools = await prisma.liquidityPool.findMany()
+    * ```
+    */
+  get liquidityPool(): Prisma.LiquidityPoolDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.wallet`: Exposes CRUD operations for the **Wallet** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more Wallets
+    * const wallets = await prisma.wallet.findMany()
+    * ```
+    */
+  get wallet(): Prisma.WalletDelegate<ExtArgs, ClientOptions>;
 
   /**
    * `prisma.deposit`: Exposes CRUD operations for the **Deposit** model.
@@ -397,16 +419,6 @@ export class PrismaClient<
     * ```
     */
   get withdrawal(): Prisma.WithdrawalDelegate<ExtArgs, ClientOptions>;
-
-  /**
-   * `prisma.paymentChannel`: Exposes CRUD operations for the **PaymentChannel** model.
-    * Example usage:
-    * ```ts
-    * // Fetch zero or more PaymentChannels
-    * const paymentChannels = await prisma.paymentChannel.findMany()
-    * ```
-    */
-  get paymentChannel(): Prisma.PaymentChannelDelegate<ExtArgs, ClientOptions>;
 
   /**
    * `prisma.bridgeTransfer`: Exposes CRUD operations for the **BridgeTransfer** model.
@@ -908,11 +920,12 @@ export namespace Prisma {
 
   export const ModelName: {
     User: 'User',
-    Wallet: 'Wallet',
+    PaymentChannel: 'PaymentChannel',
     Currency: 'Currency',
+    LiquidityPool: 'LiquidityPool',
+    Wallet: 'Wallet',
     Deposit: 'Deposit',
     Withdrawal: 'Withdrawal',
-    PaymentChannel: 'PaymentChannel',
     BridgeTransfer: 'BridgeTransfer',
     Transfer: 'Transfer',
     Refund: 'Refund',
@@ -937,7 +950,7 @@ export namespace Prisma {
       omit: GlobalOmitOptions
     }
     meta: {
-      modelProps: "user" | "wallet" | "currency" | "deposit" | "withdrawal" | "paymentChannel" | "bridgeTransfer" | "transfer" | "refund" | "exchange" | "activityLog" | "feeSetting"
+      modelProps: "user" | "paymentChannel" | "currency" | "liquidityPool" | "wallet" | "deposit" | "withdrawal" | "bridgeTransfer" | "transfer" | "refund" | "exchange" | "activityLog" | "feeSetting"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
@@ -1015,77 +1028,77 @@ export namespace Prisma {
           }
         }
       }
-      Wallet: {
-        payload: Prisma.$WalletPayload<ExtArgs>
-        fields: Prisma.WalletFieldRefs
+      PaymentChannel: {
+        payload: Prisma.$PaymentChannelPayload<ExtArgs>
+        fields: Prisma.PaymentChannelFieldRefs
         operations: {
           findUnique: {
-            args: Prisma.WalletFindUniqueArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$WalletPayload> | null
+            args: Prisma.PaymentChannelFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PaymentChannelPayload> | null
           }
           findUniqueOrThrow: {
-            args: Prisma.WalletFindUniqueOrThrowArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$WalletPayload>
+            args: Prisma.PaymentChannelFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PaymentChannelPayload>
           }
           findFirst: {
-            args: Prisma.WalletFindFirstArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$WalletPayload> | null
+            args: Prisma.PaymentChannelFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PaymentChannelPayload> | null
           }
           findFirstOrThrow: {
-            args: Prisma.WalletFindFirstOrThrowArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$WalletPayload>
+            args: Prisma.PaymentChannelFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PaymentChannelPayload>
           }
           findMany: {
-            args: Prisma.WalletFindManyArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$WalletPayload>[]
+            args: Prisma.PaymentChannelFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PaymentChannelPayload>[]
           }
           create: {
-            args: Prisma.WalletCreateArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$WalletPayload>
+            args: Prisma.PaymentChannelCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PaymentChannelPayload>
           }
           createMany: {
-            args: Prisma.WalletCreateManyArgs<ExtArgs>
+            args: Prisma.PaymentChannelCreateManyArgs<ExtArgs>
             result: BatchPayload
           }
           createManyAndReturn: {
-            args: Prisma.WalletCreateManyAndReturnArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$WalletPayload>[]
+            args: Prisma.PaymentChannelCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PaymentChannelPayload>[]
           }
           delete: {
-            args: Prisma.WalletDeleteArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$WalletPayload>
+            args: Prisma.PaymentChannelDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PaymentChannelPayload>
           }
           update: {
-            args: Prisma.WalletUpdateArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$WalletPayload>
+            args: Prisma.PaymentChannelUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PaymentChannelPayload>
           }
           deleteMany: {
-            args: Prisma.WalletDeleteManyArgs<ExtArgs>
+            args: Prisma.PaymentChannelDeleteManyArgs<ExtArgs>
             result: BatchPayload
           }
           updateMany: {
-            args: Prisma.WalletUpdateManyArgs<ExtArgs>
+            args: Prisma.PaymentChannelUpdateManyArgs<ExtArgs>
             result: BatchPayload
           }
           updateManyAndReturn: {
-            args: Prisma.WalletUpdateManyAndReturnArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$WalletPayload>[]
+            args: Prisma.PaymentChannelUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PaymentChannelPayload>[]
           }
           upsert: {
-            args: Prisma.WalletUpsertArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$WalletPayload>
+            args: Prisma.PaymentChannelUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PaymentChannelPayload>
           }
           aggregate: {
-            args: Prisma.WalletAggregateArgs<ExtArgs>
-            result: $Utils.Optional<AggregateWallet>
+            args: Prisma.PaymentChannelAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregatePaymentChannel>
           }
           groupBy: {
-            args: Prisma.WalletGroupByArgs<ExtArgs>
-            result: $Utils.Optional<WalletGroupByOutputType>[]
+            args: Prisma.PaymentChannelGroupByArgs<ExtArgs>
+            result: $Utils.Optional<PaymentChannelGroupByOutputType>[]
           }
           count: {
-            args: Prisma.WalletCountArgs<ExtArgs>
-            result: $Utils.Optional<WalletCountAggregateOutputType> | number
+            args: Prisma.PaymentChannelCountArgs<ExtArgs>
+            result: $Utils.Optional<PaymentChannelCountAggregateOutputType> | number
           }
         }
       }
@@ -1160,6 +1173,154 @@ export namespace Prisma {
           count: {
             args: Prisma.CurrencyCountArgs<ExtArgs>
             result: $Utils.Optional<CurrencyCountAggregateOutputType> | number
+          }
+        }
+      }
+      LiquidityPool: {
+        payload: Prisma.$LiquidityPoolPayload<ExtArgs>
+        fields: Prisma.LiquidityPoolFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.LiquidityPoolFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$LiquidityPoolPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.LiquidityPoolFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$LiquidityPoolPayload>
+          }
+          findFirst: {
+            args: Prisma.LiquidityPoolFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$LiquidityPoolPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.LiquidityPoolFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$LiquidityPoolPayload>
+          }
+          findMany: {
+            args: Prisma.LiquidityPoolFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$LiquidityPoolPayload>[]
+          }
+          create: {
+            args: Prisma.LiquidityPoolCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$LiquidityPoolPayload>
+          }
+          createMany: {
+            args: Prisma.LiquidityPoolCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.LiquidityPoolCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$LiquidityPoolPayload>[]
+          }
+          delete: {
+            args: Prisma.LiquidityPoolDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$LiquidityPoolPayload>
+          }
+          update: {
+            args: Prisma.LiquidityPoolUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$LiquidityPoolPayload>
+          }
+          deleteMany: {
+            args: Prisma.LiquidityPoolDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.LiquidityPoolUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.LiquidityPoolUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$LiquidityPoolPayload>[]
+          }
+          upsert: {
+            args: Prisma.LiquidityPoolUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$LiquidityPoolPayload>
+          }
+          aggregate: {
+            args: Prisma.LiquidityPoolAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateLiquidityPool>
+          }
+          groupBy: {
+            args: Prisma.LiquidityPoolGroupByArgs<ExtArgs>
+            result: $Utils.Optional<LiquidityPoolGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.LiquidityPoolCountArgs<ExtArgs>
+            result: $Utils.Optional<LiquidityPoolCountAggregateOutputType> | number
+          }
+        }
+      }
+      Wallet: {
+        payload: Prisma.$WalletPayload<ExtArgs>
+        fields: Prisma.WalletFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.WalletFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$WalletPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.WalletFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$WalletPayload>
+          }
+          findFirst: {
+            args: Prisma.WalletFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$WalletPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.WalletFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$WalletPayload>
+          }
+          findMany: {
+            args: Prisma.WalletFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$WalletPayload>[]
+          }
+          create: {
+            args: Prisma.WalletCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$WalletPayload>
+          }
+          createMany: {
+            args: Prisma.WalletCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.WalletCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$WalletPayload>[]
+          }
+          delete: {
+            args: Prisma.WalletDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$WalletPayload>
+          }
+          update: {
+            args: Prisma.WalletUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$WalletPayload>
+          }
+          deleteMany: {
+            args: Prisma.WalletDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.WalletUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.WalletUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$WalletPayload>[]
+          }
+          upsert: {
+            args: Prisma.WalletUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$WalletPayload>
+          }
+          aggregate: {
+            args: Prisma.WalletAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateWallet>
+          }
+          groupBy: {
+            args: Prisma.WalletGroupByArgs<ExtArgs>
+            result: $Utils.Optional<WalletGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.WalletCountArgs<ExtArgs>
+            result: $Utils.Optional<WalletCountAggregateOutputType> | number
           }
         }
       }
@@ -1308,80 +1469,6 @@ export namespace Prisma {
           count: {
             args: Prisma.WithdrawalCountArgs<ExtArgs>
             result: $Utils.Optional<WithdrawalCountAggregateOutputType> | number
-          }
-        }
-      }
-      PaymentChannel: {
-        payload: Prisma.$PaymentChannelPayload<ExtArgs>
-        fields: Prisma.PaymentChannelFieldRefs
-        operations: {
-          findUnique: {
-            args: Prisma.PaymentChannelFindUniqueArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$PaymentChannelPayload> | null
-          }
-          findUniqueOrThrow: {
-            args: Prisma.PaymentChannelFindUniqueOrThrowArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$PaymentChannelPayload>
-          }
-          findFirst: {
-            args: Prisma.PaymentChannelFindFirstArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$PaymentChannelPayload> | null
-          }
-          findFirstOrThrow: {
-            args: Prisma.PaymentChannelFindFirstOrThrowArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$PaymentChannelPayload>
-          }
-          findMany: {
-            args: Prisma.PaymentChannelFindManyArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$PaymentChannelPayload>[]
-          }
-          create: {
-            args: Prisma.PaymentChannelCreateArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$PaymentChannelPayload>
-          }
-          createMany: {
-            args: Prisma.PaymentChannelCreateManyArgs<ExtArgs>
-            result: BatchPayload
-          }
-          createManyAndReturn: {
-            args: Prisma.PaymentChannelCreateManyAndReturnArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$PaymentChannelPayload>[]
-          }
-          delete: {
-            args: Prisma.PaymentChannelDeleteArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$PaymentChannelPayload>
-          }
-          update: {
-            args: Prisma.PaymentChannelUpdateArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$PaymentChannelPayload>
-          }
-          deleteMany: {
-            args: Prisma.PaymentChannelDeleteManyArgs<ExtArgs>
-            result: BatchPayload
-          }
-          updateMany: {
-            args: Prisma.PaymentChannelUpdateManyArgs<ExtArgs>
-            result: BatchPayload
-          }
-          updateManyAndReturn: {
-            args: Prisma.PaymentChannelUpdateManyAndReturnArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$PaymentChannelPayload>[]
-          }
-          upsert: {
-            args: Prisma.PaymentChannelUpsertArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$PaymentChannelPayload>
-          }
-          aggregate: {
-            args: Prisma.PaymentChannelAggregateArgs<ExtArgs>
-            result: $Utils.Optional<AggregatePaymentChannel>
-          }
-          groupBy: {
-            args: Prisma.PaymentChannelGroupByArgs<ExtArgs>
-            result: $Utils.Optional<PaymentChannelGroupByOutputType>[]
-          }
-          count: {
-            args: Prisma.PaymentChannelCountArgs<ExtArgs>
-            result: $Utils.Optional<PaymentChannelCountAggregateOutputType> | number
           }
         }
       }
@@ -1914,11 +2001,12 @@ export namespace Prisma {
   }
   export type GlobalOmitConfig = {
     user?: UserOmit
-    wallet?: WalletOmit
+    paymentChannel?: PaymentChannelOmit
     currency?: CurrencyOmit
+    liquidityPool?: LiquidityPoolOmit
+    wallet?: WalletOmit
     deposit?: DepositOmit
     withdrawal?: WithdrawalOmit
-    paymentChannel?: PaymentChannelOmit
     bridgeTransfer?: BridgeTransferOmit
     transfer?: TransferOmit
     refund?: RefundOmit
@@ -2100,6 +2188,140 @@ export namespace Prisma {
 
 
   /**
+   * Count Type PaymentChannelCountOutputType
+   */
+
+  export type PaymentChannelCountOutputType = {
+    currencies: number
+    Deposit: number
+    Withdrawal: number
+    LiquidityPool: number
+  }
+
+  export type PaymentChannelCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    currencies?: boolean | PaymentChannelCountOutputTypeCountCurrenciesArgs
+    Deposit?: boolean | PaymentChannelCountOutputTypeCountDepositArgs
+    Withdrawal?: boolean | PaymentChannelCountOutputTypeCountWithdrawalArgs
+    LiquidityPool?: boolean | PaymentChannelCountOutputTypeCountLiquidityPoolArgs
+  }
+
+  // Custom InputTypes
+  /**
+   * PaymentChannelCountOutputType without action
+   */
+  export type PaymentChannelCountOutputTypeDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PaymentChannelCountOutputType
+     */
+    select?: PaymentChannelCountOutputTypeSelect<ExtArgs> | null
+  }
+
+  /**
+   * PaymentChannelCountOutputType without action
+   */
+  export type PaymentChannelCountOutputTypeCountCurrenciesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: CurrencyWhereInput
+  }
+
+  /**
+   * PaymentChannelCountOutputType without action
+   */
+  export type PaymentChannelCountOutputTypeCountDepositArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: DepositWhereInput
+  }
+
+  /**
+   * PaymentChannelCountOutputType without action
+   */
+  export type PaymentChannelCountOutputTypeCountWithdrawalArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: WithdrawalWhereInput
+  }
+
+  /**
+   * PaymentChannelCountOutputType without action
+   */
+  export type PaymentChannelCountOutputTypeCountLiquidityPoolArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: LiquidityPoolWhereInput
+  }
+
+
+  /**
+   * Count Type CurrencyCountOutputType
+   */
+
+  export type CurrencyCountOutputType = {
+    wallets: number
+    exchangesFrom: number
+    exchangesTo: number
+    FeeSetting: number
+    paymentChannels: number
+    LiquidityPool: number
+  }
+
+  export type CurrencyCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    wallets?: boolean | CurrencyCountOutputTypeCountWalletsArgs
+    exchangesFrom?: boolean | CurrencyCountOutputTypeCountExchangesFromArgs
+    exchangesTo?: boolean | CurrencyCountOutputTypeCountExchangesToArgs
+    FeeSetting?: boolean | CurrencyCountOutputTypeCountFeeSettingArgs
+    paymentChannels?: boolean | CurrencyCountOutputTypeCountPaymentChannelsArgs
+    LiquidityPool?: boolean | CurrencyCountOutputTypeCountLiquidityPoolArgs
+  }
+
+  // Custom InputTypes
+  /**
+   * CurrencyCountOutputType without action
+   */
+  export type CurrencyCountOutputTypeDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CurrencyCountOutputType
+     */
+    select?: CurrencyCountOutputTypeSelect<ExtArgs> | null
+  }
+
+  /**
+   * CurrencyCountOutputType without action
+   */
+  export type CurrencyCountOutputTypeCountWalletsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: WalletWhereInput
+  }
+
+  /**
+   * CurrencyCountOutputType without action
+   */
+  export type CurrencyCountOutputTypeCountExchangesFromArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: ExchangeWhereInput
+  }
+
+  /**
+   * CurrencyCountOutputType without action
+   */
+  export type CurrencyCountOutputTypeCountExchangesToArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: ExchangeWhereInput
+  }
+
+  /**
+   * CurrencyCountOutputType without action
+   */
+  export type CurrencyCountOutputTypeCountFeeSettingArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: FeeSettingWhereInput
+  }
+
+  /**
+   * CurrencyCountOutputType without action
+   */
+  export type CurrencyCountOutputTypeCountPaymentChannelsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: PaymentChannelWhereInput
+  }
+
+  /**
+   * CurrencyCountOutputType without action
+   */
+  export type CurrencyCountOutputTypeCountLiquidityPoolArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: LiquidityPoolWhereInput
+  }
+
+
+  /**
    * Count Type WalletCountOutputType
    */
 
@@ -2163,122 +2385,6 @@ export namespace Prisma {
    */
   export type WalletCountOutputTypeCountTransfersToArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: TransferWhereInput
-  }
-
-
-  /**
-   * Count Type CurrencyCountOutputType
-   */
-
-  export type CurrencyCountOutputType = {
-    wallets: number
-    exchangesFrom: number
-    exchangesTo: number
-    FeeSetting: number
-    paymentChannels: number
-  }
-
-  export type CurrencyCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    wallets?: boolean | CurrencyCountOutputTypeCountWalletsArgs
-    exchangesFrom?: boolean | CurrencyCountOutputTypeCountExchangesFromArgs
-    exchangesTo?: boolean | CurrencyCountOutputTypeCountExchangesToArgs
-    FeeSetting?: boolean | CurrencyCountOutputTypeCountFeeSettingArgs
-    paymentChannels?: boolean | CurrencyCountOutputTypeCountPaymentChannelsArgs
-  }
-
-  // Custom InputTypes
-  /**
-   * CurrencyCountOutputType without action
-   */
-  export type CurrencyCountOutputTypeDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the CurrencyCountOutputType
-     */
-    select?: CurrencyCountOutputTypeSelect<ExtArgs> | null
-  }
-
-  /**
-   * CurrencyCountOutputType without action
-   */
-  export type CurrencyCountOutputTypeCountWalletsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: WalletWhereInput
-  }
-
-  /**
-   * CurrencyCountOutputType without action
-   */
-  export type CurrencyCountOutputTypeCountExchangesFromArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: ExchangeWhereInput
-  }
-
-  /**
-   * CurrencyCountOutputType without action
-   */
-  export type CurrencyCountOutputTypeCountExchangesToArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: ExchangeWhereInput
-  }
-
-  /**
-   * CurrencyCountOutputType without action
-   */
-  export type CurrencyCountOutputTypeCountFeeSettingArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: FeeSettingWhereInput
-  }
-
-  /**
-   * CurrencyCountOutputType without action
-   */
-  export type CurrencyCountOutputTypeCountPaymentChannelsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: PaymentChannelWhereInput
-  }
-
-
-  /**
-   * Count Type PaymentChannelCountOutputType
-   */
-
-  export type PaymentChannelCountOutputType = {
-    currencies: number
-    Deposit: number
-    Withdrawal: number
-  }
-
-  export type PaymentChannelCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    currencies?: boolean | PaymentChannelCountOutputTypeCountCurrenciesArgs
-    Deposit?: boolean | PaymentChannelCountOutputTypeCountDepositArgs
-    Withdrawal?: boolean | PaymentChannelCountOutputTypeCountWithdrawalArgs
-  }
-
-  // Custom InputTypes
-  /**
-   * PaymentChannelCountOutputType without action
-   */
-  export type PaymentChannelCountOutputTypeDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the PaymentChannelCountOutputType
-     */
-    select?: PaymentChannelCountOutputTypeSelect<ExtArgs> | null
-  }
-
-  /**
-   * PaymentChannelCountOutputType without action
-   */
-  export type PaymentChannelCountOutputTypeCountCurrenciesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: CurrencyWhereInput
-  }
-
-  /**
-   * PaymentChannelCountOutputType without action
-   */
-  export type PaymentChannelCountOutputTypeCountDepositArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: DepositWhereInput
-  }
-
-  /**
-   * PaymentChannelCountOutputType without action
-   */
-  export type PaymentChannelCountOutputTypeCountWithdrawalArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: WithdrawalWhereInput
   }
 
 
@@ -3843,6 +3949,3557 @@ export namespace Prisma {
 
 
   /**
+   * Model PaymentChannel
+   */
+
+  export type AggregatePaymentChannel = {
+    _count: PaymentChannelCountAggregateOutputType | null
+    _min: PaymentChannelMinAggregateOutputType | null
+    _max: PaymentChannelMaxAggregateOutputType | null
+  }
+
+  export type PaymentChannelMinAggregateOutputType = {
+    id: string | null
+    name: string | null
+    description: string | null
+    createdAt: Date | null
+  }
+
+  export type PaymentChannelMaxAggregateOutputType = {
+    id: string | null
+    name: string | null
+    description: string | null
+    createdAt: Date | null
+  }
+
+  export type PaymentChannelCountAggregateOutputType = {
+    id: number
+    name: number
+    description: number
+    createdAt: number
+    _all: number
+  }
+
+
+  export type PaymentChannelMinAggregateInputType = {
+    id?: true
+    name?: true
+    description?: true
+    createdAt?: true
+  }
+
+  export type PaymentChannelMaxAggregateInputType = {
+    id?: true
+    name?: true
+    description?: true
+    createdAt?: true
+  }
+
+  export type PaymentChannelCountAggregateInputType = {
+    id?: true
+    name?: true
+    description?: true
+    createdAt?: true
+    _all?: true
+  }
+
+  export type PaymentChannelAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which PaymentChannel to aggregate.
+     */
+    where?: PaymentChannelWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of PaymentChannels to fetch.
+     */
+    orderBy?: PaymentChannelOrderByWithRelationInput | PaymentChannelOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: PaymentChannelWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` PaymentChannels from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` PaymentChannels.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned PaymentChannels
+    **/
+    _count?: true | PaymentChannelCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: PaymentChannelMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: PaymentChannelMaxAggregateInputType
+  }
+
+  export type GetPaymentChannelAggregateType<T extends PaymentChannelAggregateArgs> = {
+        [P in keyof T & keyof AggregatePaymentChannel]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregatePaymentChannel[P]>
+      : GetScalarType<T[P], AggregatePaymentChannel[P]>
+  }
+
+
+
+
+  export type PaymentChannelGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: PaymentChannelWhereInput
+    orderBy?: PaymentChannelOrderByWithAggregationInput | PaymentChannelOrderByWithAggregationInput[]
+    by: PaymentChannelScalarFieldEnum[] | PaymentChannelScalarFieldEnum
+    having?: PaymentChannelScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: PaymentChannelCountAggregateInputType | true
+    _min?: PaymentChannelMinAggregateInputType
+    _max?: PaymentChannelMaxAggregateInputType
+  }
+
+  export type PaymentChannelGroupByOutputType = {
+    id: string
+    name: string
+    description: string | null
+    createdAt: Date
+    _count: PaymentChannelCountAggregateOutputType | null
+    _min: PaymentChannelMinAggregateOutputType | null
+    _max: PaymentChannelMaxAggregateOutputType | null
+  }
+
+  type GetPaymentChannelGroupByPayload<T extends PaymentChannelGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<PaymentChannelGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof PaymentChannelGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], PaymentChannelGroupByOutputType[P]>
+            : GetScalarType<T[P], PaymentChannelGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type PaymentChannelSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    name?: boolean
+    description?: boolean
+    createdAt?: boolean
+    bridgeTransfers?: boolean | PaymentChannel$bridgeTransfersArgs<ExtArgs>
+    currencies?: boolean | PaymentChannel$currenciesArgs<ExtArgs>
+    Deposit?: boolean | PaymentChannel$DepositArgs<ExtArgs>
+    Withdrawal?: boolean | PaymentChannel$WithdrawalArgs<ExtArgs>
+    LiquidityPool?: boolean | PaymentChannel$LiquidityPoolArgs<ExtArgs>
+    _count?: boolean | PaymentChannelCountOutputTypeDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["paymentChannel"]>
+
+  export type PaymentChannelSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    name?: boolean
+    description?: boolean
+    createdAt?: boolean
+  }, ExtArgs["result"]["paymentChannel"]>
+
+  export type PaymentChannelSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    name?: boolean
+    description?: boolean
+    createdAt?: boolean
+  }, ExtArgs["result"]["paymentChannel"]>
+
+  export type PaymentChannelSelectScalar = {
+    id?: boolean
+    name?: boolean
+    description?: boolean
+    createdAt?: boolean
+  }
+
+  export type PaymentChannelOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "description" | "createdAt", ExtArgs["result"]["paymentChannel"]>
+  export type PaymentChannelInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    bridgeTransfers?: boolean | PaymentChannel$bridgeTransfersArgs<ExtArgs>
+    currencies?: boolean | PaymentChannel$currenciesArgs<ExtArgs>
+    Deposit?: boolean | PaymentChannel$DepositArgs<ExtArgs>
+    Withdrawal?: boolean | PaymentChannel$WithdrawalArgs<ExtArgs>
+    LiquidityPool?: boolean | PaymentChannel$LiquidityPoolArgs<ExtArgs>
+    _count?: boolean | PaymentChannelCountOutputTypeDefaultArgs<ExtArgs>
+  }
+  export type PaymentChannelIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
+  export type PaymentChannelIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
+
+  export type $PaymentChannelPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "PaymentChannel"
+    objects: {
+      bridgeTransfers: Prisma.$BridgeTransferPayload<ExtArgs> | null
+      currencies: Prisma.$CurrencyPayload<ExtArgs>[]
+      Deposit: Prisma.$DepositPayload<ExtArgs>[]
+      Withdrawal: Prisma.$WithdrawalPayload<ExtArgs>[]
+      LiquidityPool: Prisma.$LiquidityPoolPayload<ExtArgs>[]
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      name: string
+      description: string | null
+      createdAt: Date
+    }, ExtArgs["result"]["paymentChannel"]>
+    composites: {}
+  }
+
+  type PaymentChannelGetPayload<S extends boolean | null | undefined | PaymentChannelDefaultArgs> = $Result.GetResult<Prisma.$PaymentChannelPayload, S>
+
+  type PaymentChannelCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<PaymentChannelFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: PaymentChannelCountAggregateInputType | true
+    }
+
+  export interface PaymentChannelDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['PaymentChannel'], meta: { name: 'PaymentChannel' } }
+    /**
+     * Find zero or one PaymentChannel that matches the filter.
+     * @param {PaymentChannelFindUniqueArgs} args - Arguments to find a PaymentChannel
+     * @example
+     * // Get one PaymentChannel
+     * const paymentChannel = await prisma.paymentChannel.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends PaymentChannelFindUniqueArgs>(args: SelectSubset<T, PaymentChannelFindUniqueArgs<ExtArgs>>): Prisma__PaymentChannelClient<$Result.GetResult<Prisma.$PaymentChannelPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one PaymentChannel that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {PaymentChannelFindUniqueOrThrowArgs} args - Arguments to find a PaymentChannel
+     * @example
+     * // Get one PaymentChannel
+     * const paymentChannel = await prisma.paymentChannel.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends PaymentChannelFindUniqueOrThrowArgs>(args: SelectSubset<T, PaymentChannelFindUniqueOrThrowArgs<ExtArgs>>): Prisma__PaymentChannelClient<$Result.GetResult<Prisma.$PaymentChannelPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first PaymentChannel that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PaymentChannelFindFirstArgs} args - Arguments to find a PaymentChannel
+     * @example
+     * // Get one PaymentChannel
+     * const paymentChannel = await prisma.paymentChannel.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends PaymentChannelFindFirstArgs>(args?: SelectSubset<T, PaymentChannelFindFirstArgs<ExtArgs>>): Prisma__PaymentChannelClient<$Result.GetResult<Prisma.$PaymentChannelPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first PaymentChannel that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PaymentChannelFindFirstOrThrowArgs} args - Arguments to find a PaymentChannel
+     * @example
+     * // Get one PaymentChannel
+     * const paymentChannel = await prisma.paymentChannel.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends PaymentChannelFindFirstOrThrowArgs>(args?: SelectSubset<T, PaymentChannelFindFirstOrThrowArgs<ExtArgs>>): Prisma__PaymentChannelClient<$Result.GetResult<Prisma.$PaymentChannelPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more PaymentChannels that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PaymentChannelFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all PaymentChannels
+     * const paymentChannels = await prisma.paymentChannel.findMany()
+     * 
+     * // Get first 10 PaymentChannels
+     * const paymentChannels = await prisma.paymentChannel.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const paymentChannelWithIdOnly = await prisma.paymentChannel.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends PaymentChannelFindManyArgs>(args?: SelectSubset<T, PaymentChannelFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PaymentChannelPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a PaymentChannel.
+     * @param {PaymentChannelCreateArgs} args - Arguments to create a PaymentChannel.
+     * @example
+     * // Create one PaymentChannel
+     * const PaymentChannel = await prisma.paymentChannel.create({
+     *   data: {
+     *     // ... data to create a PaymentChannel
+     *   }
+     * })
+     * 
+     */
+    create<T extends PaymentChannelCreateArgs>(args: SelectSubset<T, PaymentChannelCreateArgs<ExtArgs>>): Prisma__PaymentChannelClient<$Result.GetResult<Prisma.$PaymentChannelPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many PaymentChannels.
+     * @param {PaymentChannelCreateManyArgs} args - Arguments to create many PaymentChannels.
+     * @example
+     * // Create many PaymentChannels
+     * const paymentChannel = await prisma.paymentChannel.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends PaymentChannelCreateManyArgs>(args?: SelectSubset<T, PaymentChannelCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many PaymentChannels and returns the data saved in the database.
+     * @param {PaymentChannelCreateManyAndReturnArgs} args - Arguments to create many PaymentChannels.
+     * @example
+     * // Create many PaymentChannels
+     * const paymentChannel = await prisma.paymentChannel.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many PaymentChannels and only return the `id`
+     * const paymentChannelWithIdOnly = await prisma.paymentChannel.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends PaymentChannelCreateManyAndReturnArgs>(args?: SelectSubset<T, PaymentChannelCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PaymentChannelPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a PaymentChannel.
+     * @param {PaymentChannelDeleteArgs} args - Arguments to delete one PaymentChannel.
+     * @example
+     * // Delete one PaymentChannel
+     * const PaymentChannel = await prisma.paymentChannel.delete({
+     *   where: {
+     *     // ... filter to delete one PaymentChannel
+     *   }
+     * })
+     * 
+     */
+    delete<T extends PaymentChannelDeleteArgs>(args: SelectSubset<T, PaymentChannelDeleteArgs<ExtArgs>>): Prisma__PaymentChannelClient<$Result.GetResult<Prisma.$PaymentChannelPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one PaymentChannel.
+     * @param {PaymentChannelUpdateArgs} args - Arguments to update one PaymentChannel.
+     * @example
+     * // Update one PaymentChannel
+     * const paymentChannel = await prisma.paymentChannel.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends PaymentChannelUpdateArgs>(args: SelectSubset<T, PaymentChannelUpdateArgs<ExtArgs>>): Prisma__PaymentChannelClient<$Result.GetResult<Prisma.$PaymentChannelPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more PaymentChannels.
+     * @param {PaymentChannelDeleteManyArgs} args - Arguments to filter PaymentChannels to delete.
+     * @example
+     * // Delete a few PaymentChannels
+     * const { count } = await prisma.paymentChannel.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends PaymentChannelDeleteManyArgs>(args?: SelectSubset<T, PaymentChannelDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more PaymentChannels.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PaymentChannelUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many PaymentChannels
+     * const paymentChannel = await prisma.paymentChannel.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends PaymentChannelUpdateManyArgs>(args: SelectSubset<T, PaymentChannelUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more PaymentChannels and returns the data updated in the database.
+     * @param {PaymentChannelUpdateManyAndReturnArgs} args - Arguments to update many PaymentChannels.
+     * @example
+     * // Update many PaymentChannels
+     * const paymentChannel = await prisma.paymentChannel.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more PaymentChannels and only return the `id`
+     * const paymentChannelWithIdOnly = await prisma.paymentChannel.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends PaymentChannelUpdateManyAndReturnArgs>(args: SelectSubset<T, PaymentChannelUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PaymentChannelPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one PaymentChannel.
+     * @param {PaymentChannelUpsertArgs} args - Arguments to update or create a PaymentChannel.
+     * @example
+     * // Update or create a PaymentChannel
+     * const paymentChannel = await prisma.paymentChannel.upsert({
+     *   create: {
+     *     // ... data to create a PaymentChannel
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the PaymentChannel we want to update
+     *   }
+     * })
+     */
+    upsert<T extends PaymentChannelUpsertArgs>(args: SelectSubset<T, PaymentChannelUpsertArgs<ExtArgs>>): Prisma__PaymentChannelClient<$Result.GetResult<Prisma.$PaymentChannelPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of PaymentChannels.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PaymentChannelCountArgs} args - Arguments to filter PaymentChannels to count.
+     * @example
+     * // Count the number of PaymentChannels
+     * const count = await prisma.paymentChannel.count({
+     *   where: {
+     *     // ... the filter for the PaymentChannels we want to count
+     *   }
+     * })
+    **/
+    count<T extends PaymentChannelCountArgs>(
+      args?: Subset<T, PaymentChannelCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], PaymentChannelCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a PaymentChannel.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PaymentChannelAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends PaymentChannelAggregateArgs>(args: Subset<T, PaymentChannelAggregateArgs>): Prisma.PrismaPromise<GetPaymentChannelAggregateType<T>>
+
+    /**
+     * Group by PaymentChannel.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PaymentChannelGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends PaymentChannelGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: PaymentChannelGroupByArgs['orderBy'] }
+        : { orderBy?: PaymentChannelGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, PaymentChannelGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetPaymentChannelGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the PaymentChannel model
+   */
+  readonly fields: PaymentChannelFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for PaymentChannel.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__PaymentChannelClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    bridgeTransfers<T extends PaymentChannel$bridgeTransfersArgs<ExtArgs> = {}>(args?: Subset<T, PaymentChannel$bridgeTransfersArgs<ExtArgs>>): Prisma__BridgeTransferClient<$Result.GetResult<Prisma.$BridgeTransferPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    currencies<T extends PaymentChannel$currenciesArgs<ExtArgs> = {}>(args?: Subset<T, PaymentChannel$currenciesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$CurrencyPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    Deposit<T extends PaymentChannel$DepositArgs<ExtArgs> = {}>(args?: Subset<T, PaymentChannel$DepositArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$DepositPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    Withdrawal<T extends PaymentChannel$WithdrawalArgs<ExtArgs> = {}>(args?: Subset<T, PaymentChannel$WithdrawalArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$WithdrawalPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    LiquidityPool<T extends PaymentChannel$LiquidityPoolArgs<ExtArgs> = {}>(args?: Subset<T, PaymentChannel$LiquidityPoolArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$LiquidityPoolPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the PaymentChannel model
+   */
+  interface PaymentChannelFieldRefs {
+    readonly id: FieldRef<"PaymentChannel", 'String'>
+    readonly name: FieldRef<"PaymentChannel", 'String'>
+    readonly description: FieldRef<"PaymentChannel", 'String'>
+    readonly createdAt: FieldRef<"PaymentChannel", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * PaymentChannel findUnique
+   */
+  export type PaymentChannelFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PaymentChannel
+     */
+    select?: PaymentChannelSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PaymentChannel
+     */
+    omit?: PaymentChannelOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PaymentChannelInclude<ExtArgs> | null
+    /**
+     * Filter, which PaymentChannel to fetch.
+     */
+    where: PaymentChannelWhereUniqueInput
+  }
+
+  /**
+   * PaymentChannel findUniqueOrThrow
+   */
+  export type PaymentChannelFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PaymentChannel
+     */
+    select?: PaymentChannelSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PaymentChannel
+     */
+    omit?: PaymentChannelOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PaymentChannelInclude<ExtArgs> | null
+    /**
+     * Filter, which PaymentChannel to fetch.
+     */
+    where: PaymentChannelWhereUniqueInput
+  }
+
+  /**
+   * PaymentChannel findFirst
+   */
+  export type PaymentChannelFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PaymentChannel
+     */
+    select?: PaymentChannelSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PaymentChannel
+     */
+    omit?: PaymentChannelOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PaymentChannelInclude<ExtArgs> | null
+    /**
+     * Filter, which PaymentChannel to fetch.
+     */
+    where?: PaymentChannelWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of PaymentChannels to fetch.
+     */
+    orderBy?: PaymentChannelOrderByWithRelationInput | PaymentChannelOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for PaymentChannels.
+     */
+    cursor?: PaymentChannelWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` PaymentChannels from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` PaymentChannels.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of PaymentChannels.
+     */
+    distinct?: PaymentChannelScalarFieldEnum | PaymentChannelScalarFieldEnum[]
+  }
+
+  /**
+   * PaymentChannel findFirstOrThrow
+   */
+  export type PaymentChannelFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PaymentChannel
+     */
+    select?: PaymentChannelSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PaymentChannel
+     */
+    omit?: PaymentChannelOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PaymentChannelInclude<ExtArgs> | null
+    /**
+     * Filter, which PaymentChannel to fetch.
+     */
+    where?: PaymentChannelWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of PaymentChannels to fetch.
+     */
+    orderBy?: PaymentChannelOrderByWithRelationInput | PaymentChannelOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for PaymentChannels.
+     */
+    cursor?: PaymentChannelWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` PaymentChannels from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` PaymentChannels.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of PaymentChannels.
+     */
+    distinct?: PaymentChannelScalarFieldEnum | PaymentChannelScalarFieldEnum[]
+  }
+
+  /**
+   * PaymentChannel findMany
+   */
+  export type PaymentChannelFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PaymentChannel
+     */
+    select?: PaymentChannelSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PaymentChannel
+     */
+    omit?: PaymentChannelOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PaymentChannelInclude<ExtArgs> | null
+    /**
+     * Filter, which PaymentChannels to fetch.
+     */
+    where?: PaymentChannelWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of PaymentChannels to fetch.
+     */
+    orderBy?: PaymentChannelOrderByWithRelationInput | PaymentChannelOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing PaymentChannels.
+     */
+    cursor?: PaymentChannelWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` PaymentChannels from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` PaymentChannels.
+     */
+    skip?: number
+    distinct?: PaymentChannelScalarFieldEnum | PaymentChannelScalarFieldEnum[]
+  }
+
+  /**
+   * PaymentChannel create
+   */
+  export type PaymentChannelCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PaymentChannel
+     */
+    select?: PaymentChannelSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PaymentChannel
+     */
+    omit?: PaymentChannelOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PaymentChannelInclude<ExtArgs> | null
+    /**
+     * The data needed to create a PaymentChannel.
+     */
+    data: XOR<PaymentChannelCreateInput, PaymentChannelUncheckedCreateInput>
+  }
+
+  /**
+   * PaymentChannel createMany
+   */
+  export type PaymentChannelCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many PaymentChannels.
+     */
+    data: PaymentChannelCreateManyInput | PaymentChannelCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * PaymentChannel createManyAndReturn
+   */
+  export type PaymentChannelCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PaymentChannel
+     */
+    select?: PaymentChannelSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the PaymentChannel
+     */
+    omit?: PaymentChannelOmit<ExtArgs> | null
+    /**
+     * The data used to create many PaymentChannels.
+     */
+    data: PaymentChannelCreateManyInput | PaymentChannelCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * PaymentChannel update
+   */
+  export type PaymentChannelUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PaymentChannel
+     */
+    select?: PaymentChannelSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PaymentChannel
+     */
+    omit?: PaymentChannelOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PaymentChannelInclude<ExtArgs> | null
+    /**
+     * The data needed to update a PaymentChannel.
+     */
+    data: XOR<PaymentChannelUpdateInput, PaymentChannelUncheckedUpdateInput>
+    /**
+     * Choose, which PaymentChannel to update.
+     */
+    where: PaymentChannelWhereUniqueInput
+  }
+
+  /**
+   * PaymentChannel updateMany
+   */
+  export type PaymentChannelUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update PaymentChannels.
+     */
+    data: XOR<PaymentChannelUpdateManyMutationInput, PaymentChannelUncheckedUpdateManyInput>
+    /**
+     * Filter which PaymentChannels to update
+     */
+    where?: PaymentChannelWhereInput
+    /**
+     * Limit how many PaymentChannels to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * PaymentChannel updateManyAndReturn
+   */
+  export type PaymentChannelUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PaymentChannel
+     */
+    select?: PaymentChannelSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the PaymentChannel
+     */
+    omit?: PaymentChannelOmit<ExtArgs> | null
+    /**
+     * The data used to update PaymentChannels.
+     */
+    data: XOR<PaymentChannelUpdateManyMutationInput, PaymentChannelUncheckedUpdateManyInput>
+    /**
+     * Filter which PaymentChannels to update
+     */
+    where?: PaymentChannelWhereInput
+    /**
+     * Limit how many PaymentChannels to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * PaymentChannel upsert
+   */
+  export type PaymentChannelUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PaymentChannel
+     */
+    select?: PaymentChannelSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PaymentChannel
+     */
+    omit?: PaymentChannelOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PaymentChannelInclude<ExtArgs> | null
+    /**
+     * The filter to search for the PaymentChannel to update in case it exists.
+     */
+    where: PaymentChannelWhereUniqueInput
+    /**
+     * In case the PaymentChannel found by the `where` argument doesn't exist, create a new PaymentChannel with this data.
+     */
+    create: XOR<PaymentChannelCreateInput, PaymentChannelUncheckedCreateInput>
+    /**
+     * In case the PaymentChannel was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<PaymentChannelUpdateInput, PaymentChannelUncheckedUpdateInput>
+  }
+
+  /**
+   * PaymentChannel delete
+   */
+  export type PaymentChannelDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PaymentChannel
+     */
+    select?: PaymentChannelSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PaymentChannel
+     */
+    omit?: PaymentChannelOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PaymentChannelInclude<ExtArgs> | null
+    /**
+     * Filter which PaymentChannel to delete.
+     */
+    where: PaymentChannelWhereUniqueInput
+  }
+
+  /**
+   * PaymentChannel deleteMany
+   */
+  export type PaymentChannelDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which PaymentChannels to delete
+     */
+    where?: PaymentChannelWhereInput
+    /**
+     * Limit how many PaymentChannels to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * PaymentChannel.bridgeTransfers
+   */
+  export type PaymentChannel$bridgeTransfersArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the BridgeTransfer
+     */
+    select?: BridgeTransferSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the BridgeTransfer
+     */
+    omit?: BridgeTransferOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: BridgeTransferInclude<ExtArgs> | null
+    where?: BridgeTransferWhereInput
+  }
+
+  /**
+   * PaymentChannel.currencies
+   */
+  export type PaymentChannel$currenciesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Currency
+     */
+    select?: CurrencySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Currency
+     */
+    omit?: CurrencyOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CurrencyInclude<ExtArgs> | null
+    where?: CurrencyWhereInput
+    orderBy?: CurrencyOrderByWithRelationInput | CurrencyOrderByWithRelationInput[]
+    cursor?: CurrencyWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: CurrencyScalarFieldEnum | CurrencyScalarFieldEnum[]
+  }
+
+  /**
+   * PaymentChannel.Deposit
+   */
+  export type PaymentChannel$DepositArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Deposit
+     */
+    select?: DepositSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Deposit
+     */
+    omit?: DepositOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DepositInclude<ExtArgs> | null
+    where?: DepositWhereInput
+    orderBy?: DepositOrderByWithRelationInput | DepositOrderByWithRelationInput[]
+    cursor?: DepositWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: DepositScalarFieldEnum | DepositScalarFieldEnum[]
+  }
+
+  /**
+   * PaymentChannel.Withdrawal
+   */
+  export type PaymentChannel$WithdrawalArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Withdrawal
+     */
+    select?: WithdrawalSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Withdrawal
+     */
+    omit?: WithdrawalOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: WithdrawalInclude<ExtArgs> | null
+    where?: WithdrawalWhereInput
+    orderBy?: WithdrawalOrderByWithRelationInput | WithdrawalOrderByWithRelationInput[]
+    cursor?: WithdrawalWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: WithdrawalScalarFieldEnum | WithdrawalScalarFieldEnum[]
+  }
+
+  /**
+   * PaymentChannel.LiquidityPool
+   */
+  export type PaymentChannel$LiquidityPoolArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the LiquidityPool
+     */
+    select?: LiquidityPoolSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the LiquidityPool
+     */
+    omit?: LiquidityPoolOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: LiquidityPoolInclude<ExtArgs> | null
+    where?: LiquidityPoolWhereInput
+    orderBy?: LiquidityPoolOrderByWithRelationInput | LiquidityPoolOrderByWithRelationInput[]
+    cursor?: LiquidityPoolWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: LiquidityPoolScalarFieldEnum | LiquidityPoolScalarFieldEnum[]
+  }
+
+  /**
+   * PaymentChannel without action
+   */
+  export type PaymentChannelDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PaymentChannel
+     */
+    select?: PaymentChannelSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PaymentChannel
+     */
+    omit?: PaymentChannelOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PaymentChannelInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model Currency
+   */
+
+  export type AggregateCurrency = {
+    _count: CurrencyCountAggregateOutputType | null
+    _avg: CurrencyAvgAggregateOutputType | null
+    _sum: CurrencySumAggregateOutputType | null
+    _min: CurrencyMinAggregateOutputType | null
+    _max: CurrencyMaxAggregateOutputType | null
+  }
+
+  export type CurrencyAvgAggregateOutputType = {
+    decimals: number | null
+  }
+
+  export type CurrencySumAggregateOutputType = {
+    decimals: number | null
+  }
+
+  export type CurrencyMinAggregateOutputType = {
+    id: string | null
+    code: string | null
+    name: string | null
+    symbol: string | null
+    decimals: number | null
+    createdAt: Date | null
+  }
+
+  export type CurrencyMaxAggregateOutputType = {
+    id: string | null
+    code: string | null
+    name: string | null
+    symbol: string | null
+    decimals: number | null
+    createdAt: Date | null
+  }
+
+  export type CurrencyCountAggregateOutputType = {
+    id: number
+    code: number
+    name: number
+    symbol: number
+    decimals: number
+    createdAt: number
+    _all: number
+  }
+
+
+  export type CurrencyAvgAggregateInputType = {
+    decimals?: true
+  }
+
+  export type CurrencySumAggregateInputType = {
+    decimals?: true
+  }
+
+  export type CurrencyMinAggregateInputType = {
+    id?: true
+    code?: true
+    name?: true
+    symbol?: true
+    decimals?: true
+    createdAt?: true
+  }
+
+  export type CurrencyMaxAggregateInputType = {
+    id?: true
+    code?: true
+    name?: true
+    symbol?: true
+    decimals?: true
+    createdAt?: true
+  }
+
+  export type CurrencyCountAggregateInputType = {
+    id?: true
+    code?: true
+    name?: true
+    symbol?: true
+    decimals?: true
+    createdAt?: true
+    _all?: true
+  }
+
+  export type CurrencyAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which Currency to aggregate.
+     */
+    where?: CurrencyWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Currencies to fetch.
+     */
+    orderBy?: CurrencyOrderByWithRelationInput | CurrencyOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: CurrencyWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Currencies from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Currencies.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned Currencies
+    **/
+    _count?: true | CurrencyCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: CurrencyAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: CurrencySumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: CurrencyMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: CurrencyMaxAggregateInputType
+  }
+
+  export type GetCurrencyAggregateType<T extends CurrencyAggregateArgs> = {
+        [P in keyof T & keyof AggregateCurrency]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateCurrency[P]>
+      : GetScalarType<T[P], AggregateCurrency[P]>
+  }
+
+
+
+
+  export type CurrencyGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: CurrencyWhereInput
+    orderBy?: CurrencyOrderByWithAggregationInput | CurrencyOrderByWithAggregationInput[]
+    by: CurrencyScalarFieldEnum[] | CurrencyScalarFieldEnum
+    having?: CurrencyScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: CurrencyCountAggregateInputType | true
+    _avg?: CurrencyAvgAggregateInputType
+    _sum?: CurrencySumAggregateInputType
+    _min?: CurrencyMinAggregateInputType
+    _max?: CurrencyMaxAggregateInputType
+  }
+
+  export type CurrencyGroupByOutputType = {
+    id: string
+    code: string
+    name: string
+    symbol: string
+    decimals: number
+    createdAt: Date
+    _count: CurrencyCountAggregateOutputType | null
+    _avg: CurrencyAvgAggregateOutputType | null
+    _sum: CurrencySumAggregateOutputType | null
+    _min: CurrencyMinAggregateOutputType | null
+    _max: CurrencyMaxAggregateOutputType | null
+  }
+
+  type GetCurrencyGroupByPayload<T extends CurrencyGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<CurrencyGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof CurrencyGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], CurrencyGroupByOutputType[P]>
+            : GetScalarType<T[P], CurrencyGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type CurrencySelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    code?: boolean
+    name?: boolean
+    symbol?: boolean
+    decimals?: boolean
+    createdAt?: boolean
+    wallets?: boolean | Currency$walletsArgs<ExtArgs>
+    exchangesFrom?: boolean | Currency$exchangesFromArgs<ExtArgs>
+    exchangesTo?: boolean | Currency$exchangesToArgs<ExtArgs>
+    FeeSetting?: boolean | Currency$FeeSettingArgs<ExtArgs>
+    paymentChannels?: boolean | Currency$paymentChannelsArgs<ExtArgs>
+    LiquidityPool?: boolean | Currency$LiquidityPoolArgs<ExtArgs>
+    _count?: boolean | CurrencyCountOutputTypeDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["currency"]>
+
+  export type CurrencySelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    code?: boolean
+    name?: boolean
+    symbol?: boolean
+    decimals?: boolean
+    createdAt?: boolean
+  }, ExtArgs["result"]["currency"]>
+
+  export type CurrencySelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    code?: boolean
+    name?: boolean
+    symbol?: boolean
+    decimals?: boolean
+    createdAt?: boolean
+  }, ExtArgs["result"]["currency"]>
+
+  export type CurrencySelectScalar = {
+    id?: boolean
+    code?: boolean
+    name?: boolean
+    symbol?: boolean
+    decimals?: boolean
+    createdAt?: boolean
+  }
+
+  export type CurrencyOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "code" | "name" | "symbol" | "decimals" | "createdAt", ExtArgs["result"]["currency"]>
+  export type CurrencyInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    wallets?: boolean | Currency$walletsArgs<ExtArgs>
+    exchangesFrom?: boolean | Currency$exchangesFromArgs<ExtArgs>
+    exchangesTo?: boolean | Currency$exchangesToArgs<ExtArgs>
+    FeeSetting?: boolean | Currency$FeeSettingArgs<ExtArgs>
+    paymentChannels?: boolean | Currency$paymentChannelsArgs<ExtArgs>
+    LiquidityPool?: boolean | Currency$LiquidityPoolArgs<ExtArgs>
+    _count?: boolean | CurrencyCountOutputTypeDefaultArgs<ExtArgs>
+  }
+  export type CurrencyIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
+  export type CurrencyIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
+
+  export type $CurrencyPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "Currency"
+    objects: {
+      wallets: Prisma.$WalletPayload<ExtArgs>[]
+      exchangesFrom: Prisma.$ExchangePayload<ExtArgs>[]
+      exchangesTo: Prisma.$ExchangePayload<ExtArgs>[]
+      FeeSetting: Prisma.$FeeSettingPayload<ExtArgs>[]
+      paymentChannels: Prisma.$PaymentChannelPayload<ExtArgs>[]
+      LiquidityPool: Prisma.$LiquidityPoolPayload<ExtArgs>[]
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      code: string
+      name: string
+      symbol: string
+      decimals: number
+      createdAt: Date
+    }, ExtArgs["result"]["currency"]>
+    composites: {}
+  }
+
+  type CurrencyGetPayload<S extends boolean | null | undefined | CurrencyDefaultArgs> = $Result.GetResult<Prisma.$CurrencyPayload, S>
+
+  type CurrencyCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<CurrencyFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: CurrencyCountAggregateInputType | true
+    }
+
+  export interface CurrencyDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['Currency'], meta: { name: 'Currency' } }
+    /**
+     * Find zero or one Currency that matches the filter.
+     * @param {CurrencyFindUniqueArgs} args - Arguments to find a Currency
+     * @example
+     * // Get one Currency
+     * const currency = await prisma.currency.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends CurrencyFindUniqueArgs>(args: SelectSubset<T, CurrencyFindUniqueArgs<ExtArgs>>): Prisma__CurrencyClient<$Result.GetResult<Prisma.$CurrencyPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one Currency that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {CurrencyFindUniqueOrThrowArgs} args - Arguments to find a Currency
+     * @example
+     * // Get one Currency
+     * const currency = await prisma.currency.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends CurrencyFindUniqueOrThrowArgs>(args: SelectSubset<T, CurrencyFindUniqueOrThrowArgs<ExtArgs>>): Prisma__CurrencyClient<$Result.GetResult<Prisma.$CurrencyPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first Currency that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {CurrencyFindFirstArgs} args - Arguments to find a Currency
+     * @example
+     * // Get one Currency
+     * const currency = await prisma.currency.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends CurrencyFindFirstArgs>(args?: SelectSubset<T, CurrencyFindFirstArgs<ExtArgs>>): Prisma__CurrencyClient<$Result.GetResult<Prisma.$CurrencyPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first Currency that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {CurrencyFindFirstOrThrowArgs} args - Arguments to find a Currency
+     * @example
+     * // Get one Currency
+     * const currency = await prisma.currency.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends CurrencyFindFirstOrThrowArgs>(args?: SelectSubset<T, CurrencyFindFirstOrThrowArgs<ExtArgs>>): Prisma__CurrencyClient<$Result.GetResult<Prisma.$CurrencyPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more Currencies that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {CurrencyFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all Currencies
+     * const currencies = await prisma.currency.findMany()
+     * 
+     * // Get first 10 Currencies
+     * const currencies = await prisma.currency.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const currencyWithIdOnly = await prisma.currency.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends CurrencyFindManyArgs>(args?: SelectSubset<T, CurrencyFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$CurrencyPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a Currency.
+     * @param {CurrencyCreateArgs} args - Arguments to create a Currency.
+     * @example
+     * // Create one Currency
+     * const Currency = await prisma.currency.create({
+     *   data: {
+     *     // ... data to create a Currency
+     *   }
+     * })
+     * 
+     */
+    create<T extends CurrencyCreateArgs>(args: SelectSubset<T, CurrencyCreateArgs<ExtArgs>>): Prisma__CurrencyClient<$Result.GetResult<Prisma.$CurrencyPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many Currencies.
+     * @param {CurrencyCreateManyArgs} args - Arguments to create many Currencies.
+     * @example
+     * // Create many Currencies
+     * const currency = await prisma.currency.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends CurrencyCreateManyArgs>(args?: SelectSubset<T, CurrencyCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many Currencies and returns the data saved in the database.
+     * @param {CurrencyCreateManyAndReturnArgs} args - Arguments to create many Currencies.
+     * @example
+     * // Create many Currencies
+     * const currency = await prisma.currency.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many Currencies and only return the `id`
+     * const currencyWithIdOnly = await prisma.currency.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends CurrencyCreateManyAndReturnArgs>(args?: SelectSubset<T, CurrencyCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$CurrencyPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a Currency.
+     * @param {CurrencyDeleteArgs} args - Arguments to delete one Currency.
+     * @example
+     * // Delete one Currency
+     * const Currency = await prisma.currency.delete({
+     *   where: {
+     *     // ... filter to delete one Currency
+     *   }
+     * })
+     * 
+     */
+    delete<T extends CurrencyDeleteArgs>(args: SelectSubset<T, CurrencyDeleteArgs<ExtArgs>>): Prisma__CurrencyClient<$Result.GetResult<Prisma.$CurrencyPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one Currency.
+     * @param {CurrencyUpdateArgs} args - Arguments to update one Currency.
+     * @example
+     * // Update one Currency
+     * const currency = await prisma.currency.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends CurrencyUpdateArgs>(args: SelectSubset<T, CurrencyUpdateArgs<ExtArgs>>): Prisma__CurrencyClient<$Result.GetResult<Prisma.$CurrencyPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more Currencies.
+     * @param {CurrencyDeleteManyArgs} args - Arguments to filter Currencies to delete.
+     * @example
+     * // Delete a few Currencies
+     * const { count } = await prisma.currency.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends CurrencyDeleteManyArgs>(args?: SelectSubset<T, CurrencyDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more Currencies.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {CurrencyUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many Currencies
+     * const currency = await prisma.currency.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends CurrencyUpdateManyArgs>(args: SelectSubset<T, CurrencyUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more Currencies and returns the data updated in the database.
+     * @param {CurrencyUpdateManyAndReturnArgs} args - Arguments to update many Currencies.
+     * @example
+     * // Update many Currencies
+     * const currency = await prisma.currency.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more Currencies and only return the `id`
+     * const currencyWithIdOnly = await prisma.currency.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends CurrencyUpdateManyAndReturnArgs>(args: SelectSubset<T, CurrencyUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$CurrencyPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one Currency.
+     * @param {CurrencyUpsertArgs} args - Arguments to update or create a Currency.
+     * @example
+     * // Update or create a Currency
+     * const currency = await prisma.currency.upsert({
+     *   create: {
+     *     // ... data to create a Currency
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the Currency we want to update
+     *   }
+     * })
+     */
+    upsert<T extends CurrencyUpsertArgs>(args: SelectSubset<T, CurrencyUpsertArgs<ExtArgs>>): Prisma__CurrencyClient<$Result.GetResult<Prisma.$CurrencyPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of Currencies.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {CurrencyCountArgs} args - Arguments to filter Currencies to count.
+     * @example
+     * // Count the number of Currencies
+     * const count = await prisma.currency.count({
+     *   where: {
+     *     // ... the filter for the Currencies we want to count
+     *   }
+     * })
+    **/
+    count<T extends CurrencyCountArgs>(
+      args?: Subset<T, CurrencyCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], CurrencyCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a Currency.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {CurrencyAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends CurrencyAggregateArgs>(args: Subset<T, CurrencyAggregateArgs>): Prisma.PrismaPromise<GetCurrencyAggregateType<T>>
+
+    /**
+     * Group by Currency.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {CurrencyGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends CurrencyGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: CurrencyGroupByArgs['orderBy'] }
+        : { orderBy?: CurrencyGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, CurrencyGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetCurrencyGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the Currency model
+   */
+  readonly fields: CurrencyFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for Currency.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__CurrencyClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    wallets<T extends Currency$walletsArgs<ExtArgs> = {}>(args?: Subset<T, Currency$walletsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$WalletPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    exchangesFrom<T extends Currency$exchangesFromArgs<ExtArgs> = {}>(args?: Subset<T, Currency$exchangesFromArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ExchangePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    exchangesTo<T extends Currency$exchangesToArgs<ExtArgs> = {}>(args?: Subset<T, Currency$exchangesToArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ExchangePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    FeeSetting<T extends Currency$FeeSettingArgs<ExtArgs> = {}>(args?: Subset<T, Currency$FeeSettingArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$FeeSettingPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    paymentChannels<T extends Currency$paymentChannelsArgs<ExtArgs> = {}>(args?: Subset<T, Currency$paymentChannelsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PaymentChannelPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    LiquidityPool<T extends Currency$LiquidityPoolArgs<ExtArgs> = {}>(args?: Subset<T, Currency$LiquidityPoolArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$LiquidityPoolPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the Currency model
+   */
+  interface CurrencyFieldRefs {
+    readonly id: FieldRef<"Currency", 'String'>
+    readonly code: FieldRef<"Currency", 'String'>
+    readonly name: FieldRef<"Currency", 'String'>
+    readonly symbol: FieldRef<"Currency", 'String'>
+    readonly decimals: FieldRef<"Currency", 'Int'>
+    readonly createdAt: FieldRef<"Currency", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * Currency findUnique
+   */
+  export type CurrencyFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Currency
+     */
+    select?: CurrencySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Currency
+     */
+    omit?: CurrencyOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CurrencyInclude<ExtArgs> | null
+    /**
+     * Filter, which Currency to fetch.
+     */
+    where: CurrencyWhereUniqueInput
+  }
+
+  /**
+   * Currency findUniqueOrThrow
+   */
+  export type CurrencyFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Currency
+     */
+    select?: CurrencySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Currency
+     */
+    omit?: CurrencyOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CurrencyInclude<ExtArgs> | null
+    /**
+     * Filter, which Currency to fetch.
+     */
+    where: CurrencyWhereUniqueInput
+  }
+
+  /**
+   * Currency findFirst
+   */
+  export type CurrencyFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Currency
+     */
+    select?: CurrencySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Currency
+     */
+    omit?: CurrencyOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CurrencyInclude<ExtArgs> | null
+    /**
+     * Filter, which Currency to fetch.
+     */
+    where?: CurrencyWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Currencies to fetch.
+     */
+    orderBy?: CurrencyOrderByWithRelationInput | CurrencyOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for Currencies.
+     */
+    cursor?: CurrencyWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Currencies from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Currencies.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of Currencies.
+     */
+    distinct?: CurrencyScalarFieldEnum | CurrencyScalarFieldEnum[]
+  }
+
+  /**
+   * Currency findFirstOrThrow
+   */
+  export type CurrencyFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Currency
+     */
+    select?: CurrencySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Currency
+     */
+    omit?: CurrencyOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CurrencyInclude<ExtArgs> | null
+    /**
+     * Filter, which Currency to fetch.
+     */
+    where?: CurrencyWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Currencies to fetch.
+     */
+    orderBy?: CurrencyOrderByWithRelationInput | CurrencyOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for Currencies.
+     */
+    cursor?: CurrencyWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Currencies from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Currencies.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of Currencies.
+     */
+    distinct?: CurrencyScalarFieldEnum | CurrencyScalarFieldEnum[]
+  }
+
+  /**
+   * Currency findMany
+   */
+  export type CurrencyFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Currency
+     */
+    select?: CurrencySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Currency
+     */
+    omit?: CurrencyOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CurrencyInclude<ExtArgs> | null
+    /**
+     * Filter, which Currencies to fetch.
+     */
+    where?: CurrencyWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Currencies to fetch.
+     */
+    orderBy?: CurrencyOrderByWithRelationInput | CurrencyOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing Currencies.
+     */
+    cursor?: CurrencyWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Currencies from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Currencies.
+     */
+    skip?: number
+    distinct?: CurrencyScalarFieldEnum | CurrencyScalarFieldEnum[]
+  }
+
+  /**
+   * Currency create
+   */
+  export type CurrencyCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Currency
+     */
+    select?: CurrencySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Currency
+     */
+    omit?: CurrencyOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CurrencyInclude<ExtArgs> | null
+    /**
+     * The data needed to create a Currency.
+     */
+    data: XOR<CurrencyCreateInput, CurrencyUncheckedCreateInput>
+  }
+
+  /**
+   * Currency createMany
+   */
+  export type CurrencyCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many Currencies.
+     */
+    data: CurrencyCreateManyInput | CurrencyCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * Currency createManyAndReturn
+   */
+  export type CurrencyCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Currency
+     */
+    select?: CurrencySelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the Currency
+     */
+    omit?: CurrencyOmit<ExtArgs> | null
+    /**
+     * The data used to create many Currencies.
+     */
+    data: CurrencyCreateManyInput | CurrencyCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * Currency update
+   */
+  export type CurrencyUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Currency
+     */
+    select?: CurrencySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Currency
+     */
+    omit?: CurrencyOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CurrencyInclude<ExtArgs> | null
+    /**
+     * The data needed to update a Currency.
+     */
+    data: XOR<CurrencyUpdateInput, CurrencyUncheckedUpdateInput>
+    /**
+     * Choose, which Currency to update.
+     */
+    where: CurrencyWhereUniqueInput
+  }
+
+  /**
+   * Currency updateMany
+   */
+  export type CurrencyUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update Currencies.
+     */
+    data: XOR<CurrencyUpdateManyMutationInput, CurrencyUncheckedUpdateManyInput>
+    /**
+     * Filter which Currencies to update
+     */
+    where?: CurrencyWhereInput
+    /**
+     * Limit how many Currencies to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * Currency updateManyAndReturn
+   */
+  export type CurrencyUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Currency
+     */
+    select?: CurrencySelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the Currency
+     */
+    omit?: CurrencyOmit<ExtArgs> | null
+    /**
+     * The data used to update Currencies.
+     */
+    data: XOR<CurrencyUpdateManyMutationInput, CurrencyUncheckedUpdateManyInput>
+    /**
+     * Filter which Currencies to update
+     */
+    where?: CurrencyWhereInput
+    /**
+     * Limit how many Currencies to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * Currency upsert
+   */
+  export type CurrencyUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Currency
+     */
+    select?: CurrencySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Currency
+     */
+    omit?: CurrencyOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CurrencyInclude<ExtArgs> | null
+    /**
+     * The filter to search for the Currency to update in case it exists.
+     */
+    where: CurrencyWhereUniqueInput
+    /**
+     * In case the Currency found by the `where` argument doesn't exist, create a new Currency with this data.
+     */
+    create: XOR<CurrencyCreateInput, CurrencyUncheckedCreateInput>
+    /**
+     * In case the Currency was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<CurrencyUpdateInput, CurrencyUncheckedUpdateInput>
+  }
+
+  /**
+   * Currency delete
+   */
+  export type CurrencyDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Currency
+     */
+    select?: CurrencySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Currency
+     */
+    omit?: CurrencyOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CurrencyInclude<ExtArgs> | null
+    /**
+     * Filter which Currency to delete.
+     */
+    where: CurrencyWhereUniqueInput
+  }
+
+  /**
+   * Currency deleteMany
+   */
+  export type CurrencyDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which Currencies to delete
+     */
+    where?: CurrencyWhereInput
+    /**
+     * Limit how many Currencies to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * Currency.wallets
+   */
+  export type Currency$walletsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Wallet
+     */
+    select?: WalletSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Wallet
+     */
+    omit?: WalletOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: WalletInclude<ExtArgs> | null
+    where?: WalletWhereInput
+    orderBy?: WalletOrderByWithRelationInput | WalletOrderByWithRelationInput[]
+    cursor?: WalletWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: WalletScalarFieldEnum | WalletScalarFieldEnum[]
+  }
+
+  /**
+   * Currency.exchangesFrom
+   */
+  export type Currency$exchangesFromArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Exchange
+     */
+    select?: ExchangeSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Exchange
+     */
+    omit?: ExchangeOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ExchangeInclude<ExtArgs> | null
+    where?: ExchangeWhereInput
+    orderBy?: ExchangeOrderByWithRelationInput | ExchangeOrderByWithRelationInput[]
+    cursor?: ExchangeWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: ExchangeScalarFieldEnum | ExchangeScalarFieldEnum[]
+  }
+
+  /**
+   * Currency.exchangesTo
+   */
+  export type Currency$exchangesToArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Exchange
+     */
+    select?: ExchangeSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Exchange
+     */
+    omit?: ExchangeOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ExchangeInclude<ExtArgs> | null
+    where?: ExchangeWhereInput
+    orderBy?: ExchangeOrderByWithRelationInput | ExchangeOrderByWithRelationInput[]
+    cursor?: ExchangeWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: ExchangeScalarFieldEnum | ExchangeScalarFieldEnum[]
+  }
+
+  /**
+   * Currency.FeeSetting
+   */
+  export type Currency$FeeSettingArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the FeeSetting
+     */
+    select?: FeeSettingSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the FeeSetting
+     */
+    omit?: FeeSettingOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: FeeSettingInclude<ExtArgs> | null
+    where?: FeeSettingWhereInput
+    orderBy?: FeeSettingOrderByWithRelationInput | FeeSettingOrderByWithRelationInput[]
+    cursor?: FeeSettingWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: FeeSettingScalarFieldEnum | FeeSettingScalarFieldEnum[]
+  }
+
+  /**
+   * Currency.paymentChannels
+   */
+  export type Currency$paymentChannelsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PaymentChannel
+     */
+    select?: PaymentChannelSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PaymentChannel
+     */
+    omit?: PaymentChannelOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PaymentChannelInclude<ExtArgs> | null
+    where?: PaymentChannelWhereInput
+    orderBy?: PaymentChannelOrderByWithRelationInput | PaymentChannelOrderByWithRelationInput[]
+    cursor?: PaymentChannelWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: PaymentChannelScalarFieldEnum | PaymentChannelScalarFieldEnum[]
+  }
+
+  /**
+   * Currency.LiquidityPool
+   */
+  export type Currency$LiquidityPoolArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the LiquidityPool
+     */
+    select?: LiquidityPoolSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the LiquidityPool
+     */
+    omit?: LiquidityPoolOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: LiquidityPoolInclude<ExtArgs> | null
+    where?: LiquidityPoolWhereInput
+    orderBy?: LiquidityPoolOrderByWithRelationInput | LiquidityPoolOrderByWithRelationInput[]
+    cursor?: LiquidityPoolWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: LiquidityPoolScalarFieldEnum | LiquidityPoolScalarFieldEnum[]
+  }
+
+  /**
+   * Currency without action
+   */
+  export type CurrencyDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Currency
+     */
+    select?: CurrencySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Currency
+     */
+    omit?: CurrencyOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CurrencyInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model LiquidityPool
+   */
+
+  export type AggregateLiquidityPool = {
+    _count: LiquidityPoolCountAggregateOutputType | null
+    _avg: LiquidityPoolAvgAggregateOutputType | null
+    _sum: LiquidityPoolSumAggregateOutputType | null
+    _min: LiquidityPoolMinAggregateOutputType | null
+    _max: LiquidityPoolMaxAggregateOutputType | null
+  }
+
+  export type LiquidityPoolAvgAggregateOutputType = {
+    balance: Decimal | null
+    frozen: Decimal | null
+  }
+
+  export type LiquidityPoolSumAggregateOutputType = {
+    balance: Decimal | null
+    frozen: Decimal | null
+  }
+
+  export type LiquidityPoolMinAggregateOutputType = {
+    id: string | null
+    paymentChannelId: string | null
+    currencyId: string | null
+    address: string | null
+    balance: Decimal | null
+    frozen: Decimal | null
+    updatedAt: Date | null
+  }
+
+  export type LiquidityPoolMaxAggregateOutputType = {
+    id: string | null
+    paymentChannelId: string | null
+    currencyId: string | null
+    address: string | null
+    balance: Decimal | null
+    frozen: Decimal | null
+    updatedAt: Date | null
+  }
+
+  export type LiquidityPoolCountAggregateOutputType = {
+    id: number
+    paymentChannelId: number
+    currencyId: number
+    address: number
+    balance: number
+    frozen: number
+    updatedAt: number
+    _all: number
+  }
+
+
+  export type LiquidityPoolAvgAggregateInputType = {
+    balance?: true
+    frozen?: true
+  }
+
+  export type LiquidityPoolSumAggregateInputType = {
+    balance?: true
+    frozen?: true
+  }
+
+  export type LiquidityPoolMinAggregateInputType = {
+    id?: true
+    paymentChannelId?: true
+    currencyId?: true
+    address?: true
+    balance?: true
+    frozen?: true
+    updatedAt?: true
+  }
+
+  export type LiquidityPoolMaxAggregateInputType = {
+    id?: true
+    paymentChannelId?: true
+    currencyId?: true
+    address?: true
+    balance?: true
+    frozen?: true
+    updatedAt?: true
+  }
+
+  export type LiquidityPoolCountAggregateInputType = {
+    id?: true
+    paymentChannelId?: true
+    currencyId?: true
+    address?: true
+    balance?: true
+    frozen?: true
+    updatedAt?: true
+    _all?: true
+  }
+
+  export type LiquidityPoolAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which LiquidityPool to aggregate.
+     */
+    where?: LiquidityPoolWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of LiquidityPools to fetch.
+     */
+    orderBy?: LiquidityPoolOrderByWithRelationInput | LiquidityPoolOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: LiquidityPoolWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` LiquidityPools from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` LiquidityPools.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned LiquidityPools
+    **/
+    _count?: true | LiquidityPoolCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: LiquidityPoolAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: LiquidityPoolSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: LiquidityPoolMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: LiquidityPoolMaxAggregateInputType
+  }
+
+  export type GetLiquidityPoolAggregateType<T extends LiquidityPoolAggregateArgs> = {
+        [P in keyof T & keyof AggregateLiquidityPool]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateLiquidityPool[P]>
+      : GetScalarType<T[P], AggregateLiquidityPool[P]>
+  }
+
+
+
+
+  export type LiquidityPoolGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: LiquidityPoolWhereInput
+    orderBy?: LiquidityPoolOrderByWithAggregationInput | LiquidityPoolOrderByWithAggregationInput[]
+    by: LiquidityPoolScalarFieldEnum[] | LiquidityPoolScalarFieldEnum
+    having?: LiquidityPoolScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: LiquidityPoolCountAggregateInputType | true
+    _avg?: LiquidityPoolAvgAggregateInputType
+    _sum?: LiquidityPoolSumAggregateInputType
+    _min?: LiquidityPoolMinAggregateInputType
+    _max?: LiquidityPoolMaxAggregateInputType
+  }
+
+  export type LiquidityPoolGroupByOutputType = {
+    id: string
+    paymentChannelId: string
+    currencyId: string
+    address: string
+    balance: Decimal
+    frozen: Decimal
+    updatedAt: Date
+    _count: LiquidityPoolCountAggregateOutputType | null
+    _avg: LiquidityPoolAvgAggregateOutputType | null
+    _sum: LiquidityPoolSumAggregateOutputType | null
+    _min: LiquidityPoolMinAggregateOutputType | null
+    _max: LiquidityPoolMaxAggregateOutputType | null
+  }
+
+  type GetLiquidityPoolGroupByPayload<T extends LiquidityPoolGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<LiquidityPoolGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof LiquidityPoolGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], LiquidityPoolGroupByOutputType[P]>
+            : GetScalarType<T[P], LiquidityPoolGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type LiquidityPoolSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    paymentChannelId?: boolean
+    currencyId?: boolean
+    address?: boolean
+    balance?: boolean
+    frozen?: boolean
+    updatedAt?: boolean
+    paymentChannel?: boolean | PaymentChannelDefaultArgs<ExtArgs>
+    currency?: boolean | CurrencyDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["liquidityPool"]>
+
+  export type LiquidityPoolSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    paymentChannelId?: boolean
+    currencyId?: boolean
+    address?: boolean
+    balance?: boolean
+    frozen?: boolean
+    updatedAt?: boolean
+    paymentChannel?: boolean | PaymentChannelDefaultArgs<ExtArgs>
+    currency?: boolean | CurrencyDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["liquidityPool"]>
+
+  export type LiquidityPoolSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    paymentChannelId?: boolean
+    currencyId?: boolean
+    address?: boolean
+    balance?: boolean
+    frozen?: boolean
+    updatedAt?: boolean
+    paymentChannel?: boolean | PaymentChannelDefaultArgs<ExtArgs>
+    currency?: boolean | CurrencyDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["liquidityPool"]>
+
+  export type LiquidityPoolSelectScalar = {
+    id?: boolean
+    paymentChannelId?: boolean
+    currencyId?: boolean
+    address?: boolean
+    balance?: boolean
+    frozen?: boolean
+    updatedAt?: boolean
+  }
+
+  export type LiquidityPoolOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "paymentChannelId" | "currencyId" | "address" | "balance" | "frozen" | "updatedAt", ExtArgs["result"]["liquidityPool"]>
+  export type LiquidityPoolInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    paymentChannel?: boolean | PaymentChannelDefaultArgs<ExtArgs>
+    currency?: boolean | CurrencyDefaultArgs<ExtArgs>
+  }
+  export type LiquidityPoolIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    paymentChannel?: boolean | PaymentChannelDefaultArgs<ExtArgs>
+    currency?: boolean | CurrencyDefaultArgs<ExtArgs>
+  }
+  export type LiquidityPoolIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    paymentChannel?: boolean | PaymentChannelDefaultArgs<ExtArgs>
+    currency?: boolean | CurrencyDefaultArgs<ExtArgs>
+  }
+
+  export type $LiquidityPoolPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "LiquidityPool"
+    objects: {
+      paymentChannel: Prisma.$PaymentChannelPayload<ExtArgs>
+      currency: Prisma.$CurrencyPayload<ExtArgs>
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      paymentChannelId: string
+      currencyId: string
+      address: string
+      balance: Prisma.Decimal
+      frozen: Prisma.Decimal
+      updatedAt: Date
+    }, ExtArgs["result"]["liquidityPool"]>
+    composites: {}
+  }
+
+  type LiquidityPoolGetPayload<S extends boolean | null | undefined | LiquidityPoolDefaultArgs> = $Result.GetResult<Prisma.$LiquidityPoolPayload, S>
+
+  type LiquidityPoolCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<LiquidityPoolFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: LiquidityPoolCountAggregateInputType | true
+    }
+
+  export interface LiquidityPoolDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['LiquidityPool'], meta: { name: 'LiquidityPool' } }
+    /**
+     * Find zero or one LiquidityPool that matches the filter.
+     * @param {LiquidityPoolFindUniqueArgs} args - Arguments to find a LiquidityPool
+     * @example
+     * // Get one LiquidityPool
+     * const liquidityPool = await prisma.liquidityPool.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends LiquidityPoolFindUniqueArgs>(args: SelectSubset<T, LiquidityPoolFindUniqueArgs<ExtArgs>>): Prisma__LiquidityPoolClient<$Result.GetResult<Prisma.$LiquidityPoolPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one LiquidityPool that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {LiquidityPoolFindUniqueOrThrowArgs} args - Arguments to find a LiquidityPool
+     * @example
+     * // Get one LiquidityPool
+     * const liquidityPool = await prisma.liquidityPool.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends LiquidityPoolFindUniqueOrThrowArgs>(args: SelectSubset<T, LiquidityPoolFindUniqueOrThrowArgs<ExtArgs>>): Prisma__LiquidityPoolClient<$Result.GetResult<Prisma.$LiquidityPoolPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first LiquidityPool that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {LiquidityPoolFindFirstArgs} args - Arguments to find a LiquidityPool
+     * @example
+     * // Get one LiquidityPool
+     * const liquidityPool = await prisma.liquidityPool.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends LiquidityPoolFindFirstArgs>(args?: SelectSubset<T, LiquidityPoolFindFirstArgs<ExtArgs>>): Prisma__LiquidityPoolClient<$Result.GetResult<Prisma.$LiquidityPoolPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first LiquidityPool that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {LiquidityPoolFindFirstOrThrowArgs} args - Arguments to find a LiquidityPool
+     * @example
+     * // Get one LiquidityPool
+     * const liquidityPool = await prisma.liquidityPool.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends LiquidityPoolFindFirstOrThrowArgs>(args?: SelectSubset<T, LiquidityPoolFindFirstOrThrowArgs<ExtArgs>>): Prisma__LiquidityPoolClient<$Result.GetResult<Prisma.$LiquidityPoolPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more LiquidityPools that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {LiquidityPoolFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all LiquidityPools
+     * const liquidityPools = await prisma.liquidityPool.findMany()
+     * 
+     * // Get first 10 LiquidityPools
+     * const liquidityPools = await prisma.liquidityPool.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const liquidityPoolWithIdOnly = await prisma.liquidityPool.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends LiquidityPoolFindManyArgs>(args?: SelectSubset<T, LiquidityPoolFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$LiquidityPoolPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a LiquidityPool.
+     * @param {LiquidityPoolCreateArgs} args - Arguments to create a LiquidityPool.
+     * @example
+     * // Create one LiquidityPool
+     * const LiquidityPool = await prisma.liquidityPool.create({
+     *   data: {
+     *     // ... data to create a LiquidityPool
+     *   }
+     * })
+     * 
+     */
+    create<T extends LiquidityPoolCreateArgs>(args: SelectSubset<T, LiquidityPoolCreateArgs<ExtArgs>>): Prisma__LiquidityPoolClient<$Result.GetResult<Prisma.$LiquidityPoolPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many LiquidityPools.
+     * @param {LiquidityPoolCreateManyArgs} args - Arguments to create many LiquidityPools.
+     * @example
+     * // Create many LiquidityPools
+     * const liquidityPool = await prisma.liquidityPool.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends LiquidityPoolCreateManyArgs>(args?: SelectSubset<T, LiquidityPoolCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many LiquidityPools and returns the data saved in the database.
+     * @param {LiquidityPoolCreateManyAndReturnArgs} args - Arguments to create many LiquidityPools.
+     * @example
+     * // Create many LiquidityPools
+     * const liquidityPool = await prisma.liquidityPool.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many LiquidityPools and only return the `id`
+     * const liquidityPoolWithIdOnly = await prisma.liquidityPool.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends LiquidityPoolCreateManyAndReturnArgs>(args?: SelectSubset<T, LiquidityPoolCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$LiquidityPoolPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a LiquidityPool.
+     * @param {LiquidityPoolDeleteArgs} args - Arguments to delete one LiquidityPool.
+     * @example
+     * // Delete one LiquidityPool
+     * const LiquidityPool = await prisma.liquidityPool.delete({
+     *   where: {
+     *     // ... filter to delete one LiquidityPool
+     *   }
+     * })
+     * 
+     */
+    delete<T extends LiquidityPoolDeleteArgs>(args: SelectSubset<T, LiquidityPoolDeleteArgs<ExtArgs>>): Prisma__LiquidityPoolClient<$Result.GetResult<Prisma.$LiquidityPoolPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one LiquidityPool.
+     * @param {LiquidityPoolUpdateArgs} args - Arguments to update one LiquidityPool.
+     * @example
+     * // Update one LiquidityPool
+     * const liquidityPool = await prisma.liquidityPool.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends LiquidityPoolUpdateArgs>(args: SelectSubset<T, LiquidityPoolUpdateArgs<ExtArgs>>): Prisma__LiquidityPoolClient<$Result.GetResult<Prisma.$LiquidityPoolPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more LiquidityPools.
+     * @param {LiquidityPoolDeleteManyArgs} args - Arguments to filter LiquidityPools to delete.
+     * @example
+     * // Delete a few LiquidityPools
+     * const { count } = await prisma.liquidityPool.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends LiquidityPoolDeleteManyArgs>(args?: SelectSubset<T, LiquidityPoolDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more LiquidityPools.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {LiquidityPoolUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many LiquidityPools
+     * const liquidityPool = await prisma.liquidityPool.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends LiquidityPoolUpdateManyArgs>(args: SelectSubset<T, LiquidityPoolUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more LiquidityPools and returns the data updated in the database.
+     * @param {LiquidityPoolUpdateManyAndReturnArgs} args - Arguments to update many LiquidityPools.
+     * @example
+     * // Update many LiquidityPools
+     * const liquidityPool = await prisma.liquidityPool.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more LiquidityPools and only return the `id`
+     * const liquidityPoolWithIdOnly = await prisma.liquidityPool.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends LiquidityPoolUpdateManyAndReturnArgs>(args: SelectSubset<T, LiquidityPoolUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$LiquidityPoolPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one LiquidityPool.
+     * @param {LiquidityPoolUpsertArgs} args - Arguments to update or create a LiquidityPool.
+     * @example
+     * // Update or create a LiquidityPool
+     * const liquidityPool = await prisma.liquidityPool.upsert({
+     *   create: {
+     *     // ... data to create a LiquidityPool
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the LiquidityPool we want to update
+     *   }
+     * })
+     */
+    upsert<T extends LiquidityPoolUpsertArgs>(args: SelectSubset<T, LiquidityPoolUpsertArgs<ExtArgs>>): Prisma__LiquidityPoolClient<$Result.GetResult<Prisma.$LiquidityPoolPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of LiquidityPools.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {LiquidityPoolCountArgs} args - Arguments to filter LiquidityPools to count.
+     * @example
+     * // Count the number of LiquidityPools
+     * const count = await prisma.liquidityPool.count({
+     *   where: {
+     *     // ... the filter for the LiquidityPools we want to count
+     *   }
+     * })
+    **/
+    count<T extends LiquidityPoolCountArgs>(
+      args?: Subset<T, LiquidityPoolCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], LiquidityPoolCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a LiquidityPool.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {LiquidityPoolAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends LiquidityPoolAggregateArgs>(args: Subset<T, LiquidityPoolAggregateArgs>): Prisma.PrismaPromise<GetLiquidityPoolAggregateType<T>>
+
+    /**
+     * Group by LiquidityPool.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {LiquidityPoolGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends LiquidityPoolGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: LiquidityPoolGroupByArgs['orderBy'] }
+        : { orderBy?: LiquidityPoolGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, LiquidityPoolGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetLiquidityPoolGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the LiquidityPool model
+   */
+  readonly fields: LiquidityPoolFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for LiquidityPool.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__LiquidityPoolClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    paymentChannel<T extends PaymentChannelDefaultArgs<ExtArgs> = {}>(args?: Subset<T, PaymentChannelDefaultArgs<ExtArgs>>): Prisma__PaymentChannelClient<$Result.GetResult<Prisma.$PaymentChannelPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    currency<T extends CurrencyDefaultArgs<ExtArgs> = {}>(args?: Subset<T, CurrencyDefaultArgs<ExtArgs>>): Prisma__CurrencyClient<$Result.GetResult<Prisma.$CurrencyPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the LiquidityPool model
+   */
+  interface LiquidityPoolFieldRefs {
+    readonly id: FieldRef<"LiquidityPool", 'String'>
+    readonly paymentChannelId: FieldRef<"LiquidityPool", 'String'>
+    readonly currencyId: FieldRef<"LiquidityPool", 'String'>
+    readonly address: FieldRef<"LiquidityPool", 'String'>
+    readonly balance: FieldRef<"LiquidityPool", 'Decimal'>
+    readonly frozen: FieldRef<"LiquidityPool", 'Decimal'>
+    readonly updatedAt: FieldRef<"LiquidityPool", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * LiquidityPool findUnique
+   */
+  export type LiquidityPoolFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the LiquidityPool
+     */
+    select?: LiquidityPoolSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the LiquidityPool
+     */
+    omit?: LiquidityPoolOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: LiquidityPoolInclude<ExtArgs> | null
+    /**
+     * Filter, which LiquidityPool to fetch.
+     */
+    where: LiquidityPoolWhereUniqueInput
+  }
+
+  /**
+   * LiquidityPool findUniqueOrThrow
+   */
+  export type LiquidityPoolFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the LiquidityPool
+     */
+    select?: LiquidityPoolSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the LiquidityPool
+     */
+    omit?: LiquidityPoolOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: LiquidityPoolInclude<ExtArgs> | null
+    /**
+     * Filter, which LiquidityPool to fetch.
+     */
+    where: LiquidityPoolWhereUniqueInput
+  }
+
+  /**
+   * LiquidityPool findFirst
+   */
+  export type LiquidityPoolFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the LiquidityPool
+     */
+    select?: LiquidityPoolSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the LiquidityPool
+     */
+    omit?: LiquidityPoolOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: LiquidityPoolInclude<ExtArgs> | null
+    /**
+     * Filter, which LiquidityPool to fetch.
+     */
+    where?: LiquidityPoolWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of LiquidityPools to fetch.
+     */
+    orderBy?: LiquidityPoolOrderByWithRelationInput | LiquidityPoolOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for LiquidityPools.
+     */
+    cursor?: LiquidityPoolWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` LiquidityPools from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` LiquidityPools.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of LiquidityPools.
+     */
+    distinct?: LiquidityPoolScalarFieldEnum | LiquidityPoolScalarFieldEnum[]
+  }
+
+  /**
+   * LiquidityPool findFirstOrThrow
+   */
+  export type LiquidityPoolFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the LiquidityPool
+     */
+    select?: LiquidityPoolSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the LiquidityPool
+     */
+    omit?: LiquidityPoolOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: LiquidityPoolInclude<ExtArgs> | null
+    /**
+     * Filter, which LiquidityPool to fetch.
+     */
+    where?: LiquidityPoolWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of LiquidityPools to fetch.
+     */
+    orderBy?: LiquidityPoolOrderByWithRelationInput | LiquidityPoolOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for LiquidityPools.
+     */
+    cursor?: LiquidityPoolWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` LiquidityPools from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` LiquidityPools.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of LiquidityPools.
+     */
+    distinct?: LiquidityPoolScalarFieldEnum | LiquidityPoolScalarFieldEnum[]
+  }
+
+  /**
+   * LiquidityPool findMany
+   */
+  export type LiquidityPoolFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the LiquidityPool
+     */
+    select?: LiquidityPoolSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the LiquidityPool
+     */
+    omit?: LiquidityPoolOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: LiquidityPoolInclude<ExtArgs> | null
+    /**
+     * Filter, which LiquidityPools to fetch.
+     */
+    where?: LiquidityPoolWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of LiquidityPools to fetch.
+     */
+    orderBy?: LiquidityPoolOrderByWithRelationInput | LiquidityPoolOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing LiquidityPools.
+     */
+    cursor?: LiquidityPoolWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` LiquidityPools from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` LiquidityPools.
+     */
+    skip?: number
+    distinct?: LiquidityPoolScalarFieldEnum | LiquidityPoolScalarFieldEnum[]
+  }
+
+  /**
+   * LiquidityPool create
+   */
+  export type LiquidityPoolCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the LiquidityPool
+     */
+    select?: LiquidityPoolSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the LiquidityPool
+     */
+    omit?: LiquidityPoolOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: LiquidityPoolInclude<ExtArgs> | null
+    /**
+     * The data needed to create a LiquidityPool.
+     */
+    data: XOR<LiquidityPoolCreateInput, LiquidityPoolUncheckedCreateInput>
+  }
+
+  /**
+   * LiquidityPool createMany
+   */
+  export type LiquidityPoolCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many LiquidityPools.
+     */
+    data: LiquidityPoolCreateManyInput | LiquidityPoolCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * LiquidityPool createManyAndReturn
+   */
+  export type LiquidityPoolCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the LiquidityPool
+     */
+    select?: LiquidityPoolSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the LiquidityPool
+     */
+    omit?: LiquidityPoolOmit<ExtArgs> | null
+    /**
+     * The data used to create many LiquidityPools.
+     */
+    data: LiquidityPoolCreateManyInput | LiquidityPoolCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: LiquidityPoolIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * LiquidityPool update
+   */
+  export type LiquidityPoolUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the LiquidityPool
+     */
+    select?: LiquidityPoolSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the LiquidityPool
+     */
+    omit?: LiquidityPoolOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: LiquidityPoolInclude<ExtArgs> | null
+    /**
+     * The data needed to update a LiquidityPool.
+     */
+    data: XOR<LiquidityPoolUpdateInput, LiquidityPoolUncheckedUpdateInput>
+    /**
+     * Choose, which LiquidityPool to update.
+     */
+    where: LiquidityPoolWhereUniqueInput
+  }
+
+  /**
+   * LiquidityPool updateMany
+   */
+  export type LiquidityPoolUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update LiquidityPools.
+     */
+    data: XOR<LiquidityPoolUpdateManyMutationInput, LiquidityPoolUncheckedUpdateManyInput>
+    /**
+     * Filter which LiquidityPools to update
+     */
+    where?: LiquidityPoolWhereInput
+    /**
+     * Limit how many LiquidityPools to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * LiquidityPool updateManyAndReturn
+   */
+  export type LiquidityPoolUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the LiquidityPool
+     */
+    select?: LiquidityPoolSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the LiquidityPool
+     */
+    omit?: LiquidityPoolOmit<ExtArgs> | null
+    /**
+     * The data used to update LiquidityPools.
+     */
+    data: XOR<LiquidityPoolUpdateManyMutationInput, LiquidityPoolUncheckedUpdateManyInput>
+    /**
+     * Filter which LiquidityPools to update
+     */
+    where?: LiquidityPoolWhereInput
+    /**
+     * Limit how many LiquidityPools to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: LiquidityPoolIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * LiquidityPool upsert
+   */
+  export type LiquidityPoolUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the LiquidityPool
+     */
+    select?: LiquidityPoolSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the LiquidityPool
+     */
+    omit?: LiquidityPoolOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: LiquidityPoolInclude<ExtArgs> | null
+    /**
+     * The filter to search for the LiquidityPool to update in case it exists.
+     */
+    where: LiquidityPoolWhereUniqueInput
+    /**
+     * In case the LiquidityPool found by the `where` argument doesn't exist, create a new LiquidityPool with this data.
+     */
+    create: XOR<LiquidityPoolCreateInput, LiquidityPoolUncheckedCreateInput>
+    /**
+     * In case the LiquidityPool was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<LiquidityPoolUpdateInput, LiquidityPoolUncheckedUpdateInput>
+  }
+
+  /**
+   * LiquidityPool delete
+   */
+  export type LiquidityPoolDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the LiquidityPool
+     */
+    select?: LiquidityPoolSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the LiquidityPool
+     */
+    omit?: LiquidityPoolOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: LiquidityPoolInclude<ExtArgs> | null
+    /**
+     * Filter which LiquidityPool to delete.
+     */
+    where: LiquidityPoolWhereUniqueInput
+  }
+
+  /**
+   * LiquidityPool deleteMany
+   */
+  export type LiquidityPoolDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which LiquidityPools to delete
+     */
+    where?: LiquidityPoolWhereInput
+    /**
+     * Limit how many LiquidityPools to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * LiquidityPool without action
+   */
+  export type LiquidityPoolDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the LiquidityPool
+     */
+    select?: LiquidityPoolSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the LiquidityPool
+     */
+    omit?: LiquidityPoolOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: LiquidityPoolInclude<ExtArgs> | null
+  }
+
+
+  /**
    * Model Wallet
    */
 
@@ -5111,1235 +8768,6 @@ export namespace Prisma {
      * Choose, which related nodes to fetch as well
      */
     include?: WalletInclude<ExtArgs> | null
-  }
-
-
-  /**
-   * Model Currency
-   */
-
-  export type AggregateCurrency = {
-    _count: CurrencyCountAggregateOutputType | null
-    _avg: CurrencyAvgAggregateOutputType | null
-    _sum: CurrencySumAggregateOutputType | null
-    _min: CurrencyMinAggregateOutputType | null
-    _max: CurrencyMaxAggregateOutputType | null
-  }
-
-  export type CurrencyAvgAggregateOutputType = {
-    decimals: number | null
-  }
-
-  export type CurrencySumAggregateOutputType = {
-    decimals: number | null
-  }
-
-  export type CurrencyMinAggregateOutputType = {
-    id: string | null
-    code: string | null
-    name: string | null
-    symbol: string | null
-    decimals: number | null
-    createdAt: Date | null
-  }
-
-  export type CurrencyMaxAggregateOutputType = {
-    id: string | null
-    code: string | null
-    name: string | null
-    symbol: string | null
-    decimals: number | null
-    createdAt: Date | null
-  }
-
-  export type CurrencyCountAggregateOutputType = {
-    id: number
-    code: number
-    name: number
-    symbol: number
-    decimals: number
-    createdAt: number
-    _all: number
-  }
-
-
-  export type CurrencyAvgAggregateInputType = {
-    decimals?: true
-  }
-
-  export type CurrencySumAggregateInputType = {
-    decimals?: true
-  }
-
-  export type CurrencyMinAggregateInputType = {
-    id?: true
-    code?: true
-    name?: true
-    symbol?: true
-    decimals?: true
-    createdAt?: true
-  }
-
-  export type CurrencyMaxAggregateInputType = {
-    id?: true
-    code?: true
-    name?: true
-    symbol?: true
-    decimals?: true
-    createdAt?: true
-  }
-
-  export type CurrencyCountAggregateInputType = {
-    id?: true
-    code?: true
-    name?: true
-    symbol?: true
-    decimals?: true
-    createdAt?: true
-    _all?: true
-  }
-
-  export type CurrencyAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Filter which Currency to aggregate.
-     */
-    where?: CurrencyWhereInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
-     * Determine the order of Currencies to fetch.
-     */
-    orderBy?: CurrencyOrderByWithRelationInput | CurrencyOrderByWithRelationInput[]
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
-     * Sets the start position
-     */
-    cursor?: CurrencyWhereUniqueInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Take `±n` Currencies from the position of the cursor.
-     */
-    take?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Skip the first `n` Currencies.
-     */
-    skip?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
-     * Count returned Currencies
-    **/
-    _count?: true | CurrencyCountAggregateInputType
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
-     * Select which fields to average
-    **/
-    _avg?: CurrencyAvgAggregateInputType
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
-     * Select which fields to sum
-    **/
-    _sum?: CurrencySumAggregateInputType
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
-     * Select which fields to find the minimum value
-    **/
-    _min?: CurrencyMinAggregateInputType
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
-     * Select which fields to find the maximum value
-    **/
-    _max?: CurrencyMaxAggregateInputType
-  }
-
-  export type GetCurrencyAggregateType<T extends CurrencyAggregateArgs> = {
-        [P in keyof T & keyof AggregateCurrency]: P extends '_count' | 'count'
-      ? T[P] extends true
-        ? number
-        : GetScalarType<T[P], AggregateCurrency[P]>
-      : GetScalarType<T[P], AggregateCurrency[P]>
-  }
-
-
-
-
-  export type CurrencyGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: CurrencyWhereInput
-    orderBy?: CurrencyOrderByWithAggregationInput | CurrencyOrderByWithAggregationInput[]
-    by: CurrencyScalarFieldEnum[] | CurrencyScalarFieldEnum
-    having?: CurrencyScalarWhereWithAggregatesInput
-    take?: number
-    skip?: number
-    _count?: CurrencyCountAggregateInputType | true
-    _avg?: CurrencyAvgAggregateInputType
-    _sum?: CurrencySumAggregateInputType
-    _min?: CurrencyMinAggregateInputType
-    _max?: CurrencyMaxAggregateInputType
-  }
-
-  export type CurrencyGroupByOutputType = {
-    id: string
-    code: string
-    name: string
-    symbol: string
-    decimals: number
-    createdAt: Date
-    _count: CurrencyCountAggregateOutputType | null
-    _avg: CurrencyAvgAggregateOutputType | null
-    _sum: CurrencySumAggregateOutputType | null
-    _min: CurrencyMinAggregateOutputType | null
-    _max: CurrencyMaxAggregateOutputType | null
-  }
-
-  type GetCurrencyGroupByPayload<T extends CurrencyGroupByArgs> = Prisma.PrismaPromise<
-    Array<
-      PickEnumerable<CurrencyGroupByOutputType, T['by']> &
-        {
-          [P in ((keyof T) & (keyof CurrencyGroupByOutputType))]: P extends '_count'
-            ? T[P] extends boolean
-              ? number
-              : GetScalarType<T[P], CurrencyGroupByOutputType[P]>
-            : GetScalarType<T[P], CurrencyGroupByOutputType[P]>
-        }
-      >
-    >
-
-
-  export type CurrencySelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
-    id?: boolean
-    code?: boolean
-    name?: boolean
-    symbol?: boolean
-    decimals?: boolean
-    createdAt?: boolean
-    wallets?: boolean | Currency$walletsArgs<ExtArgs>
-    exchangesFrom?: boolean | Currency$exchangesFromArgs<ExtArgs>
-    exchangesTo?: boolean | Currency$exchangesToArgs<ExtArgs>
-    FeeSetting?: boolean | Currency$FeeSettingArgs<ExtArgs>
-    paymentChannels?: boolean | Currency$paymentChannelsArgs<ExtArgs>
-    _count?: boolean | CurrencyCountOutputTypeDefaultArgs<ExtArgs>
-  }, ExtArgs["result"]["currency"]>
-
-  export type CurrencySelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
-    id?: boolean
-    code?: boolean
-    name?: boolean
-    symbol?: boolean
-    decimals?: boolean
-    createdAt?: boolean
-  }, ExtArgs["result"]["currency"]>
-
-  export type CurrencySelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
-    id?: boolean
-    code?: boolean
-    name?: boolean
-    symbol?: boolean
-    decimals?: boolean
-    createdAt?: boolean
-  }, ExtArgs["result"]["currency"]>
-
-  export type CurrencySelectScalar = {
-    id?: boolean
-    code?: boolean
-    name?: boolean
-    symbol?: boolean
-    decimals?: boolean
-    createdAt?: boolean
-  }
-
-  export type CurrencyOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "code" | "name" | "symbol" | "decimals" | "createdAt", ExtArgs["result"]["currency"]>
-  export type CurrencyInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    wallets?: boolean | Currency$walletsArgs<ExtArgs>
-    exchangesFrom?: boolean | Currency$exchangesFromArgs<ExtArgs>
-    exchangesTo?: boolean | Currency$exchangesToArgs<ExtArgs>
-    FeeSetting?: boolean | Currency$FeeSettingArgs<ExtArgs>
-    paymentChannels?: boolean | Currency$paymentChannelsArgs<ExtArgs>
-    _count?: boolean | CurrencyCountOutputTypeDefaultArgs<ExtArgs>
-  }
-  export type CurrencyIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
-  export type CurrencyIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
-
-  export type $CurrencyPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    name: "Currency"
-    objects: {
-      wallets: Prisma.$WalletPayload<ExtArgs>[]
-      exchangesFrom: Prisma.$ExchangePayload<ExtArgs>[]
-      exchangesTo: Prisma.$ExchangePayload<ExtArgs>[]
-      FeeSetting: Prisma.$FeeSettingPayload<ExtArgs>[]
-      paymentChannels: Prisma.$PaymentChannelPayload<ExtArgs>[]
-    }
-    scalars: $Extensions.GetPayloadResult<{
-      id: string
-      code: string
-      name: string
-      symbol: string
-      decimals: number
-      createdAt: Date
-    }, ExtArgs["result"]["currency"]>
-    composites: {}
-  }
-
-  type CurrencyGetPayload<S extends boolean | null | undefined | CurrencyDefaultArgs> = $Result.GetResult<Prisma.$CurrencyPayload, S>
-
-  type CurrencyCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
-    Omit<CurrencyFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
-      select?: CurrencyCountAggregateInputType | true
-    }
-
-  export interface CurrencyDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
-    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['Currency'], meta: { name: 'Currency' } }
-    /**
-     * Find zero or one Currency that matches the filter.
-     * @param {CurrencyFindUniqueArgs} args - Arguments to find a Currency
-     * @example
-     * // Get one Currency
-     * const currency = await prisma.currency.findUnique({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-     */
-    findUnique<T extends CurrencyFindUniqueArgs>(args: SelectSubset<T, CurrencyFindUniqueArgs<ExtArgs>>): Prisma__CurrencyClient<$Result.GetResult<Prisma.$CurrencyPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Find one Currency that matches the filter or throw an error with `error.code='P2025'`
-     * if no matches were found.
-     * @param {CurrencyFindUniqueOrThrowArgs} args - Arguments to find a Currency
-     * @example
-     * // Get one Currency
-     * const currency = await prisma.currency.findUniqueOrThrow({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-     */
-    findUniqueOrThrow<T extends CurrencyFindUniqueOrThrowArgs>(args: SelectSubset<T, CurrencyFindUniqueOrThrowArgs<ExtArgs>>): Prisma__CurrencyClient<$Result.GetResult<Prisma.$CurrencyPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Find the first Currency that matches the filter.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {CurrencyFindFirstArgs} args - Arguments to find a Currency
-     * @example
-     * // Get one Currency
-     * const currency = await prisma.currency.findFirst({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-     */
-    findFirst<T extends CurrencyFindFirstArgs>(args?: SelectSubset<T, CurrencyFindFirstArgs<ExtArgs>>): Prisma__CurrencyClient<$Result.GetResult<Prisma.$CurrencyPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Find the first Currency that matches the filter or
-     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {CurrencyFindFirstOrThrowArgs} args - Arguments to find a Currency
-     * @example
-     * // Get one Currency
-     * const currency = await prisma.currency.findFirstOrThrow({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-     */
-    findFirstOrThrow<T extends CurrencyFindFirstOrThrowArgs>(args?: SelectSubset<T, CurrencyFindFirstOrThrowArgs<ExtArgs>>): Prisma__CurrencyClient<$Result.GetResult<Prisma.$CurrencyPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Find zero or more Currencies that matches the filter.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {CurrencyFindManyArgs} args - Arguments to filter and select certain fields only.
-     * @example
-     * // Get all Currencies
-     * const currencies = await prisma.currency.findMany()
-     * 
-     * // Get first 10 Currencies
-     * const currencies = await prisma.currency.findMany({ take: 10 })
-     * 
-     * // Only select the `id`
-     * const currencyWithIdOnly = await prisma.currency.findMany({ select: { id: true } })
-     * 
-     */
-    findMany<T extends CurrencyFindManyArgs>(args?: SelectSubset<T, CurrencyFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$CurrencyPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
-
-    /**
-     * Create a Currency.
-     * @param {CurrencyCreateArgs} args - Arguments to create a Currency.
-     * @example
-     * // Create one Currency
-     * const Currency = await prisma.currency.create({
-     *   data: {
-     *     // ... data to create a Currency
-     *   }
-     * })
-     * 
-     */
-    create<T extends CurrencyCreateArgs>(args: SelectSubset<T, CurrencyCreateArgs<ExtArgs>>): Prisma__CurrencyClient<$Result.GetResult<Prisma.$CurrencyPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Create many Currencies.
-     * @param {CurrencyCreateManyArgs} args - Arguments to create many Currencies.
-     * @example
-     * // Create many Currencies
-     * const currency = await prisma.currency.createMany({
-     *   data: [
-     *     // ... provide data here
-     *   ]
-     * })
-     *     
-     */
-    createMany<T extends CurrencyCreateManyArgs>(args?: SelectSubset<T, CurrencyCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
-
-    /**
-     * Create many Currencies and returns the data saved in the database.
-     * @param {CurrencyCreateManyAndReturnArgs} args - Arguments to create many Currencies.
-     * @example
-     * // Create many Currencies
-     * const currency = await prisma.currency.createManyAndReturn({
-     *   data: [
-     *     // ... provide data here
-     *   ]
-     * })
-     * 
-     * // Create many Currencies and only return the `id`
-     * const currencyWithIdOnly = await prisma.currency.createManyAndReturn({
-     *   select: { id: true },
-     *   data: [
-     *     // ... provide data here
-     *   ]
-     * })
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * 
-     */
-    createManyAndReturn<T extends CurrencyCreateManyAndReturnArgs>(args?: SelectSubset<T, CurrencyCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$CurrencyPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
-
-    /**
-     * Delete a Currency.
-     * @param {CurrencyDeleteArgs} args - Arguments to delete one Currency.
-     * @example
-     * // Delete one Currency
-     * const Currency = await prisma.currency.delete({
-     *   where: {
-     *     // ... filter to delete one Currency
-     *   }
-     * })
-     * 
-     */
-    delete<T extends CurrencyDeleteArgs>(args: SelectSubset<T, CurrencyDeleteArgs<ExtArgs>>): Prisma__CurrencyClient<$Result.GetResult<Prisma.$CurrencyPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Update one Currency.
-     * @param {CurrencyUpdateArgs} args - Arguments to update one Currency.
-     * @example
-     * // Update one Currency
-     * const currency = await prisma.currency.update({
-     *   where: {
-     *     // ... provide filter here
-     *   },
-     *   data: {
-     *     // ... provide data here
-     *   }
-     * })
-     * 
-     */
-    update<T extends CurrencyUpdateArgs>(args: SelectSubset<T, CurrencyUpdateArgs<ExtArgs>>): Prisma__CurrencyClient<$Result.GetResult<Prisma.$CurrencyPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Delete zero or more Currencies.
-     * @param {CurrencyDeleteManyArgs} args - Arguments to filter Currencies to delete.
-     * @example
-     * // Delete a few Currencies
-     * const { count } = await prisma.currency.deleteMany({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-     * 
-     */
-    deleteMany<T extends CurrencyDeleteManyArgs>(args?: SelectSubset<T, CurrencyDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
-
-    /**
-     * Update zero or more Currencies.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {CurrencyUpdateManyArgs} args - Arguments to update one or more rows.
-     * @example
-     * // Update many Currencies
-     * const currency = await prisma.currency.updateMany({
-     *   where: {
-     *     // ... provide filter here
-     *   },
-     *   data: {
-     *     // ... provide data here
-     *   }
-     * })
-     * 
-     */
-    updateMany<T extends CurrencyUpdateManyArgs>(args: SelectSubset<T, CurrencyUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
-
-    /**
-     * Update zero or more Currencies and returns the data updated in the database.
-     * @param {CurrencyUpdateManyAndReturnArgs} args - Arguments to update many Currencies.
-     * @example
-     * // Update many Currencies
-     * const currency = await prisma.currency.updateManyAndReturn({
-     *   where: {
-     *     // ... provide filter here
-     *   },
-     *   data: [
-     *     // ... provide data here
-     *   ]
-     * })
-     * 
-     * // Update zero or more Currencies and only return the `id`
-     * const currencyWithIdOnly = await prisma.currency.updateManyAndReturn({
-     *   select: { id: true },
-     *   where: {
-     *     // ... provide filter here
-     *   },
-     *   data: [
-     *     // ... provide data here
-     *   ]
-     * })
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * 
-     */
-    updateManyAndReturn<T extends CurrencyUpdateManyAndReturnArgs>(args: SelectSubset<T, CurrencyUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$CurrencyPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
-
-    /**
-     * Create or update one Currency.
-     * @param {CurrencyUpsertArgs} args - Arguments to update or create a Currency.
-     * @example
-     * // Update or create a Currency
-     * const currency = await prisma.currency.upsert({
-     *   create: {
-     *     // ... data to create a Currency
-     *   },
-     *   update: {
-     *     // ... in case it already exists, update
-     *   },
-     *   where: {
-     *     // ... the filter for the Currency we want to update
-     *   }
-     * })
-     */
-    upsert<T extends CurrencyUpsertArgs>(args: SelectSubset<T, CurrencyUpsertArgs<ExtArgs>>): Prisma__CurrencyClient<$Result.GetResult<Prisma.$CurrencyPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-
-    /**
-     * Count the number of Currencies.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {CurrencyCountArgs} args - Arguments to filter Currencies to count.
-     * @example
-     * // Count the number of Currencies
-     * const count = await prisma.currency.count({
-     *   where: {
-     *     // ... the filter for the Currencies we want to count
-     *   }
-     * })
-    **/
-    count<T extends CurrencyCountArgs>(
-      args?: Subset<T, CurrencyCountArgs>,
-    ): Prisma.PrismaPromise<
-      T extends $Utils.Record<'select', any>
-        ? T['select'] extends true
-          ? number
-          : GetScalarType<T['select'], CurrencyCountAggregateOutputType>
-        : number
-    >
-
-    /**
-     * Allows you to perform aggregations operations on a Currency.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {CurrencyAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
-     * @example
-     * // Ordered by age ascending
-     * // Where email contains prisma.io
-     * // Limited to the 10 users
-     * const aggregations = await prisma.user.aggregate({
-     *   _avg: {
-     *     age: true,
-     *   },
-     *   where: {
-     *     email: {
-     *       contains: "prisma.io",
-     *     },
-     *   },
-     *   orderBy: {
-     *     age: "asc",
-     *   },
-     *   take: 10,
-     * })
-    **/
-    aggregate<T extends CurrencyAggregateArgs>(args: Subset<T, CurrencyAggregateArgs>): Prisma.PrismaPromise<GetCurrencyAggregateType<T>>
-
-    /**
-     * Group by Currency.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {CurrencyGroupByArgs} args - Group by arguments.
-     * @example
-     * // Group by city, order by createdAt, get count
-     * const result = await prisma.user.groupBy({
-     *   by: ['city', 'createdAt'],
-     *   orderBy: {
-     *     createdAt: true
-     *   },
-     *   _count: {
-     *     _all: true
-     *   },
-     * })
-     * 
-    **/
-    groupBy<
-      T extends CurrencyGroupByArgs,
-      HasSelectOrTake extends Or<
-        Extends<'skip', Keys<T>>,
-        Extends<'take', Keys<T>>
-      >,
-      OrderByArg extends True extends HasSelectOrTake
-        ? { orderBy: CurrencyGroupByArgs['orderBy'] }
-        : { orderBy?: CurrencyGroupByArgs['orderBy'] },
-      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
-      ByFields extends MaybeTupleToUnion<T['by']>,
-      ByValid extends Has<ByFields, OrderFields>,
-      HavingFields extends GetHavingFields<T['having']>,
-      HavingValid extends Has<ByFields, HavingFields>,
-      ByEmpty extends T['by'] extends never[] ? True : False,
-      InputErrors extends ByEmpty extends True
-      ? `Error: "by" must not be empty.`
-      : HavingValid extends False
-      ? {
-          [P in HavingFields]: P extends ByFields
-            ? never
-            : P extends string
-            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
-            : [
-                Error,
-                'Field ',
-                P,
-                ` in "having" needs to be provided in "by"`,
-              ]
-        }[HavingFields]
-      : 'take' extends Keys<T>
-      ? 'orderBy' extends Keys<T>
-        ? ByValid extends True
-          ? {}
-          : {
-              [P in OrderFields]: P extends ByFields
-                ? never
-                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
-            }[OrderFields]
-        : 'Error: If you provide "take", you also need to provide "orderBy"'
-      : 'skip' extends Keys<T>
-      ? 'orderBy' extends Keys<T>
-        ? ByValid extends True
-          ? {}
-          : {
-              [P in OrderFields]: P extends ByFields
-                ? never
-                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
-            }[OrderFields]
-        : 'Error: If you provide "skip", you also need to provide "orderBy"'
-      : ByValid extends True
-      ? {}
-      : {
-          [P in OrderFields]: P extends ByFields
-            ? never
-            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
-        }[OrderFields]
-    >(args: SubsetIntersection<T, CurrencyGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetCurrencyGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
-  /**
-   * Fields of the Currency model
-   */
-  readonly fields: CurrencyFieldRefs;
-  }
-
-  /**
-   * The delegate class that acts as a "Promise-like" for Currency.
-   * Why is this prefixed with `Prisma__`?
-   * Because we want to prevent naming conflicts as mentioned in
-   * https://github.com/prisma/prisma-client-js/issues/707
-   */
-  export interface Prisma__CurrencyClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
-    readonly [Symbol.toStringTag]: "PrismaPromise"
-    wallets<T extends Currency$walletsArgs<ExtArgs> = {}>(args?: Subset<T, Currency$walletsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$WalletPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
-    exchangesFrom<T extends Currency$exchangesFromArgs<ExtArgs> = {}>(args?: Subset<T, Currency$exchangesFromArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ExchangePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
-    exchangesTo<T extends Currency$exchangesToArgs<ExtArgs> = {}>(args?: Subset<T, Currency$exchangesToArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ExchangePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
-    FeeSetting<T extends Currency$FeeSettingArgs<ExtArgs> = {}>(args?: Subset<T, Currency$FeeSettingArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$FeeSettingPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
-    paymentChannels<T extends Currency$paymentChannelsArgs<ExtArgs> = {}>(args?: Subset<T, Currency$paymentChannelsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PaymentChannelPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
-    /**
-     * Attaches callbacks for the resolution and/or rejection of the Promise.
-     * @param onfulfilled The callback to execute when the Promise is resolved.
-     * @param onrejected The callback to execute when the Promise is rejected.
-     * @returns A Promise for the completion of which ever callback is executed.
-     */
-    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
-    /**
-     * Attaches a callback for only the rejection of the Promise.
-     * @param onrejected The callback to execute when the Promise is rejected.
-     * @returns A Promise for the completion of the callback.
-     */
-    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
-    /**
-     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
-     * resolved value cannot be modified from the callback.
-     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
-     * @returns A Promise for the completion of the callback.
-     */
-    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
-  }
-
-
-
-
-  /**
-   * Fields of the Currency model
-   */
-  interface CurrencyFieldRefs {
-    readonly id: FieldRef<"Currency", 'String'>
-    readonly code: FieldRef<"Currency", 'String'>
-    readonly name: FieldRef<"Currency", 'String'>
-    readonly symbol: FieldRef<"Currency", 'String'>
-    readonly decimals: FieldRef<"Currency", 'Int'>
-    readonly createdAt: FieldRef<"Currency", 'DateTime'>
-  }
-    
-
-  // Custom InputTypes
-  /**
-   * Currency findUnique
-   */
-  export type CurrencyFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the Currency
-     */
-    select?: CurrencySelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the Currency
-     */
-    omit?: CurrencyOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: CurrencyInclude<ExtArgs> | null
-    /**
-     * Filter, which Currency to fetch.
-     */
-    where: CurrencyWhereUniqueInput
-  }
-
-  /**
-   * Currency findUniqueOrThrow
-   */
-  export type CurrencyFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the Currency
-     */
-    select?: CurrencySelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the Currency
-     */
-    omit?: CurrencyOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: CurrencyInclude<ExtArgs> | null
-    /**
-     * Filter, which Currency to fetch.
-     */
-    where: CurrencyWhereUniqueInput
-  }
-
-  /**
-   * Currency findFirst
-   */
-  export type CurrencyFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the Currency
-     */
-    select?: CurrencySelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the Currency
-     */
-    omit?: CurrencyOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: CurrencyInclude<ExtArgs> | null
-    /**
-     * Filter, which Currency to fetch.
-     */
-    where?: CurrencyWhereInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
-     * Determine the order of Currencies to fetch.
-     */
-    orderBy?: CurrencyOrderByWithRelationInput | CurrencyOrderByWithRelationInput[]
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
-     * Sets the position for searching for Currencies.
-     */
-    cursor?: CurrencyWhereUniqueInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Take `±n` Currencies from the position of the cursor.
-     */
-    take?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Skip the first `n` Currencies.
-     */
-    skip?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
-     * 
-     * Filter by unique combinations of Currencies.
-     */
-    distinct?: CurrencyScalarFieldEnum | CurrencyScalarFieldEnum[]
-  }
-
-  /**
-   * Currency findFirstOrThrow
-   */
-  export type CurrencyFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the Currency
-     */
-    select?: CurrencySelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the Currency
-     */
-    omit?: CurrencyOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: CurrencyInclude<ExtArgs> | null
-    /**
-     * Filter, which Currency to fetch.
-     */
-    where?: CurrencyWhereInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
-     * Determine the order of Currencies to fetch.
-     */
-    orderBy?: CurrencyOrderByWithRelationInput | CurrencyOrderByWithRelationInput[]
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
-     * Sets the position for searching for Currencies.
-     */
-    cursor?: CurrencyWhereUniqueInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Take `±n` Currencies from the position of the cursor.
-     */
-    take?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Skip the first `n` Currencies.
-     */
-    skip?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
-     * 
-     * Filter by unique combinations of Currencies.
-     */
-    distinct?: CurrencyScalarFieldEnum | CurrencyScalarFieldEnum[]
-  }
-
-  /**
-   * Currency findMany
-   */
-  export type CurrencyFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the Currency
-     */
-    select?: CurrencySelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the Currency
-     */
-    omit?: CurrencyOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: CurrencyInclude<ExtArgs> | null
-    /**
-     * Filter, which Currencies to fetch.
-     */
-    where?: CurrencyWhereInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
-     * Determine the order of Currencies to fetch.
-     */
-    orderBy?: CurrencyOrderByWithRelationInput | CurrencyOrderByWithRelationInput[]
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
-     * Sets the position for listing Currencies.
-     */
-    cursor?: CurrencyWhereUniqueInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Take `±n` Currencies from the position of the cursor.
-     */
-    take?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Skip the first `n` Currencies.
-     */
-    skip?: number
-    distinct?: CurrencyScalarFieldEnum | CurrencyScalarFieldEnum[]
-  }
-
-  /**
-   * Currency create
-   */
-  export type CurrencyCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the Currency
-     */
-    select?: CurrencySelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the Currency
-     */
-    omit?: CurrencyOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: CurrencyInclude<ExtArgs> | null
-    /**
-     * The data needed to create a Currency.
-     */
-    data: XOR<CurrencyCreateInput, CurrencyUncheckedCreateInput>
-  }
-
-  /**
-   * Currency createMany
-   */
-  export type CurrencyCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * The data used to create many Currencies.
-     */
-    data: CurrencyCreateManyInput | CurrencyCreateManyInput[]
-    skipDuplicates?: boolean
-  }
-
-  /**
-   * Currency createManyAndReturn
-   */
-  export type CurrencyCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the Currency
-     */
-    select?: CurrencySelectCreateManyAndReturn<ExtArgs> | null
-    /**
-     * Omit specific fields from the Currency
-     */
-    omit?: CurrencyOmit<ExtArgs> | null
-    /**
-     * The data used to create many Currencies.
-     */
-    data: CurrencyCreateManyInput | CurrencyCreateManyInput[]
-    skipDuplicates?: boolean
-  }
-
-  /**
-   * Currency update
-   */
-  export type CurrencyUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the Currency
-     */
-    select?: CurrencySelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the Currency
-     */
-    omit?: CurrencyOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: CurrencyInclude<ExtArgs> | null
-    /**
-     * The data needed to update a Currency.
-     */
-    data: XOR<CurrencyUpdateInput, CurrencyUncheckedUpdateInput>
-    /**
-     * Choose, which Currency to update.
-     */
-    where: CurrencyWhereUniqueInput
-  }
-
-  /**
-   * Currency updateMany
-   */
-  export type CurrencyUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * The data used to update Currencies.
-     */
-    data: XOR<CurrencyUpdateManyMutationInput, CurrencyUncheckedUpdateManyInput>
-    /**
-     * Filter which Currencies to update
-     */
-    where?: CurrencyWhereInput
-    /**
-     * Limit how many Currencies to update.
-     */
-    limit?: number
-  }
-
-  /**
-   * Currency updateManyAndReturn
-   */
-  export type CurrencyUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the Currency
-     */
-    select?: CurrencySelectUpdateManyAndReturn<ExtArgs> | null
-    /**
-     * Omit specific fields from the Currency
-     */
-    omit?: CurrencyOmit<ExtArgs> | null
-    /**
-     * The data used to update Currencies.
-     */
-    data: XOR<CurrencyUpdateManyMutationInput, CurrencyUncheckedUpdateManyInput>
-    /**
-     * Filter which Currencies to update
-     */
-    where?: CurrencyWhereInput
-    /**
-     * Limit how many Currencies to update.
-     */
-    limit?: number
-  }
-
-  /**
-   * Currency upsert
-   */
-  export type CurrencyUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the Currency
-     */
-    select?: CurrencySelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the Currency
-     */
-    omit?: CurrencyOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: CurrencyInclude<ExtArgs> | null
-    /**
-     * The filter to search for the Currency to update in case it exists.
-     */
-    where: CurrencyWhereUniqueInput
-    /**
-     * In case the Currency found by the `where` argument doesn't exist, create a new Currency with this data.
-     */
-    create: XOR<CurrencyCreateInput, CurrencyUncheckedCreateInput>
-    /**
-     * In case the Currency was found with the provided `where` argument, update it with this data.
-     */
-    update: XOR<CurrencyUpdateInput, CurrencyUncheckedUpdateInput>
-  }
-
-  /**
-   * Currency delete
-   */
-  export type CurrencyDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the Currency
-     */
-    select?: CurrencySelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the Currency
-     */
-    omit?: CurrencyOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: CurrencyInclude<ExtArgs> | null
-    /**
-     * Filter which Currency to delete.
-     */
-    where: CurrencyWhereUniqueInput
-  }
-
-  /**
-   * Currency deleteMany
-   */
-  export type CurrencyDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Filter which Currencies to delete
-     */
-    where?: CurrencyWhereInput
-    /**
-     * Limit how many Currencies to delete.
-     */
-    limit?: number
-  }
-
-  /**
-   * Currency.wallets
-   */
-  export type Currency$walletsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the Wallet
-     */
-    select?: WalletSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the Wallet
-     */
-    omit?: WalletOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: WalletInclude<ExtArgs> | null
-    where?: WalletWhereInput
-    orderBy?: WalletOrderByWithRelationInput | WalletOrderByWithRelationInput[]
-    cursor?: WalletWhereUniqueInput
-    take?: number
-    skip?: number
-    distinct?: WalletScalarFieldEnum | WalletScalarFieldEnum[]
-  }
-
-  /**
-   * Currency.exchangesFrom
-   */
-  export type Currency$exchangesFromArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the Exchange
-     */
-    select?: ExchangeSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the Exchange
-     */
-    omit?: ExchangeOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: ExchangeInclude<ExtArgs> | null
-    where?: ExchangeWhereInput
-    orderBy?: ExchangeOrderByWithRelationInput | ExchangeOrderByWithRelationInput[]
-    cursor?: ExchangeWhereUniqueInput
-    take?: number
-    skip?: number
-    distinct?: ExchangeScalarFieldEnum | ExchangeScalarFieldEnum[]
-  }
-
-  /**
-   * Currency.exchangesTo
-   */
-  export type Currency$exchangesToArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the Exchange
-     */
-    select?: ExchangeSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the Exchange
-     */
-    omit?: ExchangeOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: ExchangeInclude<ExtArgs> | null
-    where?: ExchangeWhereInput
-    orderBy?: ExchangeOrderByWithRelationInput | ExchangeOrderByWithRelationInput[]
-    cursor?: ExchangeWhereUniqueInput
-    take?: number
-    skip?: number
-    distinct?: ExchangeScalarFieldEnum | ExchangeScalarFieldEnum[]
-  }
-
-  /**
-   * Currency.FeeSetting
-   */
-  export type Currency$FeeSettingArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the FeeSetting
-     */
-    select?: FeeSettingSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the FeeSetting
-     */
-    omit?: FeeSettingOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: FeeSettingInclude<ExtArgs> | null
-    where?: FeeSettingWhereInput
-    orderBy?: FeeSettingOrderByWithRelationInput | FeeSettingOrderByWithRelationInput[]
-    cursor?: FeeSettingWhereUniqueInput
-    take?: number
-    skip?: number
-    distinct?: FeeSettingScalarFieldEnum | FeeSettingScalarFieldEnum[]
-  }
-
-  /**
-   * Currency.paymentChannels
-   */
-  export type Currency$paymentChannelsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the PaymentChannel
-     */
-    select?: PaymentChannelSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the PaymentChannel
-     */
-    omit?: PaymentChannelOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: PaymentChannelInclude<ExtArgs> | null
-    where?: PaymentChannelWhereInput
-    orderBy?: PaymentChannelOrderByWithRelationInput | PaymentChannelOrderByWithRelationInput[]
-    cursor?: PaymentChannelWhereUniqueInput
-    take?: number
-    skip?: number
-    distinct?: PaymentChannelScalarFieldEnum | PaymentChannelScalarFieldEnum[]
-  }
-
-  /**
-   * Currency without action
-   */
-  export type CurrencyDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the Currency
-     */
-    select?: CurrencySelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the Currency
-     */
-    omit?: CurrencyOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: CurrencyInclude<ExtArgs> | null
   }
 
 
@@ -8800,1142 +11228,6 @@ export namespace Prisma {
      * Choose, which related nodes to fetch as well
      */
     include?: WithdrawalInclude<ExtArgs> | null
-  }
-
-
-  /**
-   * Model PaymentChannel
-   */
-
-  export type AggregatePaymentChannel = {
-    _count: PaymentChannelCountAggregateOutputType | null
-    _min: PaymentChannelMinAggregateOutputType | null
-    _max: PaymentChannelMaxAggregateOutputType | null
-  }
-
-  export type PaymentChannelMinAggregateOutputType = {
-    id: string | null
-    name: string | null
-    description: string | null
-    createdAt: Date | null
-  }
-
-  export type PaymentChannelMaxAggregateOutputType = {
-    id: string | null
-    name: string | null
-    description: string | null
-    createdAt: Date | null
-  }
-
-  export type PaymentChannelCountAggregateOutputType = {
-    id: number
-    name: number
-    description: number
-    createdAt: number
-    _all: number
-  }
-
-
-  export type PaymentChannelMinAggregateInputType = {
-    id?: true
-    name?: true
-    description?: true
-    createdAt?: true
-  }
-
-  export type PaymentChannelMaxAggregateInputType = {
-    id?: true
-    name?: true
-    description?: true
-    createdAt?: true
-  }
-
-  export type PaymentChannelCountAggregateInputType = {
-    id?: true
-    name?: true
-    description?: true
-    createdAt?: true
-    _all?: true
-  }
-
-  export type PaymentChannelAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Filter which PaymentChannel to aggregate.
-     */
-    where?: PaymentChannelWhereInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
-     * Determine the order of PaymentChannels to fetch.
-     */
-    orderBy?: PaymentChannelOrderByWithRelationInput | PaymentChannelOrderByWithRelationInput[]
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
-     * Sets the start position
-     */
-    cursor?: PaymentChannelWhereUniqueInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Take `±n` PaymentChannels from the position of the cursor.
-     */
-    take?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Skip the first `n` PaymentChannels.
-     */
-    skip?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
-     * Count returned PaymentChannels
-    **/
-    _count?: true | PaymentChannelCountAggregateInputType
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
-     * Select which fields to find the minimum value
-    **/
-    _min?: PaymentChannelMinAggregateInputType
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
-     * Select which fields to find the maximum value
-    **/
-    _max?: PaymentChannelMaxAggregateInputType
-  }
-
-  export type GetPaymentChannelAggregateType<T extends PaymentChannelAggregateArgs> = {
-        [P in keyof T & keyof AggregatePaymentChannel]: P extends '_count' | 'count'
-      ? T[P] extends true
-        ? number
-        : GetScalarType<T[P], AggregatePaymentChannel[P]>
-      : GetScalarType<T[P], AggregatePaymentChannel[P]>
-  }
-
-
-
-
-  export type PaymentChannelGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: PaymentChannelWhereInput
-    orderBy?: PaymentChannelOrderByWithAggregationInput | PaymentChannelOrderByWithAggregationInput[]
-    by: PaymentChannelScalarFieldEnum[] | PaymentChannelScalarFieldEnum
-    having?: PaymentChannelScalarWhereWithAggregatesInput
-    take?: number
-    skip?: number
-    _count?: PaymentChannelCountAggregateInputType | true
-    _min?: PaymentChannelMinAggregateInputType
-    _max?: PaymentChannelMaxAggregateInputType
-  }
-
-  export type PaymentChannelGroupByOutputType = {
-    id: string
-    name: string
-    description: string | null
-    createdAt: Date
-    _count: PaymentChannelCountAggregateOutputType | null
-    _min: PaymentChannelMinAggregateOutputType | null
-    _max: PaymentChannelMaxAggregateOutputType | null
-  }
-
-  type GetPaymentChannelGroupByPayload<T extends PaymentChannelGroupByArgs> = Prisma.PrismaPromise<
-    Array<
-      PickEnumerable<PaymentChannelGroupByOutputType, T['by']> &
-        {
-          [P in ((keyof T) & (keyof PaymentChannelGroupByOutputType))]: P extends '_count'
-            ? T[P] extends boolean
-              ? number
-              : GetScalarType<T[P], PaymentChannelGroupByOutputType[P]>
-            : GetScalarType<T[P], PaymentChannelGroupByOutputType[P]>
-        }
-      >
-    >
-
-
-  export type PaymentChannelSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
-    id?: boolean
-    name?: boolean
-    description?: boolean
-    createdAt?: boolean
-    bridgeTransfers?: boolean | PaymentChannel$bridgeTransfersArgs<ExtArgs>
-    currencies?: boolean | PaymentChannel$currenciesArgs<ExtArgs>
-    Deposit?: boolean | PaymentChannel$DepositArgs<ExtArgs>
-    Withdrawal?: boolean | PaymentChannel$WithdrawalArgs<ExtArgs>
-    _count?: boolean | PaymentChannelCountOutputTypeDefaultArgs<ExtArgs>
-  }, ExtArgs["result"]["paymentChannel"]>
-
-  export type PaymentChannelSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
-    id?: boolean
-    name?: boolean
-    description?: boolean
-    createdAt?: boolean
-  }, ExtArgs["result"]["paymentChannel"]>
-
-  export type PaymentChannelSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
-    id?: boolean
-    name?: boolean
-    description?: boolean
-    createdAt?: boolean
-  }, ExtArgs["result"]["paymentChannel"]>
-
-  export type PaymentChannelSelectScalar = {
-    id?: boolean
-    name?: boolean
-    description?: boolean
-    createdAt?: boolean
-  }
-
-  export type PaymentChannelOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "description" | "createdAt", ExtArgs["result"]["paymentChannel"]>
-  export type PaymentChannelInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    bridgeTransfers?: boolean | PaymentChannel$bridgeTransfersArgs<ExtArgs>
-    currencies?: boolean | PaymentChannel$currenciesArgs<ExtArgs>
-    Deposit?: boolean | PaymentChannel$DepositArgs<ExtArgs>
-    Withdrawal?: boolean | PaymentChannel$WithdrawalArgs<ExtArgs>
-    _count?: boolean | PaymentChannelCountOutputTypeDefaultArgs<ExtArgs>
-  }
-  export type PaymentChannelIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
-  export type PaymentChannelIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
-
-  export type $PaymentChannelPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    name: "PaymentChannel"
-    objects: {
-      bridgeTransfers: Prisma.$BridgeTransferPayload<ExtArgs> | null
-      currencies: Prisma.$CurrencyPayload<ExtArgs>[]
-      Deposit: Prisma.$DepositPayload<ExtArgs>[]
-      Withdrawal: Prisma.$WithdrawalPayload<ExtArgs>[]
-    }
-    scalars: $Extensions.GetPayloadResult<{
-      id: string
-      name: string
-      description: string | null
-      createdAt: Date
-    }, ExtArgs["result"]["paymentChannel"]>
-    composites: {}
-  }
-
-  type PaymentChannelGetPayload<S extends boolean | null | undefined | PaymentChannelDefaultArgs> = $Result.GetResult<Prisma.$PaymentChannelPayload, S>
-
-  type PaymentChannelCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
-    Omit<PaymentChannelFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
-      select?: PaymentChannelCountAggregateInputType | true
-    }
-
-  export interface PaymentChannelDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
-    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['PaymentChannel'], meta: { name: 'PaymentChannel' } }
-    /**
-     * Find zero or one PaymentChannel that matches the filter.
-     * @param {PaymentChannelFindUniqueArgs} args - Arguments to find a PaymentChannel
-     * @example
-     * // Get one PaymentChannel
-     * const paymentChannel = await prisma.paymentChannel.findUnique({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-     */
-    findUnique<T extends PaymentChannelFindUniqueArgs>(args: SelectSubset<T, PaymentChannelFindUniqueArgs<ExtArgs>>): Prisma__PaymentChannelClient<$Result.GetResult<Prisma.$PaymentChannelPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Find one PaymentChannel that matches the filter or throw an error with `error.code='P2025'`
-     * if no matches were found.
-     * @param {PaymentChannelFindUniqueOrThrowArgs} args - Arguments to find a PaymentChannel
-     * @example
-     * // Get one PaymentChannel
-     * const paymentChannel = await prisma.paymentChannel.findUniqueOrThrow({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-     */
-    findUniqueOrThrow<T extends PaymentChannelFindUniqueOrThrowArgs>(args: SelectSubset<T, PaymentChannelFindUniqueOrThrowArgs<ExtArgs>>): Prisma__PaymentChannelClient<$Result.GetResult<Prisma.$PaymentChannelPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Find the first PaymentChannel that matches the filter.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {PaymentChannelFindFirstArgs} args - Arguments to find a PaymentChannel
-     * @example
-     * // Get one PaymentChannel
-     * const paymentChannel = await prisma.paymentChannel.findFirst({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-     */
-    findFirst<T extends PaymentChannelFindFirstArgs>(args?: SelectSubset<T, PaymentChannelFindFirstArgs<ExtArgs>>): Prisma__PaymentChannelClient<$Result.GetResult<Prisma.$PaymentChannelPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Find the first PaymentChannel that matches the filter or
-     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {PaymentChannelFindFirstOrThrowArgs} args - Arguments to find a PaymentChannel
-     * @example
-     * // Get one PaymentChannel
-     * const paymentChannel = await prisma.paymentChannel.findFirstOrThrow({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-     */
-    findFirstOrThrow<T extends PaymentChannelFindFirstOrThrowArgs>(args?: SelectSubset<T, PaymentChannelFindFirstOrThrowArgs<ExtArgs>>): Prisma__PaymentChannelClient<$Result.GetResult<Prisma.$PaymentChannelPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Find zero or more PaymentChannels that matches the filter.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {PaymentChannelFindManyArgs} args - Arguments to filter and select certain fields only.
-     * @example
-     * // Get all PaymentChannels
-     * const paymentChannels = await prisma.paymentChannel.findMany()
-     * 
-     * // Get first 10 PaymentChannels
-     * const paymentChannels = await prisma.paymentChannel.findMany({ take: 10 })
-     * 
-     * // Only select the `id`
-     * const paymentChannelWithIdOnly = await prisma.paymentChannel.findMany({ select: { id: true } })
-     * 
-     */
-    findMany<T extends PaymentChannelFindManyArgs>(args?: SelectSubset<T, PaymentChannelFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PaymentChannelPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
-
-    /**
-     * Create a PaymentChannel.
-     * @param {PaymentChannelCreateArgs} args - Arguments to create a PaymentChannel.
-     * @example
-     * // Create one PaymentChannel
-     * const PaymentChannel = await prisma.paymentChannel.create({
-     *   data: {
-     *     // ... data to create a PaymentChannel
-     *   }
-     * })
-     * 
-     */
-    create<T extends PaymentChannelCreateArgs>(args: SelectSubset<T, PaymentChannelCreateArgs<ExtArgs>>): Prisma__PaymentChannelClient<$Result.GetResult<Prisma.$PaymentChannelPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Create many PaymentChannels.
-     * @param {PaymentChannelCreateManyArgs} args - Arguments to create many PaymentChannels.
-     * @example
-     * // Create many PaymentChannels
-     * const paymentChannel = await prisma.paymentChannel.createMany({
-     *   data: [
-     *     // ... provide data here
-     *   ]
-     * })
-     *     
-     */
-    createMany<T extends PaymentChannelCreateManyArgs>(args?: SelectSubset<T, PaymentChannelCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
-
-    /**
-     * Create many PaymentChannels and returns the data saved in the database.
-     * @param {PaymentChannelCreateManyAndReturnArgs} args - Arguments to create many PaymentChannels.
-     * @example
-     * // Create many PaymentChannels
-     * const paymentChannel = await prisma.paymentChannel.createManyAndReturn({
-     *   data: [
-     *     // ... provide data here
-     *   ]
-     * })
-     * 
-     * // Create many PaymentChannels and only return the `id`
-     * const paymentChannelWithIdOnly = await prisma.paymentChannel.createManyAndReturn({
-     *   select: { id: true },
-     *   data: [
-     *     // ... provide data here
-     *   ]
-     * })
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * 
-     */
-    createManyAndReturn<T extends PaymentChannelCreateManyAndReturnArgs>(args?: SelectSubset<T, PaymentChannelCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PaymentChannelPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
-
-    /**
-     * Delete a PaymentChannel.
-     * @param {PaymentChannelDeleteArgs} args - Arguments to delete one PaymentChannel.
-     * @example
-     * // Delete one PaymentChannel
-     * const PaymentChannel = await prisma.paymentChannel.delete({
-     *   where: {
-     *     // ... filter to delete one PaymentChannel
-     *   }
-     * })
-     * 
-     */
-    delete<T extends PaymentChannelDeleteArgs>(args: SelectSubset<T, PaymentChannelDeleteArgs<ExtArgs>>): Prisma__PaymentChannelClient<$Result.GetResult<Prisma.$PaymentChannelPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Update one PaymentChannel.
-     * @param {PaymentChannelUpdateArgs} args - Arguments to update one PaymentChannel.
-     * @example
-     * // Update one PaymentChannel
-     * const paymentChannel = await prisma.paymentChannel.update({
-     *   where: {
-     *     // ... provide filter here
-     *   },
-     *   data: {
-     *     // ... provide data here
-     *   }
-     * })
-     * 
-     */
-    update<T extends PaymentChannelUpdateArgs>(args: SelectSubset<T, PaymentChannelUpdateArgs<ExtArgs>>): Prisma__PaymentChannelClient<$Result.GetResult<Prisma.$PaymentChannelPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Delete zero or more PaymentChannels.
-     * @param {PaymentChannelDeleteManyArgs} args - Arguments to filter PaymentChannels to delete.
-     * @example
-     * // Delete a few PaymentChannels
-     * const { count } = await prisma.paymentChannel.deleteMany({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-     * 
-     */
-    deleteMany<T extends PaymentChannelDeleteManyArgs>(args?: SelectSubset<T, PaymentChannelDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
-
-    /**
-     * Update zero or more PaymentChannels.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {PaymentChannelUpdateManyArgs} args - Arguments to update one or more rows.
-     * @example
-     * // Update many PaymentChannels
-     * const paymentChannel = await prisma.paymentChannel.updateMany({
-     *   where: {
-     *     // ... provide filter here
-     *   },
-     *   data: {
-     *     // ... provide data here
-     *   }
-     * })
-     * 
-     */
-    updateMany<T extends PaymentChannelUpdateManyArgs>(args: SelectSubset<T, PaymentChannelUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
-
-    /**
-     * Update zero or more PaymentChannels and returns the data updated in the database.
-     * @param {PaymentChannelUpdateManyAndReturnArgs} args - Arguments to update many PaymentChannels.
-     * @example
-     * // Update many PaymentChannels
-     * const paymentChannel = await prisma.paymentChannel.updateManyAndReturn({
-     *   where: {
-     *     // ... provide filter here
-     *   },
-     *   data: [
-     *     // ... provide data here
-     *   ]
-     * })
-     * 
-     * // Update zero or more PaymentChannels and only return the `id`
-     * const paymentChannelWithIdOnly = await prisma.paymentChannel.updateManyAndReturn({
-     *   select: { id: true },
-     *   where: {
-     *     // ... provide filter here
-     *   },
-     *   data: [
-     *     // ... provide data here
-     *   ]
-     * })
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * 
-     */
-    updateManyAndReturn<T extends PaymentChannelUpdateManyAndReturnArgs>(args: SelectSubset<T, PaymentChannelUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PaymentChannelPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
-
-    /**
-     * Create or update one PaymentChannel.
-     * @param {PaymentChannelUpsertArgs} args - Arguments to update or create a PaymentChannel.
-     * @example
-     * // Update or create a PaymentChannel
-     * const paymentChannel = await prisma.paymentChannel.upsert({
-     *   create: {
-     *     // ... data to create a PaymentChannel
-     *   },
-     *   update: {
-     *     // ... in case it already exists, update
-     *   },
-     *   where: {
-     *     // ... the filter for the PaymentChannel we want to update
-     *   }
-     * })
-     */
-    upsert<T extends PaymentChannelUpsertArgs>(args: SelectSubset<T, PaymentChannelUpsertArgs<ExtArgs>>): Prisma__PaymentChannelClient<$Result.GetResult<Prisma.$PaymentChannelPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-
-    /**
-     * Count the number of PaymentChannels.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {PaymentChannelCountArgs} args - Arguments to filter PaymentChannels to count.
-     * @example
-     * // Count the number of PaymentChannels
-     * const count = await prisma.paymentChannel.count({
-     *   where: {
-     *     // ... the filter for the PaymentChannels we want to count
-     *   }
-     * })
-    **/
-    count<T extends PaymentChannelCountArgs>(
-      args?: Subset<T, PaymentChannelCountArgs>,
-    ): Prisma.PrismaPromise<
-      T extends $Utils.Record<'select', any>
-        ? T['select'] extends true
-          ? number
-          : GetScalarType<T['select'], PaymentChannelCountAggregateOutputType>
-        : number
-    >
-
-    /**
-     * Allows you to perform aggregations operations on a PaymentChannel.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {PaymentChannelAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
-     * @example
-     * // Ordered by age ascending
-     * // Where email contains prisma.io
-     * // Limited to the 10 users
-     * const aggregations = await prisma.user.aggregate({
-     *   _avg: {
-     *     age: true,
-     *   },
-     *   where: {
-     *     email: {
-     *       contains: "prisma.io",
-     *     },
-     *   },
-     *   orderBy: {
-     *     age: "asc",
-     *   },
-     *   take: 10,
-     * })
-    **/
-    aggregate<T extends PaymentChannelAggregateArgs>(args: Subset<T, PaymentChannelAggregateArgs>): Prisma.PrismaPromise<GetPaymentChannelAggregateType<T>>
-
-    /**
-     * Group by PaymentChannel.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {PaymentChannelGroupByArgs} args - Group by arguments.
-     * @example
-     * // Group by city, order by createdAt, get count
-     * const result = await prisma.user.groupBy({
-     *   by: ['city', 'createdAt'],
-     *   orderBy: {
-     *     createdAt: true
-     *   },
-     *   _count: {
-     *     _all: true
-     *   },
-     * })
-     * 
-    **/
-    groupBy<
-      T extends PaymentChannelGroupByArgs,
-      HasSelectOrTake extends Or<
-        Extends<'skip', Keys<T>>,
-        Extends<'take', Keys<T>>
-      >,
-      OrderByArg extends True extends HasSelectOrTake
-        ? { orderBy: PaymentChannelGroupByArgs['orderBy'] }
-        : { orderBy?: PaymentChannelGroupByArgs['orderBy'] },
-      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
-      ByFields extends MaybeTupleToUnion<T['by']>,
-      ByValid extends Has<ByFields, OrderFields>,
-      HavingFields extends GetHavingFields<T['having']>,
-      HavingValid extends Has<ByFields, HavingFields>,
-      ByEmpty extends T['by'] extends never[] ? True : False,
-      InputErrors extends ByEmpty extends True
-      ? `Error: "by" must not be empty.`
-      : HavingValid extends False
-      ? {
-          [P in HavingFields]: P extends ByFields
-            ? never
-            : P extends string
-            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
-            : [
-                Error,
-                'Field ',
-                P,
-                ` in "having" needs to be provided in "by"`,
-              ]
-        }[HavingFields]
-      : 'take' extends Keys<T>
-      ? 'orderBy' extends Keys<T>
-        ? ByValid extends True
-          ? {}
-          : {
-              [P in OrderFields]: P extends ByFields
-                ? never
-                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
-            }[OrderFields]
-        : 'Error: If you provide "take", you also need to provide "orderBy"'
-      : 'skip' extends Keys<T>
-      ? 'orderBy' extends Keys<T>
-        ? ByValid extends True
-          ? {}
-          : {
-              [P in OrderFields]: P extends ByFields
-                ? never
-                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
-            }[OrderFields]
-        : 'Error: If you provide "skip", you also need to provide "orderBy"'
-      : ByValid extends True
-      ? {}
-      : {
-          [P in OrderFields]: P extends ByFields
-            ? never
-            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
-        }[OrderFields]
-    >(args: SubsetIntersection<T, PaymentChannelGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetPaymentChannelGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
-  /**
-   * Fields of the PaymentChannel model
-   */
-  readonly fields: PaymentChannelFieldRefs;
-  }
-
-  /**
-   * The delegate class that acts as a "Promise-like" for PaymentChannel.
-   * Why is this prefixed with `Prisma__`?
-   * Because we want to prevent naming conflicts as mentioned in
-   * https://github.com/prisma/prisma-client-js/issues/707
-   */
-  export interface Prisma__PaymentChannelClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
-    readonly [Symbol.toStringTag]: "PrismaPromise"
-    bridgeTransfers<T extends PaymentChannel$bridgeTransfersArgs<ExtArgs> = {}>(args?: Subset<T, PaymentChannel$bridgeTransfersArgs<ExtArgs>>): Prisma__BridgeTransferClient<$Result.GetResult<Prisma.$BridgeTransferPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
-    currencies<T extends PaymentChannel$currenciesArgs<ExtArgs> = {}>(args?: Subset<T, PaymentChannel$currenciesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$CurrencyPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
-    Deposit<T extends PaymentChannel$DepositArgs<ExtArgs> = {}>(args?: Subset<T, PaymentChannel$DepositArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$DepositPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
-    Withdrawal<T extends PaymentChannel$WithdrawalArgs<ExtArgs> = {}>(args?: Subset<T, PaymentChannel$WithdrawalArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$WithdrawalPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
-    /**
-     * Attaches callbacks for the resolution and/or rejection of the Promise.
-     * @param onfulfilled The callback to execute when the Promise is resolved.
-     * @param onrejected The callback to execute when the Promise is rejected.
-     * @returns A Promise for the completion of which ever callback is executed.
-     */
-    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
-    /**
-     * Attaches a callback for only the rejection of the Promise.
-     * @param onrejected The callback to execute when the Promise is rejected.
-     * @returns A Promise for the completion of the callback.
-     */
-    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
-    /**
-     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
-     * resolved value cannot be modified from the callback.
-     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
-     * @returns A Promise for the completion of the callback.
-     */
-    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
-  }
-
-
-
-
-  /**
-   * Fields of the PaymentChannel model
-   */
-  interface PaymentChannelFieldRefs {
-    readonly id: FieldRef<"PaymentChannel", 'String'>
-    readonly name: FieldRef<"PaymentChannel", 'String'>
-    readonly description: FieldRef<"PaymentChannel", 'String'>
-    readonly createdAt: FieldRef<"PaymentChannel", 'DateTime'>
-  }
-    
-
-  // Custom InputTypes
-  /**
-   * PaymentChannel findUnique
-   */
-  export type PaymentChannelFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the PaymentChannel
-     */
-    select?: PaymentChannelSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the PaymentChannel
-     */
-    omit?: PaymentChannelOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: PaymentChannelInclude<ExtArgs> | null
-    /**
-     * Filter, which PaymentChannel to fetch.
-     */
-    where: PaymentChannelWhereUniqueInput
-  }
-
-  /**
-   * PaymentChannel findUniqueOrThrow
-   */
-  export type PaymentChannelFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the PaymentChannel
-     */
-    select?: PaymentChannelSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the PaymentChannel
-     */
-    omit?: PaymentChannelOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: PaymentChannelInclude<ExtArgs> | null
-    /**
-     * Filter, which PaymentChannel to fetch.
-     */
-    where: PaymentChannelWhereUniqueInput
-  }
-
-  /**
-   * PaymentChannel findFirst
-   */
-  export type PaymentChannelFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the PaymentChannel
-     */
-    select?: PaymentChannelSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the PaymentChannel
-     */
-    omit?: PaymentChannelOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: PaymentChannelInclude<ExtArgs> | null
-    /**
-     * Filter, which PaymentChannel to fetch.
-     */
-    where?: PaymentChannelWhereInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
-     * Determine the order of PaymentChannels to fetch.
-     */
-    orderBy?: PaymentChannelOrderByWithRelationInput | PaymentChannelOrderByWithRelationInput[]
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
-     * Sets the position for searching for PaymentChannels.
-     */
-    cursor?: PaymentChannelWhereUniqueInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Take `±n` PaymentChannels from the position of the cursor.
-     */
-    take?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Skip the first `n` PaymentChannels.
-     */
-    skip?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
-     * 
-     * Filter by unique combinations of PaymentChannels.
-     */
-    distinct?: PaymentChannelScalarFieldEnum | PaymentChannelScalarFieldEnum[]
-  }
-
-  /**
-   * PaymentChannel findFirstOrThrow
-   */
-  export type PaymentChannelFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the PaymentChannel
-     */
-    select?: PaymentChannelSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the PaymentChannel
-     */
-    omit?: PaymentChannelOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: PaymentChannelInclude<ExtArgs> | null
-    /**
-     * Filter, which PaymentChannel to fetch.
-     */
-    where?: PaymentChannelWhereInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
-     * Determine the order of PaymentChannels to fetch.
-     */
-    orderBy?: PaymentChannelOrderByWithRelationInput | PaymentChannelOrderByWithRelationInput[]
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
-     * Sets the position for searching for PaymentChannels.
-     */
-    cursor?: PaymentChannelWhereUniqueInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Take `±n` PaymentChannels from the position of the cursor.
-     */
-    take?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Skip the first `n` PaymentChannels.
-     */
-    skip?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
-     * 
-     * Filter by unique combinations of PaymentChannels.
-     */
-    distinct?: PaymentChannelScalarFieldEnum | PaymentChannelScalarFieldEnum[]
-  }
-
-  /**
-   * PaymentChannel findMany
-   */
-  export type PaymentChannelFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the PaymentChannel
-     */
-    select?: PaymentChannelSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the PaymentChannel
-     */
-    omit?: PaymentChannelOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: PaymentChannelInclude<ExtArgs> | null
-    /**
-     * Filter, which PaymentChannels to fetch.
-     */
-    where?: PaymentChannelWhereInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
-     * Determine the order of PaymentChannels to fetch.
-     */
-    orderBy?: PaymentChannelOrderByWithRelationInput | PaymentChannelOrderByWithRelationInput[]
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
-     * Sets the position for listing PaymentChannels.
-     */
-    cursor?: PaymentChannelWhereUniqueInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Take `±n` PaymentChannels from the position of the cursor.
-     */
-    take?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Skip the first `n` PaymentChannels.
-     */
-    skip?: number
-    distinct?: PaymentChannelScalarFieldEnum | PaymentChannelScalarFieldEnum[]
-  }
-
-  /**
-   * PaymentChannel create
-   */
-  export type PaymentChannelCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the PaymentChannel
-     */
-    select?: PaymentChannelSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the PaymentChannel
-     */
-    omit?: PaymentChannelOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: PaymentChannelInclude<ExtArgs> | null
-    /**
-     * The data needed to create a PaymentChannel.
-     */
-    data: XOR<PaymentChannelCreateInput, PaymentChannelUncheckedCreateInput>
-  }
-
-  /**
-   * PaymentChannel createMany
-   */
-  export type PaymentChannelCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * The data used to create many PaymentChannels.
-     */
-    data: PaymentChannelCreateManyInput | PaymentChannelCreateManyInput[]
-    skipDuplicates?: boolean
-  }
-
-  /**
-   * PaymentChannel createManyAndReturn
-   */
-  export type PaymentChannelCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the PaymentChannel
-     */
-    select?: PaymentChannelSelectCreateManyAndReturn<ExtArgs> | null
-    /**
-     * Omit specific fields from the PaymentChannel
-     */
-    omit?: PaymentChannelOmit<ExtArgs> | null
-    /**
-     * The data used to create many PaymentChannels.
-     */
-    data: PaymentChannelCreateManyInput | PaymentChannelCreateManyInput[]
-    skipDuplicates?: boolean
-  }
-
-  /**
-   * PaymentChannel update
-   */
-  export type PaymentChannelUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the PaymentChannel
-     */
-    select?: PaymentChannelSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the PaymentChannel
-     */
-    omit?: PaymentChannelOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: PaymentChannelInclude<ExtArgs> | null
-    /**
-     * The data needed to update a PaymentChannel.
-     */
-    data: XOR<PaymentChannelUpdateInput, PaymentChannelUncheckedUpdateInput>
-    /**
-     * Choose, which PaymentChannel to update.
-     */
-    where: PaymentChannelWhereUniqueInput
-  }
-
-  /**
-   * PaymentChannel updateMany
-   */
-  export type PaymentChannelUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * The data used to update PaymentChannels.
-     */
-    data: XOR<PaymentChannelUpdateManyMutationInput, PaymentChannelUncheckedUpdateManyInput>
-    /**
-     * Filter which PaymentChannels to update
-     */
-    where?: PaymentChannelWhereInput
-    /**
-     * Limit how many PaymentChannels to update.
-     */
-    limit?: number
-  }
-
-  /**
-   * PaymentChannel updateManyAndReturn
-   */
-  export type PaymentChannelUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the PaymentChannel
-     */
-    select?: PaymentChannelSelectUpdateManyAndReturn<ExtArgs> | null
-    /**
-     * Omit specific fields from the PaymentChannel
-     */
-    omit?: PaymentChannelOmit<ExtArgs> | null
-    /**
-     * The data used to update PaymentChannels.
-     */
-    data: XOR<PaymentChannelUpdateManyMutationInput, PaymentChannelUncheckedUpdateManyInput>
-    /**
-     * Filter which PaymentChannels to update
-     */
-    where?: PaymentChannelWhereInput
-    /**
-     * Limit how many PaymentChannels to update.
-     */
-    limit?: number
-  }
-
-  /**
-   * PaymentChannel upsert
-   */
-  export type PaymentChannelUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the PaymentChannel
-     */
-    select?: PaymentChannelSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the PaymentChannel
-     */
-    omit?: PaymentChannelOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: PaymentChannelInclude<ExtArgs> | null
-    /**
-     * The filter to search for the PaymentChannel to update in case it exists.
-     */
-    where: PaymentChannelWhereUniqueInput
-    /**
-     * In case the PaymentChannel found by the `where` argument doesn't exist, create a new PaymentChannel with this data.
-     */
-    create: XOR<PaymentChannelCreateInput, PaymentChannelUncheckedCreateInput>
-    /**
-     * In case the PaymentChannel was found with the provided `where` argument, update it with this data.
-     */
-    update: XOR<PaymentChannelUpdateInput, PaymentChannelUncheckedUpdateInput>
-  }
-
-  /**
-   * PaymentChannel delete
-   */
-  export type PaymentChannelDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the PaymentChannel
-     */
-    select?: PaymentChannelSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the PaymentChannel
-     */
-    omit?: PaymentChannelOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: PaymentChannelInclude<ExtArgs> | null
-    /**
-     * Filter which PaymentChannel to delete.
-     */
-    where: PaymentChannelWhereUniqueInput
-  }
-
-  /**
-   * PaymentChannel deleteMany
-   */
-  export type PaymentChannelDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Filter which PaymentChannels to delete
-     */
-    where?: PaymentChannelWhereInput
-    /**
-     * Limit how many PaymentChannels to delete.
-     */
-    limit?: number
-  }
-
-  /**
-   * PaymentChannel.bridgeTransfers
-   */
-  export type PaymentChannel$bridgeTransfersArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the BridgeTransfer
-     */
-    select?: BridgeTransferSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the BridgeTransfer
-     */
-    omit?: BridgeTransferOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: BridgeTransferInclude<ExtArgs> | null
-    where?: BridgeTransferWhereInput
-  }
-
-  /**
-   * PaymentChannel.currencies
-   */
-  export type PaymentChannel$currenciesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the Currency
-     */
-    select?: CurrencySelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the Currency
-     */
-    omit?: CurrencyOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: CurrencyInclude<ExtArgs> | null
-    where?: CurrencyWhereInput
-    orderBy?: CurrencyOrderByWithRelationInput | CurrencyOrderByWithRelationInput[]
-    cursor?: CurrencyWhereUniqueInput
-    take?: number
-    skip?: number
-    distinct?: CurrencyScalarFieldEnum | CurrencyScalarFieldEnum[]
-  }
-
-  /**
-   * PaymentChannel.Deposit
-   */
-  export type PaymentChannel$DepositArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the Deposit
-     */
-    select?: DepositSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the Deposit
-     */
-    omit?: DepositOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: DepositInclude<ExtArgs> | null
-    where?: DepositWhereInput
-    orderBy?: DepositOrderByWithRelationInput | DepositOrderByWithRelationInput[]
-    cursor?: DepositWhereUniqueInput
-    take?: number
-    skip?: number
-    distinct?: DepositScalarFieldEnum | DepositScalarFieldEnum[]
-  }
-
-  /**
-   * PaymentChannel.Withdrawal
-   */
-  export type PaymentChannel$WithdrawalArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the Withdrawal
-     */
-    select?: WithdrawalSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the Withdrawal
-     */
-    omit?: WithdrawalOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: WithdrawalInclude<ExtArgs> | null
-    where?: WithdrawalWhereInput
-    orderBy?: WithdrawalOrderByWithRelationInput | WithdrawalOrderByWithRelationInput[]
-    cursor?: WithdrawalWhereUniqueInput
-    take?: number
-    skip?: number
-    distinct?: WithdrawalScalarFieldEnum | WithdrawalScalarFieldEnum[]
-  }
-
-  /**
-   * PaymentChannel without action
-   */
-  export type PaymentChannelDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the PaymentChannel
-     */
-    select?: PaymentChannelSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the PaymentChannel
-     */
-    omit?: PaymentChannelOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: PaymentChannelInclude<ExtArgs> | null
   }
 
 
@@ -16972,17 +18264,14 @@ export namespace Prisma {
   export type UserScalarFieldEnum = (typeof UserScalarFieldEnum)[keyof typeof UserScalarFieldEnum]
 
 
-  export const WalletScalarFieldEnum: {
+  export const PaymentChannelScalarFieldEnum: {
     id: 'id',
-    userId: 'userId',
-    currencyId: 'currencyId',
-    balance: 'balance',
-    frozen: 'frozen',
-    createdAt: 'createdAt',
-    updatedAt: 'updatedAt'
+    name: 'name',
+    description: 'description',
+    createdAt: 'createdAt'
   };
 
-  export type WalletScalarFieldEnum = (typeof WalletScalarFieldEnum)[keyof typeof WalletScalarFieldEnum]
+  export type PaymentChannelScalarFieldEnum = (typeof PaymentChannelScalarFieldEnum)[keyof typeof PaymentChannelScalarFieldEnum]
 
 
   export const CurrencyScalarFieldEnum: {
@@ -16995,6 +18284,32 @@ export namespace Prisma {
   };
 
   export type CurrencyScalarFieldEnum = (typeof CurrencyScalarFieldEnum)[keyof typeof CurrencyScalarFieldEnum]
+
+
+  export const LiquidityPoolScalarFieldEnum: {
+    id: 'id',
+    paymentChannelId: 'paymentChannelId',
+    currencyId: 'currencyId',
+    address: 'address',
+    balance: 'balance',
+    frozen: 'frozen',
+    updatedAt: 'updatedAt'
+  };
+
+  export type LiquidityPoolScalarFieldEnum = (typeof LiquidityPoolScalarFieldEnum)[keyof typeof LiquidityPoolScalarFieldEnum]
+
+
+  export const WalletScalarFieldEnum: {
+    id: 'id',
+    userId: 'userId',
+    currencyId: 'currencyId',
+    balance: 'balance',
+    frozen: 'frozen',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt'
+  };
+
+  export type WalletScalarFieldEnum = (typeof WalletScalarFieldEnum)[keyof typeof WalletScalarFieldEnum]
 
 
   export const DepositScalarFieldEnum: {
@@ -17031,16 +18346,6 @@ export namespace Prisma {
   };
 
   export type WithdrawalScalarFieldEnum = (typeof WithdrawalScalarFieldEnum)[keyof typeof WithdrawalScalarFieldEnum]
-
-
-  export const PaymentChannelScalarFieldEnum: {
-    id: 'id',
-    name: 'name',
-    description: 'description',
-    createdAt: 'createdAt'
-  };
-
-  export type PaymentChannelScalarFieldEnum = (typeof PaymentChannelScalarFieldEnum)[keyof typeof PaymentChannelScalarFieldEnum]
 
 
   export const BridgeTransferScalarFieldEnum: {
@@ -17257,20 +18562,6 @@ export namespace Prisma {
 
 
   /**
-   * Reference to a field of type 'Decimal'
-   */
-  export type DecimalFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Decimal'>
-    
-
-
-  /**
-   * Reference to a field of type 'Decimal[]'
-   */
-  export type ListDecimalFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Decimal[]'>
-    
-
-
-  /**
    * Reference to a field of type 'Int'
    */
   export type IntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Int'>
@@ -17281,6 +18572,20 @@ export namespace Prisma {
    * Reference to a field of type 'Int[]'
    */
   export type ListIntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Int[]'>
+    
+
+
+  /**
+   * Reference to a field of type 'Decimal'
+   */
+  export type DecimalFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Decimal'>
+    
+
+
+  /**
+   * Reference to a field of type 'Decimal[]'
+   */
+  export type ListDecimalFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Decimal[]'>
     
 
 
@@ -17581,6 +18886,215 @@ export namespace Prisma {
     deletedAt?: DateTimeNullableWithAggregatesFilter<"User"> | Date | string | null
   }
 
+  export type PaymentChannelWhereInput = {
+    AND?: PaymentChannelWhereInput | PaymentChannelWhereInput[]
+    OR?: PaymentChannelWhereInput[]
+    NOT?: PaymentChannelWhereInput | PaymentChannelWhereInput[]
+    id?: StringFilter<"PaymentChannel"> | string
+    name?: StringFilter<"PaymentChannel"> | string
+    description?: StringNullableFilter<"PaymentChannel"> | string | null
+    createdAt?: DateTimeFilter<"PaymentChannel"> | Date | string
+    bridgeTransfers?: XOR<BridgeTransferNullableScalarRelationFilter, BridgeTransferWhereInput> | null
+    currencies?: CurrencyListRelationFilter
+    Deposit?: DepositListRelationFilter
+    Withdrawal?: WithdrawalListRelationFilter
+    LiquidityPool?: LiquidityPoolListRelationFilter
+  }
+
+  export type PaymentChannelOrderByWithRelationInput = {
+    id?: SortOrder
+    name?: SortOrder
+    description?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    bridgeTransfers?: BridgeTransferOrderByWithRelationInput
+    currencies?: CurrencyOrderByRelationAggregateInput
+    Deposit?: DepositOrderByRelationAggregateInput
+    Withdrawal?: WithdrawalOrderByRelationAggregateInput
+    LiquidityPool?: LiquidityPoolOrderByRelationAggregateInput
+  }
+
+  export type PaymentChannelWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    name?: string
+    AND?: PaymentChannelWhereInput | PaymentChannelWhereInput[]
+    OR?: PaymentChannelWhereInput[]
+    NOT?: PaymentChannelWhereInput | PaymentChannelWhereInput[]
+    description?: StringNullableFilter<"PaymentChannel"> | string | null
+    createdAt?: DateTimeFilter<"PaymentChannel"> | Date | string
+    bridgeTransfers?: XOR<BridgeTransferNullableScalarRelationFilter, BridgeTransferWhereInput> | null
+    currencies?: CurrencyListRelationFilter
+    Deposit?: DepositListRelationFilter
+    Withdrawal?: WithdrawalListRelationFilter
+    LiquidityPool?: LiquidityPoolListRelationFilter
+  }, "id" | "name">
+
+  export type PaymentChannelOrderByWithAggregationInput = {
+    id?: SortOrder
+    name?: SortOrder
+    description?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    _count?: PaymentChannelCountOrderByAggregateInput
+    _max?: PaymentChannelMaxOrderByAggregateInput
+    _min?: PaymentChannelMinOrderByAggregateInput
+  }
+
+  export type PaymentChannelScalarWhereWithAggregatesInput = {
+    AND?: PaymentChannelScalarWhereWithAggregatesInput | PaymentChannelScalarWhereWithAggregatesInput[]
+    OR?: PaymentChannelScalarWhereWithAggregatesInput[]
+    NOT?: PaymentChannelScalarWhereWithAggregatesInput | PaymentChannelScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"PaymentChannel"> | string
+    name?: StringWithAggregatesFilter<"PaymentChannel"> | string
+    description?: StringNullableWithAggregatesFilter<"PaymentChannel"> | string | null
+    createdAt?: DateTimeWithAggregatesFilter<"PaymentChannel"> | Date | string
+  }
+
+  export type CurrencyWhereInput = {
+    AND?: CurrencyWhereInput | CurrencyWhereInput[]
+    OR?: CurrencyWhereInput[]
+    NOT?: CurrencyWhereInput | CurrencyWhereInput[]
+    id?: StringFilter<"Currency"> | string
+    code?: StringFilter<"Currency"> | string
+    name?: StringFilter<"Currency"> | string
+    symbol?: StringFilter<"Currency"> | string
+    decimals?: IntFilter<"Currency"> | number
+    createdAt?: DateTimeFilter<"Currency"> | Date | string
+    wallets?: WalletListRelationFilter
+    exchangesFrom?: ExchangeListRelationFilter
+    exchangesTo?: ExchangeListRelationFilter
+    FeeSetting?: FeeSettingListRelationFilter
+    paymentChannels?: PaymentChannelListRelationFilter
+    LiquidityPool?: LiquidityPoolListRelationFilter
+  }
+
+  export type CurrencyOrderByWithRelationInput = {
+    id?: SortOrder
+    code?: SortOrder
+    name?: SortOrder
+    symbol?: SortOrder
+    decimals?: SortOrder
+    createdAt?: SortOrder
+    wallets?: WalletOrderByRelationAggregateInput
+    exchangesFrom?: ExchangeOrderByRelationAggregateInput
+    exchangesTo?: ExchangeOrderByRelationAggregateInput
+    FeeSetting?: FeeSettingOrderByRelationAggregateInput
+    paymentChannels?: PaymentChannelOrderByRelationAggregateInput
+    LiquidityPool?: LiquidityPoolOrderByRelationAggregateInput
+  }
+
+  export type CurrencyWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    code?: string
+    AND?: CurrencyWhereInput | CurrencyWhereInput[]
+    OR?: CurrencyWhereInput[]
+    NOT?: CurrencyWhereInput | CurrencyWhereInput[]
+    name?: StringFilter<"Currency"> | string
+    symbol?: StringFilter<"Currency"> | string
+    decimals?: IntFilter<"Currency"> | number
+    createdAt?: DateTimeFilter<"Currency"> | Date | string
+    wallets?: WalletListRelationFilter
+    exchangesFrom?: ExchangeListRelationFilter
+    exchangesTo?: ExchangeListRelationFilter
+    FeeSetting?: FeeSettingListRelationFilter
+    paymentChannels?: PaymentChannelListRelationFilter
+    LiquidityPool?: LiquidityPoolListRelationFilter
+  }, "id" | "code">
+
+  export type CurrencyOrderByWithAggregationInput = {
+    id?: SortOrder
+    code?: SortOrder
+    name?: SortOrder
+    symbol?: SortOrder
+    decimals?: SortOrder
+    createdAt?: SortOrder
+    _count?: CurrencyCountOrderByAggregateInput
+    _avg?: CurrencyAvgOrderByAggregateInput
+    _max?: CurrencyMaxOrderByAggregateInput
+    _min?: CurrencyMinOrderByAggregateInput
+    _sum?: CurrencySumOrderByAggregateInput
+  }
+
+  export type CurrencyScalarWhereWithAggregatesInput = {
+    AND?: CurrencyScalarWhereWithAggregatesInput | CurrencyScalarWhereWithAggregatesInput[]
+    OR?: CurrencyScalarWhereWithAggregatesInput[]
+    NOT?: CurrencyScalarWhereWithAggregatesInput | CurrencyScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"Currency"> | string
+    code?: StringWithAggregatesFilter<"Currency"> | string
+    name?: StringWithAggregatesFilter<"Currency"> | string
+    symbol?: StringWithAggregatesFilter<"Currency"> | string
+    decimals?: IntWithAggregatesFilter<"Currency"> | number
+    createdAt?: DateTimeWithAggregatesFilter<"Currency"> | Date | string
+  }
+
+  export type LiquidityPoolWhereInput = {
+    AND?: LiquidityPoolWhereInput | LiquidityPoolWhereInput[]
+    OR?: LiquidityPoolWhereInput[]
+    NOT?: LiquidityPoolWhereInput | LiquidityPoolWhereInput[]
+    id?: StringFilter<"LiquidityPool"> | string
+    paymentChannelId?: StringFilter<"LiquidityPool"> | string
+    currencyId?: StringFilter<"LiquidityPool"> | string
+    address?: StringFilter<"LiquidityPool"> | string
+    balance?: DecimalFilter<"LiquidityPool"> | Decimal | DecimalJsLike | number | string
+    frozen?: DecimalFilter<"LiquidityPool"> | Decimal | DecimalJsLike | number | string
+    updatedAt?: DateTimeFilter<"LiquidityPool"> | Date | string
+    paymentChannel?: XOR<PaymentChannelScalarRelationFilter, PaymentChannelWhereInput>
+    currency?: XOR<CurrencyScalarRelationFilter, CurrencyWhereInput>
+  }
+
+  export type LiquidityPoolOrderByWithRelationInput = {
+    id?: SortOrder
+    paymentChannelId?: SortOrder
+    currencyId?: SortOrder
+    address?: SortOrder
+    balance?: SortOrder
+    frozen?: SortOrder
+    updatedAt?: SortOrder
+    paymentChannel?: PaymentChannelOrderByWithRelationInput
+    currency?: CurrencyOrderByWithRelationInput
+  }
+
+  export type LiquidityPoolWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    paymentChannelId?: string
+    AND?: LiquidityPoolWhereInput | LiquidityPoolWhereInput[]
+    OR?: LiquidityPoolWhereInput[]
+    NOT?: LiquidityPoolWhereInput | LiquidityPoolWhereInput[]
+    currencyId?: StringFilter<"LiquidityPool"> | string
+    address?: StringFilter<"LiquidityPool"> | string
+    balance?: DecimalFilter<"LiquidityPool"> | Decimal | DecimalJsLike | number | string
+    frozen?: DecimalFilter<"LiquidityPool"> | Decimal | DecimalJsLike | number | string
+    updatedAt?: DateTimeFilter<"LiquidityPool"> | Date | string
+    paymentChannel?: XOR<PaymentChannelScalarRelationFilter, PaymentChannelWhereInput>
+    currency?: XOR<CurrencyScalarRelationFilter, CurrencyWhereInput>
+  }, "id" | "paymentChannelId">
+
+  export type LiquidityPoolOrderByWithAggregationInput = {
+    id?: SortOrder
+    paymentChannelId?: SortOrder
+    currencyId?: SortOrder
+    address?: SortOrder
+    balance?: SortOrder
+    frozen?: SortOrder
+    updatedAt?: SortOrder
+    _count?: LiquidityPoolCountOrderByAggregateInput
+    _avg?: LiquidityPoolAvgOrderByAggregateInput
+    _max?: LiquidityPoolMaxOrderByAggregateInput
+    _min?: LiquidityPoolMinOrderByAggregateInput
+    _sum?: LiquidityPoolSumOrderByAggregateInput
+  }
+
+  export type LiquidityPoolScalarWhereWithAggregatesInput = {
+    AND?: LiquidityPoolScalarWhereWithAggregatesInput | LiquidityPoolScalarWhereWithAggregatesInput[]
+    OR?: LiquidityPoolScalarWhereWithAggregatesInput[]
+    NOT?: LiquidityPoolScalarWhereWithAggregatesInput | LiquidityPoolScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"LiquidityPool"> | string
+    paymentChannelId?: StringWithAggregatesFilter<"LiquidityPool"> | string
+    currencyId?: StringWithAggregatesFilter<"LiquidityPool"> | string
+    address?: StringWithAggregatesFilter<"LiquidityPool"> | string
+    balance?: DecimalWithAggregatesFilter<"LiquidityPool"> | Decimal | DecimalJsLike | number | string
+    frozen?: DecimalWithAggregatesFilter<"LiquidityPool"> | Decimal | DecimalJsLike | number | string
+    updatedAt?: DateTimeWithAggregatesFilter<"LiquidityPool"> | Date | string
+  }
+
   export type WalletWhereInput = {
     AND?: WalletWhereInput | WalletWhereInput[]
     OR?: WalletWhereInput[]
@@ -17665,80 +19179,6 @@ export namespace Prisma {
     frozen?: DecimalWithAggregatesFilter<"Wallet"> | Decimal | DecimalJsLike | number | string
     createdAt?: DateTimeWithAggregatesFilter<"Wallet"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"Wallet"> | Date | string
-  }
-
-  export type CurrencyWhereInput = {
-    AND?: CurrencyWhereInput | CurrencyWhereInput[]
-    OR?: CurrencyWhereInput[]
-    NOT?: CurrencyWhereInput | CurrencyWhereInput[]
-    id?: StringFilter<"Currency"> | string
-    code?: StringFilter<"Currency"> | string
-    name?: StringFilter<"Currency"> | string
-    symbol?: StringFilter<"Currency"> | string
-    decimals?: IntFilter<"Currency"> | number
-    createdAt?: DateTimeFilter<"Currency"> | Date | string
-    wallets?: WalletListRelationFilter
-    exchangesFrom?: ExchangeListRelationFilter
-    exchangesTo?: ExchangeListRelationFilter
-    FeeSetting?: FeeSettingListRelationFilter
-    paymentChannels?: PaymentChannelListRelationFilter
-  }
-
-  export type CurrencyOrderByWithRelationInput = {
-    id?: SortOrder
-    code?: SortOrder
-    name?: SortOrder
-    symbol?: SortOrder
-    decimals?: SortOrder
-    createdAt?: SortOrder
-    wallets?: WalletOrderByRelationAggregateInput
-    exchangesFrom?: ExchangeOrderByRelationAggregateInput
-    exchangesTo?: ExchangeOrderByRelationAggregateInput
-    FeeSetting?: FeeSettingOrderByRelationAggregateInput
-    paymentChannels?: PaymentChannelOrderByRelationAggregateInput
-  }
-
-  export type CurrencyWhereUniqueInput = Prisma.AtLeast<{
-    id?: string
-    code?: string
-    AND?: CurrencyWhereInput | CurrencyWhereInput[]
-    OR?: CurrencyWhereInput[]
-    NOT?: CurrencyWhereInput | CurrencyWhereInput[]
-    name?: StringFilter<"Currency"> | string
-    symbol?: StringFilter<"Currency"> | string
-    decimals?: IntFilter<"Currency"> | number
-    createdAt?: DateTimeFilter<"Currency"> | Date | string
-    wallets?: WalletListRelationFilter
-    exchangesFrom?: ExchangeListRelationFilter
-    exchangesTo?: ExchangeListRelationFilter
-    FeeSetting?: FeeSettingListRelationFilter
-    paymentChannels?: PaymentChannelListRelationFilter
-  }, "id" | "code">
-
-  export type CurrencyOrderByWithAggregationInput = {
-    id?: SortOrder
-    code?: SortOrder
-    name?: SortOrder
-    symbol?: SortOrder
-    decimals?: SortOrder
-    createdAt?: SortOrder
-    _count?: CurrencyCountOrderByAggregateInput
-    _avg?: CurrencyAvgOrderByAggregateInput
-    _max?: CurrencyMaxOrderByAggregateInput
-    _min?: CurrencyMinOrderByAggregateInput
-    _sum?: CurrencySumOrderByAggregateInput
-  }
-
-  export type CurrencyScalarWhereWithAggregatesInput = {
-    AND?: CurrencyScalarWhereWithAggregatesInput | CurrencyScalarWhereWithAggregatesInput[]
-    OR?: CurrencyScalarWhereWithAggregatesInput[]
-    NOT?: CurrencyScalarWhereWithAggregatesInput | CurrencyScalarWhereWithAggregatesInput[]
-    id?: StringWithAggregatesFilter<"Currency"> | string
-    code?: StringWithAggregatesFilter<"Currency"> | string
-    name?: StringWithAggregatesFilter<"Currency"> | string
-    symbol?: StringWithAggregatesFilter<"Currency"> | string
-    decimals?: IntWithAggregatesFilter<"Currency"> | number
-    createdAt?: DateTimeWithAggregatesFilter<"Currency"> | Date | string
   }
 
   export type DepositWhereInput = {
@@ -17941,65 +19381,6 @@ export namespace Prisma {
     failedAt?: DateTimeNullableWithAggregatesFilter<"Withdrawal"> | Date | string | null
     paymentChannelId?: StringWithAggregatesFilter<"Withdrawal"> | string
     bridgeTransferid?: StringNullableWithAggregatesFilter<"Withdrawal"> | string | null
-  }
-
-  export type PaymentChannelWhereInput = {
-    AND?: PaymentChannelWhereInput | PaymentChannelWhereInput[]
-    OR?: PaymentChannelWhereInput[]
-    NOT?: PaymentChannelWhereInput | PaymentChannelWhereInput[]
-    id?: StringFilter<"PaymentChannel"> | string
-    name?: StringFilter<"PaymentChannel"> | string
-    description?: StringNullableFilter<"PaymentChannel"> | string | null
-    createdAt?: DateTimeFilter<"PaymentChannel"> | Date | string
-    bridgeTransfers?: XOR<BridgeTransferNullableScalarRelationFilter, BridgeTransferWhereInput> | null
-    currencies?: CurrencyListRelationFilter
-    Deposit?: DepositListRelationFilter
-    Withdrawal?: WithdrawalListRelationFilter
-  }
-
-  export type PaymentChannelOrderByWithRelationInput = {
-    id?: SortOrder
-    name?: SortOrder
-    description?: SortOrderInput | SortOrder
-    createdAt?: SortOrder
-    bridgeTransfers?: BridgeTransferOrderByWithRelationInput
-    currencies?: CurrencyOrderByRelationAggregateInput
-    Deposit?: DepositOrderByRelationAggregateInput
-    Withdrawal?: WithdrawalOrderByRelationAggregateInput
-  }
-
-  export type PaymentChannelWhereUniqueInput = Prisma.AtLeast<{
-    id?: string
-    name?: string
-    AND?: PaymentChannelWhereInput | PaymentChannelWhereInput[]
-    OR?: PaymentChannelWhereInput[]
-    NOT?: PaymentChannelWhereInput | PaymentChannelWhereInput[]
-    description?: StringNullableFilter<"PaymentChannel"> | string | null
-    createdAt?: DateTimeFilter<"PaymentChannel"> | Date | string
-    bridgeTransfers?: XOR<BridgeTransferNullableScalarRelationFilter, BridgeTransferWhereInput> | null
-    currencies?: CurrencyListRelationFilter
-    Deposit?: DepositListRelationFilter
-    Withdrawal?: WithdrawalListRelationFilter
-  }, "id" | "name">
-
-  export type PaymentChannelOrderByWithAggregationInput = {
-    id?: SortOrder
-    name?: SortOrder
-    description?: SortOrderInput | SortOrder
-    createdAt?: SortOrder
-    _count?: PaymentChannelCountOrderByAggregateInput
-    _max?: PaymentChannelMaxOrderByAggregateInput
-    _min?: PaymentChannelMinOrderByAggregateInput
-  }
-
-  export type PaymentChannelScalarWhereWithAggregatesInput = {
-    AND?: PaymentChannelScalarWhereWithAggregatesInput | PaymentChannelScalarWhereWithAggregatesInput[]
-    OR?: PaymentChannelScalarWhereWithAggregatesInput[]
-    NOT?: PaymentChannelScalarWhereWithAggregatesInput | PaymentChannelScalarWhereWithAggregatesInput[]
-    id?: StringWithAggregatesFilter<"PaymentChannel"> | string
-    name?: StringWithAggregatesFilter<"PaymentChannel"> | string
-    description?: StringNullableWithAggregatesFilter<"PaymentChannel"> | string | null
-    createdAt?: DateTimeWithAggregatesFilter<"PaymentChannel"> | Date | string
   }
 
   export type BridgeTransferWhereInput = {
@@ -18698,6 +20079,230 @@ export namespace Prisma {
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   }
 
+  export type PaymentChannelCreateInput = {
+    id?: string
+    name: string
+    description?: string | null
+    createdAt?: Date | string
+    bridgeTransfers?: BridgeTransferCreateNestedOneWithoutPaymentChannelInput
+    currencies?: CurrencyCreateNestedManyWithoutPaymentChannelsInput
+    Deposit?: DepositCreateNestedManyWithoutPaymentChannelInput
+    Withdrawal?: WithdrawalCreateNestedManyWithoutPaymentChannelInput
+    LiquidityPool?: LiquidityPoolCreateNestedManyWithoutPaymentChannelInput
+  }
+
+  export type PaymentChannelUncheckedCreateInput = {
+    id?: string
+    name: string
+    description?: string | null
+    createdAt?: Date | string
+    bridgeTransfers?: BridgeTransferUncheckedCreateNestedOneWithoutPaymentChannelInput
+    currencies?: CurrencyUncheckedCreateNestedManyWithoutPaymentChannelsInput
+    Deposit?: DepositUncheckedCreateNestedManyWithoutPaymentChannelInput
+    Withdrawal?: WithdrawalUncheckedCreateNestedManyWithoutPaymentChannelInput
+    LiquidityPool?: LiquidityPoolUncheckedCreateNestedManyWithoutPaymentChannelInput
+  }
+
+  export type PaymentChannelUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    bridgeTransfers?: BridgeTransferUpdateOneWithoutPaymentChannelNestedInput
+    currencies?: CurrencyUpdateManyWithoutPaymentChannelsNestedInput
+    Deposit?: DepositUpdateManyWithoutPaymentChannelNestedInput
+    Withdrawal?: WithdrawalUpdateManyWithoutPaymentChannelNestedInput
+    LiquidityPool?: LiquidityPoolUpdateManyWithoutPaymentChannelNestedInput
+  }
+
+  export type PaymentChannelUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    bridgeTransfers?: BridgeTransferUncheckedUpdateOneWithoutPaymentChannelNestedInput
+    currencies?: CurrencyUncheckedUpdateManyWithoutPaymentChannelsNestedInput
+    Deposit?: DepositUncheckedUpdateManyWithoutPaymentChannelNestedInput
+    Withdrawal?: WithdrawalUncheckedUpdateManyWithoutPaymentChannelNestedInput
+    LiquidityPool?: LiquidityPoolUncheckedUpdateManyWithoutPaymentChannelNestedInput
+  }
+
+  export type PaymentChannelCreateManyInput = {
+    id?: string
+    name: string
+    description?: string | null
+    createdAt?: Date | string
+  }
+
+  export type PaymentChannelUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type PaymentChannelUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type CurrencyCreateInput = {
+    id?: string
+    code: string
+    name: string
+    symbol: string
+    decimals?: number
+    createdAt?: Date | string
+    wallets?: WalletCreateNestedManyWithoutCurrencyInput
+    exchangesFrom?: ExchangeCreateNestedManyWithoutFromCurrencyInput
+    exchangesTo?: ExchangeCreateNestedManyWithoutToCurrencyInput
+    FeeSetting?: FeeSettingCreateNestedManyWithoutCurrencyInput
+    paymentChannels?: PaymentChannelCreateNestedManyWithoutCurrenciesInput
+    LiquidityPool?: LiquidityPoolCreateNestedManyWithoutCurrencyInput
+  }
+
+  export type CurrencyUncheckedCreateInput = {
+    id?: string
+    code: string
+    name: string
+    symbol: string
+    decimals?: number
+    createdAt?: Date | string
+    wallets?: WalletUncheckedCreateNestedManyWithoutCurrencyInput
+    exchangesFrom?: ExchangeUncheckedCreateNestedManyWithoutFromCurrencyInput
+    exchangesTo?: ExchangeUncheckedCreateNestedManyWithoutToCurrencyInput
+    FeeSetting?: FeeSettingUncheckedCreateNestedManyWithoutCurrencyInput
+    paymentChannels?: PaymentChannelUncheckedCreateNestedManyWithoutCurrenciesInput
+    LiquidityPool?: LiquidityPoolUncheckedCreateNestedManyWithoutCurrencyInput
+  }
+
+  export type CurrencyUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    code?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    symbol?: StringFieldUpdateOperationsInput | string
+    decimals?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    wallets?: WalletUpdateManyWithoutCurrencyNestedInput
+    exchangesFrom?: ExchangeUpdateManyWithoutFromCurrencyNestedInput
+    exchangesTo?: ExchangeUpdateManyWithoutToCurrencyNestedInput
+    FeeSetting?: FeeSettingUpdateManyWithoutCurrencyNestedInput
+    paymentChannels?: PaymentChannelUpdateManyWithoutCurrenciesNestedInput
+    LiquidityPool?: LiquidityPoolUpdateManyWithoutCurrencyNestedInput
+  }
+
+  export type CurrencyUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    code?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    symbol?: StringFieldUpdateOperationsInput | string
+    decimals?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    wallets?: WalletUncheckedUpdateManyWithoutCurrencyNestedInput
+    exchangesFrom?: ExchangeUncheckedUpdateManyWithoutFromCurrencyNestedInput
+    exchangesTo?: ExchangeUncheckedUpdateManyWithoutToCurrencyNestedInput
+    FeeSetting?: FeeSettingUncheckedUpdateManyWithoutCurrencyNestedInput
+    paymentChannels?: PaymentChannelUncheckedUpdateManyWithoutCurrenciesNestedInput
+    LiquidityPool?: LiquidityPoolUncheckedUpdateManyWithoutCurrencyNestedInput
+  }
+
+  export type CurrencyCreateManyInput = {
+    id?: string
+    code: string
+    name: string
+    symbol: string
+    decimals?: number
+    createdAt?: Date | string
+  }
+
+  export type CurrencyUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    code?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    symbol?: StringFieldUpdateOperationsInput | string
+    decimals?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type CurrencyUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    code?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    symbol?: StringFieldUpdateOperationsInput | string
+    decimals?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type LiquidityPoolCreateInput = {
+    id?: string
+    address: string
+    balance?: Decimal | DecimalJsLike | number | string
+    frozen?: Decimal | DecimalJsLike | number | string
+    updatedAt?: Date | string
+    paymentChannel: PaymentChannelCreateNestedOneWithoutLiquidityPoolInput
+    currency: CurrencyCreateNestedOneWithoutLiquidityPoolInput
+  }
+
+  export type LiquidityPoolUncheckedCreateInput = {
+    id?: string
+    paymentChannelId: string
+    currencyId: string
+    address: string
+    balance?: Decimal | DecimalJsLike | number | string
+    frozen?: Decimal | DecimalJsLike | number | string
+    updatedAt?: Date | string
+  }
+
+  export type LiquidityPoolUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    address?: StringFieldUpdateOperationsInput | string
+    balance?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    frozen?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    paymentChannel?: PaymentChannelUpdateOneRequiredWithoutLiquidityPoolNestedInput
+    currency?: CurrencyUpdateOneRequiredWithoutLiquidityPoolNestedInput
+  }
+
+  export type LiquidityPoolUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    paymentChannelId?: StringFieldUpdateOperationsInput | string
+    currencyId?: StringFieldUpdateOperationsInput | string
+    address?: StringFieldUpdateOperationsInput | string
+    balance?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    frozen?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type LiquidityPoolCreateManyInput = {
+    id?: string
+    paymentChannelId: string
+    currencyId: string
+    address: string
+    balance?: Decimal | DecimalJsLike | number | string
+    frozen?: Decimal | DecimalJsLike | number | string
+    updatedAt?: Date | string
+  }
+
+  export type LiquidityPoolUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    address?: StringFieldUpdateOperationsInput | string
+    balance?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    frozen?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type LiquidityPoolUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    paymentChannelId?: StringFieldUpdateOperationsInput | string
+    currencyId?: StringFieldUpdateOperationsInput | string
+    address?: StringFieldUpdateOperationsInput | string
+    balance?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    frozen?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
   export type WalletCreateInput = {
     id?: string
     balance?: Decimal | DecimalJsLike | number | string
@@ -18784,89 +20389,6 @@ export namespace Prisma {
     frozen?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
-  export type CurrencyCreateInput = {
-    id?: string
-    code: string
-    name: string
-    symbol: string
-    decimals?: number
-    createdAt?: Date | string
-    wallets?: WalletCreateNestedManyWithoutCurrencyInput
-    exchangesFrom?: ExchangeCreateNestedManyWithoutFromCurrencyInput
-    exchangesTo?: ExchangeCreateNestedManyWithoutToCurrencyInput
-    FeeSetting?: FeeSettingCreateNestedManyWithoutCurrencyInput
-    paymentChannels?: PaymentChannelCreateNestedManyWithoutCurrenciesInput
-  }
-
-  export type CurrencyUncheckedCreateInput = {
-    id?: string
-    code: string
-    name: string
-    symbol: string
-    decimals?: number
-    createdAt?: Date | string
-    wallets?: WalletUncheckedCreateNestedManyWithoutCurrencyInput
-    exchangesFrom?: ExchangeUncheckedCreateNestedManyWithoutFromCurrencyInput
-    exchangesTo?: ExchangeUncheckedCreateNestedManyWithoutToCurrencyInput
-    FeeSetting?: FeeSettingUncheckedCreateNestedManyWithoutCurrencyInput
-    paymentChannels?: PaymentChannelUncheckedCreateNestedManyWithoutCurrenciesInput
-  }
-
-  export type CurrencyUpdateInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    code?: StringFieldUpdateOperationsInput | string
-    name?: StringFieldUpdateOperationsInput | string
-    symbol?: StringFieldUpdateOperationsInput | string
-    decimals?: IntFieldUpdateOperationsInput | number
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    wallets?: WalletUpdateManyWithoutCurrencyNestedInput
-    exchangesFrom?: ExchangeUpdateManyWithoutFromCurrencyNestedInput
-    exchangesTo?: ExchangeUpdateManyWithoutToCurrencyNestedInput
-    FeeSetting?: FeeSettingUpdateManyWithoutCurrencyNestedInput
-    paymentChannels?: PaymentChannelUpdateManyWithoutCurrenciesNestedInput
-  }
-
-  export type CurrencyUncheckedUpdateInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    code?: StringFieldUpdateOperationsInput | string
-    name?: StringFieldUpdateOperationsInput | string
-    symbol?: StringFieldUpdateOperationsInput | string
-    decimals?: IntFieldUpdateOperationsInput | number
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    wallets?: WalletUncheckedUpdateManyWithoutCurrencyNestedInput
-    exchangesFrom?: ExchangeUncheckedUpdateManyWithoutFromCurrencyNestedInput
-    exchangesTo?: ExchangeUncheckedUpdateManyWithoutToCurrencyNestedInput
-    FeeSetting?: FeeSettingUncheckedUpdateManyWithoutCurrencyNestedInput
-    paymentChannels?: PaymentChannelUncheckedUpdateManyWithoutCurrenciesNestedInput
-  }
-
-  export type CurrencyCreateManyInput = {
-    id?: string
-    code: string
-    name: string
-    symbol: string
-    decimals?: number
-    createdAt?: Date | string
-  }
-
-  export type CurrencyUpdateManyMutationInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    code?: StringFieldUpdateOperationsInput | string
-    name?: StringFieldUpdateOperationsInput | string
-    symbol?: StringFieldUpdateOperationsInput | string
-    decimals?: IntFieldUpdateOperationsInput | number
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
-  export type CurrencyUncheckedUpdateManyInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    code?: StringFieldUpdateOperationsInput | string
-    name?: StringFieldUpdateOperationsInput | string
-    symbol?: StringFieldUpdateOperationsInput | string
-    decimals?: IntFieldUpdateOperationsInput | number
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type DepositCreateInput = {
@@ -19069,71 +20591,6 @@ export namespace Prisma {
     failedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     paymentChannelId?: StringFieldUpdateOperationsInput | string
     bridgeTransferid?: NullableStringFieldUpdateOperationsInput | string | null
-  }
-
-  export type PaymentChannelCreateInput = {
-    id?: string
-    name: string
-    description?: string | null
-    createdAt?: Date | string
-    bridgeTransfers?: BridgeTransferCreateNestedOneWithoutPaymentChannelInput
-    currencies?: CurrencyCreateNestedManyWithoutPaymentChannelsInput
-    Deposit?: DepositCreateNestedManyWithoutPaymentChannelInput
-    Withdrawal?: WithdrawalCreateNestedManyWithoutPaymentChannelInput
-  }
-
-  export type PaymentChannelUncheckedCreateInput = {
-    id?: string
-    name: string
-    description?: string | null
-    createdAt?: Date | string
-    bridgeTransfers?: BridgeTransferUncheckedCreateNestedOneWithoutPaymentChannelInput
-    currencies?: CurrencyUncheckedCreateNestedManyWithoutPaymentChannelsInput
-    Deposit?: DepositUncheckedCreateNestedManyWithoutPaymentChannelInput
-    Withdrawal?: WithdrawalUncheckedCreateNestedManyWithoutPaymentChannelInput
-  }
-
-  export type PaymentChannelUpdateInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    name?: StringFieldUpdateOperationsInput | string
-    description?: NullableStringFieldUpdateOperationsInput | string | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    bridgeTransfers?: BridgeTransferUpdateOneWithoutPaymentChannelNestedInput
-    currencies?: CurrencyUpdateManyWithoutPaymentChannelsNestedInput
-    Deposit?: DepositUpdateManyWithoutPaymentChannelNestedInput
-    Withdrawal?: WithdrawalUpdateManyWithoutPaymentChannelNestedInput
-  }
-
-  export type PaymentChannelUncheckedUpdateInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    name?: StringFieldUpdateOperationsInput | string
-    description?: NullableStringFieldUpdateOperationsInput | string | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    bridgeTransfers?: BridgeTransferUncheckedUpdateOneWithoutPaymentChannelNestedInput
-    currencies?: CurrencyUncheckedUpdateManyWithoutPaymentChannelsNestedInput
-    Deposit?: DepositUncheckedUpdateManyWithoutPaymentChannelNestedInput
-    Withdrawal?: WithdrawalUncheckedUpdateManyWithoutPaymentChannelNestedInput
-  }
-
-  export type PaymentChannelCreateManyInput = {
-    id?: string
-    name: string
-    description?: string | null
-    createdAt?: Date | string
-  }
-
-  export type PaymentChannelUpdateManyMutationInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    name?: StringFieldUpdateOperationsInput | string
-    description?: NullableStringFieldUpdateOperationsInput | string | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
-  export type PaymentChannelUncheckedUpdateManyInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    name?: StringFieldUpdateOperationsInput | string
-    description?: NullableStringFieldUpdateOperationsInput | string | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type BridgeTransferCreateInput = {
@@ -19978,86 +21435,50 @@ export namespace Prisma {
     _max?: NestedDateTimeFilter<$PrismaModel>
   }
 
-  export type DecimalFilter<$PrismaModel = never> = {
-    equals?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
-    in?: Decimal[] | DecimalJsLike[] | number[] | string[] | ListDecimalFieldRefInput<$PrismaModel>
-    notIn?: Decimal[] | DecimalJsLike[] | number[] | string[] | ListDecimalFieldRefInput<$PrismaModel>
-    lt?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
-    lte?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
-    gt?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
-    gte?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
-    not?: NestedDecimalFilter<$PrismaModel> | Decimal | DecimalJsLike | number | string
+  export type BridgeTransferNullableScalarRelationFilter = {
+    is?: BridgeTransferWhereInput | null
+    isNot?: BridgeTransferWhereInput | null
   }
 
-  export type UserScalarRelationFilter = {
-    is?: UserWhereInput
-    isNot?: UserWhereInput
+  export type CurrencyListRelationFilter = {
+    every?: CurrencyWhereInput
+    some?: CurrencyWhereInput
+    none?: CurrencyWhereInput
   }
 
-  export type CurrencyScalarRelationFilter = {
-    is?: CurrencyWhereInput
-    isNot?: CurrencyWhereInput
+  export type LiquidityPoolListRelationFilter = {
+    every?: LiquidityPoolWhereInput
+    some?: LiquidityPoolWhereInput
+    none?: LiquidityPoolWhereInput
   }
 
-  export type WalletUserIdCurrencyIdCompoundUniqueInput = {
-    userId: string
-    currencyId: string
+  export type CurrencyOrderByRelationAggregateInput = {
+    _count?: SortOrder
   }
 
-  export type WalletCountOrderByAggregateInput = {
+  export type LiquidityPoolOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type PaymentChannelCountOrderByAggregateInput = {
     id?: SortOrder
-    userId?: SortOrder
-    currencyId?: SortOrder
-    balance?: SortOrder
-    frozen?: SortOrder
+    name?: SortOrder
+    description?: SortOrder
     createdAt?: SortOrder
-    updatedAt?: SortOrder
   }
 
-  export type WalletAvgOrderByAggregateInput = {
-    balance?: SortOrder
-    frozen?: SortOrder
-  }
-
-  export type WalletMaxOrderByAggregateInput = {
+  export type PaymentChannelMaxOrderByAggregateInput = {
     id?: SortOrder
-    userId?: SortOrder
-    currencyId?: SortOrder
-    balance?: SortOrder
-    frozen?: SortOrder
+    name?: SortOrder
+    description?: SortOrder
     createdAt?: SortOrder
-    updatedAt?: SortOrder
   }
 
-  export type WalletMinOrderByAggregateInput = {
+  export type PaymentChannelMinOrderByAggregateInput = {
     id?: SortOrder
-    userId?: SortOrder
-    currencyId?: SortOrder
-    balance?: SortOrder
-    frozen?: SortOrder
+    name?: SortOrder
+    description?: SortOrder
     createdAt?: SortOrder
-    updatedAt?: SortOrder
-  }
-
-  export type WalletSumOrderByAggregateInput = {
-    balance?: SortOrder
-    frozen?: SortOrder
-  }
-
-  export type DecimalWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
-    in?: Decimal[] | DecimalJsLike[] | number[] | string[] | ListDecimalFieldRefInput<$PrismaModel>
-    notIn?: Decimal[] | DecimalJsLike[] | number[] | string[] | ListDecimalFieldRefInput<$PrismaModel>
-    lt?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
-    lte?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
-    gt?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
-    gte?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
-    not?: NestedDecimalWithAggregatesFilter<$PrismaModel> | Decimal | DecimalJsLike | number | string
-    _count?: NestedIntFilter<$PrismaModel>
-    _avg?: NestedDecimalFilter<$PrismaModel>
-    _sum?: NestedDecimalFilter<$PrismaModel>
-    _min?: NestedDecimalFilter<$PrismaModel>
-    _max?: NestedDecimalFilter<$PrismaModel>
   }
 
   export type IntFilter<$PrismaModel = never> = {
@@ -20142,11 +21563,15 @@ export namespace Prisma {
     _max?: NestedIntFilter<$PrismaModel>
   }
 
-  export type EnumDepositStatusFilter<$PrismaModel = never> = {
-    equals?: $Enums.DepositStatus | EnumDepositStatusFieldRefInput<$PrismaModel>
-    in?: $Enums.DepositStatus[] | ListEnumDepositStatusFieldRefInput<$PrismaModel>
-    notIn?: $Enums.DepositStatus[] | ListEnumDepositStatusFieldRefInput<$PrismaModel>
-    not?: NestedEnumDepositStatusFilter<$PrismaModel> | $Enums.DepositStatus
+  export type DecimalFilter<$PrismaModel = never> = {
+    equals?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
+    in?: Decimal[] | DecimalJsLike[] | number[] | string[] | ListDecimalFieldRefInput<$PrismaModel>
+    notIn?: Decimal[] | DecimalJsLike[] | number[] | string[] | ListDecimalFieldRefInput<$PrismaModel>
+    lt?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
+    lte?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
+    gt?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
+    gte?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
+    not?: NestedDecimalFilter<$PrismaModel> | Decimal | DecimalJsLike | number | string
   }
 
   export type PaymentChannelScalarRelationFilter = {
@@ -20154,9 +21579,122 @@ export namespace Prisma {
     isNot?: PaymentChannelWhereInput
   }
 
-  export type BridgeTransferNullableScalarRelationFilter = {
-    is?: BridgeTransferWhereInput | null
-    isNot?: BridgeTransferWhereInput | null
+  export type CurrencyScalarRelationFilter = {
+    is?: CurrencyWhereInput
+    isNot?: CurrencyWhereInput
+  }
+
+  export type LiquidityPoolCountOrderByAggregateInput = {
+    id?: SortOrder
+    paymentChannelId?: SortOrder
+    currencyId?: SortOrder
+    address?: SortOrder
+    balance?: SortOrder
+    frozen?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type LiquidityPoolAvgOrderByAggregateInput = {
+    balance?: SortOrder
+    frozen?: SortOrder
+  }
+
+  export type LiquidityPoolMaxOrderByAggregateInput = {
+    id?: SortOrder
+    paymentChannelId?: SortOrder
+    currencyId?: SortOrder
+    address?: SortOrder
+    balance?: SortOrder
+    frozen?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type LiquidityPoolMinOrderByAggregateInput = {
+    id?: SortOrder
+    paymentChannelId?: SortOrder
+    currencyId?: SortOrder
+    address?: SortOrder
+    balance?: SortOrder
+    frozen?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type LiquidityPoolSumOrderByAggregateInput = {
+    balance?: SortOrder
+    frozen?: SortOrder
+  }
+
+  export type DecimalWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
+    in?: Decimal[] | DecimalJsLike[] | number[] | string[] | ListDecimalFieldRefInput<$PrismaModel>
+    notIn?: Decimal[] | DecimalJsLike[] | number[] | string[] | ListDecimalFieldRefInput<$PrismaModel>
+    lt?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
+    lte?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
+    gt?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
+    gte?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
+    not?: NestedDecimalWithAggregatesFilter<$PrismaModel> | Decimal | DecimalJsLike | number | string
+    _count?: NestedIntFilter<$PrismaModel>
+    _avg?: NestedDecimalFilter<$PrismaModel>
+    _sum?: NestedDecimalFilter<$PrismaModel>
+    _min?: NestedDecimalFilter<$PrismaModel>
+    _max?: NestedDecimalFilter<$PrismaModel>
+  }
+
+  export type UserScalarRelationFilter = {
+    is?: UserWhereInput
+    isNot?: UserWhereInput
+  }
+
+  export type WalletUserIdCurrencyIdCompoundUniqueInput = {
+    userId: string
+    currencyId: string
+  }
+
+  export type WalletCountOrderByAggregateInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    currencyId?: SortOrder
+    balance?: SortOrder
+    frozen?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type WalletAvgOrderByAggregateInput = {
+    balance?: SortOrder
+    frozen?: SortOrder
+  }
+
+  export type WalletMaxOrderByAggregateInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    currencyId?: SortOrder
+    balance?: SortOrder
+    frozen?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type WalletMinOrderByAggregateInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    currencyId?: SortOrder
+    balance?: SortOrder
+    frozen?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type WalletSumOrderByAggregateInput = {
+    balance?: SortOrder
+    frozen?: SortOrder
+  }
+
+  export type EnumDepositStatusFilter<$PrismaModel = never> = {
+    equals?: $Enums.DepositStatus | EnumDepositStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.DepositStatus[] | ListEnumDepositStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.DepositStatus[] | ListEnumDepositStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumDepositStatusFilter<$PrismaModel> | $Enums.DepositStatus
   }
 
   export type WalletScalarRelationFilter = {
@@ -20299,37 +21837,6 @@ export namespace Prisma {
     _count?: NestedIntFilter<$PrismaModel>
     _min?: NestedEnumWithdrawalStatusFilter<$PrismaModel>
     _max?: NestedEnumWithdrawalStatusFilter<$PrismaModel>
-  }
-
-  export type CurrencyListRelationFilter = {
-    every?: CurrencyWhereInput
-    some?: CurrencyWhereInput
-    none?: CurrencyWhereInput
-  }
-
-  export type CurrencyOrderByRelationAggregateInput = {
-    _count?: SortOrder
-  }
-
-  export type PaymentChannelCountOrderByAggregateInput = {
-    id?: SortOrder
-    name?: SortOrder
-    description?: SortOrder
-    createdAt?: SortOrder
-  }
-
-  export type PaymentChannelMaxOrderByAggregateInput = {
-    id?: SortOrder
-    name?: SortOrder
-    description?: SortOrder
-    createdAt?: SortOrder
-  }
-
-  export type PaymentChannelMinOrderByAggregateInput = {
-    id?: SortOrder
-    name?: SortOrder
-    description?: SortOrder
-    createdAt?: SortOrder
   }
 
   export type EnumBridgeStatusFilter<$PrismaModel = never> = {
@@ -21108,6 +22615,494 @@ export namespace Prisma {
     deleteMany?: ActivityLogScalarWhereInput | ActivityLogScalarWhereInput[]
   }
 
+  export type BridgeTransferCreateNestedOneWithoutPaymentChannelInput = {
+    create?: XOR<BridgeTransferCreateWithoutPaymentChannelInput, BridgeTransferUncheckedCreateWithoutPaymentChannelInput>
+    connectOrCreate?: BridgeTransferCreateOrConnectWithoutPaymentChannelInput
+    connect?: BridgeTransferWhereUniqueInput
+  }
+
+  export type CurrencyCreateNestedManyWithoutPaymentChannelsInput = {
+    create?: XOR<CurrencyCreateWithoutPaymentChannelsInput, CurrencyUncheckedCreateWithoutPaymentChannelsInput> | CurrencyCreateWithoutPaymentChannelsInput[] | CurrencyUncheckedCreateWithoutPaymentChannelsInput[]
+    connectOrCreate?: CurrencyCreateOrConnectWithoutPaymentChannelsInput | CurrencyCreateOrConnectWithoutPaymentChannelsInput[]
+    connect?: CurrencyWhereUniqueInput | CurrencyWhereUniqueInput[]
+  }
+
+  export type DepositCreateNestedManyWithoutPaymentChannelInput = {
+    create?: XOR<DepositCreateWithoutPaymentChannelInput, DepositUncheckedCreateWithoutPaymentChannelInput> | DepositCreateWithoutPaymentChannelInput[] | DepositUncheckedCreateWithoutPaymentChannelInput[]
+    connectOrCreate?: DepositCreateOrConnectWithoutPaymentChannelInput | DepositCreateOrConnectWithoutPaymentChannelInput[]
+    createMany?: DepositCreateManyPaymentChannelInputEnvelope
+    connect?: DepositWhereUniqueInput | DepositWhereUniqueInput[]
+  }
+
+  export type WithdrawalCreateNestedManyWithoutPaymentChannelInput = {
+    create?: XOR<WithdrawalCreateWithoutPaymentChannelInput, WithdrawalUncheckedCreateWithoutPaymentChannelInput> | WithdrawalCreateWithoutPaymentChannelInput[] | WithdrawalUncheckedCreateWithoutPaymentChannelInput[]
+    connectOrCreate?: WithdrawalCreateOrConnectWithoutPaymentChannelInput | WithdrawalCreateOrConnectWithoutPaymentChannelInput[]
+    createMany?: WithdrawalCreateManyPaymentChannelInputEnvelope
+    connect?: WithdrawalWhereUniqueInput | WithdrawalWhereUniqueInput[]
+  }
+
+  export type LiquidityPoolCreateNestedManyWithoutPaymentChannelInput = {
+    create?: XOR<LiquidityPoolCreateWithoutPaymentChannelInput, LiquidityPoolUncheckedCreateWithoutPaymentChannelInput> | LiquidityPoolCreateWithoutPaymentChannelInput[] | LiquidityPoolUncheckedCreateWithoutPaymentChannelInput[]
+    connectOrCreate?: LiquidityPoolCreateOrConnectWithoutPaymentChannelInput | LiquidityPoolCreateOrConnectWithoutPaymentChannelInput[]
+    createMany?: LiquidityPoolCreateManyPaymentChannelInputEnvelope
+    connect?: LiquidityPoolWhereUniqueInput | LiquidityPoolWhereUniqueInput[]
+  }
+
+  export type BridgeTransferUncheckedCreateNestedOneWithoutPaymentChannelInput = {
+    create?: XOR<BridgeTransferCreateWithoutPaymentChannelInput, BridgeTransferUncheckedCreateWithoutPaymentChannelInput>
+    connectOrCreate?: BridgeTransferCreateOrConnectWithoutPaymentChannelInput
+    connect?: BridgeTransferWhereUniqueInput
+  }
+
+  export type CurrencyUncheckedCreateNestedManyWithoutPaymentChannelsInput = {
+    create?: XOR<CurrencyCreateWithoutPaymentChannelsInput, CurrencyUncheckedCreateWithoutPaymentChannelsInput> | CurrencyCreateWithoutPaymentChannelsInput[] | CurrencyUncheckedCreateWithoutPaymentChannelsInput[]
+    connectOrCreate?: CurrencyCreateOrConnectWithoutPaymentChannelsInput | CurrencyCreateOrConnectWithoutPaymentChannelsInput[]
+    connect?: CurrencyWhereUniqueInput | CurrencyWhereUniqueInput[]
+  }
+
+  export type DepositUncheckedCreateNestedManyWithoutPaymentChannelInput = {
+    create?: XOR<DepositCreateWithoutPaymentChannelInput, DepositUncheckedCreateWithoutPaymentChannelInput> | DepositCreateWithoutPaymentChannelInput[] | DepositUncheckedCreateWithoutPaymentChannelInput[]
+    connectOrCreate?: DepositCreateOrConnectWithoutPaymentChannelInput | DepositCreateOrConnectWithoutPaymentChannelInput[]
+    createMany?: DepositCreateManyPaymentChannelInputEnvelope
+    connect?: DepositWhereUniqueInput | DepositWhereUniqueInput[]
+  }
+
+  export type WithdrawalUncheckedCreateNestedManyWithoutPaymentChannelInput = {
+    create?: XOR<WithdrawalCreateWithoutPaymentChannelInput, WithdrawalUncheckedCreateWithoutPaymentChannelInput> | WithdrawalCreateWithoutPaymentChannelInput[] | WithdrawalUncheckedCreateWithoutPaymentChannelInput[]
+    connectOrCreate?: WithdrawalCreateOrConnectWithoutPaymentChannelInput | WithdrawalCreateOrConnectWithoutPaymentChannelInput[]
+    createMany?: WithdrawalCreateManyPaymentChannelInputEnvelope
+    connect?: WithdrawalWhereUniqueInput | WithdrawalWhereUniqueInput[]
+  }
+
+  export type LiquidityPoolUncheckedCreateNestedManyWithoutPaymentChannelInput = {
+    create?: XOR<LiquidityPoolCreateWithoutPaymentChannelInput, LiquidityPoolUncheckedCreateWithoutPaymentChannelInput> | LiquidityPoolCreateWithoutPaymentChannelInput[] | LiquidityPoolUncheckedCreateWithoutPaymentChannelInput[]
+    connectOrCreate?: LiquidityPoolCreateOrConnectWithoutPaymentChannelInput | LiquidityPoolCreateOrConnectWithoutPaymentChannelInput[]
+    createMany?: LiquidityPoolCreateManyPaymentChannelInputEnvelope
+    connect?: LiquidityPoolWhereUniqueInput | LiquidityPoolWhereUniqueInput[]
+  }
+
+  export type BridgeTransferUpdateOneWithoutPaymentChannelNestedInput = {
+    create?: XOR<BridgeTransferCreateWithoutPaymentChannelInput, BridgeTransferUncheckedCreateWithoutPaymentChannelInput>
+    connectOrCreate?: BridgeTransferCreateOrConnectWithoutPaymentChannelInput
+    upsert?: BridgeTransferUpsertWithoutPaymentChannelInput
+    disconnect?: BridgeTransferWhereInput | boolean
+    delete?: BridgeTransferWhereInput | boolean
+    connect?: BridgeTransferWhereUniqueInput
+    update?: XOR<XOR<BridgeTransferUpdateToOneWithWhereWithoutPaymentChannelInput, BridgeTransferUpdateWithoutPaymentChannelInput>, BridgeTransferUncheckedUpdateWithoutPaymentChannelInput>
+  }
+
+  export type CurrencyUpdateManyWithoutPaymentChannelsNestedInput = {
+    create?: XOR<CurrencyCreateWithoutPaymentChannelsInput, CurrencyUncheckedCreateWithoutPaymentChannelsInput> | CurrencyCreateWithoutPaymentChannelsInput[] | CurrencyUncheckedCreateWithoutPaymentChannelsInput[]
+    connectOrCreate?: CurrencyCreateOrConnectWithoutPaymentChannelsInput | CurrencyCreateOrConnectWithoutPaymentChannelsInput[]
+    upsert?: CurrencyUpsertWithWhereUniqueWithoutPaymentChannelsInput | CurrencyUpsertWithWhereUniqueWithoutPaymentChannelsInput[]
+    set?: CurrencyWhereUniqueInput | CurrencyWhereUniqueInput[]
+    disconnect?: CurrencyWhereUniqueInput | CurrencyWhereUniqueInput[]
+    delete?: CurrencyWhereUniqueInput | CurrencyWhereUniqueInput[]
+    connect?: CurrencyWhereUniqueInput | CurrencyWhereUniqueInput[]
+    update?: CurrencyUpdateWithWhereUniqueWithoutPaymentChannelsInput | CurrencyUpdateWithWhereUniqueWithoutPaymentChannelsInput[]
+    updateMany?: CurrencyUpdateManyWithWhereWithoutPaymentChannelsInput | CurrencyUpdateManyWithWhereWithoutPaymentChannelsInput[]
+    deleteMany?: CurrencyScalarWhereInput | CurrencyScalarWhereInput[]
+  }
+
+  export type DepositUpdateManyWithoutPaymentChannelNestedInput = {
+    create?: XOR<DepositCreateWithoutPaymentChannelInput, DepositUncheckedCreateWithoutPaymentChannelInput> | DepositCreateWithoutPaymentChannelInput[] | DepositUncheckedCreateWithoutPaymentChannelInput[]
+    connectOrCreate?: DepositCreateOrConnectWithoutPaymentChannelInput | DepositCreateOrConnectWithoutPaymentChannelInput[]
+    upsert?: DepositUpsertWithWhereUniqueWithoutPaymentChannelInput | DepositUpsertWithWhereUniqueWithoutPaymentChannelInput[]
+    createMany?: DepositCreateManyPaymentChannelInputEnvelope
+    set?: DepositWhereUniqueInput | DepositWhereUniqueInput[]
+    disconnect?: DepositWhereUniqueInput | DepositWhereUniqueInput[]
+    delete?: DepositWhereUniqueInput | DepositWhereUniqueInput[]
+    connect?: DepositWhereUniqueInput | DepositWhereUniqueInput[]
+    update?: DepositUpdateWithWhereUniqueWithoutPaymentChannelInput | DepositUpdateWithWhereUniqueWithoutPaymentChannelInput[]
+    updateMany?: DepositUpdateManyWithWhereWithoutPaymentChannelInput | DepositUpdateManyWithWhereWithoutPaymentChannelInput[]
+    deleteMany?: DepositScalarWhereInput | DepositScalarWhereInput[]
+  }
+
+  export type WithdrawalUpdateManyWithoutPaymentChannelNestedInput = {
+    create?: XOR<WithdrawalCreateWithoutPaymentChannelInput, WithdrawalUncheckedCreateWithoutPaymentChannelInput> | WithdrawalCreateWithoutPaymentChannelInput[] | WithdrawalUncheckedCreateWithoutPaymentChannelInput[]
+    connectOrCreate?: WithdrawalCreateOrConnectWithoutPaymentChannelInput | WithdrawalCreateOrConnectWithoutPaymentChannelInput[]
+    upsert?: WithdrawalUpsertWithWhereUniqueWithoutPaymentChannelInput | WithdrawalUpsertWithWhereUniqueWithoutPaymentChannelInput[]
+    createMany?: WithdrawalCreateManyPaymentChannelInputEnvelope
+    set?: WithdrawalWhereUniqueInput | WithdrawalWhereUniqueInput[]
+    disconnect?: WithdrawalWhereUniqueInput | WithdrawalWhereUniqueInput[]
+    delete?: WithdrawalWhereUniqueInput | WithdrawalWhereUniqueInput[]
+    connect?: WithdrawalWhereUniqueInput | WithdrawalWhereUniqueInput[]
+    update?: WithdrawalUpdateWithWhereUniqueWithoutPaymentChannelInput | WithdrawalUpdateWithWhereUniqueWithoutPaymentChannelInput[]
+    updateMany?: WithdrawalUpdateManyWithWhereWithoutPaymentChannelInput | WithdrawalUpdateManyWithWhereWithoutPaymentChannelInput[]
+    deleteMany?: WithdrawalScalarWhereInput | WithdrawalScalarWhereInput[]
+  }
+
+  export type LiquidityPoolUpdateManyWithoutPaymentChannelNestedInput = {
+    create?: XOR<LiquidityPoolCreateWithoutPaymentChannelInput, LiquidityPoolUncheckedCreateWithoutPaymentChannelInput> | LiquidityPoolCreateWithoutPaymentChannelInput[] | LiquidityPoolUncheckedCreateWithoutPaymentChannelInput[]
+    connectOrCreate?: LiquidityPoolCreateOrConnectWithoutPaymentChannelInput | LiquidityPoolCreateOrConnectWithoutPaymentChannelInput[]
+    upsert?: LiquidityPoolUpsertWithWhereUniqueWithoutPaymentChannelInput | LiquidityPoolUpsertWithWhereUniqueWithoutPaymentChannelInput[]
+    createMany?: LiquidityPoolCreateManyPaymentChannelInputEnvelope
+    set?: LiquidityPoolWhereUniqueInput | LiquidityPoolWhereUniqueInput[]
+    disconnect?: LiquidityPoolWhereUniqueInput | LiquidityPoolWhereUniqueInput[]
+    delete?: LiquidityPoolWhereUniqueInput | LiquidityPoolWhereUniqueInput[]
+    connect?: LiquidityPoolWhereUniqueInput | LiquidityPoolWhereUniqueInput[]
+    update?: LiquidityPoolUpdateWithWhereUniqueWithoutPaymentChannelInput | LiquidityPoolUpdateWithWhereUniqueWithoutPaymentChannelInput[]
+    updateMany?: LiquidityPoolUpdateManyWithWhereWithoutPaymentChannelInput | LiquidityPoolUpdateManyWithWhereWithoutPaymentChannelInput[]
+    deleteMany?: LiquidityPoolScalarWhereInput | LiquidityPoolScalarWhereInput[]
+  }
+
+  export type BridgeTransferUncheckedUpdateOneWithoutPaymentChannelNestedInput = {
+    create?: XOR<BridgeTransferCreateWithoutPaymentChannelInput, BridgeTransferUncheckedCreateWithoutPaymentChannelInput>
+    connectOrCreate?: BridgeTransferCreateOrConnectWithoutPaymentChannelInput
+    upsert?: BridgeTransferUpsertWithoutPaymentChannelInput
+    disconnect?: BridgeTransferWhereInput | boolean
+    delete?: BridgeTransferWhereInput | boolean
+    connect?: BridgeTransferWhereUniqueInput
+    update?: XOR<XOR<BridgeTransferUpdateToOneWithWhereWithoutPaymentChannelInput, BridgeTransferUpdateWithoutPaymentChannelInput>, BridgeTransferUncheckedUpdateWithoutPaymentChannelInput>
+  }
+
+  export type CurrencyUncheckedUpdateManyWithoutPaymentChannelsNestedInput = {
+    create?: XOR<CurrencyCreateWithoutPaymentChannelsInput, CurrencyUncheckedCreateWithoutPaymentChannelsInput> | CurrencyCreateWithoutPaymentChannelsInput[] | CurrencyUncheckedCreateWithoutPaymentChannelsInput[]
+    connectOrCreate?: CurrencyCreateOrConnectWithoutPaymentChannelsInput | CurrencyCreateOrConnectWithoutPaymentChannelsInput[]
+    upsert?: CurrencyUpsertWithWhereUniqueWithoutPaymentChannelsInput | CurrencyUpsertWithWhereUniqueWithoutPaymentChannelsInput[]
+    set?: CurrencyWhereUniqueInput | CurrencyWhereUniqueInput[]
+    disconnect?: CurrencyWhereUniqueInput | CurrencyWhereUniqueInput[]
+    delete?: CurrencyWhereUniqueInput | CurrencyWhereUniqueInput[]
+    connect?: CurrencyWhereUniqueInput | CurrencyWhereUniqueInput[]
+    update?: CurrencyUpdateWithWhereUniqueWithoutPaymentChannelsInput | CurrencyUpdateWithWhereUniqueWithoutPaymentChannelsInput[]
+    updateMany?: CurrencyUpdateManyWithWhereWithoutPaymentChannelsInput | CurrencyUpdateManyWithWhereWithoutPaymentChannelsInput[]
+    deleteMany?: CurrencyScalarWhereInput | CurrencyScalarWhereInput[]
+  }
+
+  export type DepositUncheckedUpdateManyWithoutPaymentChannelNestedInput = {
+    create?: XOR<DepositCreateWithoutPaymentChannelInput, DepositUncheckedCreateWithoutPaymentChannelInput> | DepositCreateWithoutPaymentChannelInput[] | DepositUncheckedCreateWithoutPaymentChannelInput[]
+    connectOrCreate?: DepositCreateOrConnectWithoutPaymentChannelInput | DepositCreateOrConnectWithoutPaymentChannelInput[]
+    upsert?: DepositUpsertWithWhereUniqueWithoutPaymentChannelInput | DepositUpsertWithWhereUniqueWithoutPaymentChannelInput[]
+    createMany?: DepositCreateManyPaymentChannelInputEnvelope
+    set?: DepositWhereUniqueInput | DepositWhereUniqueInput[]
+    disconnect?: DepositWhereUniqueInput | DepositWhereUniqueInput[]
+    delete?: DepositWhereUniqueInput | DepositWhereUniqueInput[]
+    connect?: DepositWhereUniqueInput | DepositWhereUniqueInput[]
+    update?: DepositUpdateWithWhereUniqueWithoutPaymentChannelInput | DepositUpdateWithWhereUniqueWithoutPaymentChannelInput[]
+    updateMany?: DepositUpdateManyWithWhereWithoutPaymentChannelInput | DepositUpdateManyWithWhereWithoutPaymentChannelInput[]
+    deleteMany?: DepositScalarWhereInput | DepositScalarWhereInput[]
+  }
+
+  export type WithdrawalUncheckedUpdateManyWithoutPaymentChannelNestedInput = {
+    create?: XOR<WithdrawalCreateWithoutPaymentChannelInput, WithdrawalUncheckedCreateWithoutPaymentChannelInput> | WithdrawalCreateWithoutPaymentChannelInput[] | WithdrawalUncheckedCreateWithoutPaymentChannelInput[]
+    connectOrCreate?: WithdrawalCreateOrConnectWithoutPaymentChannelInput | WithdrawalCreateOrConnectWithoutPaymentChannelInput[]
+    upsert?: WithdrawalUpsertWithWhereUniqueWithoutPaymentChannelInput | WithdrawalUpsertWithWhereUniqueWithoutPaymentChannelInput[]
+    createMany?: WithdrawalCreateManyPaymentChannelInputEnvelope
+    set?: WithdrawalWhereUniqueInput | WithdrawalWhereUniqueInput[]
+    disconnect?: WithdrawalWhereUniqueInput | WithdrawalWhereUniqueInput[]
+    delete?: WithdrawalWhereUniqueInput | WithdrawalWhereUniqueInput[]
+    connect?: WithdrawalWhereUniqueInput | WithdrawalWhereUniqueInput[]
+    update?: WithdrawalUpdateWithWhereUniqueWithoutPaymentChannelInput | WithdrawalUpdateWithWhereUniqueWithoutPaymentChannelInput[]
+    updateMany?: WithdrawalUpdateManyWithWhereWithoutPaymentChannelInput | WithdrawalUpdateManyWithWhereWithoutPaymentChannelInput[]
+    deleteMany?: WithdrawalScalarWhereInput | WithdrawalScalarWhereInput[]
+  }
+
+  export type LiquidityPoolUncheckedUpdateManyWithoutPaymentChannelNestedInput = {
+    create?: XOR<LiquidityPoolCreateWithoutPaymentChannelInput, LiquidityPoolUncheckedCreateWithoutPaymentChannelInput> | LiquidityPoolCreateWithoutPaymentChannelInput[] | LiquidityPoolUncheckedCreateWithoutPaymentChannelInput[]
+    connectOrCreate?: LiquidityPoolCreateOrConnectWithoutPaymentChannelInput | LiquidityPoolCreateOrConnectWithoutPaymentChannelInput[]
+    upsert?: LiquidityPoolUpsertWithWhereUniqueWithoutPaymentChannelInput | LiquidityPoolUpsertWithWhereUniqueWithoutPaymentChannelInput[]
+    createMany?: LiquidityPoolCreateManyPaymentChannelInputEnvelope
+    set?: LiquidityPoolWhereUniqueInput | LiquidityPoolWhereUniqueInput[]
+    disconnect?: LiquidityPoolWhereUniqueInput | LiquidityPoolWhereUniqueInput[]
+    delete?: LiquidityPoolWhereUniqueInput | LiquidityPoolWhereUniqueInput[]
+    connect?: LiquidityPoolWhereUniqueInput | LiquidityPoolWhereUniqueInput[]
+    update?: LiquidityPoolUpdateWithWhereUniqueWithoutPaymentChannelInput | LiquidityPoolUpdateWithWhereUniqueWithoutPaymentChannelInput[]
+    updateMany?: LiquidityPoolUpdateManyWithWhereWithoutPaymentChannelInput | LiquidityPoolUpdateManyWithWhereWithoutPaymentChannelInput[]
+    deleteMany?: LiquidityPoolScalarWhereInput | LiquidityPoolScalarWhereInput[]
+  }
+
+  export type WalletCreateNestedManyWithoutCurrencyInput = {
+    create?: XOR<WalletCreateWithoutCurrencyInput, WalletUncheckedCreateWithoutCurrencyInput> | WalletCreateWithoutCurrencyInput[] | WalletUncheckedCreateWithoutCurrencyInput[]
+    connectOrCreate?: WalletCreateOrConnectWithoutCurrencyInput | WalletCreateOrConnectWithoutCurrencyInput[]
+    createMany?: WalletCreateManyCurrencyInputEnvelope
+    connect?: WalletWhereUniqueInput | WalletWhereUniqueInput[]
+  }
+
+  export type ExchangeCreateNestedManyWithoutFromCurrencyInput = {
+    create?: XOR<ExchangeCreateWithoutFromCurrencyInput, ExchangeUncheckedCreateWithoutFromCurrencyInput> | ExchangeCreateWithoutFromCurrencyInput[] | ExchangeUncheckedCreateWithoutFromCurrencyInput[]
+    connectOrCreate?: ExchangeCreateOrConnectWithoutFromCurrencyInput | ExchangeCreateOrConnectWithoutFromCurrencyInput[]
+    createMany?: ExchangeCreateManyFromCurrencyInputEnvelope
+    connect?: ExchangeWhereUniqueInput | ExchangeWhereUniqueInput[]
+  }
+
+  export type ExchangeCreateNestedManyWithoutToCurrencyInput = {
+    create?: XOR<ExchangeCreateWithoutToCurrencyInput, ExchangeUncheckedCreateWithoutToCurrencyInput> | ExchangeCreateWithoutToCurrencyInput[] | ExchangeUncheckedCreateWithoutToCurrencyInput[]
+    connectOrCreate?: ExchangeCreateOrConnectWithoutToCurrencyInput | ExchangeCreateOrConnectWithoutToCurrencyInput[]
+    createMany?: ExchangeCreateManyToCurrencyInputEnvelope
+    connect?: ExchangeWhereUniqueInput | ExchangeWhereUniqueInput[]
+  }
+
+  export type FeeSettingCreateNestedManyWithoutCurrencyInput = {
+    create?: XOR<FeeSettingCreateWithoutCurrencyInput, FeeSettingUncheckedCreateWithoutCurrencyInput> | FeeSettingCreateWithoutCurrencyInput[] | FeeSettingUncheckedCreateWithoutCurrencyInput[]
+    connectOrCreate?: FeeSettingCreateOrConnectWithoutCurrencyInput | FeeSettingCreateOrConnectWithoutCurrencyInput[]
+    createMany?: FeeSettingCreateManyCurrencyInputEnvelope
+    connect?: FeeSettingWhereUniqueInput | FeeSettingWhereUniqueInput[]
+  }
+
+  export type PaymentChannelCreateNestedManyWithoutCurrenciesInput = {
+    create?: XOR<PaymentChannelCreateWithoutCurrenciesInput, PaymentChannelUncheckedCreateWithoutCurrenciesInput> | PaymentChannelCreateWithoutCurrenciesInput[] | PaymentChannelUncheckedCreateWithoutCurrenciesInput[]
+    connectOrCreate?: PaymentChannelCreateOrConnectWithoutCurrenciesInput | PaymentChannelCreateOrConnectWithoutCurrenciesInput[]
+    connect?: PaymentChannelWhereUniqueInput | PaymentChannelWhereUniqueInput[]
+  }
+
+  export type LiquidityPoolCreateNestedManyWithoutCurrencyInput = {
+    create?: XOR<LiquidityPoolCreateWithoutCurrencyInput, LiquidityPoolUncheckedCreateWithoutCurrencyInput> | LiquidityPoolCreateWithoutCurrencyInput[] | LiquidityPoolUncheckedCreateWithoutCurrencyInput[]
+    connectOrCreate?: LiquidityPoolCreateOrConnectWithoutCurrencyInput | LiquidityPoolCreateOrConnectWithoutCurrencyInput[]
+    createMany?: LiquidityPoolCreateManyCurrencyInputEnvelope
+    connect?: LiquidityPoolWhereUniqueInput | LiquidityPoolWhereUniqueInput[]
+  }
+
+  export type WalletUncheckedCreateNestedManyWithoutCurrencyInput = {
+    create?: XOR<WalletCreateWithoutCurrencyInput, WalletUncheckedCreateWithoutCurrencyInput> | WalletCreateWithoutCurrencyInput[] | WalletUncheckedCreateWithoutCurrencyInput[]
+    connectOrCreate?: WalletCreateOrConnectWithoutCurrencyInput | WalletCreateOrConnectWithoutCurrencyInput[]
+    createMany?: WalletCreateManyCurrencyInputEnvelope
+    connect?: WalletWhereUniqueInput | WalletWhereUniqueInput[]
+  }
+
+  export type ExchangeUncheckedCreateNestedManyWithoutFromCurrencyInput = {
+    create?: XOR<ExchangeCreateWithoutFromCurrencyInput, ExchangeUncheckedCreateWithoutFromCurrencyInput> | ExchangeCreateWithoutFromCurrencyInput[] | ExchangeUncheckedCreateWithoutFromCurrencyInput[]
+    connectOrCreate?: ExchangeCreateOrConnectWithoutFromCurrencyInput | ExchangeCreateOrConnectWithoutFromCurrencyInput[]
+    createMany?: ExchangeCreateManyFromCurrencyInputEnvelope
+    connect?: ExchangeWhereUniqueInput | ExchangeWhereUniqueInput[]
+  }
+
+  export type ExchangeUncheckedCreateNestedManyWithoutToCurrencyInput = {
+    create?: XOR<ExchangeCreateWithoutToCurrencyInput, ExchangeUncheckedCreateWithoutToCurrencyInput> | ExchangeCreateWithoutToCurrencyInput[] | ExchangeUncheckedCreateWithoutToCurrencyInput[]
+    connectOrCreate?: ExchangeCreateOrConnectWithoutToCurrencyInput | ExchangeCreateOrConnectWithoutToCurrencyInput[]
+    createMany?: ExchangeCreateManyToCurrencyInputEnvelope
+    connect?: ExchangeWhereUniqueInput | ExchangeWhereUniqueInput[]
+  }
+
+  export type FeeSettingUncheckedCreateNestedManyWithoutCurrencyInput = {
+    create?: XOR<FeeSettingCreateWithoutCurrencyInput, FeeSettingUncheckedCreateWithoutCurrencyInput> | FeeSettingCreateWithoutCurrencyInput[] | FeeSettingUncheckedCreateWithoutCurrencyInput[]
+    connectOrCreate?: FeeSettingCreateOrConnectWithoutCurrencyInput | FeeSettingCreateOrConnectWithoutCurrencyInput[]
+    createMany?: FeeSettingCreateManyCurrencyInputEnvelope
+    connect?: FeeSettingWhereUniqueInput | FeeSettingWhereUniqueInput[]
+  }
+
+  export type PaymentChannelUncheckedCreateNestedManyWithoutCurrenciesInput = {
+    create?: XOR<PaymentChannelCreateWithoutCurrenciesInput, PaymentChannelUncheckedCreateWithoutCurrenciesInput> | PaymentChannelCreateWithoutCurrenciesInput[] | PaymentChannelUncheckedCreateWithoutCurrenciesInput[]
+    connectOrCreate?: PaymentChannelCreateOrConnectWithoutCurrenciesInput | PaymentChannelCreateOrConnectWithoutCurrenciesInput[]
+    connect?: PaymentChannelWhereUniqueInput | PaymentChannelWhereUniqueInput[]
+  }
+
+  export type LiquidityPoolUncheckedCreateNestedManyWithoutCurrencyInput = {
+    create?: XOR<LiquidityPoolCreateWithoutCurrencyInput, LiquidityPoolUncheckedCreateWithoutCurrencyInput> | LiquidityPoolCreateWithoutCurrencyInput[] | LiquidityPoolUncheckedCreateWithoutCurrencyInput[]
+    connectOrCreate?: LiquidityPoolCreateOrConnectWithoutCurrencyInput | LiquidityPoolCreateOrConnectWithoutCurrencyInput[]
+    createMany?: LiquidityPoolCreateManyCurrencyInputEnvelope
+    connect?: LiquidityPoolWhereUniqueInput | LiquidityPoolWhereUniqueInput[]
+  }
+
+  export type IntFieldUpdateOperationsInput = {
+    set?: number
+    increment?: number
+    decrement?: number
+    multiply?: number
+    divide?: number
+  }
+
+  export type WalletUpdateManyWithoutCurrencyNestedInput = {
+    create?: XOR<WalletCreateWithoutCurrencyInput, WalletUncheckedCreateWithoutCurrencyInput> | WalletCreateWithoutCurrencyInput[] | WalletUncheckedCreateWithoutCurrencyInput[]
+    connectOrCreate?: WalletCreateOrConnectWithoutCurrencyInput | WalletCreateOrConnectWithoutCurrencyInput[]
+    upsert?: WalletUpsertWithWhereUniqueWithoutCurrencyInput | WalletUpsertWithWhereUniqueWithoutCurrencyInput[]
+    createMany?: WalletCreateManyCurrencyInputEnvelope
+    set?: WalletWhereUniqueInput | WalletWhereUniqueInput[]
+    disconnect?: WalletWhereUniqueInput | WalletWhereUniqueInput[]
+    delete?: WalletWhereUniqueInput | WalletWhereUniqueInput[]
+    connect?: WalletWhereUniqueInput | WalletWhereUniqueInput[]
+    update?: WalletUpdateWithWhereUniqueWithoutCurrencyInput | WalletUpdateWithWhereUniqueWithoutCurrencyInput[]
+    updateMany?: WalletUpdateManyWithWhereWithoutCurrencyInput | WalletUpdateManyWithWhereWithoutCurrencyInput[]
+    deleteMany?: WalletScalarWhereInput | WalletScalarWhereInput[]
+  }
+
+  export type ExchangeUpdateManyWithoutFromCurrencyNestedInput = {
+    create?: XOR<ExchangeCreateWithoutFromCurrencyInput, ExchangeUncheckedCreateWithoutFromCurrencyInput> | ExchangeCreateWithoutFromCurrencyInput[] | ExchangeUncheckedCreateWithoutFromCurrencyInput[]
+    connectOrCreate?: ExchangeCreateOrConnectWithoutFromCurrencyInput | ExchangeCreateOrConnectWithoutFromCurrencyInput[]
+    upsert?: ExchangeUpsertWithWhereUniqueWithoutFromCurrencyInput | ExchangeUpsertWithWhereUniqueWithoutFromCurrencyInput[]
+    createMany?: ExchangeCreateManyFromCurrencyInputEnvelope
+    set?: ExchangeWhereUniqueInput | ExchangeWhereUniqueInput[]
+    disconnect?: ExchangeWhereUniqueInput | ExchangeWhereUniqueInput[]
+    delete?: ExchangeWhereUniqueInput | ExchangeWhereUniqueInput[]
+    connect?: ExchangeWhereUniqueInput | ExchangeWhereUniqueInput[]
+    update?: ExchangeUpdateWithWhereUniqueWithoutFromCurrencyInput | ExchangeUpdateWithWhereUniqueWithoutFromCurrencyInput[]
+    updateMany?: ExchangeUpdateManyWithWhereWithoutFromCurrencyInput | ExchangeUpdateManyWithWhereWithoutFromCurrencyInput[]
+    deleteMany?: ExchangeScalarWhereInput | ExchangeScalarWhereInput[]
+  }
+
+  export type ExchangeUpdateManyWithoutToCurrencyNestedInput = {
+    create?: XOR<ExchangeCreateWithoutToCurrencyInput, ExchangeUncheckedCreateWithoutToCurrencyInput> | ExchangeCreateWithoutToCurrencyInput[] | ExchangeUncheckedCreateWithoutToCurrencyInput[]
+    connectOrCreate?: ExchangeCreateOrConnectWithoutToCurrencyInput | ExchangeCreateOrConnectWithoutToCurrencyInput[]
+    upsert?: ExchangeUpsertWithWhereUniqueWithoutToCurrencyInput | ExchangeUpsertWithWhereUniqueWithoutToCurrencyInput[]
+    createMany?: ExchangeCreateManyToCurrencyInputEnvelope
+    set?: ExchangeWhereUniqueInput | ExchangeWhereUniqueInput[]
+    disconnect?: ExchangeWhereUniqueInput | ExchangeWhereUniqueInput[]
+    delete?: ExchangeWhereUniqueInput | ExchangeWhereUniqueInput[]
+    connect?: ExchangeWhereUniqueInput | ExchangeWhereUniqueInput[]
+    update?: ExchangeUpdateWithWhereUniqueWithoutToCurrencyInput | ExchangeUpdateWithWhereUniqueWithoutToCurrencyInput[]
+    updateMany?: ExchangeUpdateManyWithWhereWithoutToCurrencyInput | ExchangeUpdateManyWithWhereWithoutToCurrencyInput[]
+    deleteMany?: ExchangeScalarWhereInput | ExchangeScalarWhereInput[]
+  }
+
+  export type FeeSettingUpdateManyWithoutCurrencyNestedInput = {
+    create?: XOR<FeeSettingCreateWithoutCurrencyInput, FeeSettingUncheckedCreateWithoutCurrencyInput> | FeeSettingCreateWithoutCurrencyInput[] | FeeSettingUncheckedCreateWithoutCurrencyInput[]
+    connectOrCreate?: FeeSettingCreateOrConnectWithoutCurrencyInput | FeeSettingCreateOrConnectWithoutCurrencyInput[]
+    upsert?: FeeSettingUpsertWithWhereUniqueWithoutCurrencyInput | FeeSettingUpsertWithWhereUniqueWithoutCurrencyInput[]
+    createMany?: FeeSettingCreateManyCurrencyInputEnvelope
+    set?: FeeSettingWhereUniqueInput | FeeSettingWhereUniqueInput[]
+    disconnect?: FeeSettingWhereUniqueInput | FeeSettingWhereUniqueInput[]
+    delete?: FeeSettingWhereUniqueInput | FeeSettingWhereUniqueInput[]
+    connect?: FeeSettingWhereUniqueInput | FeeSettingWhereUniqueInput[]
+    update?: FeeSettingUpdateWithWhereUniqueWithoutCurrencyInput | FeeSettingUpdateWithWhereUniqueWithoutCurrencyInput[]
+    updateMany?: FeeSettingUpdateManyWithWhereWithoutCurrencyInput | FeeSettingUpdateManyWithWhereWithoutCurrencyInput[]
+    deleteMany?: FeeSettingScalarWhereInput | FeeSettingScalarWhereInput[]
+  }
+
+  export type PaymentChannelUpdateManyWithoutCurrenciesNestedInput = {
+    create?: XOR<PaymentChannelCreateWithoutCurrenciesInput, PaymentChannelUncheckedCreateWithoutCurrenciesInput> | PaymentChannelCreateWithoutCurrenciesInput[] | PaymentChannelUncheckedCreateWithoutCurrenciesInput[]
+    connectOrCreate?: PaymentChannelCreateOrConnectWithoutCurrenciesInput | PaymentChannelCreateOrConnectWithoutCurrenciesInput[]
+    upsert?: PaymentChannelUpsertWithWhereUniqueWithoutCurrenciesInput | PaymentChannelUpsertWithWhereUniqueWithoutCurrenciesInput[]
+    set?: PaymentChannelWhereUniqueInput | PaymentChannelWhereUniqueInput[]
+    disconnect?: PaymentChannelWhereUniqueInput | PaymentChannelWhereUniqueInput[]
+    delete?: PaymentChannelWhereUniqueInput | PaymentChannelWhereUniqueInput[]
+    connect?: PaymentChannelWhereUniqueInput | PaymentChannelWhereUniqueInput[]
+    update?: PaymentChannelUpdateWithWhereUniqueWithoutCurrenciesInput | PaymentChannelUpdateWithWhereUniqueWithoutCurrenciesInput[]
+    updateMany?: PaymentChannelUpdateManyWithWhereWithoutCurrenciesInput | PaymentChannelUpdateManyWithWhereWithoutCurrenciesInput[]
+    deleteMany?: PaymentChannelScalarWhereInput | PaymentChannelScalarWhereInput[]
+  }
+
+  export type LiquidityPoolUpdateManyWithoutCurrencyNestedInput = {
+    create?: XOR<LiquidityPoolCreateWithoutCurrencyInput, LiquidityPoolUncheckedCreateWithoutCurrencyInput> | LiquidityPoolCreateWithoutCurrencyInput[] | LiquidityPoolUncheckedCreateWithoutCurrencyInput[]
+    connectOrCreate?: LiquidityPoolCreateOrConnectWithoutCurrencyInput | LiquidityPoolCreateOrConnectWithoutCurrencyInput[]
+    upsert?: LiquidityPoolUpsertWithWhereUniqueWithoutCurrencyInput | LiquidityPoolUpsertWithWhereUniqueWithoutCurrencyInput[]
+    createMany?: LiquidityPoolCreateManyCurrencyInputEnvelope
+    set?: LiquidityPoolWhereUniqueInput | LiquidityPoolWhereUniqueInput[]
+    disconnect?: LiquidityPoolWhereUniqueInput | LiquidityPoolWhereUniqueInput[]
+    delete?: LiquidityPoolWhereUniqueInput | LiquidityPoolWhereUniqueInput[]
+    connect?: LiquidityPoolWhereUniqueInput | LiquidityPoolWhereUniqueInput[]
+    update?: LiquidityPoolUpdateWithWhereUniqueWithoutCurrencyInput | LiquidityPoolUpdateWithWhereUniqueWithoutCurrencyInput[]
+    updateMany?: LiquidityPoolUpdateManyWithWhereWithoutCurrencyInput | LiquidityPoolUpdateManyWithWhereWithoutCurrencyInput[]
+    deleteMany?: LiquidityPoolScalarWhereInput | LiquidityPoolScalarWhereInput[]
+  }
+
+  export type WalletUncheckedUpdateManyWithoutCurrencyNestedInput = {
+    create?: XOR<WalletCreateWithoutCurrencyInput, WalletUncheckedCreateWithoutCurrencyInput> | WalletCreateWithoutCurrencyInput[] | WalletUncheckedCreateWithoutCurrencyInput[]
+    connectOrCreate?: WalletCreateOrConnectWithoutCurrencyInput | WalletCreateOrConnectWithoutCurrencyInput[]
+    upsert?: WalletUpsertWithWhereUniqueWithoutCurrencyInput | WalletUpsertWithWhereUniqueWithoutCurrencyInput[]
+    createMany?: WalletCreateManyCurrencyInputEnvelope
+    set?: WalletWhereUniqueInput | WalletWhereUniqueInput[]
+    disconnect?: WalletWhereUniqueInput | WalletWhereUniqueInput[]
+    delete?: WalletWhereUniqueInput | WalletWhereUniqueInput[]
+    connect?: WalletWhereUniqueInput | WalletWhereUniqueInput[]
+    update?: WalletUpdateWithWhereUniqueWithoutCurrencyInput | WalletUpdateWithWhereUniqueWithoutCurrencyInput[]
+    updateMany?: WalletUpdateManyWithWhereWithoutCurrencyInput | WalletUpdateManyWithWhereWithoutCurrencyInput[]
+    deleteMany?: WalletScalarWhereInput | WalletScalarWhereInput[]
+  }
+
+  export type ExchangeUncheckedUpdateManyWithoutFromCurrencyNestedInput = {
+    create?: XOR<ExchangeCreateWithoutFromCurrencyInput, ExchangeUncheckedCreateWithoutFromCurrencyInput> | ExchangeCreateWithoutFromCurrencyInput[] | ExchangeUncheckedCreateWithoutFromCurrencyInput[]
+    connectOrCreate?: ExchangeCreateOrConnectWithoutFromCurrencyInput | ExchangeCreateOrConnectWithoutFromCurrencyInput[]
+    upsert?: ExchangeUpsertWithWhereUniqueWithoutFromCurrencyInput | ExchangeUpsertWithWhereUniqueWithoutFromCurrencyInput[]
+    createMany?: ExchangeCreateManyFromCurrencyInputEnvelope
+    set?: ExchangeWhereUniqueInput | ExchangeWhereUniqueInput[]
+    disconnect?: ExchangeWhereUniqueInput | ExchangeWhereUniqueInput[]
+    delete?: ExchangeWhereUniqueInput | ExchangeWhereUniqueInput[]
+    connect?: ExchangeWhereUniqueInput | ExchangeWhereUniqueInput[]
+    update?: ExchangeUpdateWithWhereUniqueWithoutFromCurrencyInput | ExchangeUpdateWithWhereUniqueWithoutFromCurrencyInput[]
+    updateMany?: ExchangeUpdateManyWithWhereWithoutFromCurrencyInput | ExchangeUpdateManyWithWhereWithoutFromCurrencyInput[]
+    deleteMany?: ExchangeScalarWhereInput | ExchangeScalarWhereInput[]
+  }
+
+  export type ExchangeUncheckedUpdateManyWithoutToCurrencyNestedInput = {
+    create?: XOR<ExchangeCreateWithoutToCurrencyInput, ExchangeUncheckedCreateWithoutToCurrencyInput> | ExchangeCreateWithoutToCurrencyInput[] | ExchangeUncheckedCreateWithoutToCurrencyInput[]
+    connectOrCreate?: ExchangeCreateOrConnectWithoutToCurrencyInput | ExchangeCreateOrConnectWithoutToCurrencyInput[]
+    upsert?: ExchangeUpsertWithWhereUniqueWithoutToCurrencyInput | ExchangeUpsertWithWhereUniqueWithoutToCurrencyInput[]
+    createMany?: ExchangeCreateManyToCurrencyInputEnvelope
+    set?: ExchangeWhereUniqueInput | ExchangeWhereUniqueInput[]
+    disconnect?: ExchangeWhereUniqueInput | ExchangeWhereUniqueInput[]
+    delete?: ExchangeWhereUniqueInput | ExchangeWhereUniqueInput[]
+    connect?: ExchangeWhereUniqueInput | ExchangeWhereUniqueInput[]
+    update?: ExchangeUpdateWithWhereUniqueWithoutToCurrencyInput | ExchangeUpdateWithWhereUniqueWithoutToCurrencyInput[]
+    updateMany?: ExchangeUpdateManyWithWhereWithoutToCurrencyInput | ExchangeUpdateManyWithWhereWithoutToCurrencyInput[]
+    deleteMany?: ExchangeScalarWhereInput | ExchangeScalarWhereInput[]
+  }
+
+  export type FeeSettingUncheckedUpdateManyWithoutCurrencyNestedInput = {
+    create?: XOR<FeeSettingCreateWithoutCurrencyInput, FeeSettingUncheckedCreateWithoutCurrencyInput> | FeeSettingCreateWithoutCurrencyInput[] | FeeSettingUncheckedCreateWithoutCurrencyInput[]
+    connectOrCreate?: FeeSettingCreateOrConnectWithoutCurrencyInput | FeeSettingCreateOrConnectWithoutCurrencyInput[]
+    upsert?: FeeSettingUpsertWithWhereUniqueWithoutCurrencyInput | FeeSettingUpsertWithWhereUniqueWithoutCurrencyInput[]
+    createMany?: FeeSettingCreateManyCurrencyInputEnvelope
+    set?: FeeSettingWhereUniqueInput | FeeSettingWhereUniqueInput[]
+    disconnect?: FeeSettingWhereUniqueInput | FeeSettingWhereUniqueInput[]
+    delete?: FeeSettingWhereUniqueInput | FeeSettingWhereUniqueInput[]
+    connect?: FeeSettingWhereUniqueInput | FeeSettingWhereUniqueInput[]
+    update?: FeeSettingUpdateWithWhereUniqueWithoutCurrencyInput | FeeSettingUpdateWithWhereUniqueWithoutCurrencyInput[]
+    updateMany?: FeeSettingUpdateManyWithWhereWithoutCurrencyInput | FeeSettingUpdateManyWithWhereWithoutCurrencyInput[]
+    deleteMany?: FeeSettingScalarWhereInput | FeeSettingScalarWhereInput[]
+  }
+
+  export type PaymentChannelUncheckedUpdateManyWithoutCurrenciesNestedInput = {
+    create?: XOR<PaymentChannelCreateWithoutCurrenciesInput, PaymentChannelUncheckedCreateWithoutCurrenciesInput> | PaymentChannelCreateWithoutCurrenciesInput[] | PaymentChannelUncheckedCreateWithoutCurrenciesInput[]
+    connectOrCreate?: PaymentChannelCreateOrConnectWithoutCurrenciesInput | PaymentChannelCreateOrConnectWithoutCurrenciesInput[]
+    upsert?: PaymentChannelUpsertWithWhereUniqueWithoutCurrenciesInput | PaymentChannelUpsertWithWhereUniqueWithoutCurrenciesInput[]
+    set?: PaymentChannelWhereUniqueInput | PaymentChannelWhereUniqueInput[]
+    disconnect?: PaymentChannelWhereUniqueInput | PaymentChannelWhereUniqueInput[]
+    delete?: PaymentChannelWhereUniqueInput | PaymentChannelWhereUniqueInput[]
+    connect?: PaymentChannelWhereUniqueInput | PaymentChannelWhereUniqueInput[]
+    update?: PaymentChannelUpdateWithWhereUniqueWithoutCurrenciesInput | PaymentChannelUpdateWithWhereUniqueWithoutCurrenciesInput[]
+    updateMany?: PaymentChannelUpdateManyWithWhereWithoutCurrenciesInput | PaymentChannelUpdateManyWithWhereWithoutCurrenciesInput[]
+    deleteMany?: PaymentChannelScalarWhereInput | PaymentChannelScalarWhereInput[]
+  }
+
+  export type LiquidityPoolUncheckedUpdateManyWithoutCurrencyNestedInput = {
+    create?: XOR<LiquidityPoolCreateWithoutCurrencyInput, LiquidityPoolUncheckedCreateWithoutCurrencyInput> | LiquidityPoolCreateWithoutCurrencyInput[] | LiquidityPoolUncheckedCreateWithoutCurrencyInput[]
+    connectOrCreate?: LiquidityPoolCreateOrConnectWithoutCurrencyInput | LiquidityPoolCreateOrConnectWithoutCurrencyInput[]
+    upsert?: LiquidityPoolUpsertWithWhereUniqueWithoutCurrencyInput | LiquidityPoolUpsertWithWhereUniqueWithoutCurrencyInput[]
+    createMany?: LiquidityPoolCreateManyCurrencyInputEnvelope
+    set?: LiquidityPoolWhereUniqueInput | LiquidityPoolWhereUniqueInput[]
+    disconnect?: LiquidityPoolWhereUniqueInput | LiquidityPoolWhereUniqueInput[]
+    delete?: LiquidityPoolWhereUniqueInput | LiquidityPoolWhereUniqueInput[]
+    connect?: LiquidityPoolWhereUniqueInput | LiquidityPoolWhereUniqueInput[]
+    update?: LiquidityPoolUpdateWithWhereUniqueWithoutCurrencyInput | LiquidityPoolUpdateWithWhereUniqueWithoutCurrencyInput[]
+    updateMany?: LiquidityPoolUpdateManyWithWhereWithoutCurrencyInput | LiquidityPoolUpdateManyWithWhereWithoutCurrencyInput[]
+    deleteMany?: LiquidityPoolScalarWhereInput | LiquidityPoolScalarWhereInput[]
+  }
+
+  export type PaymentChannelCreateNestedOneWithoutLiquidityPoolInput = {
+    create?: XOR<PaymentChannelCreateWithoutLiquidityPoolInput, PaymentChannelUncheckedCreateWithoutLiquidityPoolInput>
+    connectOrCreate?: PaymentChannelCreateOrConnectWithoutLiquidityPoolInput
+    connect?: PaymentChannelWhereUniqueInput
+  }
+
+  export type CurrencyCreateNestedOneWithoutLiquidityPoolInput = {
+    create?: XOR<CurrencyCreateWithoutLiquidityPoolInput, CurrencyUncheckedCreateWithoutLiquidityPoolInput>
+    connectOrCreate?: CurrencyCreateOrConnectWithoutLiquidityPoolInput
+    connect?: CurrencyWhereUniqueInput
+  }
+
+  export type DecimalFieldUpdateOperationsInput = {
+    set?: Decimal | DecimalJsLike | number | string
+    increment?: Decimal | DecimalJsLike | number | string
+    decrement?: Decimal | DecimalJsLike | number | string
+    multiply?: Decimal | DecimalJsLike | number | string
+    divide?: Decimal | DecimalJsLike | number | string
+  }
+
+  export type PaymentChannelUpdateOneRequiredWithoutLiquidityPoolNestedInput = {
+    create?: XOR<PaymentChannelCreateWithoutLiquidityPoolInput, PaymentChannelUncheckedCreateWithoutLiquidityPoolInput>
+    connectOrCreate?: PaymentChannelCreateOrConnectWithoutLiquidityPoolInput
+    upsert?: PaymentChannelUpsertWithoutLiquidityPoolInput
+    connect?: PaymentChannelWhereUniqueInput
+    update?: XOR<XOR<PaymentChannelUpdateToOneWithWhereWithoutLiquidityPoolInput, PaymentChannelUpdateWithoutLiquidityPoolInput>, PaymentChannelUncheckedUpdateWithoutLiquidityPoolInput>
+  }
+
+  export type CurrencyUpdateOneRequiredWithoutLiquidityPoolNestedInput = {
+    create?: XOR<CurrencyCreateWithoutLiquidityPoolInput, CurrencyUncheckedCreateWithoutLiquidityPoolInput>
+    connectOrCreate?: CurrencyCreateOrConnectWithoutLiquidityPoolInput
+    upsert?: CurrencyUpsertWithoutLiquidityPoolInput
+    connect?: CurrencyWhereUniqueInput
+    update?: XOR<XOR<CurrencyUpdateToOneWithWhereWithoutLiquidityPoolInput, CurrencyUpdateWithoutLiquidityPoolInput>, CurrencyUncheckedUpdateWithoutLiquidityPoolInput>
+  }
+
   export type UserCreateNestedOneWithoutWalletInput = {
     create?: XOR<UserCreateWithoutWalletInput, UserUncheckedCreateWithoutWalletInput>
     connectOrCreate?: UserCreateOrConnectWithoutWalletInput
@@ -21188,14 +23183,6 @@ export namespace Prisma {
     connectOrCreate?: TransferCreateOrConnectWithoutToWalletInput | TransferCreateOrConnectWithoutToWalletInput[]
     createMany?: TransferCreateManyToWalletInputEnvelope
     connect?: TransferWhereUniqueInput | TransferWhereUniqueInput[]
-  }
-
-  export type DecimalFieldUpdateOperationsInput = {
-    set?: Decimal | DecimalJsLike | number | string
-    increment?: Decimal | DecimalJsLike | number | string
-    decrement?: Decimal | DecimalJsLike | number | string
-    multiply?: Decimal | DecimalJsLike | number | string
-    divide?: Decimal | DecimalJsLike | number | string
   }
 
   export type UserUpdateOneRequiredWithoutWalletNestedInput = {
@@ -21354,220 +23341,6 @@ export namespace Prisma {
     deleteMany?: TransferScalarWhereInput | TransferScalarWhereInput[]
   }
 
-  export type WalletCreateNestedManyWithoutCurrencyInput = {
-    create?: XOR<WalletCreateWithoutCurrencyInput, WalletUncheckedCreateWithoutCurrencyInput> | WalletCreateWithoutCurrencyInput[] | WalletUncheckedCreateWithoutCurrencyInput[]
-    connectOrCreate?: WalletCreateOrConnectWithoutCurrencyInput | WalletCreateOrConnectWithoutCurrencyInput[]
-    createMany?: WalletCreateManyCurrencyInputEnvelope
-    connect?: WalletWhereUniqueInput | WalletWhereUniqueInput[]
-  }
-
-  export type ExchangeCreateNestedManyWithoutFromCurrencyInput = {
-    create?: XOR<ExchangeCreateWithoutFromCurrencyInput, ExchangeUncheckedCreateWithoutFromCurrencyInput> | ExchangeCreateWithoutFromCurrencyInput[] | ExchangeUncheckedCreateWithoutFromCurrencyInput[]
-    connectOrCreate?: ExchangeCreateOrConnectWithoutFromCurrencyInput | ExchangeCreateOrConnectWithoutFromCurrencyInput[]
-    createMany?: ExchangeCreateManyFromCurrencyInputEnvelope
-    connect?: ExchangeWhereUniqueInput | ExchangeWhereUniqueInput[]
-  }
-
-  export type ExchangeCreateNestedManyWithoutToCurrencyInput = {
-    create?: XOR<ExchangeCreateWithoutToCurrencyInput, ExchangeUncheckedCreateWithoutToCurrencyInput> | ExchangeCreateWithoutToCurrencyInput[] | ExchangeUncheckedCreateWithoutToCurrencyInput[]
-    connectOrCreate?: ExchangeCreateOrConnectWithoutToCurrencyInput | ExchangeCreateOrConnectWithoutToCurrencyInput[]
-    createMany?: ExchangeCreateManyToCurrencyInputEnvelope
-    connect?: ExchangeWhereUniqueInput | ExchangeWhereUniqueInput[]
-  }
-
-  export type FeeSettingCreateNestedManyWithoutCurrencyInput = {
-    create?: XOR<FeeSettingCreateWithoutCurrencyInput, FeeSettingUncheckedCreateWithoutCurrencyInput> | FeeSettingCreateWithoutCurrencyInput[] | FeeSettingUncheckedCreateWithoutCurrencyInput[]
-    connectOrCreate?: FeeSettingCreateOrConnectWithoutCurrencyInput | FeeSettingCreateOrConnectWithoutCurrencyInput[]
-    createMany?: FeeSettingCreateManyCurrencyInputEnvelope
-    connect?: FeeSettingWhereUniqueInput | FeeSettingWhereUniqueInput[]
-  }
-
-  export type PaymentChannelCreateNestedManyWithoutCurrenciesInput = {
-    create?: XOR<PaymentChannelCreateWithoutCurrenciesInput, PaymentChannelUncheckedCreateWithoutCurrenciesInput> | PaymentChannelCreateWithoutCurrenciesInput[] | PaymentChannelUncheckedCreateWithoutCurrenciesInput[]
-    connectOrCreate?: PaymentChannelCreateOrConnectWithoutCurrenciesInput | PaymentChannelCreateOrConnectWithoutCurrenciesInput[]
-    connect?: PaymentChannelWhereUniqueInput | PaymentChannelWhereUniqueInput[]
-  }
-
-  export type WalletUncheckedCreateNestedManyWithoutCurrencyInput = {
-    create?: XOR<WalletCreateWithoutCurrencyInput, WalletUncheckedCreateWithoutCurrencyInput> | WalletCreateWithoutCurrencyInput[] | WalletUncheckedCreateWithoutCurrencyInput[]
-    connectOrCreate?: WalletCreateOrConnectWithoutCurrencyInput | WalletCreateOrConnectWithoutCurrencyInput[]
-    createMany?: WalletCreateManyCurrencyInputEnvelope
-    connect?: WalletWhereUniqueInput | WalletWhereUniqueInput[]
-  }
-
-  export type ExchangeUncheckedCreateNestedManyWithoutFromCurrencyInput = {
-    create?: XOR<ExchangeCreateWithoutFromCurrencyInput, ExchangeUncheckedCreateWithoutFromCurrencyInput> | ExchangeCreateWithoutFromCurrencyInput[] | ExchangeUncheckedCreateWithoutFromCurrencyInput[]
-    connectOrCreate?: ExchangeCreateOrConnectWithoutFromCurrencyInput | ExchangeCreateOrConnectWithoutFromCurrencyInput[]
-    createMany?: ExchangeCreateManyFromCurrencyInputEnvelope
-    connect?: ExchangeWhereUniqueInput | ExchangeWhereUniqueInput[]
-  }
-
-  export type ExchangeUncheckedCreateNestedManyWithoutToCurrencyInput = {
-    create?: XOR<ExchangeCreateWithoutToCurrencyInput, ExchangeUncheckedCreateWithoutToCurrencyInput> | ExchangeCreateWithoutToCurrencyInput[] | ExchangeUncheckedCreateWithoutToCurrencyInput[]
-    connectOrCreate?: ExchangeCreateOrConnectWithoutToCurrencyInput | ExchangeCreateOrConnectWithoutToCurrencyInput[]
-    createMany?: ExchangeCreateManyToCurrencyInputEnvelope
-    connect?: ExchangeWhereUniqueInput | ExchangeWhereUniqueInput[]
-  }
-
-  export type FeeSettingUncheckedCreateNestedManyWithoutCurrencyInput = {
-    create?: XOR<FeeSettingCreateWithoutCurrencyInput, FeeSettingUncheckedCreateWithoutCurrencyInput> | FeeSettingCreateWithoutCurrencyInput[] | FeeSettingUncheckedCreateWithoutCurrencyInput[]
-    connectOrCreate?: FeeSettingCreateOrConnectWithoutCurrencyInput | FeeSettingCreateOrConnectWithoutCurrencyInput[]
-    createMany?: FeeSettingCreateManyCurrencyInputEnvelope
-    connect?: FeeSettingWhereUniqueInput | FeeSettingWhereUniqueInput[]
-  }
-
-  export type PaymentChannelUncheckedCreateNestedManyWithoutCurrenciesInput = {
-    create?: XOR<PaymentChannelCreateWithoutCurrenciesInput, PaymentChannelUncheckedCreateWithoutCurrenciesInput> | PaymentChannelCreateWithoutCurrenciesInput[] | PaymentChannelUncheckedCreateWithoutCurrenciesInput[]
-    connectOrCreate?: PaymentChannelCreateOrConnectWithoutCurrenciesInput | PaymentChannelCreateOrConnectWithoutCurrenciesInput[]
-    connect?: PaymentChannelWhereUniqueInput | PaymentChannelWhereUniqueInput[]
-  }
-
-  export type IntFieldUpdateOperationsInput = {
-    set?: number
-    increment?: number
-    decrement?: number
-    multiply?: number
-    divide?: number
-  }
-
-  export type WalletUpdateManyWithoutCurrencyNestedInput = {
-    create?: XOR<WalletCreateWithoutCurrencyInput, WalletUncheckedCreateWithoutCurrencyInput> | WalletCreateWithoutCurrencyInput[] | WalletUncheckedCreateWithoutCurrencyInput[]
-    connectOrCreate?: WalletCreateOrConnectWithoutCurrencyInput | WalletCreateOrConnectWithoutCurrencyInput[]
-    upsert?: WalletUpsertWithWhereUniqueWithoutCurrencyInput | WalletUpsertWithWhereUniqueWithoutCurrencyInput[]
-    createMany?: WalletCreateManyCurrencyInputEnvelope
-    set?: WalletWhereUniqueInput | WalletWhereUniqueInput[]
-    disconnect?: WalletWhereUniqueInput | WalletWhereUniqueInput[]
-    delete?: WalletWhereUniqueInput | WalletWhereUniqueInput[]
-    connect?: WalletWhereUniqueInput | WalletWhereUniqueInput[]
-    update?: WalletUpdateWithWhereUniqueWithoutCurrencyInput | WalletUpdateWithWhereUniqueWithoutCurrencyInput[]
-    updateMany?: WalletUpdateManyWithWhereWithoutCurrencyInput | WalletUpdateManyWithWhereWithoutCurrencyInput[]
-    deleteMany?: WalletScalarWhereInput | WalletScalarWhereInput[]
-  }
-
-  export type ExchangeUpdateManyWithoutFromCurrencyNestedInput = {
-    create?: XOR<ExchangeCreateWithoutFromCurrencyInput, ExchangeUncheckedCreateWithoutFromCurrencyInput> | ExchangeCreateWithoutFromCurrencyInput[] | ExchangeUncheckedCreateWithoutFromCurrencyInput[]
-    connectOrCreate?: ExchangeCreateOrConnectWithoutFromCurrencyInput | ExchangeCreateOrConnectWithoutFromCurrencyInput[]
-    upsert?: ExchangeUpsertWithWhereUniqueWithoutFromCurrencyInput | ExchangeUpsertWithWhereUniqueWithoutFromCurrencyInput[]
-    createMany?: ExchangeCreateManyFromCurrencyInputEnvelope
-    set?: ExchangeWhereUniqueInput | ExchangeWhereUniqueInput[]
-    disconnect?: ExchangeWhereUniqueInput | ExchangeWhereUniqueInput[]
-    delete?: ExchangeWhereUniqueInput | ExchangeWhereUniqueInput[]
-    connect?: ExchangeWhereUniqueInput | ExchangeWhereUniqueInput[]
-    update?: ExchangeUpdateWithWhereUniqueWithoutFromCurrencyInput | ExchangeUpdateWithWhereUniqueWithoutFromCurrencyInput[]
-    updateMany?: ExchangeUpdateManyWithWhereWithoutFromCurrencyInput | ExchangeUpdateManyWithWhereWithoutFromCurrencyInput[]
-    deleteMany?: ExchangeScalarWhereInput | ExchangeScalarWhereInput[]
-  }
-
-  export type ExchangeUpdateManyWithoutToCurrencyNestedInput = {
-    create?: XOR<ExchangeCreateWithoutToCurrencyInput, ExchangeUncheckedCreateWithoutToCurrencyInput> | ExchangeCreateWithoutToCurrencyInput[] | ExchangeUncheckedCreateWithoutToCurrencyInput[]
-    connectOrCreate?: ExchangeCreateOrConnectWithoutToCurrencyInput | ExchangeCreateOrConnectWithoutToCurrencyInput[]
-    upsert?: ExchangeUpsertWithWhereUniqueWithoutToCurrencyInput | ExchangeUpsertWithWhereUniqueWithoutToCurrencyInput[]
-    createMany?: ExchangeCreateManyToCurrencyInputEnvelope
-    set?: ExchangeWhereUniqueInput | ExchangeWhereUniqueInput[]
-    disconnect?: ExchangeWhereUniqueInput | ExchangeWhereUniqueInput[]
-    delete?: ExchangeWhereUniqueInput | ExchangeWhereUniqueInput[]
-    connect?: ExchangeWhereUniqueInput | ExchangeWhereUniqueInput[]
-    update?: ExchangeUpdateWithWhereUniqueWithoutToCurrencyInput | ExchangeUpdateWithWhereUniqueWithoutToCurrencyInput[]
-    updateMany?: ExchangeUpdateManyWithWhereWithoutToCurrencyInput | ExchangeUpdateManyWithWhereWithoutToCurrencyInput[]
-    deleteMany?: ExchangeScalarWhereInput | ExchangeScalarWhereInput[]
-  }
-
-  export type FeeSettingUpdateManyWithoutCurrencyNestedInput = {
-    create?: XOR<FeeSettingCreateWithoutCurrencyInput, FeeSettingUncheckedCreateWithoutCurrencyInput> | FeeSettingCreateWithoutCurrencyInput[] | FeeSettingUncheckedCreateWithoutCurrencyInput[]
-    connectOrCreate?: FeeSettingCreateOrConnectWithoutCurrencyInput | FeeSettingCreateOrConnectWithoutCurrencyInput[]
-    upsert?: FeeSettingUpsertWithWhereUniqueWithoutCurrencyInput | FeeSettingUpsertWithWhereUniqueWithoutCurrencyInput[]
-    createMany?: FeeSettingCreateManyCurrencyInputEnvelope
-    set?: FeeSettingWhereUniqueInput | FeeSettingWhereUniqueInput[]
-    disconnect?: FeeSettingWhereUniqueInput | FeeSettingWhereUniqueInput[]
-    delete?: FeeSettingWhereUniqueInput | FeeSettingWhereUniqueInput[]
-    connect?: FeeSettingWhereUniqueInput | FeeSettingWhereUniqueInput[]
-    update?: FeeSettingUpdateWithWhereUniqueWithoutCurrencyInput | FeeSettingUpdateWithWhereUniqueWithoutCurrencyInput[]
-    updateMany?: FeeSettingUpdateManyWithWhereWithoutCurrencyInput | FeeSettingUpdateManyWithWhereWithoutCurrencyInput[]
-    deleteMany?: FeeSettingScalarWhereInput | FeeSettingScalarWhereInput[]
-  }
-
-  export type PaymentChannelUpdateManyWithoutCurrenciesNestedInput = {
-    create?: XOR<PaymentChannelCreateWithoutCurrenciesInput, PaymentChannelUncheckedCreateWithoutCurrenciesInput> | PaymentChannelCreateWithoutCurrenciesInput[] | PaymentChannelUncheckedCreateWithoutCurrenciesInput[]
-    connectOrCreate?: PaymentChannelCreateOrConnectWithoutCurrenciesInput | PaymentChannelCreateOrConnectWithoutCurrenciesInput[]
-    upsert?: PaymentChannelUpsertWithWhereUniqueWithoutCurrenciesInput | PaymentChannelUpsertWithWhereUniqueWithoutCurrenciesInput[]
-    set?: PaymentChannelWhereUniqueInput | PaymentChannelWhereUniqueInput[]
-    disconnect?: PaymentChannelWhereUniqueInput | PaymentChannelWhereUniqueInput[]
-    delete?: PaymentChannelWhereUniqueInput | PaymentChannelWhereUniqueInput[]
-    connect?: PaymentChannelWhereUniqueInput | PaymentChannelWhereUniqueInput[]
-    update?: PaymentChannelUpdateWithWhereUniqueWithoutCurrenciesInput | PaymentChannelUpdateWithWhereUniqueWithoutCurrenciesInput[]
-    updateMany?: PaymentChannelUpdateManyWithWhereWithoutCurrenciesInput | PaymentChannelUpdateManyWithWhereWithoutCurrenciesInput[]
-    deleteMany?: PaymentChannelScalarWhereInput | PaymentChannelScalarWhereInput[]
-  }
-
-  export type WalletUncheckedUpdateManyWithoutCurrencyNestedInput = {
-    create?: XOR<WalletCreateWithoutCurrencyInput, WalletUncheckedCreateWithoutCurrencyInput> | WalletCreateWithoutCurrencyInput[] | WalletUncheckedCreateWithoutCurrencyInput[]
-    connectOrCreate?: WalletCreateOrConnectWithoutCurrencyInput | WalletCreateOrConnectWithoutCurrencyInput[]
-    upsert?: WalletUpsertWithWhereUniqueWithoutCurrencyInput | WalletUpsertWithWhereUniqueWithoutCurrencyInput[]
-    createMany?: WalletCreateManyCurrencyInputEnvelope
-    set?: WalletWhereUniqueInput | WalletWhereUniqueInput[]
-    disconnect?: WalletWhereUniqueInput | WalletWhereUniqueInput[]
-    delete?: WalletWhereUniqueInput | WalletWhereUniqueInput[]
-    connect?: WalletWhereUniqueInput | WalletWhereUniqueInput[]
-    update?: WalletUpdateWithWhereUniqueWithoutCurrencyInput | WalletUpdateWithWhereUniqueWithoutCurrencyInput[]
-    updateMany?: WalletUpdateManyWithWhereWithoutCurrencyInput | WalletUpdateManyWithWhereWithoutCurrencyInput[]
-    deleteMany?: WalletScalarWhereInput | WalletScalarWhereInput[]
-  }
-
-  export type ExchangeUncheckedUpdateManyWithoutFromCurrencyNestedInput = {
-    create?: XOR<ExchangeCreateWithoutFromCurrencyInput, ExchangeUncheckedCreateWithoutFromCurrencyInput> | ExchangeCreateWithoutFromCurrencyInput[] | ExchangeUncheckedCreateWithoutFromCurrencyInput[]
-    connectOrCreate?: ExchangeCreateOrConnectWithoutFromCurrencyInput | ExchangeCreateOrConnectWithoutFromCurrencyInput[]
-    upsert?: ExchangeUpsertWithWhereUniqueWithoutFromCurrencyInput | ExchangeUpsertWithWhereUniqueWithoutFromCurrencyInput[]
-    createMany?: ExchangeCreateManyFromCurrencyInputEnvelope
-    set?: ExchangeWhereUniqueInput | ExchangeWhereUniqueInput[]
-    disconnect?: ExchangeWhereUniqueInput | ExchangeWhereUniqueInput[]
-    delete?: ExchangeWhereUniqueInput | ExchangeWhereUniqueInput[]
-    connect?: ExchangeWhereUniqueInput | ExchangeWhereUniqueInput[]
-    update?: ExchangeUpdateWithWhereUniqueWithoutFromCurrencyInput | ExchangeUpdateWithWhereUniqueWithoutFromCurrencyInput[]
-    updateMany?: ExchangeUpdateManyWithWhereWithoutFromCurrencyInput | ExchangeUpdateManyWithWhereWithoutFromCurrencyInput[]
-    deleteMany?: ExchangeScalarWhereInput | ExchangeScalarWhereInput[]
-  }
-
-  export type ExchangeUncheckedUpdateManyWithoutToCurrencyNestedInput = {
-    create?: XOR<ExchangeCreateWithoutToCurrencyInput, ExchangeUncheckedCreateWithoutToCurrencyInput> | ExchangeCreateWithoutToCurrencyInput[] | ExchangeUncheckedCreateWithoutToCurrencyInput[]
-    connectOrCreate?: ExchangeCreateOrConnectWithoutToCurrencyInput | ExchangeCreateOrConnectWithoutToCurrencyInput[]
-    upsert?: ExchangeUpsertWithWhereUniqueWithoutToCurrencyInput | ExchangeUpsertWithWhereUniqueWithoutToCurrencyInput[]
-    createMany?: ExchangeCreateManyToCurrencyInputEnvelope
-    set?: ExchangeWhereUniqueInput | ExchangeWhereUniqueInput[]
-    disconnect?: ExchangeWhereUniqueInput | ExchangeWhereUniqueInput[]
-    delete?: ExchangeWhereUniqueInput | ExchangeWhereUniqueInput[]
-    connect?: ExchangeWhereUniqueInput | ExchangeWhereUniqueInput[]
-    update?: ExchangeUpdateWithWhereUniqueWithoutToCurrencyInput | ExchangeUpdateWithWhereUniqueWithoutToCurrencyInput[]
-    updateMany?: ExchangeUpdateManyWithWhereWithoutToCurrencyInput | ExchangeUpdateManyWithWhereWithoutToCurrencyInput[]
-    deleteMany?: ExchangeScalarWhereInput | ExchangeScalarWhereInput[]
-  }
-
-  export type FeeSettingUncheckedUpdateManyWithoutCurrencyNestedInput = {
-    create?: XOR<FeeSettingCreateWithoutCurrencyInput, FeeSettingUncheckedCreateWithoutCurrencyInput> | FeeSettingCreateWithoutCurrencyInput[] | FeeSettingUncheckedCreateWithoutCurrencyInput[]
-    connectOrCreate?: FeeSettingCreateOrConnectWithoutCurrencyInput | FeeSettingCreateOrConnectWithoutCurrencyInput[]
-    upsert?: FeeSettingUpsertWithWhereUniqueWithoutCurrencyInput | FeeSettingUpsertWithWhereUniqueWithoutCurrencyInput[]
-    createMany?: FeeSettingCreateManyCurrencyInputEnvelope
-    set?: FeeSettingWhereUniqueInput | FeeSettingWhereUniqueInput[]
-    disconnect?: FeeSettingWhereUniqueInput | FeeSettingWhereUniqueInput[]
-    delete?: FeeSettingWhereUniqueInput | FeeSettingWhereUniqueInput[]
-    connect?: FeeSettingWhereUniqueInput | FeeSettingWhereUniqueInput[]
-    update?: FeeSettingUpdateWithWhereUniqueWithoutCurrencyInput | FeeSettingUpdateWithWhereUniqueWithoutCurrencyInput[]
-    updateMany?: FeeSettingUpdateManyWithWhereWithoutCurrencyInput | FeeSettingUpdateManyWithWhereWithoutCurrencyInput[]
-    deleteMany?: FeeSettingScalarWhereInput | FeeSettingScalarWhereInput[]
-  }
-
-  export type PaymentChannelUncheckedUpdateManyWithoutCurrenciesNestedInput = {
-    create?: XOR<PaymentChannelCreateWithoutCurrenciesInput, PaymentChannelUncheckedCreateWithoutCurrenciesInput> | PaymentChannelCreateWithoutCurrenciesInput[] | PaymentChannelUncheckedCreateWithoutCurrenciesInput[]
-    connectOrCreate?: PaymentChannelCreateOrConnectWithoutCurrenciesInput | PaymentChannelCreateOrConnectWithoutCurrenciesInput[]
-    upsert?: PaymentChannelUpsertWithWhereUniqueWithoutCurrenciesInput | PaymentChannelUpsertWithWhereUniqueWithoutCurrenciesInput[]
-    set?: PaymentChannelWhereUniqueInput | PaymentChannelWhereUniqueInput[]
-    disconnect?: PaymentChannelWhereUniqueInput | PaymentChannelWhereUniqueInput[]
-    delete?: PaymentChannelWhereUniqueInput | PaymentChannelWhereUniqueInput[]
-    connect?: PaymentChannelWhereUniqueInput | PaymentChannelWhereUniqueInput[]
-    update?: PaymentChannelUpdateWithWhereUniqueWithoutCurrenciesInput | PaymentChannelUpdateWithWhereUniqueWithoutCurrenciesInput[]
-    updateMany?: PaymentChannelUpdateManyWithWhereWithoutCurrenciesInput | PaymentChannelUpdateManyWithWhereWithoutCurrenciesInput[]
-    deleteMany?: PaymentChannelScalarWhereInput | PaymentChannelScalarWhereInput[]
-  }
-
   export type PaymentChannelCreateNestedOneWithoutDepositInput = {
     create?: XOR<PaymentChannelCreateWithoutDepositInput, PaymentChannelUncheckedCreateWithoutDepositInput>
     connectOrCreate?: PaymentChannelCreateOrConnectWithoutDepositInput
@@ -21690,160 +23463,6 @@ export namespace Prisma {
     upsert?: WalletUpsertWithoutWithdrawalsInput
     connect?: WalletWhereUniqueInput
     update?: XOR<XOR<WalletUpdateToOneWithWhereWithoutWithdrawalsInput, WalletUpdateWithoutWithdrawalsInput>, WalletUncheckedUpdateWithoutWithdrawalsInput>
-  }
-
-  export type BridgeTransferCreateNestedOneWithoutPaymentChannelInput = {
-    create?: XOR<BridgeTransferCreateWithoutPaymentChannelInput, BridgeTransferUncheckedCreateWithoutPaymentChannelInput>
-    connectOrCreate?: BridgeTransferCreateOrConnectWithoutPaymentChannelInput
-    connect?: BridgeTransferWhereUniqueInput
-  }
-
-  export type CurrencyCreateNestedManyWithoutPaymentChannelsInput = {
-    create?: XOR<CurrencyCreateWithoutPaymentChannelsInput, CurrencyUncheckedCreateWithoutPaymentChannelsInput> | CurrencyCreateWithoutPaymentChannelsInput[] | CurrencyUncheckedCreateWithoutPaymentChannelsInput[]
-    connectOrCreate?: CurrencyCreateOrConnectWithoutPaymentChannelsInput | CurrencyCreateOrConnectWithoutPaymentChannelsInput[]
-    connect?: CurrencyWhereUniqueInput | CurrencyWhereUniqueInput[]
-  }
-
-  export type DepositCreateNestedManyWithoutPaymentChannelInput = {
-    create?: XOR<DepositCreateWithoutPaymentChannelInput, DepositUncheckedCreateWithoutPaymentChannelInput> | DepositCreateWithoutPaymentChannelInput[] | DepositUncheckedCreateWithoutPaymentChannelInput[]
-    connectOrCreate?: DepositCreateOrConnectWithoutPaymentChannelInput | DepositCreateOrConnectWithoutPaymentChannelInput[]
-    createMany?: DepositCreateManyPaymentChannelInputEnvelope
-    connect?: DepositWhereUniqueInput | DepositWhereUniqueInput[]
-  }
-
-  export type WithdrawalCreateNestedManyWithoutPaymentChannelInput = {
-    create?: XOR<WithdrawalCreateWithoutPaymentChannelInput, WithdrawalUncheckedCreateWithoutPaymentChannelInput> | WithdrawalCreateWithoutPaymentChannelInput[] | WithdrawalUncheckedCreateWithoutPaymentChannelInput[]
-    connectOrCreate?: WithdrawalCreateOrConnectWithoutPaymentChannelInput | WithdrawalCreateOrConnectWithoutPaymentChannelInput[]
-    createMany?: WithdrawalCreateManyPaymentChannelInputEnvelope
-    connect?: WithdrawalWhereUniqueInput | WithdrawalWhereUniqueInput[]
-  }
-
-  export type BridgeTransferUncheckedCreateNestedOneWithoutPaymentChannelInput = {
-    create?: XOR<BridgeTransferCreateWithoutPaymentChannelInput, BridgeTransferUncheckedCreateWithoutPaymentChannelInput>
-    connectOrCreate?: BridgeTransferCreateOrConnectWithoutPaymentChannelInput
-    connect?: BridgeTransferWhereUniqueInput
-  }
-
-  export type CurrencyUncheckedCreateNestedManyWithoutPaymentChannelsInput = {
-    create?: XOR<CurrencyCreateWithoutPaymentChannelsInput, CurrencyUncheckedCreateWithoutPaymentChannelsInput> | CurrencyCreateWithoutPaymentChannelsInput[] | CurrencyUncheckedCreateWithoutPaymentChannelsInput[]
-    connectOrCreate?: CurrencyCreateOrConnectWithoutPaymentChannelsInput | CurrencyCreateOrConnectWithoutPaymentChannelsInput[]
-    connect?: CurrencyWhereUniqueInput | CurrencyWhereUniqueInput[]
-  }
-
-  export type DepositUncheckedCreateNestedManyWithoutPaymentChannelInput = {
-    create?: XOR<DepositCreateWithoutPaymentChannelInput, DepositUncheckedCreateWithoutPaymentChannelInput> | DepositCreateWithoutPaymentChannelInput[] | DepositUncheckedCreateWithoutPaymentChannelInput[]
-    connectOrCreate?: DepositCreateOrConnectWithoutPaymentChannelInput | DepositCreateOrConnectWithoutPaymentChannelInput[]
-    createMany?: DepositCreateManyPaymentChannelInputEnvelope
-    connect?: DepositWhereUniqueInput | DepositWhereUniqueInput[]
-  }
-
-  export type WithdrawalUncheckedCreateNestedManyWithoutPaymentChannelInput = {
-    create?: XOR<WithdrawalCreateWithoutPaymentChannelInput, WithdrawalUncheckedCreateWithoutPaymentChannelInput> | WithdrawalCreateWithoutPaymentChannelInput[] | WithdrawalUncheckedCreateWithoutPaymentChannelInput[]
-    connectOrCreate?: WithdrawalCreateOrConnectWithoutPaymentChannelInput | WithdrawalCreateOrConnectWithoutPaymentChannelInput[]
-    createMany?: WithdrawalCreateManyPaymentChannelInputEnvelope
-    connect?: WithdrawalWhereUniqueInput | WithdrawalWhereUniqueInput[]
-  }
-
-  export type BridgeTransferUpdateOneWithoutPaymentChannelNestedInput = {
-    create?: XOR<BridgeTransferCreateWithoutPaymentChannelInput, BridgeTransferUncheckedCreateWithoutPaymentChannelInput>
-    connectOrCreate?: BridgeTransferCreateOrConnectWithoutPaymentChannelInput
-    upsert?: BridgeTransferUpsertWithoutPaymentChannelInput
-    disconnect?: BridgeTransferWhereInput | boolean
-    delete?: BridgeTransferWhereInput | boolean
-    connect?: BridgeTransferWhereUniqueInput
-    update?: XOR<XOR<BridgeTransferUpdateToOneWithWhereWithoutPaymentChannelInput, BridgeTransferUpdateWithoutPaymentChannelInput>, BridgeTransferUncheckedUpdateWithoutPaymentChannelInput>
-  }
-
-  export type CurrencyUpdateManyWithoutPaymentChannelsNestedInput = {
-    create?: XOR<CurrencyCreateWithoutPaymentChannelsInput, CurrencyUncheckedCreateWithoutPaymentChannelsInput> | CurrencyCreateWithoutPaymentChannelsInput[] | CurrencyUncheckedCreateWithoutPaymentChannelsInput[]
-    connectOrCreate?: CurrencyCreateOrConnectWithoutPaymentChannelsInput | CurrencyCreateOrConnectWithoutPaymentChannelsInput[]
-    upsert?: CurrencyUpsertWithWhereUniqueWithoutPaymentChannelsInput | CurrencyUpsertWithWhereUniqueWithoutPaymentChannelsInput[]
-    set?: CurrencyWhereUniqueInput | CurrencyWhereUniqueInput[]
-    disconnect?: CurrencyWhereUniqueInput | CurrencyWhereUniqueInput[]
-    delete?: CurrencyWhereUniqueInput | CurrencyWhereUniqueInput[]
-    connect?: CurrencyWhereUniqueInput | CurrencyWhereUniqueInput[]
-    update?: CurrencyUpdateWithWhereUniqueWithoutPaymentChannelsInput | CurrencyUpdateWithWhereUniqueWithoutPaymentChannelsInput[]
-    updateMany?: CurrencyUpdateManyWithWhereWithoutPaymentChannelsInput | CurrencyUpdateManyWithWhereWithoutPaymentChannelsInput[]
-    deleteMany?: CurrencyScalarWhereInput | CurrencyScalarWhereInput[]
-  }
-
-  export type DepositUpdateManyWithoutPaymentChannelNestedInput = {
-    create?: XOR<DepositCreateWithoutPaymentChannelInput, DepositUncheckedCreateWithoutPaymentChannelInput> | DepositCreateWithoutPaymentChannelInput[] | DepositUncheckedCreateWithoutPaymentChannelInput[]
-    connectOrCreate?: DepositCreateOrConnectWithoutPaymentChannelInput | DepositCreateOrConnectWithoutPaymentChannelInput[]
-    upsert?: DepositUpsertWithWhereUniqueWithoutPaymentChannelInput | DepositUpsertWithWhereUniqueWithoutPaymentChannelInput[]
-    createMany?: DepositCreateManyPaymentChannelInputEnvelope
-    set?: DepositWhereUniqueInput | DepositWhereUniqueInput[]
-    disconnect?: DepositWhereUniqueInput | DepositWhereUniqueInput[]
-    delete?: DepositWhereUniqueInput | DepositWhereUniqueInput[]
-    connect?: DepositWhereUniqueInput | DepositWhereUniqueInput[]
-    update?: DepositUpdateWithWhereUniqueWithoutPaymentChannelInput | DepositUpdateWithWhereUniqueWithoutPaymentChannelInput[]
-    updateMany?: DepositUpdateManyWithWhereWithoutPaymentChannelInput | DepositUpdateManyWithWhereWithoutPaymentChannelInput[]
-    deleteMany?: DepositScalarWhereInput | DepositScalarWhereInput[]
-  }
-
-  export type WithdrawalUpdateManyWithoutPaymentChannelNestedInput = {
-    create?: XOR<WithdrawalCreateWithoutPaymentChannelInput, WithdrawalUncheckedCreateWithoutPaymentChannelInput> | WithdrawalCreateWithoutPaymentChannelInput[] | WithdrawalUncheckedCreateWithoutPaymentChannelInput[]
-    connectOrCreate?: WithdrawalCreateOrConnectWithoutPaymentChannelInput | WithdrawalCreateOrConnectWithoutPaymentChannelInput[]
-    upsert?: WithdrawalUpsertWithWhereUniqueWithoutPaymentChannelInput | WithdrawalUpsertWithWhereUniqueWithoutPaymentChannelInput[]
-    createMany?: WithdrawalCreateManyPaymentChannelInputEnvelope
-    set?: WithdrawalWhereUniqueInput | WithdrawalWhereUniqueInput[]
-    disconnect?: WithdrawalWhereUniqueInput | WithdrawalWhereUniqueInput[]
-    delete?: WithdrawalWhereUniqueInput | WithdrawalWhereUniqueInput[]
-    connect?: WithdrawalWhereUniqueInput | WithdrawalWhereUniqueInput[]
-    update?: WithdrawalUpdateWithWhereUniqueWithoutPaymentChannelInput | WithdrawalUpdateWithWhereUniqueWithoutPaymentChannelInput[]
-    updateMany?: WithdrawalUpdateManyWithWhereWithoutPaymentChannelInput | WithdrawalUpdateManyWithWhereWithoutPaymentChannelInput[]
-    deleteMany?: WithdrawalScalarWhereInput | WithdrawalScalarWhereInput[]
-  }
-
-  export type BridgeTransferUncheckedUpdateOneWithoutPaymentChannelNestedInput = {
-    create?: XOR<BridgeTransferCreateWithoutPaymentChannelInput, BridgeTransferUncheckedCreateWithoutPaymentChannelInput>
-    connectOrCreate?: BridgeTransferCreateOrConnectWithoutPaymentChannelInput
-    upsert?: BridgeTransferUpsertWithoutPaymentChannelInput
-    disconnect?: BridgeTransferWhereInput | boolean
-    delete?: BridgeTransferWhereInput | boolean
-    connect?: BridgeTransferWhereUniqueInput
-    update?: XOR<XOR<BridgeTransferUpdateToOneWithWhereWithoutPaymentChannelInput, BridgeTransferUpdateWithoutPaymentChannelInput>, BridgeTransferUncheckedUpdateWithoutPaymentChannelInput>
-  }
-
-  export type CurrencyUncheckedUpdateManyWithoutPaymentChannelsNestedInput = {
-    create?: XOR<CurrencyCreateWithoutPaymentChannelsInput, CurrencyUncheckedCreateWithoutPaymentChannelsInput> | CurrencyCreateWithoutPaymentChannelsInput[] | CurrencyUncheckedCreateWithoutPaymentChannelsInput[]
-    connectOrCreate?: CurrencyCreateOrConnectWithoutPaymentChannelsInput | CurrencyCreateOrConnectWithoutPaymentChannelsInput[]
-    upsert?: CurrencyUpsertWithWhereUniqueWithoutPaymentChannelsInput | CurrencyUpsertWithWhereUniqueWithoutPaymentChannelsInput[]
-    set?: CurrencyWhereUniqueInput | CurrencyWhereUniqueInput[]
-    disconnect?: CurrencyWhereUniqueInput | CurrencyWhereUniqueInput[]
-    delete?: CurrencyWhereUniqueInput | CurrencyWhereUniqueInput[]
-    connect?: CurrencyWhereUniqueInput | CurrencyWhereUniqueInput[]
-    update?: CurrencyUpdateWithWhereUniqueWithoutPaymentChannelsInput | CurrencyUpdateWithWhereUniqueWithoutPaymentChannelsInput[]
-    updateMany?: CurrencyUpdateManyWithWhereWithoutPaymentChannelsInput | CurrencyUpdateManyWithWhereWithoutPaymentChannelsInput[]
-    deleteMany?: CurrencyScalarWhereInput | CurrencyScalarWhereInput[]
-  }
-
-  export type DepositUncheckedUpdateManyWithoutPaymentChannelNestedInput = {
-    create?: XOR<DepositCreateWithoutPaymentChannelInput, DepositUncheckedCreateWithoutPaymentChannelInput> | DepositCreateWithoutPaymentChannelInput[] | DepositUncheckedCreateWithoutPaymentChannelInput[]
-    connectOrCreate?: DepositCreateOrConnectWithoutPaymentChannelInput | DepositCreateOrConnectWithoutPaymentChannelInput[]
-    upsert?: DepositUpsertWithWhereUniqueWithoutPaymentChannelInput | DepositUpsertWithWhereUniqueWithoutPaymentChannelInput[]
-    createMany?: DepositCreateManyPaymentChannelInputEnvelope
-    set?: DepositWhereUniqueInput | DepositWhereUniqueInput[]
-    disconnect?: DepositWhereUniqueInput | DepositWhereUniqueInput[]
-    delete?: DepositWhereUniqueInput | DepositWhereUniqueInput[]
-    connect?: DepositWhereUniqueInput | DepositWhereUniqueInput[]
-    update?: DepositUpdateWithWhereUniqueWithoutPaymentChannelInput | DepositUpdateWithWhereUniqueWithoutPaymentChannelInput[]
-    updateMany?: DepositUpdateManyWithWhereWithoutPaymentChannelInput | DepositUpdateManyWithWhereWithoutPaymentChannelInput[]
-    deleteMany?: DepositScalarWhereInput | DepositScalarWhereInput[]
-  }
-
-  export type WithdrawalUncheckedUpdateManyWithoutPaymentChannelNestedInput = {
-    create?: XOR<WithdrawalCreateWithoutPaymentChannelInput, WithdrawalUncheckedCreateWithoutPaymentChannelInput> | WithdrawalCreateWithoutPaymentChannelInput[] | WithdrawalUncheckedCreateWithoutPaymentChannelInput[]
-    connectOrCreate?: WithdrawalCreateOrConnectWithoutPaymentChannelInput | WithdrawalCreateOrConnectWithoutPaymentChannelInput[]
-    upsert?: WithdrawalUpsertWithWhereUniqueWithoutPaymentChannelInput | WithdrawalUpsertWithWhereUniqueWithoutPaymentChannelInput[]
-    createMany?: WithdrawalCreateManyPaymentChannelInputEnvelope
-    set?: WithdrawalWhereUniqueInput | WithdrawalWhereUniqueInput[]
-    disconnect?: WithdrawalWhereUniqueInput | WithdrawalWhereUniqueInput[]
-    delete?: WithdrawalWhereUniqueInput | WithdrawalWhereUniqueInput[]
-    connect?: WithdrawalWhereUniqueInput | WithdrawalWhereUniqueInput[]
-    update?: WithdrawalUpdateWithWhereUniqueWithoutPaymentChannelInput | WithdrawalUpdateWithWhereUniqueWithoutPaymentChannelInput[]
-    updateMany?: WithdrawalUpdateManyWithWhereWithoutPaymentChannelInput | WithdrawalUpdateManyWithWhereWithoutPaymentChannelInput[]
-    deleteMany?: WithdrawalScalarWhereInput | WithdrawalScalarWhereInput[]
   }
 
   export type PaymentChannelCreateNestedOneWithoutBridgeTransfersInput = {
@@ -22344,33 +23963,6 @@ export namespace Prisma {
     _max?: NestedDateTimeFilter<$PrismaModel>
   }
 
-  export type NestedDecimalFilter<$PrismaModel = never> = {
-    equals?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
-    in?: Decimal[] | DecimalJsLike[] | number[] | string[] | ListDecimalFieldRefInput<$PrismaModel>
-    notIn?: Decimal[] | DecimalJsLike[] | number[] | string[] | ListDecimalFieldRefInput<$PrismaModel>
-    lt?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
-    lte?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
-    gt?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
-    gte?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
-    not?: NestedDecimalFilter<$PrismaModel> | Decimal | DecimalJsLike | number | string
-  }
-
-  export type NestedDecimalWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
-    in?: Decimal[] | DecimalJsLike[] | number[] | string[] | ListDecimalFieldRefInput<$PrismaModel>
-    notIn?: Decimal[] | DecimalJsLike[] | number[] | string[] | ListDecimalFieldRefInput<$PrismaModel>
-    lt?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
-    lte?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
-    gt?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
-    gte?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
-    not?: NestedDecimalWithAggregatesFilter<$PrismaModel> | Decimal | DecimalJsLike | number | string
-    _count?: NestedIntFilter<$PrismaModel>
-    _avg?: NestedDecimalFilter<$PrismaModel>
-    _sum?: NestedDecimalFilter<$PrismaModel>
-    _min?: NestedDecimalFilter<$PrismaModel>
-    _max?: NestedDecimalFilter<$PrismaModel>
-  }
-
   export type NestedIntWithAggregatesFilter<$PrismaModel = never> = {
     equals?: number | IntFieldRefInput<$PrismaModel>
     in?: number[] | ListIntFieldRefInput<$PrismaModel>
@@ -22396,6 +23988,33 @@ export namespace Prisma {
     gt?: number | FloatFieldRefInput<$PrismaModel>
     gte?: number | FloatFieldRefInput<$PrismaModel>
     not?: NestedFloatFilter<$PrismaModel> | number
+  }
+
+  export type NestedDecimalFilter<$PrismaModel = never> = {
+    equals?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
+    in?: Decimal[] | DecimalJsLike[] | number[] | string[] | ListDecimalFieldRefInput<$PrismaModel>
+    notIn?: Decimal[] | DecimalJsLike[] | number[] | string[] | ListDecimalFieldRefInput<$PrismaModel>
+    lt?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
+    lte?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
+    gt?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
+    gte?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
+    not?: NestedDecimalFilter<$PrismaModel> | Decimal | DecimalJsLike | number | string
+  }
+
+  export type NestedDecimalWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
+    in?: Decimal[] | DecimalJsLike[] | number[] | string[] | ListDecimalFieldRefInput<$PrismaModel>
+    notIn?: Decimal[] | DecimalJsLike[] | number[] | string[] | ListDecimalFieldRefInput<$PrismaModel>
+    lt?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
+    lte?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
+    gt?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
+    gte?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
+    not?: NestedDecimalWithAggregatesFilter<$PrismaModel> | Decimal | DecimalJsLike | number | string
+    _count?: NestedIntFilter<$PrismaModel>
+    _avg?: NestedDecimalFilter<$PrismaModel>
+    _sum?: NestedDecimalFilter<$PrismaModel>
+    _min?: NestedDecimalFilter<$PrismaModel>
+    _max?: NestedDecimalFilter<$PrismaModel>
   }
 
   export type NestedEnumDepositStatusFilter<$PrismaModel = never> = {
@@ -23056,6 +24675,741 @@ export namespace Prisma {
     createdAt?: DateTimeFilter<"ActivityLog"> | Date | string
   }
 
+  export type BridgeTransferCreateWithoutPaymentChannelInput = {
+    id?: string
+    depositId: string
+    withdrawalId: string
+    status?: $Enums.BridgeStatus
+    createdAt?: Date | string
+    completedAt?: Date | string | null
+    failedAt?: Date | string | null
+    Deposit?: DepositCreateNestedManyWithoutBridgeTransferInput
+    Withdrawal?: WithdrawalCreateNestedManyWithoutBridgeTransferInput
+  }
+
+  export type BridgeTransferUncheckedCreateWithoutPaymentChannelInput = {
+    id?: string
+    depositId: string
+    withdrawalId: string
+    status?: $Enums.BridgeStatus
+    createdAt?: Date | string
+    completedAt?: Date | string | null
+    failedAt?: Date | string | null
+    Deposit?: DepositUncheckedCreateNestedManyWithoutBridgeTransferInput
+    Withdrawal?: WithdrawalUncheckedCreateNestedManyWithoutBridgeTransferInput
+  }
+
+  export type BridgeTransferCreateOrConnectWithoutPaymentChannelInput = {
+    where: BridgeTransferWhereUniqueInput
+    create: XOR<BridgeTransferCreateWithoutPaymentChannelInput, BridgeTransferUncheckedCreateWithoutPaymentChannelInput>
+  }
+
+  export type CurrencyCreateWithoutPaymentChannelsInput = {
+    id?: string
+    code: string
+    name: string
+    symbol: string
+    decimals?: number
+    createdAt?: Date | string
+    wallets?: WalletCreateNestedManyWithoutCurrencyInput
+    exchangesFrom?: ExchangeCreateNestedManyWithoutFromCurrencyInput
+    exchangesTo?: ExchangeCreateNestedManyWithoutToCurrencyInput
+    FeeSetting?: FeeSettingCreateNestedManyWithoutCurrencyInput
+    LiquidityPool?: LiquidityPoolCreateNestedManyWithoutCurrencyInput
+  }
+
+  export type CurrencyUncheckedCreateWithoutPaymentChannelsInput = {
+    id?: string
+    code: string
+    name: string
+    symbol: string
+    decimals?: number
+    createdAt?: Date | string
+    wallets?: WalletUncheckedCreateNestedManyWithoutCurrencyInput
+    exchangesFrom?: ExchangeUncheckedCreateNestedManyWithoutFromCurrencyInput
+    exchangesTo?: ExchangeUncheckedCreateNestedManyWithoutToCurrencyInput
+    FeeSetting?: FeeSettingUncheckedCreateNestedManyWithoutCurrencyInput
+    LiquidityPool?: LiquidityPoolUncheckedCreateNestedManyWithoutCurrencyInput
+  }
+
+  export type CurrencyCreateOrConnectWithoutPaymentChannelsInput = {
+    where: CurrencyWhereUniqueInput
+    create: XOR<CurrencyCreateWithoutPaymentChannelsInput, CurrencyUncheckedCreateWithoutPaymentChannelsInput>
+  }
+
+  export type DepositCreateWithoutPaymentChannelInput = {
+    id?: string
+    amount: Decimal | DecimalJsLike | number | string
+    fee?: Decimal | DecimalJsLike | number | string
+    status?: $Enums.DepositStatus
+    reference?: string | null
+    createdAt?: Date | string
+    completedAt?: Date | string | null
+    failedAt?: Date | string | null
+    bridgeTransfer?: BridgeTransferCreateNestedOneWithoutDepositInput
+    user: UserCreateNestedOneWithoutDepositsInput
+    wallet: WalletCreateNestedOneWithoutDepositsInput
+  }
+
+  export type DepositUncheckedCreateWithoutPaymentChannelInput = {
+    id?: string
+    userId: string
+    walletId: string
+    amount: Decimal | DecimalJsLike | number | string
+    fee?: Decimal | DecimalJsLike | number | string
+    status?: $Enums.DepositStatus
+    reference?: string | null
+    createdAt?: Date | string
+    completedAt?: Date | string | null
+    failedAt?: Date | string | null
+    bridgeTransferid?: string | null
+  }
+
+  export type DepositCreateOrConnectWithoutPaymentChannelInput = {
+    where: DepositWhereUniqueInput
+    create: XOR<DepositCreateWithoutPaymentChannelInput, DepositUncheckedCreateWithoutPaymentChannelInput>
+  }
+
+  export type DepositCreateManyPaymentChannelInputEnvelope = {
+    data: DepositCreateManyPaymentChannelInput | DepositCreateManyPaymentChannelInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type WithdrawalCreateWithoutPaymentChannelInput = {
+    id?: string
+    amount: Decimal | DecimalJsLike | number | string
+    fee?: Decimal | DecimalJsLike | number | string
+    status?: $Enums.WithdrawalStatus
+    reference?: string | null
+    createdAt?: Date | string
+    completedAt?: Date | string | null
+    failedAt?: Date | string | null
+    bridgeTransfer?: BridgeTransferCreateNestedOneWithoutWithdrawalInput
+    user: UserCreateNestedOneWithoutWithdrawalsInput
+    wallet: WalletCreateNestedOneWithoutWithdrawalsInput
+  }
+
+  export type WithdrawalUncheckedCreateWithoutPaymentChannelInput = {
+    id?: string
+    userId: string
+    walletId: string
+    amount: Decimal | DecimalJsLike | number | string
+    fee?: Decimal | DecimalJsLike | number | string
+    status?: $Enums.WithdrawalStatus
+    reference?: string | null
+    createdAt?: Date | string
+    completedAt?: Date | string | null
+    failedAt?: Date | string | null
+    bridgeTransferid?: string | null
+  }
+
+  export type WithdrawalCreateOrConnectWithoutPaymentChannelInput = {
+    where: WithdrawalWhereUniqueInput
+    create: XOR<WithdrawalCreateWithoutPaymentChannelInput, WithdrawalUncheckedCreateWithoutPaymentChannelInput>
+  }
+
+  export type WithdrawalCreateManyPaymentChannelInputEnvelope = {
+    data: WithdrawalCreateManyPaymentChannelInput | WithdrawalCreateManyPaymentChannelInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type LiquidityPoolCreateWithoutPaymentChannelInput = {
+    id?: string
+    address: string
+    balance?: Decimal | DecimalJsLike | number | string
+    frozen?: Decimal | DecimalJsLike | number | string
+    updatedAt?: Date | string
+    currency: CurrencyCreateNestedOneWithoutLiquidityPoolInput
+  }
+
+  export type LiquidityPoolUncheckedCreateWithoutPaymentChannelInput = {
+    id?: string
+    currencyId: string
+    address: string
+    balance?: Decimal | DecimalJsLike | number | string
+    frozen?: Decimal | DecimalJsLike | number | string
+    updatedAt?: Date | string
+  }
+
+  export type LiquidityPoolCreateOrConnectWithoutPaymentChannelInput = {
+    where: LiquidityPoolWhereUniqueInput
+    create: XOR<LiquidityPoolCreateWithoutPaymentChannelInput, LiquidityPoolUncheckedCreateWithoutPaymentChannelInput>
+  }
+
+  export type LiquidityPoolCreateManyPaymentChannelInputEnvelope = {
+    data: LiquidityPoolCreateManyPaymentChannelInput | LiquidityPoolCreateManyPaymentChannelInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type BridgeTransferUpsertWithoutPaymentChannelInput = {
+    update: XOR<BridgeTransferUpdateWithoutPaymentChannelInput, BridgeTransferUncheckedUpdateWithoutPaymentChannelInput>
+    create: XOR<BridgeTransferCreateWithoutPaymentChannelInput, BridgeTransferUncheckedCreateWithoutPaymentChannelInput>
+    where?: BridgeTransferWhereInput
+  }
+
+  export type BridgeTransferUpdateToOneWithWhereWithoutPaymentChannelInput = {
+    where?: BridgeTransferWhereInput
+    data: XOR<BridgeTransferUpdateWithoutPaymentChannelInput, BridgeTransferUncheckedUpdateWithoutPaymentChannelInput>
+  }
+
+  export type BridgeTransferUpdateWithoutPaymentChannelInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    depositId?: StringFieldUpdateOperationsInput | string
+    withdrawalId?: StringFieldUpdateOperationsInput | string
+    status?: EnumBridgeStatusFieldUpdateOperationsInput | $Enums.BridgeStatus
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    failedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    Deposit?: DepositUpdateManyWithoutBridgeTransferNestedInput
+    Withdrawal?: WithdrawalUpdateManyWithoutBridgeTransferNestedInput
+  }
+
+  export type BridgeTransferUncheckedUpdateWithoutPaymentChannelInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    depositId?: StringFieldUpdateOperationsInput | string
+    withdrawalId?: StringFieldUpdateOperationsInput | string
+    status?: EnumBridgeStatusFieldUpdateOperationsInput | $Enums.BridgeStatus
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    failedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    Deposit?: DepositUncheckedUpdateManyWithoutBridgeTransferNestedInput
+    Withdrawal?: WithdrawalUncheckedUpdateManyWithoutBridgeTransferNestedInput
+  }
+
+  export type CurrencyUpsertWithWhereUniqueWithoutPaymentChannelsInput = {
+    where: CurrencyWhereUniqueInput
+    update: XOR<CurrencyUpdateWithoutPaymentChannelsInput, CurrencyUncheckedUpdateWithoutPaymentChannelsInput>
+    create: XOR<CurrencyCreateWithoutPaymentChannelsInput, CurrencyUncheckedCreateWithoutPaymentChannelsInput>
+  }
+
+  export type CurrencyUpdateWithWhereUniqueWithoutPaymentChannelsInput = {
+    where: CurrencyWhereUniqueInput
+    data: XOR<CurrencyUpdateWithoutPaymentChannelsInput, CurrencyUncheckedUpdateWithoutPaymentChannelsInput>
+  }
+
+  export type CurrencyUpdateManyWithWhereWithoutPaymentChannelsInput = {
+    where: CurrencyScalarWhereInput
+    data: XOR<CurrencyUpdateManyMutationInput, CurrencyUncheckedUpdateManyWithoutPaymentChannelsInput>
+  }
+
+  export type CurrencyScalarWhereInput = {
+    AND?: CurrencyScalarWhereInput | CurrencyScalarWhereInput[]
+    OR?: CurrencyScalarWhereInput[]
+    NOT?: CurrencyScalarWhereInput | CurrencyScalarWhereInput[]
+    id?: StringFilter<"Currency"> | string
+    code?: StringFilter<"Currency"> | string
+    name?: StringFilter<"Currency"> | string
+    symbol?: StringFilter<"Currency"> | string
+    decimals?: IntFilter<"Currency"> | number
+    createdAt?: DateTimeFilter<"Currency"> | Date | string
+  }
+
+  export type DepositUpsertWithWhereUniqueWithoutPaymentChannelInput = {
+    where: DepositWhereUniqueInput
+    update: XOR<DepositUpdateWithoutPaymentChannelInput, DepositUncheckedUpdateWithoutPaymentChannelInput>
+    create: XOR<DepositCreateWithoutPaymentChannelInput, DepositUncheckedCreateWithoutPaymentChannelInput>
+  }
+
+  export type DepositUpdateWithWhereUniqueWithoutPaymentChannelInput = {
+    where: DepositWhereUniqueInput
+    data: XOR<DepositUpdateWithoutPaymentChannelInput, DepositUncheckedUpdateWithoutPaymentChannelInput>
+  }
+
+  export type DepositUpdateManyWithWhereWithoutPaymentChannelInput = {
+    where: DepositScalarWhereInput
+    data: XOR<DepositUpdateManyMutationInput, DepositUncheckedUpdateManyWithoutPaymentChannelInput>
+  }
+
+  export type WithdrawalUpsertWithWhereUniqueWithoutPaymentChannelInput = {
+    where: WithdrawalWhereUniqueInput
+    update: XOR<WithdrawalUpdateWithoutPaymentChannelInput, WithdrawalUncheckedUpdateWithoutPaymentChannelInput>
+    create: XOR<WithdrawalCreateWithoutPaymentChannelInput, WithdrawalUncheckedCreateWithoutPaymentChannelInput>
+  }
+
+  export type WithdrawalUpdateWithWhereUniqueWithoutPaymentChannelInput = {
+    where: WithdrawalWhereUniqueInput
+    data: XOR<WithdrawalUpdateWithoutPaymentChannelInput, WithdrawalUncheckedUpdateWithoutPaymentChannelInput>
+  }
+
+  export type WithdrawalUpdateManyWithWhereWithoutPaymentChannelInput = {
+    where: WithdrawalScalarWhereInput
+    data: XOR<WithdrawalUpdateManyMutationInput, WithdrawalUncheckedUpdateManyWithoutPaymentChannelInput>
+  }
+
+  export type LiquidityPoolUpsertWithWhereUniqueWithoutPaymentChannelInput = {
+    where: LiquidityPoolWhereUniqueInput
+    update: XOR<LiquidityPoolUpdateWithoutPaymentChannelInput, LiquidityPoolUncheckedUpdateWithoutPaymentChannelInput>
+    create: XOR<LiquidityPoolCreateWithoutPaymentChannelInput, LiquidityPoolUncheckedCreateWithoutPaymentChannelInput>
+  }
+
+  export type LiquidityPoolUpdateWithWhereUniqueWithoutPaymentChannelInput = {
+    where: LiquidityPoolWhereUniqueInput
+    data: XOR<LiquidityPoolUpdateWithoutPaymentChannelInput, LiquidityPoolUncheckedUpdateWithoutPaymentChannelInput>
+  }
+
+  export type LiquidityPoolUpdateManyWithWhereWithoutPaymentChannelInput = {
+    where: LiquidityPoolScalarWhereInput
+    data: XOR<LiquidityPoolUpdateManyMutationInput, LiquidityPoolUncheckedUpdateManyWithoutPaymentChannelInput>
+  }
+
+  export type LiquidityPoolScalarWhereInput = {
+    AND?: LiquidityPoolScalarWhereInput | LiquidityPoolScalarWhereInput[]
+    OR?: LiquidityPoolScalarWhereInput[]
+    NOT?: LiquidityPoolScalarWhereInput | LiquidityPoolScalarWhereInput[]
+    id?: StringFilter<"LiquidityPool"> | string
+    paymentChannelId?: StringFilter<"LiquidityPool"> | string
+    currencyId?: StringFilter<"LiquidityPool"> | string
+    address?: StringFilter<"LiquidityPool"> | string
+    balance?: DecimalFilter<"LiquidityPool"> | Decimal | DecimalJsLike | number | string
+    frozen?: DecimalFilter<"LiquidityPool"> | Decimal | DecimalJsLike | number | string
+    updatedAt?: DateTimeFilter<"LiquidityPool"> | Date | string
+  }
+
+  export type WalletCreateWithoutCurrencyInput = {
+    id?: string
+    balance?: Decimal | DecimalJsLike | number | string
+    frozen?: Decimal | DecimalJsLike | number | string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    user: UserCreateNestedOneWithoutWalletInput
+    deposits?: DepositCreateNestedManyWithoutWalletInput
+    withdrawals?: WithdrawalCreateNestedManyWithoutWalletInput
+    Refund?: RefundCreateNestedManyWithoutWalletInput
+    transfersFrom?: TransferCreateNestedManyWithoutFromWalletInput
+    transfersTo?: TransferCreateNestedManyWithoutToWalletInput
+  }
+
+  export type WalletUncheckedCreateWithoutCurrencyInput = {
+    id?: string
+    userId: string
+    balance?: Decimal | DecimalJsLike | number | string
+    frozen?: Decimal | DecimalJsLike | number | string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    deposits?: DepositUncheckedCreateNestedManyWithoutWalletInput
+    withdrawals?: WithdrawalUncheckedCreateNestedManyWithoutWalletInput
+    Refund?: RefundUncheckedCreateNestedManyWithoutWalletInput
+    transfersFrom?: TransferUncheckedCreateNestedManyWithoutFromWalletInput
+    transfersTo?: TransferUncheckedCreateNestedManyWithoutToWalletInput
+  }
+
+  export type WalletCreateOrConnectWithoutCurrencyInput = {
+    where: WalletWhereUniqueInput
+    create: XOR<WalletCreateWithoutCurrencyInput, WalletUncheckedCreateWithoutCurrencyInput>
+  }
+
+  export type WalletCreateManyCurrencyInputEnvelope = {
+    data: WalletCreateManyCurrencyInput | WalletCreateManyCurrencyInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type ExchangeCreateWithoutFromCurrencyInput = {
+    id?: string
+    fromAmount: Decimal | DecimalJsLike | number | string
+    toAmount: Decimal | DecimalJsLike | number | string
+    exchangeRate: Decimal | DecimalJsLike | number | string
+    feePercentage?: Decimal | DecimalJsLike | number | string
+    status?: $Enums.ExchangeStatus
+    createdAt?: Date | string
+    completedAt?: Date | string | null
+    failedAt?: Date | string | null
+    toCurrency: CurrencyCreateNestedOneWithoutExchangesToInput
+    initiator?: UserCreateNestedOneWithoutInitiatedExchangesInput
+  }
+
+  export type ExchangeUncheckedCreateWithoutFromCurrencyInput = {
+    id?: string
+    toCurrencyId: string
+    userId?: string | null
+    fromAmount: Decimal | DecimalJsLike | number | string
+    toAmount: Decimal | DecimalJsLike | number | string
+    exchangeRate: Decimal | DecimalJsLike | number | string
+    feePercentage?: Decimal | DecimalJsLike | number | string
+    status?: $Enums.ExchangeStatus
+    createdAt?: Date | string
+    completedAt?: Date | string | null
+    failedAt?: Date | string | null
+  }
+
+  export type ExchangeCreateOrConnectWithoutFromCurrencyInput = {
+    where: ExchangeWhereUniqueInput
+    create: XOR<ExchangeCreateWithoutFromCurrencyInput, ExchangeUncheckedCreateWithoutFromCurrencyInput>
+  }
+
+  export type ExchangeCreateManyFromCurrencyInputEnvelope = {
+    data: ExchangeCreateManyFromCurrencyInput | ExchangeCreateManyFromCurrencyInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type ExchangeCreateWithoutToCurrencyInput = {
+    id?: string
+    fromAmount: Decimal | DecimalJsLike | number | string
+    toAmount: Decimal | DecimalJsLike | number | string
+    exchangeRate: Decimal | DecimalJsLike | number | string
+    feePercentage?: Decimal | DecimalJsLike | number | string
+    status?: $Enums.ExchangeStatus
+    createdAt?: Date | string
+    completedAt?: Date | string | null
+    failedAt?: Date | string | null
+    fromCurrency: CurrencyCreateNestedOneWithoutExchangesFromInput
+    initiator?: UserCreateNestedOneWithoutInitiatedExchangesInput
+  }
+
+  export type ExchangeUncheckedCreateWithoutToCurrencyInput = {
+    id?: string
+    fromCurrencyId: string
+    userId?: string | null
+    fromAmount: Decimal | DecimalJsLike | number | string
+    toAmount: Decimal | DecimalJsLike | number | string
+    exchangeRate: Decimal | DecimalJsLike | number | string
+    feePercentage?: Decimal | DecimalJsLike | number | string
+    status?: $Enums.ExchangeStatus
+    createdAt?: Date | string
+    completedAt?: Date | string | null
+    failedAt?: Date | string | null
+  }
+
+  export type ExchangeCreateOrConnectWithoutToCurrencyInput = {
+    where: ExchangeWhereUniqueInput
+    create: XOR<ExchangeCreateWithoutToCurrencyInput, ExchangeUncheckedCreateWithoutToCurrencyInput>
+  }
+
+  export type ExchangeCreateManyToCurrencyInputEnvelope = {
+    data: ExchangeCreateManyToCurrencyInput | ExchangeCreateManyToCurrencyInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type FeeSettingCreateWithoutCurrencyInput = {
+    id?: string
+    transactionType: $Enums.TransactionKind
+    fixedFee?: Decimal | DecimalJsLike | number | string | null
+    percentageFee?: Decimal | DecimalJsLike | number | string | null
+    createdAt?: Date | string
+  }
+
+  export type FeeSettingUncheckedCreateWithoutCurrencyInput = {
+    id?: string
+    transactionType: $Enums.TransactionKind
+    fixedFee?: Decimal | DecimalJsLike | number | string | null
+    percentageFee?: Decimal | DecimalJsLike | number | string | null
+    createdAt?: Date | string
+  }
+
+  export type FeeSettingCreateOrConnectWithoutCurrencyInput = {
+    where: FeeSettingWhereUniqueInput
+    create: XOR<FeeSettingCreateWithoutCurrencyInput, FeeSettingUncheckedCreateWithoutCurrencyInput>
+  }
+
+  export type FeeSettingCreateManyCurrencyInputEnvelope = {
+    data: FeeSettingCreateManyCurrencyInput | FeeSettingCreateManyCurrencyInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type PaymentChannelCreateWithoutCurrenciesInput = {
+    id?: string
+    name: string
+    description?: string | null
+    createdAt?: Date | string
+    bridgeTransfers?: BridgeTransferCreateNestedOneWithoutPaymentChannelInput
+    Deposit?: DepositCreateNestedManyWithoutPaymentChannelInput
+    Withdrawal?: WithdrawalCreateNestedManyWithoutPaymentChannelInput
+    LiquidityPool?: LiquidityPoolCreateNestedManyWithoutPaymentChannelInput
+  }
+
+  export type PaymentChannelUncheckedCreateWithoutCurrenciesInput = {
+    id?: string
+    name: string
+    description?: string | null
+    createdAt?: Date | string
+    bridgeTransfers?: BridgeTransferUncheckedCreateNestedOneWithoutPaymentChannelInput
+    Deposit?: DepositUncheckedCreateNestedManyWithoutPaymentChannelInput
+    Withdrawal?: WithdrawalUncheckedCreateNestedManyWithoutPaymentChannelInput
+    LiquidityPool?: LiquidityPoolUncheckedCreateNestedManyWithoutPaymentChannelInput
+  }
+
+  export type PaymentChannelCreateOrConnectWithoutCurrenciesInput = {
+    where: PaymentChannelWhereUniqueInput
+    create: XOR<PaymentChannelCreateWithoutCurrenciesInput, PaymentChannelUncheckedCreateWithoutCurrenciesInput>
+  }
+
+  export type LiquidityPoolCreateWithoutCurrencyInput = {
+    id?: string
+    address: string
+    balance?: Decimal | DecimalJsLike | number | string
+    frozen?: Decimal | DecimalJsLike | number | string
+    updatedAt?: Date | string
+    paymentChannel: PaymentChannelCreateNestedOneWithoutLiquidityPoolInput
+  }
+
+  export type LiquidityPoolUncheckedCreateWithoutCurrencyInput = {
+    id?: string
+    paymentChannelId: string
+    address: string
+    balance?: Decimal | DecimalJsLike | number | string
+    frozen?: Decimal | DecimalJsLike | number | string
+    updatedAt?: Date | string
+  }
+
+  export type LiquidityPoolCreateOrConnectWithoutCurrencyInput = {
+    where: LiquidityPoolWhereUniqueInput
+    create: XOR<LiquidityPoolCreateWithoutCurrencyInput, LiquidityPoolUncheckedCreateWithoutCurrencyInput>
+  }
+
+  export type LiquidityPoolCreateManyCurrencyInputEnvelope = {
+    data: LiquidityPoolCreateManyCurrencyInput | LiquidityPoolCreateManyCurrencyInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type WalletUpsertWithWhereUniqueWithoutCurrencyInput = {
+    where: WalletWhereUniqueInput
+    update: XOR<WalletUpdateWithoutCurrencyInput, WalletUncheckedUpdateWithoutCurrencyInput>
+    create: XOR<WalletCreateWithoutCurrencyInput, WalletUncheckedCreateWithoutCurrencyInput>
+  }
+
+  export type WalletUpdateWithWhereUniqueWithoutCurrencyInput = {
+    where: WalletWhereUniqueInput
+    data: XOR<WalletUpdateWithoutCurrencyInput, WalletUncheckedUpdateWithoutCurrencyInput>
+  }
+
+  export type WalletUpdateManyWithWhereWithoutCurrencyInput = {
+    where: WalletScalarWhereInput
+    data: XOR<WalletUpdateManyMutationInput, WalletUncheckedUpdateManyWithoutCurrencyInput>
+  }
+
+  export type ExchangeUpsertWithWhereUniqueWithoutFromCurrencyInput = {
+    where: ExchangeWhereUniqueInput
+    update: XOR<ExchangeUpdateWithoutFromCurrencyInput, ExchangeUncheckedUpdateWithoutFromCurrencyInput>
+    create: XOR<ExchangeCreateWithoutFromCurrencyInput, ExchangeUncheckedCreateWithoutFromCurrencyInput>
+  }
+
+  export type ExchangeUpdateWithWhereUniqueWithoutFromCurrencyInput = {
+    where: ExchangeWhereUniqueInput
+    data: XOR<ExchangeUpdateWithoutFromCurrencyInput, ExchangeUncheckedUpdateWithoutFromCurrencyInput>
+  }
+
+  export type ExchangeUpdateManyWithWhereWithoutFromCurrencyInput = {
+    where: ExchangeScalarWhereInput
+    data: XOR<ExchangeUpdateManyMutationInput, ExchangeUncheckedUpdateManyWithoutFromCurrencyInput>
+  }
+
+  export type ExchangeUpsertWithWhereUniqueWithoutToCurrencyInput = {
+    where: ExchangeWhereUniqueInput
+    update: XOR<ExchangeUpdateWithoutToCurrencyInput, ExchangeUncheckedUpdateWithoutToCurrencyInput>
+    create: XOR<ExchangeCreateWithoutToCurrencyInput, ExchangeUncheckedCreateWithoutToCurrencyInput>
+  }
+
+  export type ExchangeUpdateWithWhereUniqueWithoutToCurrencyInput = {
+    where: ExchangeWhereUniqueInput
+    data: XOR<ExchangeUpdateWithoutToCurrencyInput, ExchangeUncheckedUpdateWithoutToCurrencyInput>
+  }
+
+  export type ExchangeUpdateManyWithWhereWithoutToCurrencyInput = {
+    where: ExchangeScalarWhereInput
+    data: XOR<ExchangeUpdateManyMutationInput, ExchangeUncheckedUpdateManyWithoutToCurrencyInput>
+  }
+
+  export type FeeSettingUpsertWithWhereUniqueWithoutCurrencyInput = {
+    where: FeeSettingWhereUniqueInput
+    update: XOR<FeeSettingUpdateWithoutCurrencyInput, FeeSettingUncheckedUpdateWithoutCurrencyInput>
+    create: XOR<FeeSettingCreateWithoutCurrencyInput, FeeSettingUncheckedCreateWithoutCurrencyInput>
+  }
+
+  export type FeeSettingUpdateWithWhereUniqueWithoutCurrencyInput = {
+    where: FeeSettingWhereUniqueInput
+    data: XOR<FeeSettingUpdateWithoutCurrencyInput, FeeSettingUncheckedUpdateWithoutCurrencyInput>
+  }
+
+  export type FeeSettingUpdateManyWithWhereWithoutCurrencyInput = {
+    where: FeeSettingScalarWhereInput
+    data: XOR<FeeSettingUpdateManyMutationInput, FeeSettingUncheckedUpdateManyWithoutCurrencyInput>
+  }
+
+  export type FeeSettingScalarWhereInput = {
+    AND?: FeeSettingScalarWhereInput | FeeSettingScalarWhereInput[]
+    OR?: FeeSettingScalarWhereInput[]
+    NOT?: FeeSettingScalarWhereInput | FeeSettingScalarWhereInput[]
+    id?: StringFilter<"FeeSetting"> | string
+    transactionType?: EnumTransactionKindFilter<"FeeSetting"> | $Enums.TransactionKind
+    currencyId?: StringNullableFilter<"FeeSetting"> | string | null
+    fixedFee?: DecimalNullableFilter<"FeeSetting"> | Decimal | DecimalJsLike | number | string | null
+    percentageFee?: DecimalNullableFilter<"FeeSetting"> | Decimal | DecimalJsLike | number | string | null
+    createdAt?: DateTimeFilter<"FeeSetting"> | Date | string
+  }
+
+  export type PaymentChannelUpsertWithWhereUniqueWithoutCurrenciesInput = {
+    where: PaymentChannelWhereUniqueInput
+    update: XOR<PaymentChannelUpdateWithoutCurrenciesInput, PaymentChannelUncheckedUpdateWithoutCurrenciesInput>
+    create: XOR<PaymentChannelCreateWithoutCurrenciesInput, PaymentChannelUncheckedCreateWithoutCurrenciesInput>
+  }
+
+  export type PaymentChannelUpdateWithWhereUniqueWithoutCurrenciesInput = {
+    where: PaymentChannelWhereUniqueInput
+    data: XOR<PaymentChannelUpdateWithoutCurrenciesInput, PaymentChannelUncheckedUpdateWithoutCurrenciesInput>
+  }
+
+  export type PaymentChannelUpdateManyWithWhereWithoutCurrenciesInput = {
+    where: PaymentChannelScalarWhereInput
+    data: XOR<PaymentChannelUpdateManyMutationInput, PaymentChannelUncheckedUpdateManyWithoutCurrenciesInput>
+  }
+
+  export type PaymentChannelScalarWhereInput = {
+    AND?: PaymentChannelScalarWhereInput | PaymentChannelScalarWhereInput[]
+    OR?: PaymentChannelScalarWhereInput[]
+    NOT?: PaymentChannelScalarWhereInput | PaymentChannelScalarWhereInput[]
+    id?: StringFilter<"PaymentChannel"> | string
+    name?: StringFilter<"PaymentChannel"> | string
+    description?: StringNullableFilter<"PaymentChannel"> | string | null
+    createdAt?: DateTimeFilter<"PaymentChannel"> | Date | string
+  }
+
+  export type LiquidityPoolUpsertWithWhereUniqueWithoutCurrencyInput = {
+    where: LiquidityPoolWhereUniqueInput
+    update: XOR<LiquidityPoolUpdateWithoutCurrencyInput, LiquidityPoolUncheckedUpdateWithoutCurrencyInput>
+    create: XOR<LiquidityPoolCreateWithoutCurrencyInput, LiquidityPoolUncheckedCreateWithoutCurrencyInput>
+  }
+
+  export type LiquidityPoolUpdateWithWhereUniqueWithoutCurrencyInput = {
+    where: LiquidityPoolWhereUniqueInput
+    data: XOR<LiquidityPoolUpdateWithoutCurrencyInput, LiquidityPoolUncheckedUpdateWithoutCurrencyInput>
+  }
+
+  export type LiquidityPoolUpdateManyWithWhereWithoutCurrencyInput = {
+    where: LiquidityPoolScalarWhereInput
+    data: XOR<LiquidityPoolUpdateManyMutationInput, LiquidityPoolUncheckedUpdateManyWithoutCurrencyInput>
+  }
+
+  export type PaymentChannelCreateWithoutLiquidityPoolInput = {
+    id?: string
+    name: string
+    description?: string | null
+    createdAt?: Date | string
+    bridgeTransfers?: BridgeTransferCreateNestedOneWithoutPaymentChannelInput
+    currencies?: CurrencyCreateNestedManyWithoutPaymentChannelsInput
+    Deposit?: DepositCreateNestedManyWithoutPaymentChannelInput
+    Withdrawal?: WithdrawalCreateNestedManyWithoutPaymentChannelInput
+  }
+
+  export type PaymentChannelUncheckedCreateWithoutLiquidityPoolInput = {
+    id?: string
+    name: string
+    description?: string | null
+    createdAt?: Date | string
+    bridgeTransfers?: BridgeTransferUncheckedCreateNestedOneWithoutPaymentChannelInput
+    currencies?: CurrencyUncheckedCreateNestedManyWithoutPaymentChannelsInput
+    Deposit?: DepositUncheckedCreateNestedManyWithoutPaymentChannelInput
+    Withdrawal?: WithdrawalUncheckedCreateNestedManyWithoutPaymentChannelInput
+  }
+
+  export type PaymentChannelCreateOrConnectWithoutLiquidityPoolInput = {
+    where: PaymentChannelWhereUniqueInput
+    create: XOR<PaymentChannelCreateWithoutLiquidityPoolInput, PaymentChannelUncheckedCreateWithoutLiquidityPoolInput>
+  }
+
+  export type CurrencyCreateWithoutLiquidityPoolInput = {
+    id?: string
+    code: string
+    name: string
+    symbol: string
+    decimals?: number
+    createdAt?: Date | string
+    wallets?: WalletCreateNestedManyWithoutCurrencyInput
+    exchangesFrom?: ExchangeCreateNestedManyWithoutFromCurrencyInput
+    exchangesTo?: ExchangeCreateNestedManyWithoutToCurrencyInput
+    FeeSetting?: FeeSettingCreateNestedManyWithoutCurrencyInput
+    paymentChannels?: PaymentChannelCreateNestedManyWithoutCurrenciesInput
+  }
+
+  export type CurrencyUncheckedCreateWithoutLiquidityPoolInput = {
+    id?: string
+    code: string
+    name: string
+    symbol: string
+    decimals?: number
+    createdAt?: Date | string
+    wallets?: WalletUncheckedCreateNestedManyWithoutCurrencyInput
+    exchangesFrom?: ExchangeUncheckedCreateNestedManyWithoutFromCurrencyInput
+    exchangesTo?: ExchangeUncheckedCreateNestedManyWithoutToCurrencyInput
+    FeeSetting?: FeeSettingUncheckedCreateNestedManyWithoutCurrencyInput
+    paymentChannels?: PaymentChannelUncheckedCreateNestedManyWithoutCurrenciesInput
+  }
+
+  export type CurrencyCreateOrConnectWithoutLiquidityPoolInput = {
+    where: CurrencyWhereUniqueInput
+    create: XOR<CurrencyCreateWithoutLiquidityPoolInput, CurrencyUncheckedCreateWithoutLiquidityPoolInput>
+  }
+
+  export type PaymentChannelUpsertWithoutLiquidityPoolInput = {
+    update: XOR<PaymentChannelUpdateWithoutLiquidityPoolInput, PaymentChannelUncheckedUpdateWithoutLiquidityPoolInput>
+    create: XOR<PaymentChannelCreateWithoutLiquidityPoolInput, PaymentChannelUncheckedCreateWithoutLiquidityPoolInput>
+    where?: PaymentChannelWhereInput
+  }
+
+  export type PaymentChannelUpdateToOneWithWhereWithoutLiquidityPoolInput = {
+    where?: PaymentChannelWhereInput
+    data: XOR<PaymentChannelUpdateWithoutLiquidityPoolInput, PaymentChannelUncheckedUpdateWithoutLiquidityPoolInput>
+  }
+
+  export type PaymentChannelUpdateWithoutLiquidityPoolInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    bridgeTransfers?: BridgeTransferUpdateOneWithoutPaymentChannelNestedInput
+    currencies?: CurrencyUpdateManyWithoutPaymentChannelsNestedInput
+    Deposit?: DepositUpdateManyWithoutPaymentChannelNestedInput
+    Withdrawal?: WithdrawalUpdateManyWithoutPaymentChannelNestedInput
+  }
+
+  export type PaymentChannelUncheckedUpdateWithoutLiquidityPoolInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    bridgeTransfers?: BridgeTransferUncheckedUpdateOneWithoutPaymentChannelNestedInput
+    currencies?: CurrencyUncheckedUpdateManyWithoutPaymentChannelsNestedInput
+    Deposit?: DepositUncheckedUpdateManyWithoutPaymentChannelNestedInput
+    Withdrawal?: WithdrawalUncheckedUpdateManyWithoutPaymentChannelNestedInput
+  }
+
+  export type CurrencyUpsertWithoutLiquidityPoolInput = {
+    update: XOR<CurrencyUpdateWithoutLiquidityPoolInput, CurrencyUncheckedUpdateWithoutLiquidityPoolInput>
+    create: XOR<CurrencyCreateWithoutLiquidityPoolInput, CurrencyUncheckedCreateWithoutLiquidityPoolInput>
+    where?: CurrencyWhereInput
+  }
+
+  export type CurrencyUpdateToOneWithWhereWithoutLiquidityPoolInput = {
+    where?: CurrencyWhereInput
+    data: XOR<CurrencyUpdateWithoutLiquidityPoolInput, CurrencyUncheckedUpdateWithoutLiquidityPoolInput>
+  }
+
+  export type CurrencyUpdateWithoutLiquidityPoolInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    code?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    symbol?: StringFieldUpdateOperationsInput | string
+    decimals?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    wallets?: WalletUpdateManyWithoutCurrencyNestedInput
+    exchangesFrom?: ExchangeUpdateManyWithoutFromCurrencyNestedInput
+    exchangesTo?: ExchangeUpdateManyWithoutToCurrencyNestedInput
+    FeeSetting?: FeeSettingUpdateManyWithoutCurrencyNestedInput
+    paymentChannels?: PaymentChannelUpdateManyWithoutCurrenciesNestedInput
+  }
+
+  export type CurrencyUncheckedUpdateWithoutLiquidityPoolInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    code?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    symbol?: StringFieldUpdateOperationsInput | string
+    decimals?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    wallets?: WalletUncheckedUpdateManyWithoutCurrencyNestedInput
+    exchangesFrom?: ExchangeUncheckedUpdateManyWithoutFromCurrencyNestedInput
+    exchangesTo?: ExchangeUncheckedUpdateManyWithoutToCurrencyNestedInput
+    FeeSetting?: FeeSettingUncheckedUpdateManyWithoutCurrencyNestedInput
+    paymentChannels?: PaymentChannelUncheckedUpdateManyWithoutCurrenciesNestedInput
+  }
+
   export type UserCreateWithoutWalletInput = {
     id?: string
     email: string
@@ -23138,6 +25492,7 @@ export namespace Prisma {
     exchangesTo?: ExchangeCreateNestedManyWithoutToCurrencyInput
     FeeSetting?: FeeSettingCreateNestedManyWithoutCurrencyInput
     paymentChannels?: PaymentChannelCreateNestedManyWithoutCurrenciesInput
+    LiquidityPool?: LiquidityPoolCreateNestedManyWithoutCurrencyInput
   }
 
   export type CurrencyUncheckedCreateWithoutWalletsInput = {
@@ -23151,6 +25506,7 @@ export namespace Prisma {
     exchangesTo?: ExchangeUncheckedCreateNestedManyWithoutToCurrencyInput
     FeeSetting?: FeeSettingUncheckedCreateNestedManyWithoutCurrencyInput
     paymentChannels?: PaymentChannelUncheckedCreateNestedManyWithoutCurrenciesInput
+    LiquidityPool?: LiquidityPoolUncheckedCreateNestedManyWithoutCurrencyInput
   }
 
   export type CurrencyCreateOrConnectWithoutWalletsInput = {
@@ -23437,6 +25793,7 @@ export namespace Prisma {
     exchangesTo?: ExchangeUpdateManyWithoutToCurrencyNestedInput
     FeeSetting?: FeeSettingUpdateManyWithoutCurrencyNestedInput
     paymentChannels?: PaymentChannelUpdateManyWithoutCurrenciesNestedInput
+    LiquidityPool?: LiquidityPoolUpdateManyWithoutCurrencyNestedInput
   }
 
   export type CurrencyUncheckedUpdateWithoutWalletsInput = {
@@ -23450,6 +25807,7 @@ export namespace Prisma {
     exchangesTo?: ExchangeUncheckedUpdateManyWithoutToCurrencyNestedInput
     FeeSetting?: FeeSettingUncheckedUpdateManyWithoutCurrencyNestedInput
     paymentChannels?: PaymentChannelUncheckedUpdateManyWithoutCurrenciesNestedInput
+    LiquidityPool?: LiquidityPoolUncheckedUpdateManyWithoutCurrencyNestedInput
   }
 
   export type DepositUpsertWithWhereUniqueWithoutWalletInput = {
@@ -23532,273 +25890,6 @@ export namespace Prisma {
     data: XOR<TransferUpdateManyMutationInput, TransferUncheckedUpdateManyWithoutToWalletInput>
   }
 
-  export type WalletCreateWithoutCurrencyInput = {
-    id?: string
-    balance?: Decimal | DecimalJsLike | number | string
-    frozen?: Decimal | DecimalJsLike | number | string
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    user: UserCreateNestedOneWithoutWalletInput
-    deposits?: DepositCreateNestedManyWithoutWalletInput
-    withdrawals?: WithdrawalCreateNestedManyWithoutWalletInput
-    Refund?: RefundCreateNestedManyWithoutWalletInput
-    transfersFrom?: TransferCreateNestedManyWithoutFromWalletInput
-    transfersTo?: TransferCreateNestedManyWithoutToWalletInput
-  }
-
-  export type WalletUncheckedCreateWithoutCurrencyInput = {
-    id?: string
-    userId: string
-    balance?: Decimal | DecimalJsLike | number | string
-    frozen?: Decimal | DecimalJsLike | number | string
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    deposits?: DepositUncheckedCreateNestedManyWithoutWalletInput
-    withdrawals?: WithdrawalUncheckedCreateNestedManyWithoutWalletInput
-    Refund?: RefundUncheckedCreateNestedManyWithoutWalletInput
-    transfersFrom?: TransferUncheckedCreateNestedManyWithoutFromWalletInput
-    transfersTo?: TransferUncheckedCreateNestedManyWithoutToWalletInput
-  }
-
-  export type WalletCreateOrConnectWithoutCurrencyInput = {
-    where: WalletWhereUniqueInput
-    create: XOR<WalletCreateWithoutCurrencyInput, WalletUncheckedCreateWithoutCurrencyInput>
-  }
-
-  export type WalletCreateManyCurrencyInputEnvelope = {
-    data: WalletCreateManyCurrencyInput | WalletCreateManyCurrencyInput[]
-    skipDuplicates?: boolean
-  }
-
-  export type ExchangeCreateWithoutFromCurrencyInput = {
-    id?: string
-    fromAmount: Decimal | DecimalJsLike | number | string
-    toAmount: Decimal | DecimalJsLike | number | string
-    exchangeRate: Decimal | DecimalJsLike | number | string
-    feePercentage?: Decimal | DecimalJsLike | number | string
-    status?: $Enums.ExchangeStatus
-    createdAt?: Date | string
-    completedAt?: Date | string | null
-    failedAt?: Date | string | null
-    toCurrency: CurrencyCreateNestedOneWithoutExchangesToInput
-    initiator?: UserCreateNestedOneWithoutInitiatedExchangesInput
-  }
-
-  export type ExchangeUncheckedCreateWithoutFromCurrencyInput = {
-    id?: string
-    toCurrencyId: string
-    userId?: string | null
-    fromAmount: Decimal | DecimalJsLike | number | string
-    toAmount: Decimal | DecimalJsLike | number | string
-    exchangeRate: Decimal | DecimalJsLike | number | string
-    feePercentage?: Decimal | DecimalJsLike | number | string
-    status?: $Enums.ExchangeStatus
-    createdAt?: Date | string
-    completedAt?: Date | string | null
-    failedAt?: Date | string | null
-  }
-
-  export type ExchangeCreateOrConnectWithoutFromCurrencyInput = {
-    where: ExchangeWhereUniqueInput
-    create: XOR<ExchangeCreateWithoutFromCurrencyInput, ExchangeUncheckedCreateWithoutFromCurrencyInput>
-  }
-
-  export type ExchangeCreateManyFromCurrencyInputEnvelope = {
-    data: ExchangeCreateManyFromCurrencyInput | ExchangeCreateManyFromCurrencyInput[]
-    skipDuplicates?: boolean
-  }
-
-  export type ExchangeCreateWithoutToCurrencyInput = {
-    id?: string
-    fromAmount: Decimal | DecimalJsLike | number | string
-    toAmount: Decimal | DecimalJsLike | number | string
-    exchangeRate: Decimal | DecimalJsLike | number | string
-    feePercentage?: Decimal | DecimalJsLike | number | string
-    status?: $Enums.ExchangeStatus
-    createdAt?: Date | string
-    completedAt?: Date | string | null
-    failedAt?: Date | string | null
-    fromCurrency: CurrencyCreateNestedOneWithoutExchangesFromInput
-    initiator?: UserCreateNestedOneWithoutInitiatedExchangesInput
-  }
-
-  export type ExchangeUncheckedCreateWithoutToCurrencyInput = {
-    id?: string
-    fromCurrencyId: string
-    userId?: string | null
-    fromAmount: Decimal | DecimalJsLike | number | string
-    toAmount: Decimal | DecimalJsLike | number | string
-    exchangeRate: Decimal | DecimalJsLike | number | string
-    feePercentage?: Decimal | DecimalJsLike | number | string
-    status?: $Enums.ExchangeStatus
-    createdAt?: Date | string
-    completedAt?: Date | string | null
-    failedAt?: Date | string | null
-  }
-
-  export type ExchangeCreateOrConnectWithoutToCurrencyInput = {
-    where: ExchangeWhereUniqueInput
-    create: XOR<ExchangeCreateWithoutToCurrencyInput, ExchangeUncheckedCreateWithoutToCurrencyInput>
-  }
-
-  export type ExchangeCreateManyToCurrencyInputEnvelope = {
-    data: ExchangeCreateManyToCurrencyInput | ExchangeCreateManyToCurrencyInput[]
-    skipDuplicates?: boolean
-  }
-
-  export type FeeSettingCreateWithoutCurrencyInput = {
-    id?: string
-    transactionType: $Enums.TransactionKind
-    fixedFee?: Decimal | DecimalJsLike | number | string | null
-    percentageFee?: Decimal | DecimalJsLike | number | string | null
-    createdAt?: Date | string
-  }
-
-  export type FeeSettingUncheckedCreateWithoutCurrencyInput = {
-    id?: string
-    transactionType: $Enums.TransactionKind
-    fixedFee?: Decimal | DecimalJsLike | number | string | null
-    percentageFee?: Decimal | DecimalJsLike | number | string | null
-    createdAt?: Date | string
-  }
-
-  export type FeeSettingCreateOrConnectWithoutCurrencyInput = {
-    where: FeeSettingWhereUniqueInput
-    create: XOR<FeeSettingCreateWithoutCurrencyInput, FeeSettingUncheckedCreateWithoutCurrencyInput>
-  }
-
-  export type FeeSettingCreateManyCurrencyInputEnvelope = {
-    data: FeeSettingCreateManyCurrencyInput | FeeSettingCreateManyCurrencyInput[]
-    skipDuplicates?: boolean
-  }
-
-  export type PaymentChannelCreateWithoutCurrenciesInput = {
-    id?: string
-    name: string
-    description?: string | null
-    createdAt?: Date | string
-    bridgeTransfers?: BridgeTransferCreateNestedOneWithoutPaymentChannelInput
-    Deposit?: DepositCreateNestedManyWithoutPaymentChannelInput
-    Withdrawal?: WithdrawalCreateNestedManyWithoutPaymentChannelInput
-  }
-
-  export type PaymentChannelUncheckedCreateWithoutCurrenciesInput = {
-    id?: string
-    name: string
-    description?: string | null
-    createdAt?: Date | string
-    bridgeTransfers?: BridgeTransferUncheckedCreateNestedOneWithoutPaymentChannelInput
-    Deposit?: DepositUncheckedCreateNestedManyWithoutPaymentChannelInput
-    Withdrawal?: WithdrawalUncheckedCreateNestedManyWithoutPaymentChannelInput
-  }
-
-  export type PaymentChannelCreateOrConnectWithoutCurrenciesInput = {
-    where: PaymentChannelWhereUniqueInput
-    create: XOR<PaymentChannelCreateWithoutCurrenciesInput, PaymentChannelUncheckedCreateWithoutCurrenciesInput>
-  }
-
-  export type WalletUpsertWithWhereUniqueWithoutCurrencyInput = {
-    where: WalletWhereUniqueInput
-    update: XOR<WalletUpdateWithoutCurrencyInput, WalletUncheckedUpdateWithoutCurrencyInput>
-    create: XOR<WalletCreateWithoutCurrencyInput, WalletUncheckedCreateWithoutCurrencyInput>
-  }
-
-  export type WalletUpdateWithWhereUniqueWithoutCurrencyInput = {
-    where: WalletWhereUniqueInput
-    data: XOR<WalletUpdateWithoutCurrencyInput, WalletUncheckedUpdateWithoutCurrencyInput>
-  }
-
-  export type WalletUpdateManyWithWhereWithoutCurrencyInput = {
-    where: WalletScalarWhereInput
-    data: XOR<WalletUpdateManyMutationInput, WalletUncheckedUpdateManyWithoutCurrencyInput>
-  }
-
-  export type ExchangeUpsertWithWhereUniqueWithoutFromCurrencyInput = {
-    where: ExchangeWhereUniqueInput
-    update: XOR<ExchangeUpdateWithoutFromCurrencyInput, ExchangeUncheckedUpdateWithoutFromCurrencyInput>
-    create: XOR<ExchangeCreateWithoutFromCurrencyInput, ExchangeUncheckedCreateWithoutFromCurrencyInput>
-  }
-
-  export type ExchangeUpdateWithWhereUniqueWithoutFromCurrencyInput = {
-    where: ExchangeWhereUniqueInput
-    data: XOR<ExchangeUpdateWithoutFromCurrencyInput, ExchangeUncheckedUpdateWithoutFromCurrencyInput>
-  }
-
-  export type ExchangeUpdateManyWithWhereWithoutFromCurrencyInput = {
-    where: ExchangeScalarWhereInput
-    data: XOR<ExchangeUpdateManyMutationInput, ExchangeUncheckedUpdateManyWithoutFromCurrencyInput>
-  }
-
-  export type ExchangeUpsertWithWhereUniqueWithoutToCurrencyInput = {
-    where: ExchangeWhereUniqueInput
-    update: XOR<ExchangeUpdateWithoutToCurrencyInput, ExchangeUncheckedUpdateWithoutToCurrencyInput>
-    create: XOR<ExchangeCreateWithoutToCurrencyInput, ExchangeUncheckedCreateWithoutToCurrencyInput>
-  }
-
-  export type ExchangeUpdateWithWhereUniqueWithoutToCurrencyInput = {
-    where: ExchangeWhereUniqueInput
-    data: XOR<ExchangeUpdateWithoutToCurrencyInput, ExchangeUncheckedUpdateWithoutToCurrencyInput>
-  }
-
-  export type ExchangeUpdateManyWithWhereWithoutToCurrencyInput = {
-    where: ExchangeScalarWhereInput
-    data: XOR<ExchangeUpdateManyMutationInput, ExchangeUncheckedUpdateManyWithoutToCurrencyInput>
-  }
-
-  export type FeeSettingUpsertWithWhereUniqueWithoutCurrencyInput = {
-    where: FeeSettingWhereUniqueInput
-    update: XOR<FeeSettingUpdateWithoutCurrencyInput, FeeSettingUncheckedUpdateWithoutCurrencyInput>
-    create: XOR<FeeSettingCreateWithoutCurrencyInput, FeeSettingUncheckedCreateWithoutCurrencyInput>
-  }
-
-  export type FeeSettingUpdateWithWhereUniqueWithoutCurrencyInput = {
-    where: FeeSettingWhereUniqueInput
-    data: XOR<FeeSettingUpdateWithoutCurrencyInput, FeeSettingUncheckedUpdateWithoutCurrencyInput>
-  }
-
-  export type FeeSettingUpdateManyWithWhereWithoutCurrencyInput = {
-    where: FeeSettingScalarWhereInput
-    data: XOR<FeeSettingUpdateManyMutationInput, FeeSettingUncheckedUpdateManyWithoutCurrencyInput>
-  }
-
-  export type FeeSettingScalarWhereInput = {
-    AND?: FeeSettingScalarWhereInput | FeeSettingScalarWhereInput[]
-    OR?: FeeSettingScalarWhereInput[]
-    NOT?: FeeSettingScalarWhereInput | FeeSettingScalarWhereInput[]
-    id?: StringFilter<"FeeSetting"> | string
-    transactionType?: EnumTransactionKindFilter<"FeeSetting"> | $Enums.TransactionKind
-    currencyId?: StringNullableFilter<"FeeSetting"> | string | null
-    fixedFee?: DecimalNullableFilter<"FeeSetting"> | Decimal | DecimalJsLike | number | string | null
-    percentageFee?: DecimalNullableFilter<"FeeSetting"> | Decimal | DecimalJsLike | number | string | null
-    createdAt?: DateTimeFilter<"FeeSetting"> | Date | string
-  }
-
-  export type PaymentChannelUpsertWithWhereUniqueWithoutCurrenciesInput = {
-    where: PaymentChannelWhereUniqueInput
-    update: XOR<PaymentChannelUpdateWithoutCurrenciesInput, PaymentChannelUncheckedUpdateWithoutCurrenciesInput>
-    create: XOR<PaymentChannelCreateWithoutCurrenciesInput, PaymentChannelUncheckedCreateWithoutCurrenciesInput>
-  }
-
-  export type PaymentChannelUpdateWithWhereUniqueWithoutCurrenciesInput = {
-    where: PaymentChannelWhereUniqueInput
-    data: XOR<PaymentChannelUpdateWithoutCurrenciesInput, PaymentChannelUncheckedUpdateWithoutCurrenciesInput>
-  }
-
-  export type PaymentChannelUpdateManyWithWhereWithoutCurrenciesInput = {
-    where: PaymentChannelScalarWhereInput
-    data: XOR<PaymentChannelUpdateManyMutationInput, PaymentChannelUncheckedUpdateManyWithoutCurrenciesInput>
-  }
-
-  export type PaymentChannelScalarWhereInput = {
-    AND?: PaymentChannelScalarWhereInput | PaymentChannelScalarWhereInput[]
-    OR?: PaymentChannelScalarWhereInput[]
-    NOT?: PaymentChannelScalarWhereInput | PaymentChannelScalarWhereInput[]
-    id?: StringFilter<"PaymentChannel"> | string
-    name?: StringFilter<"PaymentChannel"> | string
-    description?: StringNullableFilter<"PaymentChannel"> | string | null
-    createdAt?: DateTimeFilter<"PaymentChannel"> | Date | string
-  }
-
   export type PaymentChannelCreateWithoutDepositInput = {
     id?: string
     name: string
@@ -23807,6 +25898,7 @@ export namespace Prisma {
     bridgeTransfers?: BridgeTransferCreateNestedOneWithoutPaymentChannelInput
     currencies?: CurrencyCreateNestedManyWithoutPaymentChannelsInput
     Withdrawal?: WithdrawalCreateNestedManyWithoutPaymentChannelInput
+    LiquidityPool?: LiquidityPoolCreateNestedManyWithoutPaymentChannelInput
   }
 
   export type PaymentChannelUncheckedCreateWithoutDepositInput = {
@@ -23817,6 +25909,7 @@ export namespace Prisma {
     bridgeTransfers?: BridgeTransferUncheckedCreateNestedOneWithoutPaymentChannelInput
     currencies?: CurrencyUncheckedCreateNestedManyWithoutPaymentChannelsInput
     Withdrawal?: WithdrawalUncheckedCreateNestedManyWithoutPaymentChannelInput
+    LiquidityPool?: LiquidityPoolUncheckedCreateNestedManyWithoutPaymentChannelInput
   }
 
   export type PaymentChannelCreateOrConnectWithoutDepositInput = {
@@ -23976,6 +26069,7 @@ export namespace Prisma {
     bridgeTransfers?: BridgeTransferUpdateOneWithoutPaymentChannelNestedInput
     currencies?: CurrencyUpdateManyWithoutPaymentChannelsNestedInput
     Withdrawal?: WithdrawalUpdateManyWithoutPaymentChannelNestedInput
+    LiquidityPool?: LiquidityPoolUpdateManyWithoutPaymentChannelNestedInput
   }
 
   export type PaymentChannelUncheckedUpdateWithoutDepositInput = {
@@ -23986,6 +26080,7 @@ export namespace Prisma {
     bridgeTransfers?: BridgeTransferUncheckedUpdateOneWithoutPaymentChannelNestedInput
     currencies?: CurrencyUncheckedUpdateManyWithoutPaymentChannelsNestedInput
     Withdrawal?: WithdrawalUncheckedUpdateManyWithoutPaymentChannelNestedInput
+    LiquidityPool?: LiquidityPoolUncheckedUpdateManyWithoutPaymentChannelNestedInput
   }
 
   export type BridgeTransferUpsertWithoutDepositInput = {
@@ -24147,6 +26242,7 @@ export namespace Prisma {
     bridgeTransfers?: BridgeTransferCreateNestedOneWithoutPaymentChannelInput
     currencies?: CurrencyCreateNestedManyWithoutPaymentChannelsInput
     Deposit?: DepositCreateNestedManyWithoutPaymentChannelInput
+    LiquidityPool?: LiquidityPoolCreateNestedManyWithoutPaymentChannelInput
   }
 
   export type PaymentChannelUncheckedCreateWithoutWithdrawalInput = {
@@ -24157,6 +26253,7 @@ export namespace Prisma {
     bridgeTransfers?: BridgeTransferUncheckedCreateNestedOneWithoutPaymentChannelInput
     currencies?: CurrencyUncheckedCreateNestedManyWithoutPaymentChannelsInput
     Deposit?: DepositUncheckedCreateNestedManyWithoutPaymentChannelInput
+    LiquidityPool?: LiquidityPoolUncheckedCreateNestedManyWithoutPaymentChannelInput
   }
 
   export type PaymentChannelCreateOrConnectWithoutWithdrawalInput = {
@@ -24316,6 +26413,7 @@ export namespace Prisma {
     bridgeTransfers?: BridgeTransferUpdateOneWithoutPaymentChannelNestedInput
     currencies?: CurrencyUpdateManyWithoutPaymentChannelsNestedInput
     Deposit?: DepositUpdateManyWithoutPaymentChannelNestedInput
+    LiquidityPool?: LiquidityPoolUpdateManyWithoutPaymentChannelNestedInput
   }
 
   export type PaymentChannelUncheckedUpdateWithoutWithdrawalInput = {
@@ -24326,6 +26424,7 @@ export namespace Prisma {
     bridgeTransfers?: BridgeTransferUncheckedUpdateOneWithoutPaymentChannelNestedInput
     currencies?: CurrencyUncheckedUpdateManyWithoutPaymentChannelsNestedInput
     Deposit?: DepositUncheckedUpdateManyWithoutPaymentChannelNestedInput
+    LiquidityPool?: LiquidityPoolUncheckedUpdateManyWithoutPaymentChannelNestedInput
   }
 
   export type BridgeTransferUpsertWithoutWithdrawalInput = {
@@ -24479,237 +26578,6 @@ export namespace Prisma {
     transfersTo?: TransferUncheckedUpdateManyWithoutToWalletNestedInput
   }
 
-  export type BridgeTransferCreateWithoutPaymentChannelInput = {
-    id?: string
-    depositId: string
-    withdrawalId: string
-    status?: $Enums.BridgeStatus
-    createdAt?: Date | string
-    completedAt?: Date | string | null
-    failedAt?: Date | string | null
-    Deposit?: DepositCreateNestedManyWithoutBridgeTransferInput
-    Withdrawal?: WithdrawalCreateNestedManyWithoutBridgeTransferInput
-  }
-
-  export type BridgeTransferUncheckedCreateWithoutPaymentChannelInput = {
-    id?: string
-    depositId: string
-    withdrawalId: string
-    status?: $Enums.BridgeStatus
-    createdAt?: Date | string
-    completedAt?: Date | string | null
-    failedAt?: Date | string | null
-    Deposit?: DepositUncheckedCreateNestedManyWithoutBridgeTransferInput
-    Withdrawal?: WithdrawalUncheckedCreateNestedManyWithoutBridgeTransferInput
-  }
-
-  export type BridgeTransferCreateOrConnectWithoutPaymentChannelInput = {
-    where: BridgeTransferWhereUniqueInput
-    create: XOR<BridgeTransferCreateWithoutPaymentChannelInput, BridgeTransferUncheckedCreateWithoutPaymentChannelInput>
-  }
-
-  export type CurrencyCreateWithoutPaymentChannelsInput = {
-    id?: string
-    code: string
-    name: string
-    symbol: string
-    decimals?: number
-    createdAt?: Date | string
-    wallets?: WalletCreateNestedManyWithoutCurrencyInput
-    exchangesFrom?: ExchangeCreateNestedManyWithoutFromCurrencyInput
-    exchangesTo?: ExchangeCreateNestedManyWithoutToCurrencyInput
-    FeeSetting?: FeeSettingCreateNestedManyWithoutCurrencyInput
-  }
-
-  export type CurrencyUncheckedCreateWithoutPaymentChannelsInput = {
-    id?: string
-    code: string
-    name: string
-    symbol: string
-    decimals?: number
-    createdAt?: Date | string
-    wallets?: WalletUncheckedCreateNestedManyWithoutCurrencyInput
-    exchangesFrom?: ExchangeUncheckedCreateNestedManyWithoutFromCurrencyInput
-    exchangesTo?: ExchangeUncheckedCreateNestedManyWithoutToCurrencyInput
-    FeeSetting?: FeeSettingUncheckedCreateNestedManyWithoutCurrencyInput
-  }
-
-  export type CurrencyCreateOrConnectWithoutPaymentChannelsInput = {
-    where: CurrencyWhereUniqueInput
-    create: XOR<CurrencyCreateWithoutPaymentChannelsInput, CurrencyUncheckedCreateWithoutPaymentChannelsInput>
-  }
-
-  export type DepositCreateWithoutPaymentChannelInput = {
-    id?: string
-    amount: Decimal | DecimalJsLike | number | string
-    fee?: Decimal | DecimalJsLike | number | string
-    status?: $Enums.DepositStatus
-    reference?: string | null
-    createdAt?: Date | string
-    completedAt?: Date | string | null
-    failedAt?: Date | string | null
-    bridgeTransfer?: BridgeTransferCreateNestedOneWithoutDepositInput
-    user: UserCreateNestedOneWithoutDepositsInput
-    wallet: WalletCreateNestedOneWithoutDepositsInput
-  }
-
-  export type DepositUncheckedCreateWithoutPaymentChannelInput = {
-    id?: string
-    userId: string
-    walletId: string
-    amount: Decimal | DecimalJsLike | number | string
-    fee?: Decimal | DecimalJsLike | number | string
-    status?: $Enums.DepositStatus
-    reference?: string | null
-    createdAt?: Date | string
-    completedAt?: Date | string | null
-    failedAt?: Date | string | null
-    bridgeTransferid?: string | null
-  }
-
-  export type DepositCreateOrConnectWithoutPaymentChannelInput = {
-    where: DepositWhereUniqueInput
-    create: XOR<DepositCreateWithoutPaymentChannelInput, DepositUncheckedCreateWithoutPaymentChannelInput>
-  }
-
-  export type DepositCreateManyPaymentChannelInputEnvelope = {
-    data: DepositCreateManyPaymentChannelInput | DepositCreateManyPaymentChannelInput[]
-    skipDuplicates?: boolean
-  }
-
-  export type WithdrawalCreateWithoutPaymentChannelInput = {
-    id?: string
-    amount: Decimal | DecimalJsLike | number | string
-    fee?: Decimal | DecimalJsLike | number | string
-    status?: $Enums.WithdrawalStatus
-    reference?: string | null
-    createdAt?: Date | string
-    completedAt?: Date | string | null
-    failedAt?: Date | string | null
-    bridgeTransfer?: BridgeTransferCreateNestedOneWithoutWithdrawalInput
-    user: UserCreateNestedOneWithoutWithdrawalsInput
-    wallet: WalletCreateNestedOneWithoutWithdrawalsInput
-  }
-
-  export type WithdrawalUncheckedCreateWithoutPaymentChannelInput = {
-    id?: string
-    userId: string
-    walletId: string
-    amount: Decimal | DecimalJsLike | number | string
-    fee?: Decimal | DecimalJsLike | number | string
-    status?: $Enums.WithdrawalStatus
-    reference?: string | null
-    createdAt?: Date | string
-    completedAt?: Date | string | null
-    failedAt?: Date | string | null
-    bridgeTransferid?: string | null
-  }
-
-  export type WithdrawalCreateOrConnectWithoutPaymentChannelInput = {
-    where: WithdrawalWhereUniqueInput
-    create: XOR<WithdrawalCreateWithoutPaymentChannelInput, WithdrawalUncheckedCreateWithoutPaymentChannelInput>
-  }
-
-  export type WithdrawalCreateManyPaymentChannelInputEnvelope = {
-    data: WithdrawalCreateManyPaymentChannelInput | WithdrawalCreateManyPaymentChannelInput[]
-    skipDuplicates?: boolean
-  }
-
-  export type BridgeTransferUpsertWithoutPaymentChannelInput = {
-    update: XOR<BridgeTransferUpdateWithoutPaymentChannelInput, BridgeTransferUncheckedUpdateWithoutPaymentChannelInput>
-    create: XOR<BridgeTransferCreateWithoutPaymentChannelInput, BridgeTransferUncheckedCreateWithoutPaymentChannelInput>
-    where?: BridgeTransferWhereInput
-  }
-
-  export type BridgeTransferUpdateToOneWithWhereWithoutPaymentChannelInput = {
-    where?: BridgeTransferWhereInput
-    data: XOR<BridgeTransferUpdateWithoutPaymentChannelInput, BridgeTransferUncheckedUpdateWithoutPaymentChannelInput>
-  }
-
-  export type BridgeTransferUpdateWithoutPaymentChannelInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    depositId?: StringFieldUpdateOperationsInput | string
-    withdrawalId?: StringFieldUpdateOperationsInput | string
-    status?: EnumBridgeStatusFieldUpdateOperationsInput | $Enums.BridgeStatus
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    failedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    Deposit?: DepositUpdateManyWithoutBridgeTransferNestedInput
-    Withdrawal?: WithdrawalUpdateManyWithoutBridgeTransferNestedInput
-  }
-
-  export type BridgeTransferUncheckedUpdateWithoutPaymentChannelInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    depositId?: StringFieldUpdateOperationsInput | string
-    withdrawalId?: StringFieldUpdateOperationsInput | string
-    status?: EnumBridgeStatusFieldUpdateOperationsInput | $Enums.BridgeStatus
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    failedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    Deposit?: DepositUncheckedUpdateManyWithoutBridgeTransferNestedInput
-    Withdrawal?: WithdrawalUncheckedUpdateManyWithoutBridgeTransferNestedInput
-  }
-
-  export type CurrencyUpsertWithWhereUniqueWithoutPaymentChannelsInput = {
-    where: CurrencyWhereUniqueInput
-    update: XOR<CurrencyUpdateWithoutPaymentChannelsInput, CurrencyUncheckedUpdateWithoutPaymentChannelsInput>
-    create: XOR<CurrencyCreateWithoutPaymentChannelsInput, CurrencyUncheckedCreateWithoutPaymentChannelsInput>
-  }
-
-  export type CurrencyUpdateWithWhereUniqueWithoutPaymentChannelsInput = {
-    where: CurrencyWhereUniqueInput
-    data: XOR<CurrencyUpdateWithoutPaymentChannelsInput, CurrencyUncheckedUpdateWithoutPaymentChannelsInput>
-  }
-
-  export type CurrencyUpdateManyWithWhereWithoutPaymentChannelsInput = {
-    where: CurrencyScalarWhereInput
-    data: XOR<CurrencyUpdateManyMutationInput, CurrencyUncheckedUpdateManyWithoutPaymentChannelsInput>
-  }
-
-  export type CurrencyScalarWhereInput = {
-    AND?: CurrencyScalarWhereInput | CurrencyScalarWhereInput[]
-    OR?: CurrencyScalarWhereInput[]
-    NOT?: CurrencyScalarWhereInput | CurrencyScalarWhereInput[]
-    id?: StringFilter<"Currency"> | string
-    code?: StringFilter<"Currency"> | string
-    name?: StringFilter<"Currency"> | string
-    symbol?: StringFilter<"Currency"> | string
-    decimals?: IntFilter<"Currency"> | number
-    createdAt?: DateTimeFilter<"Currency"> | Date | string
-  }
-
-  export type DepositUpsertWithWhereUniqueWithoutPaymentChannelInput = {
-    where: DepositWhereUniqueInput
-    update: XOR<DepositUpdateWithoutPaymentChannelInput, DepositUncheckedUpdateWithoutPaymentChannelInput>
-    create: XOR<DepositCreateWithoutPaymentChannelInput, DepositUncheckedCreateWithoutPaymentChannelInput>
-  }
-
-  export type DepositUpdateWithWhereUniqueWithoutPaymentChannelInput = {
-    where: DepositWhereUniqueInput
-    data: XOR<DepositUpdateWithoutPaymentChannelInput, DepositUncheckedUpdateWithoutPaymentChannelInput>
-  }
-
-  export type DepositUpdateManyWithWhereWithoutPaymentChannelInput = {
-    where: DepositScalarWhereInput
-    data: XOR<DepositUpdateManyMutationInput, DepositUncheckedUpdateManyWithoutPaymentChannelInput>
-  }
-
-  export type WithdrawalUpsertWithWhereUniqueWithoutPaymentChannelInput = {
-    where: WithdrawalWhereUniqueInput
-    update: XOR<WithdrawalUpdateWithoutPaymentChannelInput, WithdrawalUncheckedUpdateWithoutPaymentChannelInput>
-    create: XOR<WithdrawalCreateWithoutPaymentChannelInput, WithdrawalUncheckedCreateWithoutPaymentChannelInput>
-  }
-
-  export type WithdrawalUpdateWithWhereUniqueWithoutPaymentChannelInput = {
-    where: WithdrawalWhereUniqueInput
-    data: XOR<WithdrawalUpdateWithoutPaymentChannelInput, WithdrawalUncheckedUpdateWithoutPaymentChannelInput>
-  }
-
-  export type WithdrawalUpdateManyWithWhereWithoutPaymentChannelInput = {
-    where: WithdrawalScalarWhereInput
-    data: XOR<WithdrawalUpdateManyMutationInput, WithdrawalUncheckedUpdateManyWithoutPaymentChannelInput>
-  }
-
   export type PaymentChannelCreateWithoutBridgeTransfersInput = {
     id?: string
     name: string
@@ -24718,6 +26586,7 @@ export namespace Prisma {
     currencies?: CurrencyCreateNestedManyWithoutPaymentChannelsInput
     Deposit?: DepositCreateNestedManyWithoutPaymentChannelInput
     Withdrawal?: WithdrawalCreateNestedManyWithoutPaymentChannelInput
+    LiquidityPool?: LiquidityPoolCreateNestedManyWithoutPaymentChannelInput
   }
 
   export type PaymentChannelUncheckedCreateWithoutBridgeTransfersInput = {
@@ -24728,6 +26597,7 @@ export namespace Prisma {
     currencies?: CurrencyUncheckedCreateNestedManyWithoutPaymentChannelsInput
     Deposit?: DepositUncheckedCreateNestedManyWithoutPaymentChannelInput
     Withdrawal?: WithdrawalUncheckedCreateNestedManyWithoutPaymentChannelInput
+    LiquidityPool?: LiquidityPoolUncheckedCreateNestedManyWithoutPaymentChannelInput
   }
 
   export type PaymentChannelCreateOrConnectWithoutBridgeTransfersInput = {
@@ -24830,6 +26700,7 @@ export namespace Prisma {
     currencies?: CurrencyUpdateManyWithoutPaymentChannelsNestedInput
     Deposit?: DepositUpdateManyWithoutPaymentChannelNestedInput
     Withdrawal?: WithdrawalUpdateManyWithoutPaymentChannelNestedInput
+    LiquidityPool?: LiquidityPoolUpdateManyWithoutPaymentChannelNestedInput
   }
 
   export type PaymentChannelUncheckedUpdateWithoutBridgeTransfersInput = {
@@ -24840,6 +26711,7 @@ export namespace Prisma {
     currencies?: CurrencyUncheckedUpdateManyWithoutPaymentChannelsNestedInput
     Deposit?: DepositUncheckedUpdateManyWithoutPaymentChannelNestedInput
     Withdrawal?: WithdrawalUncheckedUpdateManyWithoutPaymentChannelNestedInput
+    LiquidityPool?: LiquidityPoolUncheckedUpdateManyWithoutPaymentChannelNestedInput
   }
 
   export type DepositUpsertWithWhereUniqueWithoutBridgeTransferInput = {
@@ -25366,6 +27238,7 @@ export namespace Prisma {
     exchangesTo?: ExchangeCreateNestedManyWithoutToCurrencyInput
     FeeSetting?: FeeSettingCreateNestedManyWithoutCurrencyInput
     paymentChannels?: PaymentChannelCreateNestedManyWithoutCurrenciesInput
+    LiquidityPool?: LiquidityPoolCreateNestedManyWithoutCurrencyInput
   }
 
   export type CurrencyUncheckedCreateWithoutExchangesFromInput = {
@@ -25379,6 +27252,7 @@ export namespace Prisma {
     exchangesTo?: ExchangeUncheckedCreateNestedManyWithoutToCurrencyInput
     FeeSetting?: FeeSettingUncheckedCreateNestedManyWithoutCurrencyInput
     paymentChannels?: PaymentChannelUncheckedCreateNestedManyWithoutCurrenciesInput
+    LiquidityPool?: LiquidityPoolUncheckedCreateNestedManyWithoutCurrencyInput
   }
 
   export type CurrencyCreateOrConnectWithoutExchangesFromInput = {
@@ -25397,6 +27271,7 @@ export namespace Prisma {
     exchangesFrom?: ExchangeCreateNestedManyWithoutFromCurrencyInput
     FeeSetting?: FeeSettingCreateNestedManyWithoutCurrencyInput
     paymentChannels?: PaymentChannelCreateNestedManyWithoutCurrenciesInput
+    LiquidityPool?: LiquidityPoolCreateNestedManyWithoutCurrencyInput
   }
 
   export type CurrencyUncheckedCreateWithoutExchangesToInput = {
@@ -25410,6 +27285,7 @@ export namespace Prisma {
     exchangesFrom?: ExchangeUncheckedCreateNestedManyWithoutFromCurrencyInput
     FeeSetting?: FeeSettingUncheckedCreateNestedManyWithoutCurrencyInput
     paymentChannels?: PaymentChannelUncheckedCreateNestedManyWithoutCurrenciesInput
+    LiquidityPool?: LiquidityPoolUncheckedCreateNestedManyWithoutCurrencyInput
   }
 
   export type CurrencyCreateOrConnectWithoutExchangesToInput = {
@@ -25510,6 +27386,7 @@ export namespace Prisma {
     exchangesTo?: ExchangeUpdateManyWithoutToCurrencyNestedInput
     FeeSetting?: FeeSettingUpdateManyWithoutCurrencyNestedInput
     paymentChannels?: PaymentChannelUpdateManyWithoutCurrenciesNestedInput
+    LiquidityPool?: LiquidityPoolUpdateManyWithoutCurrencyNestedInput
   }
 
   export type CurrencyUncheckedUpdateWithoutExchangesFromInput = {
@@ -25523,6 +27400,7 @@ export namespace Prisma {
     exchangesTo?: ExchangeUncheckedUpdateManyWithoutToCurrencyNestedInput
     FeeSetting?: FeeSettingUncheckedUpdateManyWithoutCurrencyNestedInput
     paymentChannels?: PaymentChannelUncheckedUpdateManyWithoutCurrenciesNestedInput
+    LiquidityPool?: LiquidityPoolUncheckedUpdateManyWithoutCurrencyNestedInput
   }
 
   export type CurrencyUpsertWithoutExchangesToInput = {
@@ -25547,6 +27425,7 @@ export namespace Prisma {
     exchangesFrom?: ExchangeUpdateManyWithoutFromCurrencyNestedInput
     FeeSetting?: FeeSettingUpdateManyWithoutCurrencyNestedInput
     paymentChannels?: PaymentChannelUpdateManyWithoutCurrenciesNestedInput
+    LiquidityPool?: LiquidityPoolUpdateManyWithoutCurrencyNestedInput
   }
 
   export type CurrencyUncheckedUpdateWithoutExchangesToInput = {
@@ -25560,6 +27439,7 @@ export namespace Prisma {
     exchangesFrom?: ExchangeUncheckedUpdateManyWithoutFromCurrencyNestedInput
     FeeSetting?: FeeSettingUncheckedUpdateManyWithoutCurrencyNestedInput
     paymentChannels?: PaymentChannelUncheckedUpdateManyWithoutCurrenciesNestedInput
+    LiquidityPool?: LiquidityPoolUncheckedUpdateManyWithoutCurrencyNestedInput
   }
 
   export type UserUpsertWithoutInitiatedExchangesInput = {
@@ -25798,6 +27678,7 @@ export namespace Prisma {
     exchangesFrom?: ExchangeCreateNestedManyWithoutFromCurrencyInput
     exchangesTo?: ExchangeCreateNestedManyWithoutToCurrencyInput
     paymentChannels?: PaymentChannelCreateNestedManyWithoutCurrenciesInput
+    LiquidityPool?: LiquidityPoolCreateNestedManyWithoutCurrencyInput
   }
 
   export type CurrencyUncheckedCreateWithoutFeeSettingInput = {
@@ -25811,6 +27692,7 @@ export namespace Prisma {
     exchangesFrom?: ExchangeUncheckedCreateNestedManyWithoutFromCurrencyInput
     exchangesTo?: ExchangeUncheckedCreateNestedManyWithoutToCurrencyInput
     paymentChannels?: PaymentChannelUncheckedCreateNestedManyWithoutCurrenciesInput
+    LiquidityPool?: LiquidityPoolUncheckedCreateNestedManyWithoutCurrencyInput
   }
 
   export type CurrencyCreateOrConnectWithoutFeeSettingInput = {
@@ -25840,6 +27722,7 @@ export namespace Prisma {
     exchangesFrom?: ExchangeUpdateManyWithoutFromCurrencyNestedInput
     exchangesTo?: ExchangeUpdateManyWithoutToCurrencyNestedInput
     paymentChannels?: PaymentChannelUpdateManyWithoutCurrenciesNestedInput
+    LiquidityPool?: LiquidityPoolUpdateManyWithoutCurrencyNestedInput
   }
 
   export type CurrencyUncheckedUpdateWithoutFeeSettingInput = {
@@ -25853,6 +27736,7 @@ export namespace Prisma {
     exchangesFrom?: ExchangeUncheckedUpdateManyWithoutFromCurrencyNestedInput
     exchangesTo?: ExchangeUncheckedUpdateManyWithoutToCurrencyNestedInput
     paymentChannels?: PaymentChannelUncheckedUpdateManyWithoutCurrenciesNestedInput
+    LiquidityPool?: LiquidityPoolUncheckedUpdateManyWithoutCurrencyNestedInput
   }
 
   export type WalletCreateManyUserInput = {
@@ -26196,6 +28080,446 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
+  export type DepositCreateManyPaymentChannelInput = {
+    id?: string
+    userId: string
+    walletId: string
+    amount: Decimal | DecimalJsLike | number | string
+    fee?: Decimal | DecimalJsLike | number | string
+    status?: $Enums.DepositStatus
+    reference?: string | null
+    createdAt?: Date | string
+    completedAt?: Date | string | null
+    failedAt?: Date | string | null
+    bridgeTransferid?: string | null
+  }
+
+  export type WithdrawalCreateManyPaymentChannelInput = {
+    id?: string
+    userId: string
+    walletId: string
+    amount: Decimal | DecimalJsLike | number | string
+    fee?: Decimal | DecimalJsLike | number | string
+    status?: $Enums.WithdrawalStatus
+    reference?: string | null
+    createdAt?: Date | string
+    completedAt?: Date | string | null
+    failedAt?: Date | string | null
+    bridgeTransferid?: string | null
+  }
+
+  export type LiquidityPoolCreateManyPaymentChannelInput = {
+    id?: string
+    currencyId: string
+    address: string
+    balance?: Decimal | DecimalJsLike | number | string
+    frozen?: Decimal | DecimalJsLike | number | string
+    updatedAt?: Date | string
+  }
+
+  export type CurrencyUpdateWithoutPaymentChannelsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    code?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    symbol?: StringFieldUpdateOperationsInput | string
+    decimals?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    wallets?: WalletUpdateManyWithoutCurrencyNestedInput
+    exchangesFrom?: ExchangeUpdateManyWithoutFromCurrencyNestedInput
+    exchangesTo?: ExchangeUpdateManyWithoutToCurrencyNestedInput
+    FeeSetting?: FeeSettingUpdateManyWithoutCurrencyNestedInput
+    LiquidityPool?: LiquidityPoolUpdateManyWithoutCurrencyNestedInput
+  }
+
+  export type CurrencyUncheckedUpdateWithoutPaymentChannelsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    code?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    symbol?: StringFieldUpdateOperationsInput | string
+    decimals?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    wallets?: WalletUncheckedUpdateManyWithoutCurrencyNestedInput
+    exchangesFrom?: ExchangeUncheckedUpdateManyWithoutFromCurrencyNestedInput
+    exchangesTo?: ExchangeUncheckedUpdateManyWithoutToCurrencyNestedInput
+    FeeSetting?: FeeSettingUncheckedUpdateManyWithoutCurrencyNestedInput
+    LiquidityPool?: LiquidityPoolUncheckedUpdateManyWithoutCurrencyNestedInput
+  }
+
+  export type CurrencyUncheckedUpdateManyWithoutPaymentChannelsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    code?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    symbol?: StringFieldUpdateOperationsInput | string
+    decimals?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type DepositUpdateWithoutPaymentChannelInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    amount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    fee?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    status?: EnumDepositStatusFieldUpdateOperationsInput | $Enums.DepositStatus
+    reference?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    failedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    bridgeTransfer?: BridgeTransferUpdateOneWithoutDepositNestedInput
+    user?: UserUpdateOneRequiredWithoutDepositsNestedInput
+    wallet?: WalletUpdateOneRequiredWithoutDepositsNestedInput
+  }
+
+  export type DepositUncheckedUpdateWithoutPaymentChannelInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    walletId?: StringFieldUpdateOperationsInput | string
+    amount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    fee?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    status?: EnumDepositStatusFieldUpdateOperationsInput | $Enums.DepositStatus
+    reference?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    failedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    bridgeTransferid?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
+  export type DepositUncheckedUpdateManyWithoutPaymentChannelInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    walletId?: StringFieldUpdateOperationsInput | string
+    amount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    fee?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    status?: EnumDepositStatusFieldUpdateOperationsInput | $Enums.DepositStatus
+    reference?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    failedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    bridgeTransferid?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
+  export type WithdrawalUpdateWithoutPaymentChannelInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    amount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    fee?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    status?: EnumWithdrawalStatusFieldUpdateOperationsInput | $Enums.WithdrawalStatus
+    reference?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    failedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    bridgeTransfer?: BridgeTransferUpdateOneWithoutWithdrawalNestedInput
+    user?: UserUpdateOneRequiredWithoutWithdrawalsNestedInput
+    wallet?: WalletUpdateOneRequiredWithoutWithdrawalsNestedInput
+  }
+
+  export type WithdrawalUncheckedUpdateWithoutPaymentChannelInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    walletId?: StringFieldUpdateOperationsInput | string
+    amount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    fee?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    status?: EnumWithdrawalStatusFieldUpdateOperationsInput | $Enums.WithdrawalStatus
+    reference?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    failedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    bridgeTransferid?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
+  export type WithdrawalUncheckedUpdateManyWithoutPaymentChannelInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    walletId?: StringFieldUpdateOperationsInput | string
+    amount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    fee?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    status?: EnumWithdrawalStatusFieldUpdateOperationsInput | $Enums.WithdrawalStatus
+    reference?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    failedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    bridgeTransferid?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
+  export type LiquidityPoolUpdateWithoutPaymentChannelInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    address?: StringFieldUpdateOperationsInput | string
+    balance?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    frozen?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    currency?: CurrencyUpdateOneRequiredWithoutLiquidityPoolNestedInput
+  }
+
+  export type LiquidityPoolUncheckedUpdateWithoutPaymentChannelInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    currencyId?: StringFieldUpdateOperationsInput | string
+    address?: StringFieldUpdateOperationsInput | string
+    balance?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    frozen?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type LiquidityPoolUncheckedUpdateManyWithoutPaymentChannelInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    currencyId?: StringFieldUpdateOperationsInput | string
+    address?: StringFieldUpdateOperationsInput | string
+    balance?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    frozen?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type WalletCreateManyCurrencyInput = {
+    id?: string
+    userId: string
+    balance?: Decimal | DecimalJsLike | number | string
+    frozen?: Decimal | DecimalJsLike | number | string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type ExchangeCreateManyFromCurrencyInput = {
+    id?: string
+    toCurrencyId: string
+    userId?: string | null
+    fromAmount: Decimal | DecimalJsLike | number | string
+    toAmount: Decimal | DecimalJsLike | number | string
+    exchangeRate: Decimal | DecimalJsLike | number | string
+    feePercentage?: Decimal | DecimalJsLike | number | string
+    status?: $Enums.ExchangeStatus
+    createdAt?: Date | string
+    completedAt?: Date | string | null
+    failedAt?: Date | string | null
+  }
+
+  export type ExchangeCreateManyToCurrencyInput = {
+    id?: string
+    fromCurrencyId: string
+    userId?: string | null
+    fromAmount: Decimal | DecimalJsLike | number | string
+    toAmount: Decimal | DecimalJsLike | number | string
+    exchangeRate: Decimal | DecimalJsLike | number | string
+    feePercentage?: Decimal | DecimalJsLike | number | string
+    status?: $Enums.ExchangeStatus
+    createdAt?: Date | string
+    completedAt?: Date | string | null
+    failedAt?: Date | string | null
+  }
+
+  export type FeeSettingCreateManyCurrencyInput = {
+    id?: string
+    transactionType: $Enums.TransactionKind
+    fixedFee?: Decimal | DecimalJsLike | number | string | null
+    percentageFee?: Decimal | DecimalJsLike | number | string | null
+    createdAt?: Date | string
+  }
+
+  export type LiquidityPoolCreateManyCurrencyInput = {
+    id?: string
+    paymentChannelId: string
+    address: string
+    balance?: Decimal | DecimalJsLike | number | string
+    frozen?: Decimal | DecimalJsLike | number | string
+    updatedAt?: Date | string
+  }
+
+  export type WalletUpdateWithoutCurrencyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    balance?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    frozen?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    user?: UserUpdateOneRequiredWithoutWalletNestedInput
+    deposits?: DepositUpdateManyWithoutWalletNestedInput
+    withdrawals?: WithdrawalUpdateManyWithoutWalletNestedInput
+    Refund?: RefundUpdateManyWithoutWalletNestedInput
+    transfersFrom?: TransferUpdateManyWithoutFromWalletNestedInput
+    transfersTo?: TransferUpdateManyWithoutToWalletNestedInput
+  }
+
+  export type WalletUncheckedUpdateWithoutCurrencyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    balance?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    frozen?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    deposits?: DepositUncheckedUpdateManyWithoutWalletNestedInput
+    withdrawals?: WithdrawalUncheckedUpdateManyWithoutWalletNestedInput
+    Refund?: RefundUncheckedUpdateManyWithoutWalletNestedInput
+    transfersFrom?: TransferUncheckedUpdateManyWithoutFromWalletNestedInput
+    transfersTo?: TransferUncheckedUpdateManyWithoutToWalletNestedInput
+  }
+
+  export type WalletUncheckedUpdateManyWithoutCurrencyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    balance?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    frozen?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type ExchangeUpdateWithoutFromCurrencyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    fromAmount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    toAmount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    exchangeRate?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    feePercentage?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    status?: EnumExchangeStatusFieldUpdateOperationsInput | $Enums.ExchangeStatus
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    failedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    toCurrency?: CurrencyUpdateOneRequiredWithoutExchangesToNestedInput
+    initiator?: UserUpdateOneWithoutInitiatedExchangesNestedInput
+  }
+
+  export type ExchangeUncheckedUpdateWithoutFromCurrencyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    toCurrencyId?: StringFieldUpdateOperationsInput | string
+    userId?: NullableStringFieldUpdateOperationsInput | string | null
+    fromAmount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    toAmount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    exchangeRate?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    feePercentage?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    status?: EnumExchangeStatusFieldUpdateOperationsInput | $Enums.ExchangeStatus
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    failedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  }
+
+  export type ExchangeUncheckedUpdateManyWithoutFromCurrencyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    toCurrencyId?: StringFieldUpdateOperationsInput | string
+    userId?: NullableStringFieldUpdateOperationsInput | string | null
+    fromAmount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    toAmount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    exchangeRate?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    feePercentage?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    status?: EnumExchangeStatusFieldUpdateOperationsInput | $Enums.ExchangeStatus
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    failedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  }
+
+  export type ExchangeUpdateWithoutToCurrencyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    fromAmount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    toAmount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    exchangeRate?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    feePercentage?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    status?: EnumExchangeStatusFieldUpdateOperationsInput | $Enums.ExchangeStatus
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    failedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    fromCurrency?: CurrencyUpdateOneRequiredWithoutExchangesFromNestedInput
+    initiator?: UserUpdateOneWithoutInitiatedExchangesNestedInput
+  }
+
+  export type ExchangeUncheckedUpdateWithoutToCurrencyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    fromCurrencyId?: StringFieldUpdateOperationsInput | string
+    userId?: NullableStringFieldUpdateOperationsInput | string | null
+    fromAmount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    toAmount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    exchangeRate?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    feePercentage?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    status?: EnumExchangeStatusFieldUpdateOperationsInput | $Enums.ExchangeStatus
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    failedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  }
+
+  export type ExchangeUncheckedUpdateManyWithoutToCurrencyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    fromCurrencyId?: StringFieldUpdateOperationsInput | string
+    userId?: NullableStringFieldUpdateOperationsInput | string | null
+    fromAmount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    toAmount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    exchangeRate?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    feePercentage?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    status?: EnumExchangeStatusFieldUpdateOperationsInput | $Enums.ExchangeStatus
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    failedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  }
+
+  export type FeeSettingUpdateWithoutCurrencyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    transactionType?: EnumTransactionKindFieldUpdateOperationsInput | $Enums.TransactionKind
+    fixedFee?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    percentageFee?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type FeeSettingUncheckedUpdateWithoutCurrencyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    transactionType?: EnumTransactionKindFieldUpdateOperationsInput | $Enums.TransactionKind
+    fixedFee?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    percentageFee?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type FeeSettingUncheckedUpdateManyWithoutCurrencyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    transactionType?: EnumTransactionKindFieldUpdateOperationsInput | $Enums.TransactionKind
+    fixedFee?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    percentageFee?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type PaymentChannelUpdateWithoutCurrenciesInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    bridgeTransfers?: BridgeTransferUpdateOneWithoutPaymentChannelNestedInput
+    Deposit?: DepositUpdateManyWithoutPaymentChannelNestedInput
+    Withdrawal?: WithdrawalUpdateManyWithoutPaymentChannelNestedInput
+    LiquidityPool?: LiquidityPoolUpdateManyWithoutPaymentChannelNestedInput
+  }
+
+  export type PaymentChannelUncheckedUpdateWithoutCurrenciesInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    bridgeTransfers?: BridgeTransferUncheckedUpdateOneWithoutPaymentChannelNestedInput
+    Deposit?: DepositUncheckedUpdateManyWithoutPaymentChannelNestedInput
+    Withdrawal?: WithdrawalUncheckedUpdateManyWithoutPaymentChannelNestedInput
+    LiquidityPool?: LiquidityPoolUncheckedUpdateManyWithoutPaymentChannelNestedInput
+  }
+
+  export type PaymentChannelUncheckedUpdateManyWithoutCurrenciesInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type LiquidityPoolUpdateWithoutCurrencyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    address?: StringFieldUpdateOperationsInput | string
+    balance?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    frozen?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    paymentChannel?: PaymentChannelUpdateOneRequiredWithoutLiquidityPoolNestedInput
+  }
+
+  export type LiquidityPoolUncheckedUpdateWithoutCurrencyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    paymentChannelId?: StringFieldUpdateOperationsInput | string
+    address?: StringFieldUpdateOperationsInput | string
+    balance?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    frozen?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type LiquidityPoolUncheckedUpdateManyWithoutCurrencyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    paymentChannelId?: StringFieldUpdateOperationsInput | string
+    address?: StringFieldUpdateOperationsInput | string
+    balance?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    frozen?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
   export type DepositCreateManyWalletInput = {
     id?: string
     userId: string
@@ -26450,370 +28774,6 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     failedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  }
-
-  export type WalletCreateManyCurrencyInput = {
-    id?: string
-    userId: string
-    balance?: Decimal | DecimalJsLike | number | string
-    frozen?: Decimal | DecimalJsLike | number | string
-    createdAt?: Date | string
-    updatedAt?: Date | string
-  }
-
-  export type ExchangeCreateManyFromCurrencyInput = {
-    id?: string
-    toCurrencyId: string
-    userId?: string | null
-    fromAmount: Decimal | DecimalJsLike | number | string
-    toAmount: Decimal | DecimalJsLike | number | string
-    exchangeRate: Decimal | DecimalJsLike | number | string
-    feePercentage?: Decimal | DecimalJsLike | number | string
-    status?: $Enums.ExchangeStatus
-    createdAt?: Date | string
-    completedAt?: Date | string | null
-    failedAt?: Date | string | null
-  }
-
-  export type ExchangeCreateManyToCurrencyInput = {
-    id?: string
-    fromCurrencyId: string
-    userId?: string | null
-    fromAmount: Decimal | DecimalJsLike | number | string
-    toAmount: Decimal | DecimalJsLike | number | string
-    exchangeRate: Decimal | DecimalJsLike | number | string
-    feePercentage?: Decimal | DecimalJsLike | number | string
-    status?: $Enums.ExchangeStatus
-    createdAt?: Date | string
-    completedAt?: Date | string | null
-    failedAt?: Date | string | null
-  }
-
-  export type FeeSettingCreateManyCurrencyInput = {
-    id?: string
-    transactionType: $Enums.TransactionKind
-    fixedFee?: Decimal | DecimalJsLike | number | string | null
-    percentageFee?: Decimal | DecimalJsLike | number | string | null
-    createdAt?: Date | string
-  }
-
-  export type WalletUpdateWithoutCurrencyInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    balance?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
-    frozen?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    user?: UserUpdateOneRequiredWithoutWalletNestedInput
-    deposits?: DepositUpdateManyWithoutWalletNestedInput
-    withdrawals?: WithdrawalUpdateManyWithoutWalletNestedInput
-    Refund?: RefundUpdateManyWithoutWalletNestedInput
-    transfersFrom?: TransferUpdateManyWithoutFromWalletNestedInput
-    transfersTo?: TransferUpdateManyWithoutToWalletNestedInput
-  }
-
-  export type WalletUncheckedUpdateWithoutCurrencyInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    userId?: StringFieldUpdateOperationsInput | string
-    balance?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
-    frozen?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    deposits?: DepositUncheckedUpdateManyWithoutWalletNestedInput
-    withdrawals?: WithdrawalUncheckedUpdateManyWithoutWalletNestedInput
-    Refund?: RefundUncheckedUpdateManyWithoutWalletNestedInput
-    transfersFrom?: TransferUncheckedUpdateManyWithoutFromWalletNestedInput
-    transfersTo?: TransferUncheckedUpdateManyWithoutToWalletNestedInput
-  }
-
-  export type WalletUncheckedUpdateManyWithoutCurrencyInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    userId?: StringFieldUpdateOperationsInput | string
-    balance?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
-    frozen?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
-  export type ExchangeUpdateWithoutFromCurrencyInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    fromAmount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
-    toAmount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
-    exchangeRate?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
-    feePercentage?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
-    status?: EnumExchangeStatusFieldUpdateOperationsInput | $Enums.ExchangeStatus
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    failedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    toCurrency?: CurrencyUpdateOneRequiredWithoutExchangesToNestedInput
-    initiator?: UserUpdateOneWithoutInitiatedExchangesNestedInput
-  }
-
-  export type ExchangeUncheckedUpdateWithoutFromCurrencyInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    toCurrencyId?: StringFieldUpdateOperationsInput | string
-    userId?: NullableStringFieldUpdateOperationsInput | string | null
-    fromAmount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
-    toAmount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
-    exchangeRate?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
-    feePercentage?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
-    status?: EnumExchangeStatusFieldUpdateOperationsInput | $Enums.ExchangeStatus
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    failedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  }
-
-  export type ExchangeUncheckedUpdateManyWithoutFromCurrencyInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    toCurrencyId?: StringFieldUpdateOperationsInput | string
-    userId?: NullableStringFieldUpdateOperationsInput | string | null
-    fromAmount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
-    toAmount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
-    exchangeRate?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
-    feePercentage?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
-    status?: EnumExchangeStatusFieldUpdateOperationsInput | $Enums.ExchangeStatus
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    failedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  }
-
-  export type ExchangeUpdateWithoutToCurrencyInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    fromAmount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
-    toAmount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
-    exchangeRate?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
-    feePercentage?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
-    status?: EnumExchangeStatusFieldUpdateOperationsInput | $Enums.ExchangeStatus
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    failedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    fromCurrency?: CurrencyUpdateOneRequiredWithoutExchangesFromNestedInput
-    initiator?: UserUpdateOneWithoutInitiatedExchangesNestedInput
-  }
-
-  export type ExchangeUncheckedUpdateWithoutToCurrencyInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    fromCurrencyId?: StringFieldUpdateOperationsInput | string
-    userId?: NullableStringFieldUpdateOperationsInput | string | null
-    fromAmount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
-    toAmount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
-    exchangeRate?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
-    feePercentage?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
-    status?: EnumExchangeStatusFieldUpdateOperationsInput | $Enums.ExchangeStatus
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    failedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  }
-
-  export type ExchangeUncheckedUpdateManyWithoutToCurrencyInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    fromCurrencyId?: StringFieldUpdateOperationsInput | string
-    userId?: NullableStringFieldUpdateOperationsInput | string | null
-    fromAmount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
-    toAmount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
-    exchangeRate?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
-    feePercentage?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
-    status?: EnumExchangeStatusFieldUpdateOperationsInput | $Enums.ExchangeStatus
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    failedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  }
-
-  export type FeeSettingUpdateWithoutCurrencyInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    transactionType?: EnumTransactionKindFieldUpdateOperationsInput | $Enums.TransactionKind
-    fixedFee?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
-    percentageFee?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
-  export type FeeSettingUncheckedUpdateWithoutCurrencyInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    transactionType?: EnumTransactionKindFieldUpdateOperationsInput | $Enums.TransactionKind
-    fixedFee?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
-    percentageFee?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
-  export type FeeSettingUncheckedUpdateManyWithoutCurrencyInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    transactionType?: EnumTransactionKindFieldUpdateOperationsInput | $Enums.TransactionKind
-    fixedFee?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
-    percentageFee?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
-  export type PaymentChannelUpdateWithoutCurrenciesInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    name?: StringFieldUpdateOperationsInput | string
-    description?: NullableStringFieldUpdateOperationsInput | string | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    bridgeTransfers?: BridgeTransferUpdateOneWithoutPaymentChannelNestedInput
-    Deposit?: DepositUpdateManyWithoutPaymentChannelNestedInput
-    Withdrawal?: WithdrawalUpdateManyWithoutPaymentChannelNestedInput
-  }
-
-  export type PaymentChannelUncheckedUpdateWithoutCurrenciesInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    name?: StringFieldUpdateOperationsInput | string
-    description?: NullableStringFieldUpdateOperationsInput | string | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    bridgeTransfers?: BridgeTransferUncheckedUpdateOneWithoutPaymentChannelNestedInput
-    Deposit?: DepositUncheckedUpdateManyWithoutPaymentChannelNestedInput
-    Withdrawal?: WithdrawalUncheckedUpdateManyWithoutPaymentChannelNestedInput
-  }
-
-  export type PaymentChannelUncheckedUpdateManyWithoutCurrenciesInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    name?: StringFieldUpdateOperationsInput | string
-    description?: NullableStringFieldUpdateOperationsInput | string | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
-  export type DepositCreateManyPaymentChannelInput = {
-    id?: string
-    userId: string
-    walletId: string
-    amount: Decimal | DecimalJsLike | number | string
-    fee?: Decimal | DecimalJsLike | number | string
-    status?: $Enums.DepositStatus
-    reference?: string | null
-    createdAt?: Date | string
-    completedAt?: Date | string | null
-    failedAt?: Date | string | null
-    bridgeTransferid?: string | null
-  }
-
-  export type WithdrawalCreateManyPaymentChannelInput = {
-    id?: string
-    userId: string
-    walletId: string
-    amount: Decimal | DecimalJsLike | number | string
-    fee?: Decimal | DecimalJsLike | number | string
-    status?: $Enums.WithdrawalStatus
-    reference?: string | null
-    createdAt?: Date | string
-    completedAt?: Date | string | null
-    failedAt?: Date | string | null
-    bridgeTransferid?: string | null
-  }
-
-  export type CurrencyUpdateWithoutPaymentChannelsInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    code?: StringFieldUpdateOperationsInput | string
-    name?: StringFieldUpdateOperationsInput | string
-    symbol?: StringFieldUpdateOperationsInput | string
-    decimals?: IntFieldUpdateOperationsInput | number
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    wallets?: WalletUpdateManyWithoutCurrencyNestedInput
-    exchangesFrom?: ExchangeUpdateManyWithoutFromCurrencyNestedInput
-    exchangesTo?: ExchangeUpdateManyWithoutToCurrencyNestedInput
-    FeeSetting?: FeeSettingUpdateManyWithoutCurrencyNestedInput
-  }
-
-  export type CurrencyUncheckedUpdateWithoutPaymentChannelsInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    code?: StringFieldUpdateOperationsInput | string
-    name?: StringFieldUpdateOperationsInput | string
-    symbol?: StringFieldUpdateOperationsInput | string
-    decimals?: IntFieldUpdateOperationsInput | number
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    wallets?: WalletUncheckedUpdateManyWithoutCurrencyNestedInput
-    exchangesFrom?: ExchangeUncheckedUpdateManyWithoutFromCurrencyNestedInput
-    exchangesTo?: ExchangeUncheckedUpdateManyWithoutToCurrencyNestedInput
-    FeeSetting?: FeeSettingUncheckedUpdateManyWithoutCurrencyNestedInput
-  }
-
-  export type CurrencyUncheckedUpdateManyWithoutPaymentChannelsInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    code?: StringFieldUpdateOperationsInput | string
-    name?: StringFieldUpdateOperationsInput | string
-    symbol?: StringFieldUpdateOperationsInput | string
-    decimals?: IntFieldUpdateOperationsInput | number
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
-  export type DepositUpdateWithoutPaymentChannelInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    amount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
-    fee?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
-    status?: EnumDepositStatusFieldUpdateOperationsInput | $Enums.DepositStatus
-    reference?: NullableStringFieldUpdateOperationsInput | string | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    failedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    bridgeTransfer?: BridgeTransferUpdateOneWithoutDepositNestedInput
-    user?: UserUpdateOneRequiredWithoutDepositsNestedInput
-    wallet?: WalletUpdateOneRequiredWithoutDepositsNestedInput
-  }
-
-  export type DepositUncheckedUpdateWithoutPaymentChannelInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    userId?: StringFieldUpdateOperationsInput | string
-    walletId?: StringFieldUpdateOperationsInput | string
-    amount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
-    fee?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
-    status?: EnumDepositStatusFieldUpdateOperationsInput | $Enums.DepositStatus
-    reference?: NullableStringFieldUpdateOperationsInput | string | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    failedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    bridgeTransferid?: NullableStringFieldUpdateOperationsInput | string | null
-  }
-
-  export type DepositUncheckedUpdateManyWithoutPaymentChannelInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    userId?: StringFieldUpdateOperationsInput | string
-    walletId?: StringFieldUpdateOperationsInput | string
-    amount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
-    fee?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
-    status?: EnumDepositStatusFieldUpdateOperationsInput | $Enums.DepositStatus
-    reference?: NullableStringFieldUpdateOperationsInput | string | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    failedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    bridgeTransferid?: NullableStringFieldUpdateOperationsInput | string | null
-  }
-
-  export type WithdrawalUpdateWithoutPaymentChannelInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    amount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
-    fee?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
-    status?: EnumWithdrawalStatusFieldUpdateOperationsInput | $Enums.WithdrawalStatus
-    reference?: NullableStringFieldUpdateOperationsInput | string | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    failedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    bridgeTransfer?: BridgeTransferUpdateOneWithoutWithdrawalNestedInput
-    user?: UserUpdateOneRequiredWithoutWithdrawalsNestedInput
-    wallet?: WalletUpdateOneRequiredWithoutWithdrawalsNestedInput
-  }
-
-  export type WithdrawalUncheckedUpdateWithoutPaymentChannelInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    userId?: StringFieldUpdateOperationsInput | string
-    walletId?: StringFieldUpdateOperationsInput | string
-    amount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
-    fee?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
-    status?: EnumWithdrawalStatusFieldUpdateOperationsInput | $Enums.WithdrawalStatus
-    reference?: NullableStringFieldUpdateOperationsInput | string | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    failedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    bridgeTransferid?: NullableStringFieldUpdateOperationsInput | string | null
-  }
-
-  export type WithdrawalUncheckedUpdateManyWithoutPaymentChannelInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    userId?: StringFieldUpdateOperationsInput | string
-    walletId?: StringFieldUpdateOperationsInput | string
-    amount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
-    fee?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
-    status?: EnumWithdrawalStatusFieldUpdateOperationsInput | $Enums.WithdrawalStatus
-    reference?: NullableStringFieldUpdateOperationsInput | string | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    failedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    bridgeTransferid?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type DepositCreateManyBridgeTransferInput = {
