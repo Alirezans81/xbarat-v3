@@ -1,23 +1,15 @@
 import { currencyService } from "@/lib/back/services/currency.service";
 import { userService } from "@/lib/back/services/user.service";
 import {
+  MissingFieldsResponse,
   ServerErrorResponse,
   UnauthorizedResponse,
-} from "@/lib/back/utils/global-responses";
-import { jwtUtils } from "@/lib/back/utils/jwt";
+} from "@/lib/back/utils/globalResponses.utils";
+import { jwtUtils } from "@/lib/back/utils/jwt.utils";
 import { NextRequest, NextResponse } from "next/server";
 
-export async function GET(request: NextRequest) {
+export async function GET(_request: NextRequest) {
   try {
-    const token = request.headers.get("authorization")?.split(" ")[1];
-    if (!token) return UnauthorizedResponse;
-
-    const payload = jwtUtils.verify(token);
-    if (!payload) return UnauthorizedResponse;
-
-    const userIsAdmin = await userService.checkUserIsAdmin(payload.id);
-    if (!userIsAdmin) return UnauthorizedResponse;
-
     const currencies = await currencyService.getAll();
     return NextResponse.json(currencies, { status: 200 });
   } catch (error) {
@@ -41,7 +33,7 @@ export async function POST(request: NextRequest) {
     const { code, name, symbol, decimals, paymentChannelIds } = body;
 
     if (!code || !name || !symbol || !paymentChannelIds)
-      return NextResponse.json({ message: "missingFields" }, { status: 400 });
+      return MissingFieldsResponse;
 
     const currency = await currencyService.create({
       code,

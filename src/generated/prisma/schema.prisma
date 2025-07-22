@@ -8,41 +8,40 @@ datasource db {
   url      = env("NEXT_PUBLIC_DATABASE_URL")
 }
 
-// Main Models
 model User {
-  id               String        @id @default(uuid())
-  email            String        @unique
-  phoneNumber      String        @unique
-  fullName         String
-  avatarUrl        String?
-  passwordHash     String
-  countryCode      String
-  nationality      String?
-  language         String?
-  kycStatus        KycStatus     @default(PENDING)
-  documentType     DocumentType?
-  documentNumber   String?       @unique
-  documentPhotoUrl String?
-  dateOfBirth      DateTime?
-  address          String?
-  postalCode       String?
-  city             String?
-  state            String?
-  isPhoneVerified  Boolean       @default(false)
-  isEmailVerified  Boolean       @default(false)
-  role             UserRole      @default(CUSTOMER)
-  createdAt        DateTime      @default(now())
-  updatedAt        DateTime      @updatedAt
-  deletedAt        DateTime?
-
-  wallet             Wallet[]
+  id                 String          @id @default(uuid())
+  email              String          @unique
+  phoneNumber        String          @unique
+  fullName           String
+  avatarUrl          String?
+  passwordHash       String
+  countryCode        String
+  nationality        String?
+  language           String?
+  kycStatus          KycStatus       @default(PENDING)
+  documentType       DocumentType?
+  documentNumber     String?         @unique
+  documentPhotoUrl   String?
+  dateOfBirth        DateTime?
+  address            String?
+  postalCode         String?
+  city               String?
+  state              String?
+  isPhoneVerified    Boolean         @default(false)
+  isEmailVerified    Boolean         @default(false)
+  role               UserRole        @default(CUSTOMER)
+  createdAt          DateTime        @default(now())
+  updatedAt          DateTime        @updatedAt
+  deletedAt          DateTime?
+  isDeleted          Boolean         @default(false)
+  ActivityLog        ActivityLog[]
   deposits           Deposit[]
-  withdrawals        Withdrawal[]
-  transfers          Transfer[]
+  initiatedExchanges Exchange[]      @relation("Initiator")
+  LiquidityPool      LiquidityPool[]
   refunds            Refund[]
-  initiatedExchanges Exchange[]   @relation("Initiator")
-
-  ActivityLog ActivityLog[]
+  wallet             Wallet[]
+  withdrawals        Withdrawal[]
+  transfers          Transfer[]      @relation("TransferToUser")
 
   @@index([email])
   @@index([phoneNumber])
@@ -50,134 +49,140 @@ model User {
 }
 
 model PaymentChannel {
-  id          String   @id @default(uuid())
-  name        String   @unique
-  description String?
-  createdAt   DateTime @default(now())
-
-  bridgeTransfers BridgeTransfer?
-
-  currencies Currency[] @relation("PaymentChannelCurrencies")
-
-  Deposit    Deposit[]
-  Withdrawal Withdrawal[]
-
+  id            String          @id @default(uuid())
+  name          String          @unique
+  description   String?
+  createdAt     DateTime        @default(now())
+  Deposit       Deposit[]
   LiquidityPool LiquidityPool[]
+  Withdrawal    Withdrawal[]
+  currencies    Currency[]      @relation("PaymentChannelCurrencies")
 }
 
 model Currency {
-  id        String   @id @default(uuid())
-  code      String   @unique
-  name      String
-  symbol    String
-  decimals  Int      @default(2)
-  createdAt DateTime @default(now())
+  id               String           @id @default(uuid())
+  code             String           @unique
+  name             String
+  symbol           String
+  decimals         Int              @default(2)
+  createdAt        DateTime         @default(now())
+  FromCurrencyPair CurrencyPair[]   @relation("FromCurrency")
+  ToCurrencyPair   CurrencyPair[]   @relation("ToCurrency")
+  exchangesFrom    Exchange[]       @relation("FromCurrency")
+  exchangesTo      Exchange[]       @relation("ToCurrency")
+  FeeSetting       FeeSetting[]
+  LiquidityPool    LiquidityPool[]
+  wallets          Wallet[]
+  paymentChannels  PaymentChannel[] @relation("PaymentChannelCurrencies")
+}
 
-  wallets         Wallet[]
-  exchangesFrom   Exchange[]       @relation("FromCurrency")
-  exchangesTo     Exchange[]       @relation("ToCurrency")
-  FeeSetting      FeeSetting[]
-  paymentChannels PaymentChannel[] @relation("PaymentChannelCurrencies")
-  LiquidityPool   LiquidityPool[]
+model CurrencyPair {
+  id             String   @id @default(uuid())
+  fromCurrencyId String
+  toCurrencyId   String
+  rate           Decimal
+  isInverseRate  Boolean  @default(false)
+  isActive       Boolean  @default(true)
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+  fromCurrency   Currency @relation("FromCurrency", fields: [fromCurrencyId], references: [id])
+  toCurrency     Currency @relation("ToCurrency", fields: [toCurrencyId], references: [id])
+
+  @@unique([fromCurrencyId, toCurrencyId])
 }
 
 model LiquidityPool {
-  id               String   @id @default(uuid())
-  paymentChannelId String   @unique
+  id               String           @id @default(uuid())
+  paymentChannelId String
   currencyId       String
   address          String
-  balance          Decimal  @default(0.00)
-  frozen           Decimal  @default(0.00)
-  updatedAt        DateTime @updatedAt
-
-  paymentChannel PaymentChannel @relation(fields: [paymentChannelId], references: [id])
-  currency       Currency       @relation(fields: [currencyId], references: [id])
+  balance          Decimal          @default(0.00)
+  frozen           Decimal          @default(0.00)
+  updatedAt        DateTime         @updatedAt
+  userId           String
+  BridgeTransfer   BridgeTransfer[]
+  currency         Currency         @relation(fields: [currencyId], references: [id])
+  paymentChannel   PaymentChannel   @relation(fields: [paymentChannelId], references: [id])
+  user             User             @relation(fields: [userId], references: [id])
 }
 
 model Wallet {
-  id         String   @id @default(uuid())
-  userId     String
-  currencyId String
-  balance    Decimal  @default(0.00)
-  frozen     Decimal  @default(0.00)
-  createdAt  DateTime @default(now())
-  updatedAt  DateTime @updatedAt
-
-  user          User         @relation(fields: [userId], references: [id])
-  currency      Currency     @relation(fields: [currencyId], references: [id])
+  id            String       @id @default(uuid())
+  userId        String
+  currencyId    String
+  balance       Decimal      @default(0.00)
+  frozen        Decimal      @default(0.00)
+  createdAt     DateTime     @default(now())
+  updatedAt     DateTime     @updatedAt
   deposits      Deposit[]
-  withdrawals   Withdrawal[]
   Refund        Refund[]
   transfersFrom Transfer[]   @relation("FromWallet")
   transfersTo   Transfer[]   @relation("ToWallet")
+  currency      Currency     @relation(fields: [currencyId], references: [id], onDelete: Cascade)
+  user          User         @relation(fields: [userId], references: [id])
+  withdrawals   Withdrawal[]
 
   @@unique([userId, currencyId])
   @@index([currencyId])
 }
 
 model Deposit {
-  id          String        @id @default(uuid())
-  userId      String
-  walletId    String
-  amount      Decimal
-  fee         Decimal       @default(0.00)
-  status      DepositStatus @default(PENDING)
-  reference   String?       @unique
-  createdAt   DateTime      @default(now())
-  completedAt DateTime?
-  failedAt    DateTime?
-
+  id               String          @id @default(uuid())
+  userId           String
+  walletId         String
+  amount           Decimal
+  fee              Decimal         @default(0.00)
+  status           DepositStatus   @default(PENDING)
+  reference        String?         @unique
+  createdAt        DateTime        @default(now())
+  completedAt      DateTime?
+  failedAt         DateTime?
   paymentChannelId String
-  paymentChannel   PaymentChannel @relation(fields: [paymentChannelId], references: [id])
-
-  bridgeTransferid String?
-  bridgeTransfer   BridgeTransfer? @relation("DepositToBridge", fields: [bridgeTransferid], references: [id])
-
-  user   User   @relation(fields: [userId], references: [id])
-  wallet Wallet @relation(fields: [walletId], references: [id])
+  documentUrl      String?
+  BridgeTransfer   BridgeTransfer?
+  paymentChannel   PaymentChannel  @relation(fields: [paymentChannelId], references: [id])
+  user             User            @relation(fields: [userId], references: [id])
+  wallet           Wallet          @relation(fields: [walletId], references: [id])
 }
 
 model Withdrawal {
-  id          String           @id @default(uuid())
-  userId      String
-  walletId    String
-  amount      Decimal
-  fee         Decimal          @default(0.00)
-  status      WithdrawalStatus @default(PENDING)
-  reference   String?          @unique
-  createdAt   DateTime         @default(now())
-  completedAt DateTime?
-  failedAt    DateTime?
-
+  id               String           @id @default(uuid())
+  userId           String
+  walletId         String
+  amount           Decimal
+  fee              Decimal          @default(0.00)
+  status           WithdrawalStatus @default(PENDING)
+  reference        String?          @unique
+  createdAt        DateTime         @default(now())
+  completedAt      DateTime?
+  failedAt         DateTime?
   paymentChannelId String
-  paymentChannel   PaymentChannel @relation(fields: [paymentChannelId], references: [id])
-
-  bridgeTransferid String?
-  bridgeTransfer   BridgeTransfer? @relation("WithdrawalToBridge", fields: [bridgeTransferid], references: [id])
-
-  user   User   @relation(fields: [userId], references: [id])
-  wallet Wallet @relation(fields: [walletId], references: [id])
+  bridgeTransferId String?
+  receiverAddress  String
+  addressOwnerName String
+  BridgeTransfer   BridgeTransfer?
+  paymentChannel   PaymentChannel   @relation(fields: [paymentChannelId], references: [id])
+  user             User             @relation(fields: [userId], references: [id])
+  wallet           Wallet           @relation(fields: [walletId], references: [id])
 }
 
 model BridgeTransfer {
-  id           String       @id @default(uuid())
-  depositId    String       @unique
-  withdrawalId String       @unique
-  channelId    String       @unique
-  status       BridgeStatus @default(PENDING)
-  createdAt    DateTime     @default(now())
-  completedAt  DateTime?
-  failedAt     DateTime?
-
-  paymentChannel PaymentChannel @relation(fields: [channelId], references: [id])
-
-  Deposit    Deposit[]    @relation("DepositToBridge")
-  Withdrawal Withdrawal[] @relation("WithdrawalToBridge")
+  id              String         @id @default(uuid())
+  status          BridgeStatus   @default(PENDING)
+  createdAt       DateTime       @default(now())
+  completedAt     DateTime?
+  failedAt        DateTime?
+  depositId       String?        @unique
+  withdrawalId    String?        @unique
+  liquidityPoolId String?
+  amount          Decimal        @default(0.00)
+  deposit         Deposit?       @relation(fields: [depositId], references: [id])
+  liquidityPool   LiquidityPool? @relation(fields: [liquidityPoolId], references: [id])
+  withdrawal      Withdrawal?    @relation(fields: [withdrawalId], references: [id])
 }
 
 model Transfer {
   id           String         @id @default(uuid())
-  User         User[]
   fromWalletId String
   toWalletId   String
   amount       Decimal
@@ -187,9 +192,9 @@ model Transfer {
   createdAt    DateTime       @default(now())
   completedAt  DateTime?
   failedAt     DateTime?
-
-  fromWallet Wallet @relation("FromWallet", fields: [fromWalletId], references: [id])
-  toWallet   Wallet @relation("ToWallet", fields: [toWalletId], references: [id])
+  fromWallet   Wallet         @relation("FromWallet", fields: [fromWalletId], references: [id])
+  toWallet     Wallet         @relation("ToWallet", fields: [toWalletId], references: [id])
+  User         User[]         @relation("TransferToUser")
 }
 
 model Refund {
@@ -202,9 +207,8 @@ model Refund {
   createdAt   DateTime     @default(now())
   completedAt DateTime?
   failedAt    DateTime?
-
-  user   User   @relation(fields: [userId], references: [id])
-  wallet Wallet @relation(fields: [walletId], references: [id])
+  user        User         @relation(fields: [userId], references: [id])
+  wallet      Wallet       @relation(fields: [walletId], references: [id])
 }
 
 model Exchange {
@@ -220,10 +224,9 @@ model Exchange {
   createdAt      DateTime       @default(now())
   completedAt    DateTime?
   failedAt       DateTime?
-
-  fromCurrency Currency @relation("FromCurrency", fields: [fromCurrencyId], references: [id])
-  toCurrency   Currency @relation("ToCurrency", fields: [toCurrencyId], references: [id])
-  initiator    User?    @relation("Initiator", fields: [userId], references: [id])
+  fromCurrency   Currency       @relation("FromCurrency", fields: [fromCurrencyId], references: [id])
+  toCurrency     Currency       @relation("ToCurrency", fields: [toCurrencyId], references: [id])
+  initiator      User?          @relation("Initiator", fields: [userId], references: [id])
 }
 
 model ActivityLog {
@@ -236,8 +239,7 @@ model ActivityLog {
   ipAddress   String?
   userAgent   String?
   createdAt   DateTime  @default(now())
-
-  user User? @relation(fields: [userId], references: [id])
+  user        User?     @relation(fields: [userId], references: [id])
 
   @@index([userId])
   @@index([action])
@@ -245,9 +247,18 @@ model ActivityLog {
   @@index([role])
 }
 
-//
+model FeeSetting {
+  id              String          @id @default(uuid())
+  transactionType TransactionKind
+  currencyId      String?
+  fixedFee        Decimal?
+  percentageFee   Decimal?
+  createdAt       DateTime        @default(now())
+  currency        Currency?       @relation(fields: [currencyId], references: [id])
 
-// Enums
+  @@index([transactionType, currencyId])
+}
+
 enum UserRole {
   CUSTOMER
   ADMIN
@@ -290,6 +301,7 @@ enum BridgeStatus {
   COMPLETED
   FAILED
   CANCELED
+  CHECK
 }
 
 enum TransferStatus {
@@ -318,21 +330,3 @@ enum TransactionKind {
   EXCHANGE
   REFUND
 }
-
-//
-
-// Site Settings
-model FeeSetting {
-  id              String          @id @default(uuid())
-  transactionType TransactionKind
-  currencyId      String?
-  fixedFee        Decimal?
-  percentageFee   Decimal?
-  createdAt       DateTime        @default(now())
-
-  currency Currency? @relation(fields: [currencyId], references: [id])
-
-  @@index([transactionType, currencyId])
-}
-
-//

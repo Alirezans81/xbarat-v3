@@ -26,6 +26,11 @@ export default async function page() {
       </div>
     );
   } catch (error) {
-    return <></>;
+    console.error("[PAYMENT_CHANNEL_PAGE]", error);
+    return (
+      <div className="w-full h-full flex justify-center items-center">
+        Internal server error
+      </div>
+    );
   }
 }

@@ -17,8 +17,9 @@ import {
   adminLoggedInNavbarItems,
   loggedInNavabarItems,
   notLoggedInNavbarItems,
+  providerLoggedInNavbarItems,
 } from "@/constants/globals";
-import { Link } from "@/i18n/navigation";
+import { Link, useRouter } from "@/i18n/navigation";
 
 export default function NavbarActionButton() {
   const t = useTranslations("Sidebar");
@@ -26,10 +27,13 @@ export default function NavbarActionButton() {
   const resetApp = useResetApp();
 
   const { isLoggedIn, user } = useAuthStore();
+  const router = useRouter();
 
   const items = isLoggedIn
     ? user?.role === "ADMIN"
       ? adminLoggedInNavbarItems
+      : user?.role === "PROVIDER"
+      ? providerLoggedInNavbarItems
       : loggedInNavabarItems
     : notLoggedInNavbarItems;
 
@@ -38,7 +42,7 @@ export default function NavbarActionButton() {
       <>
         <div className="sm:block hidden">
           <DropdownMenu>
-            <DropdownMenuTrigger className="cursor-pointer">
+            <DropdownMenuTrigger className="">
               <Avatar className="w-10 h-10">
                 <AvatarImage src={user?.avatarUrl || ""} />
                 <AvatarFallback>
@@ -56,14 +60,20 @@ export default function NavbarActionButton() {
               <DropdownMenuSeparator />
               {items.map((item) => (
                 <DropdownMenuItem key={item.url} asChild className="w-40">
-                  <Link href={item.url} className="cursor-pointer">
+                  <Link href={item.url} className="">
                     <item.icon />
                     <span>{t(item.title)}</span>
                   </Link>
                 </DropdownMenuItem>
               ))}
               <DropdownMenuSeparator />
-              <DropdownMenuItem onClick={resetApp} variant="destructive">
+              <DropdownMenuItem
+                onClick={() => {
+                  resetApp();
+                  router.replace("/");
+                }}
+                variant="destructive"
+              >
                 {t("logout")}
               </DropdownMenuItem>
             </DropdownMenuContent>

@@ -1,7 +1,7 @@
 import bcrypt from "bcryptjs";
-import { jwtUtils } from "@/lib/back/utils/jwt";
+import { jwtUtils } from "@/lib/back/utils/jwt.utils";
 import { userRepository } from "../repositories/user.repo";
-import { addDays } from "../utils/date";
+import { addDays } from "date-fns";
 
 export const userService = {
   register: async ({
@@ -30,18 +30,6 @@ export const userService = {
     return { user, token };
   },
 
-  getUserByToken: (token: string) => {
-    const decoded = jwtUtils.verify(token);
-    if (!decoded) throw new Error("unauthorized");
-    return userRepository.findById(decoded.id);
-  },
-
-  getUserById: (id: string) => {
-    return userRepository.findById(id);
-  },
-
-  getAll: userRepository.getAll,
-
   login: async ({ email, password }: { email: string; password: string }) => {
     const user = await userRepository.findByEmail(email);
     if (!user) {
@@ -67,10 +55,30 @@ export const userService = {
     return { user, token, token_exp: tokenExpiration.date };
   },
 
+  getAll: userRepository.getAll,
+
+  getById: userRepository.findById,
+
+  getUserByToken: (token: string) => {
+    const decoded = jwtUtils.verify(token);
+    if (!decoded) throw new Error("unauthorized");
+    return userService.getById(decoded.id);
+  },
+
   checkUserIsAdmin: async (id: string): Promise<boolean> => {
-    const user = await userRepository.findById(id);
+    const user = await userService.getById(id);
 
     if (user && user.role === "ADMIN") {
+      return true;
+    }
+
+    return false;
+  },
+
+  checkUserIsProvider: async (id: string): Promise<boolean> => {
+    const user = await userService.getById(id);
+
+    if (user && user.role === "PROVIDER") {
       return true;
     }
 

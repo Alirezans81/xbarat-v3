@@ -19,7 +19,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { useUpdateDeposit } from "@/api/wallet/deposit/hook";
-import { Deposit } from "@/types/deposit";
+import { Deposit } from "@/types/wallet/deposit";
 
 interface Props {
   data: Deposit;
@@ -80,7 +80,7 @@ export default function AddWalletDepositDialog({ data }: Props) {
     <Dialog open={open} onOpenChange={(value) => setOpen(value)}>
       <DialogTrigger asChild>
         <div>
-          <Button className="text-foreground cursor-pointer">Edit</Button>
+          <Button className="text-foreground ">Edit</Button>
         </div>
       </DialogTrigger>
       <DialogContent className="sm:max-w-[400px]">
@@ -138,7 +138,7 @@ export default function AddWalletDepositDialog({ data }: Props) {
           <div className="mt-4">
             <Button
               type="submit"
-              className="w-full text-foreground cursor-pointer"
+              className="w-full text-foreground "
               disabled={loading}
             >
               Submit

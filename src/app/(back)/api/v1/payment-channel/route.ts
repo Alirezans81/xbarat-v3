@@ -1,11 +1,11 @@
-// app/api/payment-channels/route.ts
 import { paymentChannelService } from "@/lib/back/services/paymentChannel.service";
 import { userService } from "@/lib/back/services/user.service";
 import {
+  MissingFieldsResponse,
   ServerErrorResponse,
   UnauthorizedResponse,
-} from "@/lib/back/utils/global-responses";
-import { jwtUtils } from "@/lib/back/utils/jwt";
+} from "@/lib/back/utils/globalResponses.utils";
+import { jwtUtils } from "@/lib/back/utils/jwt.utils";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function GET(request: NextRequest) {
@@ -17,10 +17,18 @@ export async function GET(request: NextRequest) {
     if (!payload) return UnauthorizedResponse;
 
     const userIsAdmin = await userService.checkUserIsAdmin(payload.id);
-    if (!userIsAdmin) return UnauthorizedResponse;
+    const userIsProvider = await userService.checkUserIsProvider(payload.id);
+    if (!userIsAdmin && !userIsProvider) return UnauthorizedResponse;
+
+    const searchParams = request.nextUrl.searchParams;
+    const currencyId = searchParams.get("currencyId");
+
+    if (currencyId) {
+      const paymentChannel = await paymentChannelService.getAll({ currencyId });
+      return NextResponse.json(paymentChannel, { status: 200 });
+    }
 
     const paymentChannel = await paymentChannelService.getAll();
-
     return NextResponse.json(paymentChannel, { status: 200 });
   } catch (error) {
     console.error("[CREATE_PAYMENT_CHANNEL]", error);
@@ -41,8 +49,7 @@ export async function POST(request: NextRequest) {
 
     const body = await request.json();
     const { name, description } = body;
-    if (!name)
-      return NextResponse.json({ message: "missingFields" }, { status: 400 });
+    if (!name) return MissingFieldsResponse;
 
     const paymentChannel = await paymentChannelService.create({
       name,

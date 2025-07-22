@@ -1,14 +1,25 @@
 import { PaymentChannel } from "@/generated/prisma";
 import { prisma } from "../prisma";
+import {
+  CreatePaymentChannel,
+  GetPaymentChannelsFilters,
+  UpdatePaymentChannel,
+} from "@/types/paymentChannel";
 
 export const paymentChannelRepository = {
-  getAll: async () => {
-    return prisma.paymentChannel.findMany();
-  },
-
-  create: async (data: { name: string; description?: string }) => {
+  create: async (data: CreatePaymentChannel) => {
     return prisma.paymentChannel.create({
       data,
+    });
+  },
+
+  getAll: async (filters?: GetPaymentChannelsFilters) => {
+    return prisma.paymentChannel.findMany({
+      where: {
+        ...(filters?.currencyId && {
+          currencies: { some: { id: filters.currencyId } },
+        }),
+      },
     });
   },
 
@@ -16,13 +27,7 @@ export const paymentChannelRepository = {
     return prisma.paymentChannel.findUnique({ where: { id } });
   },
 
-  updateById: async (
-    id: string,
-    newValue: {
-      name: string;
-      description?: string;
-    }
-  ): Promise<PaymentChannel> => {
+  updateById: async (id: string, newValue: UpdatePaymentChannel) => {
     return prisma.paymentChannel.update({
       where: { id },
       data: newValue,

@@ -1,3 +1,10 @@
+export type GetUsersFilters = {
+  email?: string;
+  fullName?: string;
+  phoneNumber?: string;
+  countryCode?: string;
+};
+
 export type CreateUser = {
   email: string;
   password: string;

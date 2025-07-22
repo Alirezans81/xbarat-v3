@@ -81,7 +81,7 @@ export default function AddWalletDepositDialog({ currency, walletId }: Props) {
         <div>
           <Button
             variant="ghost"
-            className="text-foreground cursor-pointer bg-[#369635] hover:!bg-[#369635]"
+            className="text-foreground  bg-[#369635] hover:!bg-[#369635]"
           >
             New Deposit
           </Button>
@@ -140,7 +140,7 @@ export default function AddWalletDepositDialog({ currency, walletId }: Props) {
           <div className="mt-4">
             <Button
               type="submit"
-              className="w-full text-foreground cursor-pointer"
+              className="w-full text-foreground "
               disabled={loading}
             >
               Submit

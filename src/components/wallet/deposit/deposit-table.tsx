@@ -2,6 +2,7 @@
 
 import DeleteDepositDialog from "@/components/dialog/wallet/deposit/delete-deposit-dialog";
 import EditDepositDialog from "@/components/dialog/wallet/deposit/edit-deposit-dialog";
+import UploadDepositDocument from "@/components/dialog/wallet/deposit/upload-deposit-document";
 import {
   Table,
   TableBody,
@@ -11,7 +12,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { Deposit } from "@/types/deposit";
+import { Deposit } from "@/types/wallet/deposit";
 
 interface Props {
   data: Deposit[];
@@ -47,13 +48,27 @@ export default function DepositTable({ data }: Props) {
                 " " +
                 new Date(deposit.createdAt).toTimeString().split(" ")[0]}
             </TableCell>
-            <TableCell>{deposit.status}</TableCell>
+            <TableCell
+              className={`
+                ${deposit.status === "COMPLETED" && "text-chart-2"}
+                ${deposit.status === "PAYMENT" && "text-secondary"}
+                ${deposit.status === "FAILED" && "text-destructive"}
+                `}
+            >
+              {deposit.status}
+            </TableCell>
             <TableCell className="flex justify-end gap-2">
               {deposit.status === "PENDING" && (
                 <>
                   <EditDepositDialog data={deposit} />
                   <DeleteDepositDialog deposit_id={deposit.id} />
                 </>
+              )}
+              {deposit.status === "PAYMENT" && (
+                <UploadDepositDocument deposit_id={deposit.id} />
+              )}
+              {deposit.documentUrl && (
+                
               )}
             </TableCell>
           </TableRow>

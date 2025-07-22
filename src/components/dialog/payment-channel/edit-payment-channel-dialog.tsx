@@ -96,7 +96,7 @@ export default function EditPaymentChannelDialog({ data }: Props) {
     <Dialog open={open} onOpenChange={(value) => setOpen(value)}>
       <DialogTrigger asChild>
         <div>
-          <Button className="text-foreground cursor-pointer">Edit</Button>
+          <Button className="text-foreground ">Edit</Button>
         </div>
       </DialogTrigger>
       <DialogContent className="sm:max-w-[400px]">
@@ -161,7 +161,7 @@ export default function EditPaymentChannelDialog({ data }: Props) {
               <Button
                 type="button"
                 variant="outline"
-                className="text-foreground cursor-pointer z-10 !bg-background"
+                className="text-foreground  z-10 !bg-background"
                 onClick={() => logoInputRef.current?.click()}
               >
                 <Upload />
@@ -177,7 +177,7 @@ export default function EditPaymentChannelDialog({ data }: Props) {
           <div className="mt-4">
             <Button
               type="submit"
-              className="w-full text-foreground cursor-pointer"
+              className="w-full text-foreground "
               disabled={loading}
             >
               Submit

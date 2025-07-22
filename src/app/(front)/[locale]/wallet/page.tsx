@@ -17,6 +17,11 @@ export default async function Wallet() {
       </div>
     );
   } catch (error) {
-    return <></>;
+    console.error("[WALLET_PAGE]", error);
+    return (
+      <div className="w-full h-full flex justify-center items-center">
+        Internal server error
+      </div>
+    );
   }
 }

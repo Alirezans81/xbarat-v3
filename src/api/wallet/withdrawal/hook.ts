@@ -1,0 +1,162 @@
+import { FetchProps } from "@/types/globals";
+import { toast } from "sonner";
+import { useTranslations } from "next-intl";
+import { useAuthStore } from "@/lib/front/stores/auth";
+import {
+  createWithdrawal,
+  deleteWithdrawal,
+  getWithdrawals,
+  updateWithdrawal,
+} from "./api";
+import { useCheckTokenExpiration } from "@/hooks/use-auth";
+import {
+  CreateWithdrawal,
+  UpdateWithdrawal,
+  GetWithdrawalsFilters,
+  Withdrawal,
+} from "@/types/wallet/withdrawal";
+
+type GetWithdrawalsProps = {
+  setWithdrawals: (value: Withdrawal[]) => void;
+  filters?: GetWithdrawalsFilters;
+};
+export const useGetWithdrawals = () => {
+  const t = useTranslations("ApiErrors");
+
+  const checkTokenExpiration = useCheckTokenExpiration();
+  const { token } = useAuthStore();
+
+  const fetch = ({
+    filters,
+    setWithdrawals,
+    onError,
+    onSuccess,
+    onFinally,
+  }: GetWithdrawalsProps & FetchProps) => {
+    checkTokenExpiration(async () => {
+      await getWithdrawals(token.value, filters)
+        .then((res) => {
+          setWithdrawals(res.data);
+          onSuccess?.(res);
+        })
+        .catch((err) => {
+          process.env.NEXT_PUBLIC_APP_MODE === "development" &&
+            console.error(err.response);
+          toast(t(err.response.data.error.message));
+          onError?.(err);
+        })
+        .finally(() => {
+          onFinally?.();
+        });
+    });
+  };
+
+  return fetch;
+};
+
+type CreateWithdrawalProps = {
+  withdrawal: CreateWithdrawal;
+};
+export const useCreateWithdrawal = () => {
+  const t = useTranslations("ApiErrors");
+
+  const checkTokenExpiration = useCheckTokenExpiration();
+  const { token } = useAuthStore();
+
+  const fetch = ({
+    withdrawal,
+    onError,
+    onSuccess,
+    onFinally,
+  }: CreateWithdrawalProps & FetchProps) => {
+    checkTokenExpiration(async () => {
+      await createWithdrawal(token.value, withdrawal)
+        .then((res) => {
+          onSuccess?.(res);
+        })
+        .catch((err) => {
+          process.env.NEXT_PUBLIC_APP_MODE === "development" &&
+            console.error(err.response);
+          toast(t(err.response.data.error.message));
+          onError?.(err);
+        })
+        .finally(() => {
+          onFinally?.();
+        });
+    });
+  };
+
+  return fetch;
+};
+
+type UpdateWithdrawalProps = {
+  withdrawal_id: string;
+  withdrawal: UpdateWithdrawal;
+};
+export const useUpdateWithdrawal = () => {
+  const t = useTranslations("ApiErrors");
+
+  const checkTokenExpiration = useCheckTokenExpiration();
+  const { token } = useAuthStore();
+
+  const fetch = ({
+    withdrawal_id,
+    withdrawal,
+    onError,
+    onSuccess,
+    onFinally,
+  }: UpdateWithdrawalProps & FetchProps) => {
+    checkTokenExpiration(async () => {
+      await updateWithdrawal(token.value, withdrawal_id, withdrawal)
+        .then((res) => {
+          onSuccess?.(res);
+        })
+        .catch((err) => {
+          process.env.NEXT_PUBLIC_APP_MODE === "development" &&
+            console.error(err.response);
+          toast(t(err.response.data.error.message));
+          onError?.(err);
+        })
+        .finally(() => {
+          onFinally?.();
+        });
+    });
+  };
+
+  return fetch;
+};
+
+type DeleteWithdrawalProps = {
+  withdrawal_id: string;
+};
+export const useDeleteWithdrawal = () => {
+  const t = useTranslations("ApiErrors");
+
+  const checkTokenExpiration = useCheckTokenExpiration();
+  const { token } = useAuthStore();
+
+  const fetch = ({
+    withdrawal_id,
+    onError,
+    onSuccess,
+    onFinally,
+  }: DeleteWithdrawalProps & FetchProps) => {
+    checkTokenExpiration(async () => {
+      await deleteWithdrawal(token.value, withdrawal_id)
+        .then((res) => {
+          onSuccess?.(res);
+        })
+        .catch((err) => {
+          process.env.NEXT_PUBLIC_APP_MODE === "development" &&
+            console.error(err.response);
+          toast(t(err.response.data.error.message));
+          onError?.(err);
+        })
+        .finally(() => {
+          onFinally?.();
+        });
+    });
+  };
+
+  return fetch;
+};

@@ -30,6 +30,7 @@ export const defaultUser: User = {
   state: "",
   isPhoneVerified: false,
   isEmailVerified: false,
+  isDeleted: false,
   role: "CUSTOMER",
   createdAt: new Date(),
   updatedAt: new Date(),

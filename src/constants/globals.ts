@@ -6,6 +6,7 @@ import {
   LayoutDashboard,
   MonitorCog,
   Wallet,
+  WavesLadder,
 } from "lucide-react";
 import { CountryCode } from "../types/globals";
 
@@ -39,16 +40,6 @@ export const loggedInNavabarItems = [
     icon: Wallet,
   },
   {
-    title: "deposit",
-    url: "/deposit",
-    icon: BanknoteArrowDown,
-  },
-  {
-    title: "withdrawal",
-    url: "/withdrawal",
-    icon: BanknoteArrowUp,
-  },
-  {
     title: "report",
     url: "/report",
     icon: FileStack,
@@ -66,19 +57,14 @@ export const adminLoggedInNavbarItems = [
     icon: Home,
   },
   {
+    title: "panelAdmin",
+    url: "/panel-admin",
+    icon: MonitorCog,
+  },
+  {
     title: "wallet",
     url: "/wallet",
     icon: Wallet,
-  },
-  {
-    title: "deposit",
-    url: "/deposit",
-    icon: BanknoteArrowDown,
-  },
-  {
-    title: "withdrawal",
-    url: "/withdrawal",
-    icon: BanknoteArrowUp,
   },
   {
     title: "report",
@@ -90,9 +76,32 @@ export const adminLoggedInNavbarItems = [
     url: "/dashboard",
     icon: LayoutDashboard,
   },
+  
+];
+export const providerLoggedInNavbarItems = [
   {
-    title: "panelAdmin",
-    url: "/panel-admin",
-    icon: MonitorCog,
+    title: "home",
+    url: "/",
+    icon: Home,
+  },
+  {
+    title: "liquidityPool",
+    url: "/liquidity-pool",
+    icon: WavesLadder,
+  },
+  {
+    title: "wallet",
+    url: "/wallet",
+    icon: Wallet,
+  },
+  {
+    title: "report",
+    url: "/report",
+    icon: FileStack,
+  },
+  {
+    title: "dashboard",
+    url: "/dashboard",
+    icon: LayoutDashboard,
   },
 ];

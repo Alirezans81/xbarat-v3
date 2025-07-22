@@ -1,30 +1,13 @@
-import { PaymentChannel } from "@/generated/prisma";
 import { paymentChannelRepository } from "../repositories/paymentChannel.repo";
 
 export const paymentChannelService = {
-  getAll: () => {
-    return paymentChannelRepository.getAll();
-  },
+  create: paymentChannelRepository.create,
 
-  create: (data: { name: string; description?: string }) => {
-    return paymentChannelRepository.create(data);
-  },
+  getAll: paymentChannelRepository.getAll,
 
-  getById: (id: string) => {
-    return paymentChannelRepository.findById(id);
-  },
+  getById: paymentChannelRepository.findById,
 
-  updateById: (
-    id: string,
-    newValue: {
-      name: string;
-      description?: string;
-    }
-  ): Promise<PaymentChannel> => {
-    return paymentChannelRepository.updateById(id, newValue);
-  },
+  updateById: paymentChannelRepository.updateById,
 
-  deleteById: (id: string) => {
-    return paymentChannelRepository.deleteById(id);
-  },
+  deleteById: paymentChannelRepository.deleteById,
 };

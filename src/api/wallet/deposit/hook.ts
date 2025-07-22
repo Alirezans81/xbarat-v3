@@ -7,15 +7,20 @@ import {
   deleteDeposit,
   getDeposits,
   updateDeposit,
+  uploadDepositDocument,
 } from "./api";
 import { useCheckTokenExpiration } from "@/hooks/use-auth";
-import { CreateOrUpdateDeposit, Deposit } from "@/types/deposit";
+import {
+  CreateDeposit,
+  Deposit,
+  GetDepositsFilters,
+  UpdateDeposit,
+  UploadDepositDocument,
+} from "@/types/wallet/deposit";
 
 type GetDepositsProps = {
   setDeposits: (value: Deposit[]) => void;
-  filters?: {
-    userId: string;
-  };
+  filters?: GetDepositsFilters;
 };
 export const useGetDeposits = () => {
   const t = useTranslations("ApiErrors");
@@ -52,7 +57,7 @@ export const useGetDeposits = () => {
 };
 
 type CreateDepositProps = {
-  deposit: CreateOrUpdateDeposit;
+  deposit: CreateDeposit;
 };
 export const useCreateDeposit = () => {
   const t = useTranslations("ApiErrors");
@@ -88,7 +93,7 @@ export const useCreateDeposit = () => {
 
 type UpdateDepositProps = {
   deposit_id: string;
-  deposit: CreateOrUpdateDeposit;
+  deposit: UpdateDeposit;
 };
 export const useUpdateDeposit = () => {
   const t = useTranslations("ApiErrors");
@@ -140,6 +145,43 @@ export const useDeleteDeposit = () => {
   }: DeleteDepositProps & FetchProps) => {
     checkTokenExpiration(async () => {
       await deleteDeposit(token.value, deposit_id)
+        .then((res) => {
+          onSuccess?.(res);
+        })
+        .catch((err) => {
+          process.env.NEXT_PUBLIC_APP_MODE === "development" &&
+            console.error(err.response);
+          toast(t(err.response.data.error.message));
+          onError?.(err);
+        })
+        .finally(() => {
+          onFinally?.();
+        });
+    });
+  };
+
+  return fetch;
+};
+
+type UploadDepositDocumentProps = {
+  deposit_id: string;
+  data: UploadDepositDocument;
+};
+export const useUploadDepositDocument = () => {
+  const t = useTranslations("ApiErrors");
+
+  const checkTokenExpiration = useCheckTokenExpiration();
+  const { token } = useAuthStore();
+
+  const fetch = ({
+    deposit_id,
+    data,
+    onError,
+    onSuccess,
+    onFinally,
+  }: UploadDepositDocumentProps & FetchProps) => {
+    checkTokenExpiration(async () => {
+      await uploadDepositDocument(token.value, deposit_id, data)
         .then((res) => {
           onSuccess?.(res);
         })

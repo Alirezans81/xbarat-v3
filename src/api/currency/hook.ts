@@ -9,7 +9,7 @@ import {
   updateCurrency,
 } from "./api";
 import { useCheckTokenExpiration } from "@/hooks/use-auth";
-import { CreateOrUpdateCurrency, Currency } from "@/types/currency";
+import { CreateCurrency, Currency, UpdateCurrency } from "@/types/currency";
 
 type GetCurrenciesProps = {
   setCurrencies: (value: Currency[]) => void;
@@ -17,38 +17,33 @@ type GetCurrenciesProps = {
 export const useGetCurrencies = () => {
   const t = useTranslations("ApiErrors");
 
-  const checkTokenExpiration = useCheckTokenExpiration();
-  const { token } = useAuthStore();
-
-  const fetch = ({
+  const fetch = async ({
     setCurrencies,
     onError,
     onSuccess,
     onFinally,
   }: GetCurrenciesProps & FetchProps) => {
-    checkTokenExpiration(async () => {
-      await getCurrencies(token.value)
-        .then((res) => {
-          setCurrencies(res.data);
-          onSuccess?.(res);
-        })
-        .catch((err) => {
-          process.env.NEXT_PUBLIC_APP_MODE === "development" &&
-            console.error(err.response);
-          toast(t(err.response.data.error.message));
-          onError?.(err);
-        })
-        .finally(() => {
-          onFinally?.();
-        });
-    });
+    await getCurrencies()
+      .then((res) => {
+        setCurrencies(res.data);
+        onSuccess?.(res);
+      })
+      .catch((err) => {
+        process.env.NEXT_PUBLIC_APP_MODE === "development" &&
+          console.error(err.response);
+        toast(t(err.response.data.error.message));
+        onError?.(err);
+      })
+      .finally(() => {
+        onFinally?.();
+      });
   };
 
   return fetch;
 };
 
 type CreateCurrencyProps = {
-  currency: CreateOrUpdateCurrency;
+  currency: CreateCurrency;
 };
 export const useCreateCurrency = () => {
   const t = useTranslations("ApiErrors");
@@ -84,7 +79,7 @@ export const useCreateCurrency = () => {
 
 type UpdateCurrencyProps = {
   currency_id: string;
-  currency: CreateOrUpdateCurrency;
+  currency: UpdateCurrency;
 };
 export const useUpdateCurrency = () => {
   const t = useTranslations("ApiErrors");

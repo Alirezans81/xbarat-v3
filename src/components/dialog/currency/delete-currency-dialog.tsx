@@ -44,7 +44,7 @@ export default function DeleteCurrencyDialog({ currency_id }: Props) {
   return (
     <AlertDialog open={open} onOpenChange={(value) => setOpen(value)}>
       <AlertDialogTrigger>
-        <Button variant="destructive" className="ms-2 cursor-pointer">
+        <Button variant="destructive" className="ms-2 ">
           Delete
         </Button>
       </AlertDialogTrigger>
@@ -56,17 +56,16 @@ export default function DeleteCurrencyDialog({ currency_id }: Props) {
             currency and remove the data from servers.
           </AlertDialogDescription>
           <AlertDialogDescription className="text-destructive">
-            This also cause deleting all users' wallets, connected to the currency.
+            This also cause deleting all users' wallets, connected to the
+            currency.
           </AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>
-          <AlertDialogCancel className="cursor-pointer">
-            Cancel
-          </AlertDialogCancel>
+          <AlertDialogCancel className="">Cancel</AlertDialogCancel>
           <AlertDialogAction asChild>
             <Button
               variant="destructive"
-              className="text-foreground cursor-pointer"
+              className="text-foreground "
               onClick={handleSumbit}
               disabled={loading}
             >

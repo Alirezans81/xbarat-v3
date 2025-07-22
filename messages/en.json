@@ -37,6 +37,8 @@
     "withdrawal": "Withdrawal",
     "report": "Report",
     "dashboard": "Dashboard",
+    "panelAdmin": "Admin Panel",
+    "liquidityPool": "Liquidity Pool",
     "logout": "Logout",
     "socialMedia": "Social Media",
     "instagram": "Instagram",
@@ -44,9 +46,39 @@
     "telegram": "Telegram",
     "x": "X"
   },
+  "Status": {
+    "PENDING": "PENDING",
+    "PAYMENT": "PAYMENT",
+    "FAILED": "FAILED",
+    "REJECTED": "REJECTED",
+    "COMPLETED": "COMPLETED",
+    "APPROVED": "APPROVED",
+    "CHECK": "CHECK"
+  },
   "HomePage": {
     "title": "Hello world!",
     "about": "Go to the about page"
+  },
+  "LiquidityPool": {
+    "currencies": "CURRENCIES",
+    "loading": "Loading...",
+    "selectCurrency": "select the currency you provide!",
+    "currencyNotFound": "Currency not found!",
+    "tableFooter": "List of liquidity pools.",
+    "address": "Address",
+    "balance": "Balance",
+    "frozen": "Frozen",
+    "updatedAt": "Updated At",
+    "payments": "Payments",
+    "paymentTableFooter": "List of payments.",
+    "type": "Type",
+    "deposit": "Deposit",
+    "withdrawal": "Withdrawal",
+    "amount": "Amount",
+    "from": "From",
+    "to": "To",
+    "status": "Status",
+    "liquidityPoolNotFound": "Liquidity Pool not found"
   },
   "WalletPage": {
     "Wallet": "Wallet"

@@ -46,7 +46,7 @@ export default function DeletePaymentChannelDialog({
   return (
     <AlertDialog open={open} onOpenChange={(value) => setOpen(value)}>
       <AlertDialogTrigger>
-        <Button variant="destructive" className="ms-2 cursor-pointer">
+        <Button variant="destructive" className="ms-2 ">
           Delete
         </Button>
       </AlertDialogTrigger>
@@ -59,13 +59,11 @@ export default function DeletePaymentChannelDialog({
           </AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>
-          <AlertDialogCancel className="cursor-pointer">
-            Cancel
-          </AlertDialogCancel>
+          <AlertDialogCancel className="">Cancel</AlertDialogCancel>
           <AlertDialogAction asChild>
             <Button
               variant="destructive"
-              className="text-foreground cursor-pointer"
+              className="text-foreground "
               onClick={handleSumbit}
               disabled={loading}
             >

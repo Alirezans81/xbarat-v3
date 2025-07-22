@@ -1,5 +1,5 @@
 import { userService } from "@/lib/back/services/user.service";
-import { ServerErrorResponse } from "@/lib/back/utils/global-responses";
+import { ServerErrorResponse } from "@/lib/back/utils/globalResponses.utils";
 import { NextResponse } from "next/server";
 
 export async function POST(request: Request) {

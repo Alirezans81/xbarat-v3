@@ -18,7 +18,7 @@ export default function layout({
           <Link href="/wallet">
             <Button
               variant={pathname !== "/wallet" ? "outline" : "default"}
-              className="w-full cursor-pointer justify-start text-foreground"
+              className="w-full justify-start text-foreground"
             >
               Overview
             </Button>
@@ -26,7 +26,7 @@ export default function layout({
           <Link href="/wallet/deposit">
             <Button
               variant={pathname !== "/wallet/deposit" ? "outline" : "default"}
-              className="w-full cursor-pointer justify-start text-foreground"
+              className="w-full justify-start text-foreground"
             >
               Deposit
             </Button>
@@ -36,7 +36,7 @@ export default function layout({
               variant={
                 pathname !== "/wallet/withdrawal" ? "outline" : "default"
               }
-              className="w-full cursor-pointer justify-start text-foreground"
+              className="w-full justify-start text-foreground"
             >
               Withdrawal
             </Button>
@@ -44,7 +44,7 @@ export default function layout({
           <Link href="/wallet/transfer">
             <Button
               variant={pathname !== "/wallet/transfer" ? "outline" : "default"}
-              className="w-full cursor-pointer justify-start text-foreground"
+              className="w-full justify-start text-foreground"
             >
               Transfer
             </Button>

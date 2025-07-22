@@ -1,20 +1,14 @@
 import axios from "axios";
 import routes from "@/api/routes";
-import { CreateOrUpdateCurrency } from "@/types/currency";
+import { CreateCurrency, UpdateCurrency } from "@/types/currency";
 
 const api = routes();
 
-export const getCurrencies = (token: string) => {
-  const headers = {
-    Authorization: `Bearer ${token}`,
-  };
-  return axios.get(api["currency"], { headers });
+export const getCurrencies = () => {
+  return axios.get(api["currency"]);
 };
 
-export const createCurrency = (
-  token: string,
-  currency: CreateOrUpdateCurrency
-) => {
+export const createCurrency = (token: string, currency: CreateCurrency) => {
   const headers = {
     Authorization: `Bearer ${token}`,
   };
@@ -24,7 +18,7 @@ export const createCurrency = (
 export const updateCurrency = (
   token: string,
   currency_id: string,
-  currency: CreateOrUpdateCurrency
+  currency: UpdateCurrency
 ) => {
   const headers = {
     Authorization: `Bearer ${token}`,

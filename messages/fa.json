@@ -37,6 +37,8 @@
     "withdrawal": "برداشت",
     "report": "گزارشات",
     "dashboard": "داشبورد",
+    "panelAdmin": "پنل مدیریت",
+    "liquidityPool": "استخر نقدینگی",
     "logout": "خروج از حساب",
     "socialMedia": "شبکه های اجتماعی",
     "instagram": "اینستاگرام",
@@ -44,9 +46,39 @@
     "telegram": "تلگرام",
     "x": "ایکس"
   },
+  "Status": {
+    "PENDING": "در حال انتظار",
+    "PAYMENT": "پرداخت",
+    "FAILED": "ناموفق",
+    "REJECTED": "رد شده",
+    "COMPLETED": "تکمیل شده",
+    "APPROVED": "تأیید شده",
+    "CHECK": "بررسی"
+  },
   "HomePage": {
     "title": "سلام دنیا!",
     "about": "رفتن به صفحه درباره"
+  },
+  "LiquidityPool": {
+    "currencies": "ارزها",
+    "loading": "در حال بارگذاری...",
+    "selectCurrency": "لطفاً ارزی که می‌خواهید ارائه دهید را انتخاب کنید.",
+    "currencyNotFound": "ارز پیدا نشد.",
+    "tableFooter": "لیست استخرهای نقدینگی.",
+    "address": "آدرس",
+    "balance": "موجودی",
+    "frozen": "مسدود شده",
+    "updatedAt": "آخرین بروزرسانی",
+    "payments": "پرداخت‌ها",
+    "paymentTableFooter": "لیست پرداخت‌ها.",
+    "type": "نوع",
+    "deposit": "واریز",
+    "withdrawal": "برداشت",
+    "amount": "مقدار",
+    "from": "از",
+    "to": "به",
+    "status": "وضعیت",
+    "liquidityPoolNotFound": "استخر نقدینگی پیدا نشد"
   },
   "WalletPage": {
     "Wallet": "کیف پول"

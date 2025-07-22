@@ -9,9 +9,14 @@ export default function getApiUrl() {
     login: `${apiDomain}/user/login`,
     "payment-channel": `${apiDomain}/payment-channel`,
     currency: `${apiDomain}/currency`,
+    "currency-pair": `${apiDomain}/currency-pair`,
+    "liquidity-pool": `${apiDomain}/liquidity-pool`,
     wallet: `${apiDomain}/wallet`,
     deposit: `${apiDomain}/wallet/deposit`,
     withdrawal: `${apiDomain}/wallet/withdrawal`,
     transfer: `${apiDomain}/wallet/transfer`,
+    refund: `${apiDomain}/wallet/refund`,
+    assign: `${apiDomain}/wallet/assign`,
+    "bridge-transfer": `${apiDomain}/bridge-transfer`,
   };
 }

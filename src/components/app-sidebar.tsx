@@ -26,6 +26,7 @@ import {
   adminLoggedInNavbarItems,
   loggedInNavabarItems,
   notLoggedInNavbarItems,
+  providerLoggedInNavbarItems,
 } from "@/constants/globals";
 
 import Instagram from "@/assets/SocialMedia/instagram.svg";
@@ -42,10 +43,12 @@ export function AppSidebar({ side }: Props) {
   const t = useTranslations("Sidebar");
 
   const items = isLoggedIn
-    ? user?.role === "ADMIN"
-      ? adminLoggedInNavbarItems
-      : loggedInNavabarItems
-    : notLoggedInNavbarItems;
+      ? user?.role === "ADMIN"
+        ? adminLoggedInNavbarItems
+        : user?.role === "PROVIDER"
+        ? providerLoggedInNavbarItems
+        : loggedInNavabarItems
+      : notLoggedInNavbarItems;
 
   return (
     <Sidebar side={side}>

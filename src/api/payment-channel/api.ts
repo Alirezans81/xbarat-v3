@@ -1,19 +1,22 @@
 import axios from "axios";
 import routes from "@/api/routes";
-import { CreateOrUpdatePaymentChannel } from "@/types/paymentChannel";
+import {
+  CreatePaymentChannel,
+  UpdatePaymentChannel,
+} from "@/types/paymentChannel";
 
 const api = routes();
 
-export const getPaymentChannels = (token: string) => {
+export const getPaymentChannels = (token: string, filters?: any) => {
   const headers = {
     Authorization: `Bearer ${token}`,
   };
-  return axios.get(api["payment-channel"], { headers });
+  return axios.get(api["payment-channel"], { headers, params: filters });
 };
 
 export const createPaymentChannel = (
   token: string,
-  paymentChannel: CreateOrUpdatePaymentChannel
+  paymentChannel: CreatePaymentChannel
 ) => {
   const headers = {
     Authorization: `Bearer ${token}`,
@@ -24,7 +27,7 @@ export const createPaymentChannel = (
 export const updatePaymentChannel = (
   token: string,
   paymentChannel_id: string,
-  paymentChannel: CreateOrUpdatePaymentChannel
+  paymentChannel: UpdatePaymentChannel
 ) => {
   const headers = {
     Authorization: `Bearer ${token}`,

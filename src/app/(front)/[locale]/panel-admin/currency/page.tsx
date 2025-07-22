@@ -16,7 +16,7 @@ export default async function page() {
               <Link href="/panel-admin">
                 <ChevronLeft />
               </Link>
-              <span className="text-3xl">Currency</span>
+              <span className="text-3xl">Currencies</span>
             </div>
             <AddCurrencyDialog />
           </div>
@@ -26,6 +26,7 @@ export default async function page() {
       </div>
     );
   } catch (error) {
-    return <></>;
+    console.error("[CURRENCY_PAGE]", error);
+    return <div className="w-full h-full flex justify-center items-center">Internal server error</div>;
   }
 }

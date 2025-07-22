@@ -9,14 +9,16 @@ import {
   deletePaymentChannel,
 } from "./api";
 import { useCheckTokenExpiration } from "@/hooks/use-auth";
-import { CreateOrUpdateCurrency } from "@/types/currency";
 import {
-  CreateOrUpdatePaymentChannel,
+  CreatePaymentChannel,
+  UpdatePaymentChannel,
+  GetPaymentChannelsFilters,
   PaymentChannel,
 } from "@/types/paymentChannel";
 
 type GetPaymentChannelsProps = {
   setPaymentChannels: (value: PaymentChannel[]) => void;
+  filters?: GetPaymentChannelsFilters;
 };
 export const useGetPaymentChannels = () => {
   7;
@@ -27,12 +29,13 @@ export const useGetPaymentChannels = () => {
 
   const fetch = ({
     setPaymentChannels,
+    filters,
     onError,
     onSuccess,
     onFinally,
   }: GetPaymentChannelsProps & FetchProps) => {
     checkTokenExpiration(async () => {
-      await getPaymentChannels(token.value)
+      await getPaymentChannels(token.value, filters)
         .then((res) => {
           setPaymentChannels(res.data);
           onSuccess?.(res);
@@ -53,14 +56,13 @@ export const useGetPaymentChannels = () => {
 };
 
 type CreatePaymentChannelProps = {
-  paymentChannel: CreateOrUpdatePaymentChannel;
+  paymentChannel: CreatePaymentChannel;
 };
 export const useCreatePaymentChannel = () => {
   const t = useTranslations("ApiErrors");
 
   const checkTokenExpiration = useCheckTokenExpiration();
   const { token } = useAuthStore();
-  console.log(token);
 
   const fetch = ({
     paymentChannel,
@@ -90,7 +92,7 @@ export const useCreatePaymentChannel = () => {
 
 type UpdatePaymentChannelProps = {
   paymentChannel_id: string;
-  paymentChannel: CreateOrUpdatePaymentChannel;
+  paymentChannel: UpdatePaymentChannel;
 };
 export const useUpdatePaymentChannel = () => {
   const t = useTranslations("ApiErrors");

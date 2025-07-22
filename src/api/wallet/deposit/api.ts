@@ -1,25 +1,21 @@
 import axios from "axios";
 import routes from "@/api/routes";
-import { CreateOrUpdateDeposit } from "@/types/deposit";
-import qs from "query-string";
+import {
+  CreateDeposit,
+  UpdateDeposit,
+  UploadDepositDocument,
+} from "@/types/wallet/deposit";
 
 const api = routes();
 
 export const getDeposits = (token: string, filters?: any) => {
-  const url = filters
-    ? qs.stringifyUrl({ url: api["deposit"], query: filters })
-    : api["deposit"];
-
   const headers = {
     Authorization: `Bearer ${token}`,
   };
-  return axios.get(url, { headers });
+  return axios.get(api["deposit"], { headers, params: filters });
 };
 
-export const createDeposit = (
-  token: string,
-  deposit: CreateOrUpdateDeposit
-) => {
+export const createDeposit = (token: string, deposit: CreateDeposit) => {
   const headers = {
     Authorization: `Bearer ${token}`,
   };
@@ -29,7 +25,7 @@ export const createDeposit = (
 export const updateDeposit = (
   token: string,
   deposit_id: string,
-  deposit: CreateOrUpdateDeposit
+  deposit: UpdateDeposit
 ) => {
   const headers = {
     Authorization: `Bearer ${token}`,
@@ -42,4 +38,22 @@ export const deleteDeposit = (token: string, deposit_id: string) => {
     Authorization: `Bearer ${token}`,
   };
   return axios.delete(api["deposit"] + "/" + deposit_id, { headers });
+};
+
+export const uploadDepositDocument = (
+  token: string,
+  deposit_id: string,
+  data: UploadDepositDocument
+) => {
+  const formData = new FormData();
+  data.document && formData.append("document", data.document);
+
+  const headers = {
+    Authorization: `Bearer ${token}`,
+  };
+  return axios.post(
+    api["deposit"] + "/" + deposit_id + "/upload-document",
+    formData,
+    { headers }
+  );
 };

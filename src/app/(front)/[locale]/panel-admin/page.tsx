@@ -1,16 +1,19 @@
 import { getCurrencies } from "@/api/currency/action";
+import { getCurrencyPairs } from "@/api/currencyPair/action";
 import { getPaymentChannels } from "@/api/payment-channel/action";
 import {
-  Card, CardDescription,
+  Card,
+  CardDescription,
   CardFooter,
   CardHeader,
-  CardTitle
+  CardTitle,
 } from "@/components/ui/card";
 import { Link } from "@/i18n/navigation";
 
 export default async function page() {
   const { data: currencies } = await getCurrencies();
   const { data: paymentChannels } = await getPaymentChannels();
+  const { data: currencyPairs } = await getCurrencyPairs();
 
   return (
     <div className="w-full">
@@ -20,7 +23,7 @@ export default async function page() {
           <Link href="/panel-admin/payment-channel">
             <Card className="hover:shadow-xl h-full transition-all duration-300 dark:hover:shadow-secondary/10">
               <CardHeader>
-                <CardTitle>Payment Channel</CardTitle>
+                <CardTitle>Payment Channels</CardTitle>
                 <CardDescription>
                   Users can send their money thruogh payment channels{" "}
                   {"(Platofrms like: PayPal, Shaba, HesabPay...)"}
@@ -34,12 +37,34 @@ export default async function page() {
           <Link href="/panel-admin/currency">
             <Card className="hover:shadow-xl h-full transition-all duration-300 dark:hover:shadow-secondary/10">
               <CardHeader>
-                <CardTitle>Currency</CardTitle>
+                <CardTitle>Currencies</CardTitle>
                 <CardDescription>All Currency Settings</CardDescription>
               </CardHeader>
               <CardFooter className="mt-auto">
                 <p className="">{currencies.length} currencies</p>
               </CardFooter>
+            </Card>
+          </Link>
+          <Link href="/panel-admin/currency-pair">
+            <Card className="hover:shadow-xl h-full transition-all duration-300 dark:hover:shadow-secondary/10">
+              <CardHeader>
+                <CardTitle>Currency Pairs</CardTitle>
+                <CardDescription>All Currency Pair Settings</CardDescription>
+              </CardHeader>
+              <CardFooter className="mt-auto">
+                <p className="">{currencyPairs.length} pairs</p>
+              </CardFooter>
+            </Card>
+          </Link>
+          <Link href="/panel-admin/order">
+            <Card className="hover:shadow-xl h-full transition-all duration-300 dark:hover:shadow-secondary/10">
+              <CardHeader>
+                <CardTitle>Orders</CardTitle>
+                <CardDescription>
+                  All Orders, including: Deposits, Withdrawals, Transfer and
+                  Refunds
+                </CardDescription>
+              </CardHeader>
             </Card>
           </Link>
         </div>

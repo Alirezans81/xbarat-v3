@@ -37,6 +37,8 @@
     "withdrawal": "Auszahlung",
     "report": "Bericht",
     "dashboard": "Armaturenbrett",
+    "panelAdmin": "Admin-Panel",
+    "liquidityPool": "Liquiditätspool",
     "logout": "Abmelden",
     "socialMedia": "Soziale Medien",
     "instagram": "Instagram",
@@ -44,9 +46,39 @@
     "telegram": "Telegram",
     "x": "X"
   },
+  "Status": {
+    "PENDING": "AUSSTEHEND",
+    "PAYMENT": "ZAHLUNG",
+    "FAILED": "FEHLGESCHLAGEN",
+    "REJECTED": "ABGELEHNT",
+    "COMPLETED": "ABGESCHLOSSEN",
+    "APPROVED": "GENEHMIGT",
+    "CHECK": "PRÜFEN"
+  },
   "HomePage": {
     "title": "Hallo Welt!",
     "about": "Zur Infoseite"
+  },
+  "LiquidityPool": {
+    "currencies": "Währungen",
+    "loading": "Wird geladen...",
+    "selectCurrency": "Bitte wählen Sie die Währung aus, die Sie bereitstellen möchten.",
+    "currencyNotFound": "Währung nicht gefunden!",
+    "tableFooter": "Liste der Liquiditätspools.",
+    "address": "Adresse",
+    "balance": "Guthaben",
+    "frozen": "Eingefroren",
+    "updatedAt": "Aktualisiert am",
+    "payments": "Zahlungen",
+    "paymentTableFooter": "Liste der Zahlungen.",
+    "type": "Typ",
+    "deposit": "Einzahlung",
+    "withdrawal": "Auszahlung",
+    "amount": "Betrag",
+    "from": "Von",
+    "to": "An",
+    "status": "Status",
+    "liquidityPoolNotFound": "Liquiditätspool nicht gefunden"
   },
   "WalletPage": {
     "Wallet": "Wallet"

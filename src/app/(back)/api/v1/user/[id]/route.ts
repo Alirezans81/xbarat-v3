@@ -3,7 +3,7 @@ import {
   NotFoundResponse,
   ServerErrorResponse,
   UnauthorizedResponse,
-} from "@/lib/back/utils/global-responses";
+} from "@/lib/back/utils/globalResponses.utils";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function GET(

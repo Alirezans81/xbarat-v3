@@ -1,9 +1,25 @@
 import { Currency } from "@/generated/prisma";
 import { prisma } from "../prisma";
+import {
+  CreateCurrency,
+  GetCurrenciesFilters,
+  UpdateCurrency,
+} from "@/types/currency";
 
 export const currencyRepository = {
-  getAll: async () => {
-    return prisma.currency.findMany({
+  create: async (data: CreateCurrency) => {
+    return await prisma.currency.create({
+      data: {
+        code: data.code,
+        name: data.name,
+        symbol: data.symbol,
+        decimals: data.decimals ?? 2,
+        paymentChannels: data.paymentChannelIds
+          ? {
+              connect: data.paymentChannelIds.map((id) => ({ id })),
+            }
+          : undefined,
+      },
       include: {
         paymentChannels: {
           select: {
@@ -15,63 +31,66 @@ export const currencyRepository = {
     });
   },
 
-  create: async (data: {
-    code: string;
-    name: string;
-    symbol: string;
-    decimals?: number;
-    paymentChannelIds: string[];
-  }) => {
-    const { code, name, symbol, decimals, paymentChannelIds } = data;
-
-    return await prisma.currency.create({
-      data: {
-        code,
-        name,
-        symbol,
-        decimals,
+  getAll: async (filter?: GetCurrenciesFilters) => {
+    return prisma.currency.findMany({
+      where: {
+        ...(filter?.id && { id: filter.id }),
+        ...(filter?.code && { code: filter.code }),
+        ...(filter?.name && { name: { contains: filter.name } }),
+        ...(filter?.symbol && { symbol: filter.symbol }),
+        ...(filter?.decimals && { decimals: filter.decimals }),
+        ...(filter?.paymentChannelId && {
+          paymentChannels: {
+            some: { id: filter.paymentChannelId },
+          },
+        }),
+      },
+      include: {
         paymentChannels: {
-          connect: paymentChannelIds.map((id) => ({ id })),
+          select: {
+            id: true,
+            name: true,
+          },
         },
       },
     });
   },
 
-  findById: async (id: string) => {
+  findById: async (id: string, includePaymentChannels: boolean = true) => {
     return prisma.currency.findUnique({
       where: { id },
       include: {
-        paymentChannels: {
-          select: {
-            id: true,
-            name: true,
-          },
-        },
+        paymentChannels: includePaymentChannels
+          ? {
+              select: {
+                id: true,
+                name: true,
+              },
+            }
+          : undefined,
       },
     });
   },
 
-  updateById: async (
-    id: string,
-    newValue: {
-      name: string;
-      code: string;
-      symbol: string;
-      decimals: number;
-      paymentChannelIds: string[];
-    }
-  ): Promise<Currency> => {
-    const { code, name, symbol, decimals, paymentChannelIds } = newValue;
+  updateById: async (id: string, data: UpdateCurrency): Promise<Currency> => {
+    const { paymentChannelIds, ...restData } = data;
 
     return prisma.currency.update({
       where: { id },
       data: {
-        code,
-        name,
-        symbol,
-        decimals,
+        ...restData,
+        paymentChannels: data.paymentChannelIds
+          ? {
+              set: data.paymentChannelIds.map((id) => ({ id })),
+            }
+          : undefined,
+      },
+      include: {
         paymentChannels: {
-          connect: paymentChannelIds.map((id) => ({ id })),
+          select: {
+            id: true,
+            name: true,
+          },
         },
       },
     });

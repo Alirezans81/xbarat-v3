@@ -23,7 +23,7 @@ export function useCheckTokenExpiration() {
   return (onSuccess: () => void) => {
     const now = new Date();
 
-    if (token && token.expiration && now >= new Date(token.expiration)) {
+    if (token && token.expiration && now < new Date(token.expiration)) {
       onSuccess();
     } else {
       resetApp();

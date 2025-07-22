@@ -18,6 +18,7 @@ interface Props {
   data: Wallet[];
 }
 export default function WalletTable({ data }: Props) {
+
   return (
     <Table>
       <TableCaption>List of wallets.</TableCaption>

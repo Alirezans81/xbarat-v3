@@ -1,10 +1,9 @@
-import { depositService } from "@/lib/back/services/deposit.service";
-import { paymentChannelService } from "@/lib/back/services/paymentChannel.service";
+import { depositService } from "@/lib/back/services/wallet/deposit.service";
 import {
   ServerErrorResponse,
   UnauthorizedResponse,
-} from "@/lib/back/utils/global-responses";
-import { jwtUtils } from "@/lib/back/utils/jwt";
+} from "@/lib/back/utils/globalResponses.utils";
+import { jwtUtils } from "@/lib/back/utils/jwt.utils";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function PUT(
@@ -20,7 +19,7 @@ export async function PUT(
 
     const { id } = await params;
 
-    const userOwnsDeposit = await depositService.userOwnsDeposit(
+    const userOwnsDeposit = await depositService.userOwnsTheDeposit(
       payload.id,
       id
     );
@@ -56,7 +55,7 @@ export async function DELETE(
 
     const { id } = await params;
 
-    const userOwnsDeposit = await depositService.userOwnsDeposit(
+    const userOwnsDeposit = await depositService.userOwnsTheDeposit(
       payload.id,
       id
     );

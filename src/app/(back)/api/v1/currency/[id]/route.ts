@@ -3,9 +3,29 @@ import { userService } from "@/lib/back/services/user.service";
 import {
   ServerErrorResponse,
   UnauthorizedResponse,
-} from "@/lib/back/utils/global-responses";
-import { jwtUtils } from "@/lib/back/utils/jwt";
+} from "@/lib/back/utils/globalResponses.utils";
+import { jwtUtils } from "@/lib/back/utils/jwt.utils";
 import { NextRequest, NextResponse } from "next/server";
+
+export async function GET(
+  _request: NextRequest,
+  { params }: { params: Promise<{ id: string }> }
+) {
+  try {
+    const { id } = await params;
+    const currency = await currencyService.getById(id);
+    if (!currency)
+      return NextResponse.json(
+        { message: "currencyNotFound" },
+        { status: 404 }
+      );
+
+    return NextResponse.json(currency, { status: 200 });
+  } catch (error) {
+    console.error("[GET_CURRENCY]", error);
+    return ServerErrorResponse;
+  }
+}
 
 export async function PUT(
   request: NextRequest,

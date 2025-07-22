@@ -16,7 +16,7 @@ export default async function Navbar() {
       <nav className="container mx-auto py-3 px-5 flex items-center justify-between">
         <div className="flex items-center gap-3">
           <div className="sm:hidden flex justify-center items-center">
-            <SidebarTrigger size="icon" className="cursor-pointer" />
+            <SidebarTrigger size="icon" className="" />
           </div>
           <Link href="/" className="flex items-center gap-1">
             <Image alt="" className="w-10 h-10" src={Logo} />

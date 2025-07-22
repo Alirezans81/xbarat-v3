@@ -112,7 +112,7 @@ export default function AddCurrencyDialog({}: Props) {
     <Dialog open={open} onOpenChange={(value) => setOpen(value)}>
       <DialogTrigger asChild>
         <div>
-          <Button className="text-foreground cursor-pointer">+ Add</Button>
+          <Button className="text-white">+ Add</Button>
         </div>
       </DialogTrigger>
       <DialogContent className="sm:max-w-[400px]">
@@ -212,7 +212,7 @@ export default function AddCurrencyDialog({}: Props) {
           <div className="mt-4">
             <Button
               type="submit"
-              className="w-full text-foreground cursor-pointer"
+              className="w-full text-foreground "
               disabled={loading}
             >
               Submit

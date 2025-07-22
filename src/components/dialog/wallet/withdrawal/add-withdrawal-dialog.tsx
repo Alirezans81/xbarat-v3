@@ -74,7 +74,7 @@ export default function AddWithdrawalDialog({}: Props) {
     <Dialog open={open} onOpenChange={(value) => setOpen(value)}>
       <DialogTrigger asChild>
         <div>
-          <Button variant="destructive" className="cursor-pointer">
+          <Button variant="destructive" className="">
             New Withdrawal
           </Button>
         </div>
@@ -145,7 +145,7 @@ export default function AddWithdrawalDialog({}: Props) {
           <div className="mt-4">
             <Button
               type="submit"
-              className="w-full text-foreground cursor-pointer"
+              className="w-full text-foreground "
               disabled={loading}
             >
               Submit

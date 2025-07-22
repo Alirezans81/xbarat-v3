@@ -9,14 +9,11 @@ import { cookies } from "next/headers";
 const api = routes();
 
 export const getCurrencies = async (): Promise<{ data: Currency[] }> => {
-  const cookieStore = await cookies();
-  const tokenCookie = cookieStore.get("token");
-  const token: Token = tokenCookie
-    ? JSON.parse(tokenCookie.value)
-    : defaultToken;
+  return axios.get(api["currency"]);
+};
 
-  const headers = {
-    Authorization: `Bearer ${token.value}`,
-  };
-  return axios.get(api["currency"], { headers });
+export const getCurrencyById = async (
+  id: string
+): Promise<{ data: Currency }> => {
+  return axios.get(api["currency"] + "/" + id);
 };

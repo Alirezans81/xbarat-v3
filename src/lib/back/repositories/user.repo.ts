@@ -1,3 +1,4 @@
+import { GetUsersFilters } from "@/types/user";
 import { prisma } from "../prisma";
 
 export const userRepository = {
@@ -11,15 +12,27 @@ export const userRepository = {
     return prisma.user.create({ data });
   },
 
-  findByEmail: async (email: string) => {
-    return prisma.user.findUnique({ where: { email } });
+  getAll: async (filters?: GetUsersFilters) => {
+    return prisma.user.findMany({
+      where: {
+        ...(filters?.email && { email: { contains: filters.email } }),
+        ...(filters?.fullName && { fullName: { contains: filters.fullName } }),
+        ...(filters?.phoneNumber && {
+          phoneNumber: filters.phoneNumber,
+        }),
+        ...(filters?.countryCode && {
+          countryCode: filters.countryCode,
+        }),
+      },
+      include: { wallet: true },
+    });
   },
 
   findById: async (id: string) => {
     return prisma.user.findUnique({ where: { id } });
   },
 
-  getAll: async () => {
-    return prisma.user.findMany({ include: { wallet: true } });
+  findByEmail: async (email: string) => {
+    return prisma.user.findUnique({ where: { email } });
   },
 };

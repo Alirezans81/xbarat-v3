@@ -110,9 +110,7 @@ export default async function Footer() {
               </span>
               <div className="flex gap-2">
                 <Input placeholder="Enter your email" />
-                <Button className="text-foreground cursor-pointer">
-                  Submit
-                </Button>
+                <Button className="text-white">Submit</Button>
               </div>
               <div className="flex gap-4">
                 <TooltipProvider>

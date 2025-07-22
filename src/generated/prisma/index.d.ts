@@ -29,6 +29,11 @@ export type PaymentChannel = $Result.DefaultSelection<Prisma.$PaymentChannelPayl
  */
 export type Currency = $Result.DefaultSelection<Prisma.$CurrencyPayload>
 /**
+ * Model CurrencyPair
+ * 
+ */
+export type CurrencyPair = $Result.DefaultSelection<Prisma.$CurrencyPairPayload>
+/**
  * Model LiquidityPool
  * 
  */
@@ -139,7 +144,8 @@ export const BridgeStatus: {
   PENDING: 'PENDING',
   COMPLETED: 'COMPLETED',
   FAILED: 'FAILED',
-  CANCELED: 'CANCELED'
+  CANCELED: 'CANCELED',
+  CHECK: 'CHECK'
 };
 
 export type BridgeStatus = (typeof BridgeStatus)[keyof typeof BridgeStatus]
@@ -379,6 +385,16 @@ export class PrismaClient<
     * ```
     */
   get currency(): Prisma.CurrencyDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.currencyPair`: Exposes CRUD operations for the **CurrencyPair** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more CurrencyPairs
+    * const currencyPairs = await prisma.currencyPair.findMany()
+    * ```
+    */
+  get currencyPair(): Prisma.CurrencyPairDelegate<ExtArgs, ClientOptions>;
 
   /**
    * `prisma.liquidityPool`: Exposes CRUD operations for the **LiquidityPool** model.
@@ -922,6 +938,7 @@ export namespace Prisma {
     User: 'User',
     PaymentChannel: 'PaymentChannel',
     Currency: 'Currency',
+    CurrencyPair: 'CurrencyPair',
     LiquidityPool: 'LiquidityPool',
     Wallet: 'Wallet',
     Deposit: 'Deposit',
@@ -950,7 +967,7 @@ export namespace Prisma {
       omit: GlobalOmitOptions
     }
     meta: {
-      modelProps: "user" | "paymentChannel" | "currency" | "liquidityPool" | "wallet" | "deposit" | "withdrawal" | "bridgeTransfer" | "transfer" | "refund" | "exchange" | "activityLog" | "feeSetting"
+      modelProps: "user" | "paymentChannel" | "currency" | "currencyPair" | "liquidityPool" | "wallet" | "deposit" | "withdrawal" | "bridgeTransfer" | "transfer" | "refund" | "exchange" | "activityLog" | "feeSetting"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
@@ -1173,6 +1190,80 @@ export namespace Prisma {
           count: {
             args: Prisma.CurrencyCountArgs<ExtArgs>
             result: $Utils.Optional<CurrencyCountAggregateOutputType> | number
+          }
+        }
+      }
+      CurrencyPair: {
+        payload: Prisma.$CurrencyPairPayload<ExtArgs>
+        fields: Prisma.CurrencyPairFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.CurrencyPairFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CurrencyPairPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.CurrencyPairFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CurrencyPairPayload>
+          }
+          findFirst: {
+            args: Prisma.CurrencyPairFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CurrencyPairPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.CurrencyPairFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CurrencyPairPayload>
+          }
+          findMany: {
+            args: Prisma.CurrencyPairFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CurrencyPairPayload>[]
+          }
+          create: {
+            args: Prisma.CurrencyPairCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CurrencyPairPayload>
+          }
+          createMany: {
+            args: Prisma.CurrencyPairCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.CurrencyPairCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CurrencyPairPayload>[]
+          }
+          delete: {
+            args: Prisma.CurrencyPairDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CurrencyPairPayload>
+          }
+          update: {
+            args: Prisma.CurrencyPairUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CurrencyPairPayload>
+          }
+          deleteMany: {
+            args: Prisma.CurrencyPairDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.CurrencyPairUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.CurrencyPairUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CurrencyPairPayload>[]
+          }
+          upsert: {
+            args: Prisma.CurrencyPairUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CurrencyPairPayload>
+          }
+          aggregate: {
+            args: Prisma.CurrencyPairAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateCurrencyPair>
+          }
+          groupBy: {
+            args: Prisma.CurrencyPairGroupByArgs<ExtArgs>
+            result: $Utils.Optional<CurrencyPairGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.CurrencyPairCountArgs<ExtArgs>
+            result: $Utils.Optional<CurrencyPairCountAggregateOutputType> | number
           }
         }
       }
@@ -2003,6 +2094,7 @@ export namespace Prisma {
     user?: UserOmit
     paymentChannel?: PaymentChannelOmit
     currency?: CurrencyOmit
+    currencyPair?: CurrencyPairOmit
     liquidityPool?: LiquidityPoolOmit
     wallet?: WalletOmit
     deposit?: DepositOmit
@@ -2107,23 +2199,25 @@ export namespace Prisma {
    */
 
   export type UserCountOutputType = {
-    wallet: number
+    ActivityLog: number
     deposits: number
+    initiatedExchanges: number
+    LiquidityPool: number
+    refunds: number
+    wallet: number
     withdrawals: number
     transfers: number
-    refunds: number
-    initiatedExchanges: number
-    ActivityLog: number
   }
 
   export type UserCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    wallet?: boolean | UserCountOutputTypeCountWalletArgs
+    ActivityLog?: boolean | UserCountOutputTypeCountActivityLogArgs
     deposits?: boolean | UserCountOutputTypeCountDepositsArgs
+    initiatedExchanges?: boolean | UserCountOutputTypeCountInitiatedExchangesArgs
+    LiquidityPool?: boolean | UserCountOutputTypeCountLiquidityPoolArgs
+    refunds?: boolean | UserCountOutputTypeCountRefundsArgs
+    wallet?: boolean | UserCountOutputTypeCountWalletArgs
     withdrawals?: boolean | UserCountOutputTypeCountWithdrawalsArgs
     transfers?: boolean | UserCountOutputTypeCountTransfersArgs
-    refunds?: boolean | UserCountOutputTypeCountRefundsArgs
-    initiatedExchanges?: boolean | UserCountOutputTypeCountInitiatedExchangesArgs
-    ActivityLog?: boolean | UserCountOutputTypeCountActivityLogArgs
   }
 
   // Custom InputTypes
@@ -2140,8 +2234,8 @@ export namespace Prisma {
   /**
    * UserCountOutputType without action
    */
-  export type UserCountOutputTypeCountWalletArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: WalletWhereInput
+  export type UserCountOutputTypeCountActivityLogArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: ActivityLogWhereInput
   }
 
   /**
@@ -2149,6 +2243,34 @@ export namespace Prisma {
    */
   export type UserCountOutputTypeCountDepositsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: DepositWhereInput
+  }
+
+  /**
+   * UserCountOutputType without action
+   */
+  export type UserCountOutputTypeCountInitiatedExchangesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: ExchangeWhereInput
+  }
+
+  /**
+   * UserCountOutputType without action
+   */
+  export type UserCountOutputTypeCountLiquidityPoolArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: LiquidityPoolWhereInput
+  }
+
+  /**
+   * UserCountOutputType without action
+   */
+  export type UserCountOutputTypeCountRefundsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: RefundWhereInput
+  }
+
+  /**
+   * UserCountOutputType without action
+   */
+  export type UserCountOutputTypeCountWalletArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: WalletWhereInput
   }
 
   /**
@@ -2165,44 +2287,23 @@ export namespace Prisma {
     where?: TransferWhereInput
   }
 
-  /**
-   * UserCountOutputType without action
-   */
-  export type UserCountOutputTypeCountRefundsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: RefundWhereInput
-  }
-
-  /**
-   * UserCountOutputType without action
-   */
-  export type UserCountOutputTypeCountInitiatedExchangesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: ExchangeWhereInput
-  }
-
-  /**
-   * UserCountOutputType without action
-   */
-  export type UserCountOutputTypeCountActivityLogArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: ActivityLogWhereInput
-  }
-
 
   /**
    * Count Type PaymentChannelCountOutputType
    */
 
   export type PaymentChannelCountOutputType = {
-    currencies: number
     Deposit: number
-    Withdrawal: number
     LiquidityPool: number
+    Withdrawal: number
+    currencies: number
   }
 
   export type PaymentChannelCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    currencies?: boolean | PaymentChannelCountOutputTypeCountCurrenciesArgs
     Deposit?: boolean | PaymentChannelCountOutputTypeCountDepositArgs
-    Withdrawal?: boolean | PaymentChannelCountOutputTypeCountWithdrawalArgs
     LiquidityPool?: boolean | PaymentChannelCountOutputTypeCountLiquidityPoolArgs
+    Withdrawal?: boolean | PaymentChannelCountOutputTypeCountWithdrawalArgs
+    currencies?: boolean | PaymentChannelCountOutputTypeCountCurrenciesArgs
   }
 
   // Custom InputTypes
@@ -2219,15 +2320,15 @@ export namespace Prisma {
   /**
    * PaymentChannelCountOutputType without action
    */
-  export type PaymentChannelCountOutputTypeCountCurrenciesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: CurrencyWhereInput
+  export type PaymentChannelCountOutputTypeCountDepositArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: DepositWhereInput
   }
 
   /**
    * PaymentChannelCountOutputType without action
    */
-  export type PaymentChannelCountOutputTypeCountDepositArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: DepositWhereInput
+  export type PaymentChannelCountOutputTypeCountLiquidityPoolArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: LiquidityPoolWhereInput
   }
 
   /**
@@ -2240,8 +2341,8 @@ export namespace Prisma {
   /**
    * PaymentChannelCountOutputType without action
    */
-  export type PaymentChannelCountOutputTypeCountLiquidityPoolArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: LiquidityPoolWhereInput
+  export type PaymentChannelCountOutputTypeCountCurrenciesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: CurrencyWhereInput
   }
 
 
@@ -2250,21 +2351,25 @@ export namespace Prisma {
    */
 
   export type CurrencyCountOutputType = {
-    wallets: number
+    FromCurrencyPair: number
+    ToCurrencyPair: number
     exchangesFrom: number
     exchangesTo: number
     FeeSetting: number
-    paymentChannels: number
     LiquidityPool: number
+    wallets: number
+    paymentChannels: number
   }
 
   export type CurrencyCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    wallets?: boolean | CurrencyCountOutputTypeCountWalletsArgs
+    FromCurrencyPair?: boolean | CurrencyCountOutputTypeCountFromCurrencyPairArgs
+    ToCurrencyPair?: boolean | CurrencyCountOutputTypeCountToCurrencyPairArgs
     exchangesFrom?: boolean | CurrencyCountOutputTypeCountExchangesFromArgs
     exchangesTo?: boolean | CurrencyCountOutputTypeCountExchangesToArgs
     FeeSetting?: boolean | CurrencyCountOutputTypeCountFeeSettingArgs
-    paymentChannels?: boolean | CurrencyCountOutputTypeCountPaymentChannelsArgs
     LiquidityPool?: boolean | CurrencyCountOutputTypeCountLiquidityPoolArgs
+    wallets?: boolean | CurrencyCountOutputTypeCountWalletsArgs
+    paymentChannels?: boolean | CurrencyCountOutputTypeCountPaymentChannelsArgs
   }
 
   // Custom InputTypes
@@ -2281,8 +2386,15 @@ export namespace Prisma {
   /**
    * CurrencyCountOutputType without action
    */
-  export type CurrencyCountOutputTypeCountWalletsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: WalletWhereInput
+  export type CurrencyCountOutputTypeCountFromCurrencyPairArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: CurrencyPairWhereInput
+  }
+
+  /**
+   * CurrencyCountOutputType without action
+   */
+  export type CurrencyCountOutputTypeCountToCurrencyPairArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: CurrencyPairWhereInput
   }
 
   /**
@@ -2309,15 +2421,53 @@ export namespace Prisma {
   /**
    * CurrencyCountOutputType without action
    */
-  export type CurrencyCountOutputTypeCountPaymentChannelsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: PaymentChannelWhereInput
+  export type CurrencyCountOutputTypeCountLiquidityPoolArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: LiquidityPoolWhereInput
   }
 
   /**
    * CurrencyCountOutputType without action
    */
-  export type CurrencyCountOutputTypeCountLiquidityPoolArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: LiquidityPoolWhereInput
+  export type CurrencyCountOutputTypeCountWalletsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: WalletWhereInput
+  }
+
+  /**
+   * CurrencyCountOutputType without action
+   */
+  export type CurrencyCountOutputTypeCountPaymentChannelsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: PaymentChannelWhereInput
+  }
+
+
+  /**
+   * Count Type LiquidityPoolCountOutputType
+   */
+
+  export type LiquidityPoolCountOutputType = {
+    BridgeTransfer: number
+  }
+
+  export type LiquidityPoolCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    BridgeTransfer?: boolean | LiquidityPoolCountOutputTypeCountBridgeTransferArgs
+  }
+
+  // Custom InputTypes
+  /**
+   * LiquidityPoolCountOutputType without action
+   */
+  export type LiquidityPoolCountOutputTypeDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the LiquidityPoolCountOutputType
+     */
+    select?: LiquidityPoolCountOutputTypeSelect<ExtArgs> | null
+  }
+
+  /**
+   * LiquidityPoolCountOutputType without action
+   */
+  export type LiquidityPoolCountOutputTypeCountBridgeTransferArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: BridgeTransferWhereInput
   }
 
 
@@ -2327,18 +2477,18 @@ export namespace Prisma {
 
   export type WalletCountOutputType = {
     deposits: number
-    withdrawals: number
     Refund: number
     transfersFrom: number
     transfersTo: number
+    withdrawals: number
   }
 
   export type WalletCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     deposits?: boolean | WalletCountOutputTypeCountDepositsArgs
-    withdrawals?: boolean | WalletCountOutputTypeCountWithdrawalsArgs
     Refund?: boolean | WalletCountOutputTypeCountRefundArgs
     transfersFrom?: boolean | WalletCountOutputTypeCountTransfersFromArgs
     transfersTo?: boolean | WalletCountOutputTypeCountTransfersToArgs
+    withdrawals?: boolean | WalletCountOutputTypeCountWithdrawalsArgs
   }
 
   // Custom InputTypes
@@ -2362,13 +2512,6 @@ export namespace Prisma {
   /**
    * WalletCountOutputType without action
    */
-  export type WalletCountOutputTypeCountWithdrawalsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: WithdrawalWhereInput
-  }
-
-  /**
-   * WalletCountOutputType without action
-   */
   export type WalletCountOutputTypeCountRefundArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: RefundWhereInput
   }
@@ -2387,43 +2530,10 @@ export namespace Prisma {
     where?: TransferWhereInput
   }
 
-
   /**
-   * Count Type BridgeTransferCountOutputType
+   * WalletCountOutputType without action
    */
-
-  export type BridgeTransferCountOutputType = {
-    Deposit: number
-    Withdrawal: number
-  }
-
-  export type BridgeTransferCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    Deposit?: boolean | BridgeTransferCountOutputTypeCountDepositArgs
-    Withdrawal?: boolean | BridgeTransferCountOutputTypeCountWithdrawalArgs
-  }
-
-  // Custom InputTypes
-  /**
-   * BridgeTransferCountOutputType without action
-   */
-  export type BridgeTransferCountOutputTypeDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the BridgeTransferCountOutputType
-     */
-    select?: BridgeTransferCountOutputTypeSelect<ExtArgs> | null
-  }
-
-  /**
-   * BridgeTransferCountOutputType without action
-   */
-  export type BridgeTransferCountOutputTypeCountDepositArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: DepositWhereInput
-  }
-
-  /**
-   * BridgeTransferCountOutputType without action
-   */
-  export type BridgeTransferCountOutputTypeCountWithdrawalArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type WalletCountOutputTypeCountWithdrawalsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: WithdrawalWhereInput
   }
 
@@ -2498,6 +2608,7 @@ export namespace Prisma {
     createdAt: Date | null
     updatedAt: Date | null
     deletedAt: Date | null
+    isDeleted: boolean | null
   }
 
   export type UserMaxAggregateOutputType = {
@@ -2525,6 +2636,7 @@ export namespace Prisma {
     createdAt: Date | null
     updatedAt: Date | null
     deletedAt: Date | null
+    isDeleted: boolean | null
   }
 
   export type UserCountAggregateOutputType = {
@@ -2552,6 +2664,7 @@ export namespace Prisma {
     createdAt: number
     updatedAt: number
     deletedAt: number
+    isDeleted: number
     _all: number
   }
 
@@ -2581,6 +2694,7 @@ export namespace Prisma {
     createdAt?: true
     updatedAt?: true
     deletedAt?: true
+    isDeleted?: true
   }
 
   export type UserMaxAggregateInputType = {
@@ -2608,6 +2722,7 @@ export namespace Prisma {
     createdAt?: true
     updatedAt?: true
     deletedAt?: true
+    isDeleted?: true
   }
 
   export type UserCountAggregateInputType = {
@@ -2635,6 +2750,7 @@ export namespace Prisma {
     createdAt?: true
     updatedAt?: true
     deletedAt?: true
+    isDeleted?: true
     _all?: true
   }
 
@@ -2735,6 +2851,7 @@ export namespace Prisma {
     createdAt: Date
     updatedAt: Date
     deletedAt: Date | null
+    isDeleted: boolean
     _count: UserCountAggregateOutputType | null
     _min: UserMinAggregateOutputType | null
     _max: UserMaxAggregateOutputType | null
@@ -2779,13 +2896,15 @@ export namespace Prisma {
     createdAt?: boolean
     updatedAt?: boolean
     deletedAt?: boolean
-    wallet?: boolean | User$walletArgs<ExtArgs>
+    isDeleted?: boolean
+    ActivityLog?: boolean | User$ActivityLogArgs<ExtArgs>
     deposits?: boolean | User$depositsArgs<ExtArgs>
+    initiatedExchanges?: boolean | User$initiatedExchangesArgs<ExtArgs>
+    LiquidityPool?: boolean | User$LiquidityPoolArgs<ExtArgs>
+    refunds?: boolean | User$refundsArgs<ExtArgs>
+    wallet?: boolean | User$walletArgs<ExtArgs>
     withdrawals?: boolean | User$withdrawalsArgs<ExtArgs>
     transfers?: boolean | User$transfersArgs<ExtArgs>
-    refunds?: boolean | User$refundsArgs<ExtArgs>
-    initiatedExchanges?: boolean | User$initiatedExchangesArgs<ExtArgs>
-    ActivityLog?: boolean | User$ActivityLogArgs<ExtArgs>
     _count?: boolean | UserCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["user"]>
 
@@ -2814,6 +2933,7 @@ export namespace Prisma {
     createdAt?: boolean
     updatedAt?: boolean
     deletedAt?: boolean
+    isDeleted?: boolean
   }, ExtArgs["result"]["user"]>
 
   export type UserSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -2841,6 +2961,7 @@ export namespace Prisma {
     createdAt?: boolean
     updatedAt?: boolean
     deletedAt?: boolean
+    isDeleted?: boolean
   }, ExtArgs["result"]["user"]>
 
   export type UserSelectScalar = {
@@ -2868,17 +2989,19 @@ export namespace Prisma {
     createdAt?: boolean
     updatedAt?: boolean
     deletedAt?: boolean
+    isDeleted?: boolean
   }
 
-  export type UserOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "email" | "phoneNumber" | "fullName" | "avatarUrl" | "passwordHash" | "countryCode" | "nationality" | "language" | "kycStatus" | "documentType" | "documentNumber" | "documentPhotoUrl" | "dateOfBirth" | "address" | "postalCode" | "city" | "state" | "isPhoneVerified" | "isEmailVerified" | "role" | "createdAt" | "updatedAt" | "deletedAt", ExtArgs["result"]["user"]>
+  export type UserOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "email" | "phoneNumber" | "fullName" | "avatarUrl" | "passwordHash" | "countryCode" | "nationality" | "language" | "kycStatus" | "documentType" | "documentNumber" | "documentPhotoUrl" | "dateOfBirth" | "address" | "postalCode" | "city" | "state" | "isPhoneVerified" | "isEmailVerified" | "role" | "createdAt" | "updatedAt" | "deletedAt" | "isDeleted", ExtArgs["result"]["user"]>
   export type UserInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    wallet?: boolean | User$walletArgs<ExtArgs>
+    ActivityLog?: boolean | User$ActivityLogArgs<ExtArgs>
     deposits?: boolean | User$depositsArgs<ExtArgs>
+    initiatedExchanges?: boolean | User$initiatedExchangesArgs<ExtArgs>
+    LiquidityPool?: boolean | User$LiquidityPoolArgs<ExtArgs>
+    refunds?: boolean | User$refundsArgs<ExtArgs>
+    wallet?: boolean | User$walletArgs<ExtArgs>
     withdrawals?: boolean | User$withdrawalsArgs<ExtArgs>
     transfers?: boolean | User$transfersArgs<ExtArgs>
-    refunds?: boolean | User$refundsArgs<ExtArgs>
-    initiatedExchanges?: boolean | User$initiatedExchangesArgs<ExtArgs>
-    ActivityLog?: boolean | User$ActivityLogArgs<ExtArgs>
     _count?: boolean | UserCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type UserIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
@@ -2887,13 +3010,14 @@ export namespace Prisma {
   export type $UserPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "User"
     objects: {
-      wallet: Prisma.$WalletPayload<ExtArgs>[]
+      ActivityLog: Prisma.$ActivityLogPayload<ExtArgs>[]
       deposits: Prisma.$DepositPayload<ExtArgs>[]
+      initiatedExchanges: Prisma.$ExchangePayload<ExtArgs>[]
+      LiquidityPool: Prisma.$LiquidityPoolPayload<ExtArgs>[]
+      refunds: Prisma.$RefundPayload<ExtArgs>[]
+      wallet: Prisma.$WalletPayload<ExtArgs>[]
       withdrawals: Prisma.$WithdrawalPayload<ExtArgs>[]
       transfers: Prisma.$TransferPayload<ExtArgs>[]
-      refunds: Prisma.$RefundPayload<ExtArgs>[]
-      initiatedExchanges: Prisma.$ExchangePayload<ExtArgs>[]
-      ActivityLog: Prisma.$ActivityLogPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -2920,6 +3044,7 @@ export namespace Prisma {
       createdAt: Date
       updatedAt: Date
       deletedAt: Date | null
+      isDeleted: boolean
     }, ExtArgs["result"]["user"]>
     composites: {}
   }
@@ -3314,13 +3439,14 @@ export namespace Prisma {
    */
   export interface Prisma__UserClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
-    wallet<T extends User$walletArgs<ExtArgs> = {}>(args?: Subset<T, User$walletArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$WalletPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    ActivityLog<T extends User$ActivityLogArgs<ExtArgs> = {}>(args?: Subset<T, User$ActivityLogArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ActivityLogPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     deposits<T extends User$depositsArgs<ExtArgs> = {}>(args?: Subset<T, User$depositsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$DepositPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    initiatedExchanges<T extends User$initiatedExchangesArgs<ExtArgs> = {}>(args?: Subset<T, User$initiatedExchangesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ExchangePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    LiquidityPool<T extends User$LiquidityPoolArgs<ExtArgs> = {}>(args?: Subset<T, User$LiquidityPoolArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$LiquidityPoolPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    refunds<T extends User$refundsArgs<ExtArgs> = {}>(args?: Subset<T, User$refundsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$RefundPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    wallet<T extends User$walletArgs<ExtArgs> = {}>(args?: Subset<T, User$walletArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$WalletPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     withdrawals<T extends User$withdrawalsArgs<ExtArgs> = {}>(args?: Subset<T, User$withdrawalsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$WithdrawalPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     transfers<T extends User$transfersArgs<ExtArgs> = {}>(args?: Subset<T, User$transfersArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$TransferPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
-    refunds<T extends User$refundsArgs<ExtArgs> = {}>(args?: Subset<T, User$refundsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$RefundPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
-    initiatedExchanges<T extends User$initiatedExchangesArgs<ExtArgs> = {}>(args?: Subset<T, User$initiatedExchangesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ExchangePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
-    ActivityLog<T extends User$ActivityLogArgs<ExtArgs> = {}>(args?: Subset<T, User$ActivityLogArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ActivityLogPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -3374,6 +3500,7 @@ export namespace Prisma {
     readonly createdAt: FieldRef<"User", 'DateTime'>
     readonly updatedAt: FieldRef<"User", 'DateTime'>
     readonly deletedAt: FieldRef<"User", 'DateTime'>
+    readonly isDeleted: FieldRef<"User", 'Boolean'>
   }
     
 
@@ -3762,27 +3889,27 @@ export namespace Prisma {
   }
 
   /**
-   * User.wallet
+   * User.ActivityLog
    */
-  export type User$walletArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type User$ActivityLogArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the Wallet
+     * Select specific fields to fetch from the ActivityLog
      */
-    select?: WalletSelect<ExtArgs> | null
+    select?: ActivityLogSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the Wallet
+     * Omit specific fields from the ActivityLog
      */
-    omit?: WalletOmit<ExtArgs> | null
+    omit?: ActivityLogOmit<ExtArgs> | null
     /**
      * Choose, which related nodes to fetch as well
      */
-    include?: WalletInclude<ExtArgs> | null
-    where?: WalletWhereInput
-    orderBy?: WalletOrderByWithRelationInput | WalletOrderByWithRelationInput[]
-    cursor?: WalletWhereUniqueInput
+    include?: ActivityLogInclude<ExtArgs> | null
+    where?: ActivityLogWhereInput
+    orderBy?: ActivityLogOrderByWithRelationInput | ActivityLogOrderByWithRelationInput[]
+    cursor?: ActivityLogWhereUniqueInput
     take?: number
     skip?: number
-    distinct?: WalletScalarFieldEnum | WalletScalarFieldEnum[]
+    distinct?: ActivityLogScalarFieldEnum | ActivityLogScalarFieldEnum[]
   }
 
   /**
@@ -3807,6 +3934,102 @@ export namespace Prisma {
     take?: number
     skip?: number
     distinct?: DepositScalarFieldEnum | DepositScalarFieldEnum[]
+  }
+
+  /**
+   * User.initiatedExchanges
+   */
+  export type User$initiatedExchangesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Exchange
+     */
+    select?: ExchangeSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Exchange
+     */
+    omit?: ExchangeOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ExchangeInclude<ExtArgs> | null
+    where?: ExchangeWhereInput
+    orderBy?: ExchangeOrderByWithRelationInput | ExchangeOrderByWithRelationInput[]
+    cursor?: ExchangeWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: ExchangeScalarFieldEnum | ExchangeScalarFieldEnum[]
+  }
+
+  /**
+   * User.LiquidityPool
+   */
+  export type User$LiquidityPoolArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the LiquidityPool
+     */
+    select?: LiquidityPoolSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the LiquidityPool
+     */
+    omit?: LiquidityPoolOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: LiquidityPoolInclude<ExtArgs> | null
+    where?: LiquidityPoolWhereInput
+    orderBy?: LiquidityPoolOrderByWithRelationInput | LiquidityPoolOrderByWithRelationInput[]
+    cursor?: LiquidityPoolWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: LiquidityPoolScalarFieldEnum | LiquidityPoolScalarFieldEnum[]
+  }
+
+  /**
+   * User.refunds
+   */
+  export type User$refundsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Refund
+     */
+    select?: RefundSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Refund
+     */
+    omit?: RefundOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RefundInclude<ExtArgs> | null
+    where?: RefundWhereInput
+    orderBy?: RefundOrderByWithRelationInput | RefundOrderByWithRelationInput[]
+    cursor?: RefundWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: RefundScalarFieldEnum | RefundScalarFieldEnum[]
+  }
+
+  /**
+   * User.wallet
+   */
+  export type User$walletArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Wallet
+     */
+    select?: WalletSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Wallet
+     */
+    omit?: WalletOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: WalletInclude<ExtArgs> | null
+    where?: WalletWhereInput
+    orderBy?: WalletOrderByWithRelationInput | WalletOrderByWithRelationInput[]
+    cursor?: WalletWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: WalletScalarFieldEnum | WalletScalarFieldEnum[]
   }
 
   /**
@@ -3855,78 +4078,6 @@ export namespace Prisma {
     take?: number
     skip?: number
     distinct?: TransferScalarFieldEnum | TransferScalarFieldEnum[]
-  }
-
-  /**
-   * User.refunds
-   */
-  export type User$refundsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the Refund
-     */
-    select?: RefundSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the Refund
-     */
-    omit?: RefundOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: RefundInclude<ExtArgs> | null
-    where?: RefundWhereInput
-    orderBy?: RefundOrderByWithRelationInput | RefundOrderByWithRelationInput[]
-    cursor?: RefundWhereUniqueInput
-    take?: number
-    skip?: number
-    distinct?: RefundScalarFieldEnum | RefundScalarFieldEnum[]
-  }
-
-  /**
-   * User.initiatedExchanges
-   */
-  export type User$initiatedExchangesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the Exchange
-     */
-    select?: ExchangeSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the Exchange
-     */
-    omit?: ExchangeOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: ExchangeInclude<ExtArgs> | null
-    where?: ExchangeWhereInput
-    orderBy?: ExchangeOrderByWithRelationInput | ExchangeOrderByWithRelationInput[]
-    cursor?: ExchangeWhereUniqueInput
-    take?: number
-    skip?: number
-    distinct?: ExchangeScalarFieldEnum | ExchangeScalarFieldEnum[]
-  }
-
-  /**
-   * User.ActivityLog
-   */
-  export type User$ActivityLogArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the ActivityLog
-     */
-    select?: ActivityLogSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the ActivityLog
-     */
-    omit?: ActivityLogOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: ActivityLogInclude<ExtArgs> | null
-    where?: ActivityLogWhereInput
-    orderBy?: ActivityLogOrderByWithRelationInput | ActivityLogOrderByWithRelationInput[]
-    cursor?: ActivityLogWhereUniqueInput
-    take?: number
-    skip?: number
-    distinct?: ActivityLogScalarFieldEnum | ActivityLogScalarFieldEnum[]
   }
 
   /**
@@ -4104,11 +4255,10 @@ export namespace Prisma {
     name?: boolean
     description?: boolean
     createdAt?: boolean
-    bridgeTransfers?: boolean | PaymentChannel$bridgeTransfersArgs<ExtArgs>
-    currencies?: boolean | PaymentChannel$currenciesArgs<ExtArgs>
     Deposit?: boolean | PaymentChannel$DepositArgs<ExtArgs>
-    Withdrawal?: boolean | PaymentChannel$WithdrawalArgs<ExtArgs>
     LiquidityPool?: boolean | PaymentChannel$LiquidityPoolArgs<ExtArgs>
+    Withdrawal?: boolean | PaymentChannel$WithdrawalArgs<ExtArgs>
+    currencies?: boolean | PaymentChannel$currenciesArgs<ExtArgs>
     _count?: boolean | PaymentChannelCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["paymentChannel"]>
 
@@ -4135,11 +4285,10 @@ export namespace Prisma {
 
   export type PaymentChannelOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "description" | "createdAt", ExtArgs["result"]["paymentChannel"]>
   export type PaymentChannelInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    bridgeTransfers?: boolean | PaymentChannel$bridgeTransfersArgs<ExtArgs>
-    currencies?: boolean | PaymentChannel$currenciesArgs<ExtArgs>
     Deposit?: boolean | PaymentChannel$DepositArgs<ExtArgs>
-    Withdrawal?: boolean | PaymentChannel$WithdrawalArgs<ExtArgs>
     LiquidityPool?: boolean | PaymentChannel$LiquidityPoolArgs<ExtArgs>
+    Withdrawal?: boolean | PaymentChannel$WithdrawalArgs<ExtArgs>
+    currencies?: boolean | PaymentChannel$currenciesArgs<ExtArgs>
     _count?: boolean | PaymentChannelCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type PaymentChannelIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
@@ -4148,11 +4297,10 @@ export namespace Prisma {
   export type $PaymentChannelPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "PaymentChannel"
     objects: {
-      bridgeTransfers: Prisma.$BridgeTransferPayload<ExtArgs> | null
-      currencies: Prisma.$CurrencyPayload<ExtArgs>[]
       Deposit: Prisma.$DepositPayload<ExtArgs>[]
-      Withdrawal: Prisma.$WithdrawalPayload<ExtArgs>[]
       LiquidityPool: Prisma.$LiquidityPoolPayload<ExtArgs>[]
+      Withdrawal: Prisma.$WithdrawalPayload<ExtArgs>[]
+      currencies: Prisma.$CurrencyPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -4553,11 +4701,10 @@ export namespace Prisma {
    */
   export interface Prisma__PaymentChannelClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
-    bridgeTransfers<T extends PaymentChannel$bridgeTransfersArgs<ExtArgs> = {}>(args?: Subset<T, PaymentChannel$bridgeTransfersArgs<ExtArgs>>): Prisma__BridgeTransferClient<$Result.GetResult<Prisma.$BridgeTransferPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
-    currencies<T extends PaymentChannel$currenciesArgs<ExtArgs> = {}>(args?: Subset<T, PaymentChannel$currenciesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$CurrencyPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     Deposit<T extends PaymentChannel$DepositArgs<ExtArgs> = {}>(args?: Subset<T, PaymentChannel$DepositArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$DepositPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
-    Withdrawal<T extends PaymentChannel$WithdrawalArgs<ExtArgs> = {}>(args?: Subset<T, PaymentChannel$WithdrawalArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$WithdrawalPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     LiquidityPool<T extends PaymentChannel$LiquidityPoolArgs<ExtArgs> = {}>(args?: Subset<T, PaymentChannel$LiquidityPoolArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$LiquidityPoolPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    Withdrawal<T extends PaymentChannel$WithdrawalArgs<ExtArgs> = {}>(args?: Subset<T, PaymentChannel$WithdrawalArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$WithdrawalPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    currencies<T extends PaymentChannel$currenciesArgs<ExtArgs> = {}>(args?: Subset<T, PaymentChannel$currenciesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$CurrencyPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -4979,49 +5126,6 @@ export namespace Prisma {
   }
 
   /**
-   * PaymentChannel.bridgeTransfers
-   */
-  export type PaymentChannel$bridgeTransfersArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the BridgeTransfer
-     */
-    select?: BridgeTransferSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the BridgeTransfer
-     */
-    omit?: BridgeTransferOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: BridgeTransferInclude<ExtArgs> | null
-    where?: BridgeTransferWhereInput
-  }
-
-  /**
-   * PaymentChannel.currencies
-   */
-  export type PaymentChannel$currenciesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the Currency
-     */
-    select?: CurrencySelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the Currency
-     */
-    omit?: CurrencyOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: CurrencyInclude<ExtArgs> | null
-    where?: CurrencyWhereInput
-    orderBy?: CurrencyOrderByWithRelationInput | CurrencyOrderByWithRelationInput[]
-    cursor?: CurrencyWhereUniqueInput
-    take?: number
-    skip?: number
-    distinct?: CurrencyScalarFieldEnum | CurrencyScalarFieldEnum[]
-  }
-
-  /**
    * PaymentChannel.Deposit
    */
   export type PaymentChannel$DepositArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -5043,6 +5147,30 @@ export namespace Prisma {
     take?: number
     skip?: number
     distinct?: DepositScalarFieldEnum | DepositScalarFieldEnum[]
+  }
+
+  /**
+   * PaymentChannel.LiquidityPool
+   */
+  export type PaymentChannel$LiquidityPoolArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the LiquidityPool
+     */
+    select?: LiquidityPoolSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the LiquidityPool
+     */
+    omit?: LiquidityPoolOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: LiquidityPoolInclude<ExtArgs> | null
+    where?: LiquidityPoolWhereInput
+    orderBy?: LiquidityPoolOrderByWithRelationInput | LiquidityPoolOrderByWithRelationInput[]
+    cursor?: LiquidityPoolWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: LiquidityPoolScalarFieldEnum | LiquidityPoolScalarFieldEnum[]
   }
 
   /**
@@ -5070,27 +5198,27 @@ export namespace Prisma {
   }
 
   /**
-   * PaymentChannel.LiquidityPool
+   * PaymentChannel.currencies
    */
-  export type PaymentChannel$LiquidityPoolArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type PaymentChannel$currenciesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the LiquidityPool
+     * Select specific fields to fetch from the Currency
      */
-    select?: LiquidityPoolSelect<ExtArgs> | null
+    select?: CurrencySelect<ExtArgs> | null
     /**
-     * Omit specific fields from the LiquidityPool
+     * Omit specific fields from the Currency
      */
-    omit?: LiquidityPoolOmit<ExtArgs> | null
+    omit?: CurrencyOmit<ExtArgs> | null
     /**
      * Choose, which related nodes to fetch as well
      */
-    include?: LiquidityPoolInclude<ExtArgs> | null
-    where?: LiquidityPoolWhereInput
-    orderBy?: LiquidityPoolOrderByWithRelationInput | LiquidityPoolOrderByWithRelationInput[]
-    cursor?: LiquidityPoolWhereUniqueInput
+    include?: CurrencyInclude<ExtArgs> | null
+    where?: CurrencyWhereInput
+    orderBy?: CurrencyOrderByWithRelationInput | CurrencyOrderByWithRelationInput[]
+    cursor?: CurrencyWhereUniqueInput
     take?: number
     skip?: number
-    distinct?: LiquidityPoolScalarFieldEnum | LiquidityPoolScalarFieldEnum[]
+    distinct?: CurrencyScalarFieldEnum | CurrencyScalarFieldEnum[]
   }
 
   /**
@@ -5318,12 +5446,14 @@ export namespace Prisma {
     symbol?: boolean
     decimals?: boolean
     createdAt?: boolean
-    wallets?: boolean | Currency$walletsArgs<ExtArgs>
+    FromCurrencyPair?: boolean | Currency$FromCurrencyPairArgs<ExtArgs>
+    ToCurrencyPair?: boolean | Currency$ToCurrencyPairArgs<ExtArgs>
     exchangesFrom?: boolean | Currency$exchangesFromArgs<ExtArgs>
     exchangesTo?: boolean | Currency$exchangesToArgs<ExtArgs>
     FeeSetting?: boolean | Currency$FeeSettingArgs<ExtArgs>
-    paymentChannels?: boolean | Currency$paymentChannelsArgs<ExtArgs>
     LiquidityPool?: boolean | Currency$LiquidityPoolArgs<ExtArgs>
+    wallets?: boolean | Currency$walletsArgs<ExtArgs>
+    paymentChannels?: boolean | Currency$paymentChannelsArgs<ExtArgs>
     _count?: boolean | CurrencyCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["currency"]>
 
@@ -5356,12 +5486,14 @@ export namespace Prisma {
 
   export type CurrencyOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "code" | "name" | "symbol" | "decimals" | "createdAt", ExtArgs["result"]["currency"]>
   export type CurrencyInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    wallets?: boolean | Currency$walletsArgs<ExtArgs>
+    FromCurrencyPair?: boolean | Currency$FromCurrencyPairArgs<ExtArgs>
+    ToCurrencyPair?: boolean | Currency$ToCurrencyPairArgs<ExtArgs>
     exchangesFrom?: boolean | Currency$exchangesFromArgs<ExtArgs>
     exchangesTo?: boolean | Currency$exchangesToArgs<ExtArgs>
     FeeSetting?: boolean | Currency$FeeSettingArgs<ExtArgs>
-    paymentChannels?: boolean | Currency$paymentChannelsArgs<ExtArgs>
     LiquidityPool?: boolean | Currency$LiquidityPoolArgs<ExtArgs>
+    wallets?: boolean | Currency$walletsArgs<ExtArgs>
+    paymentChannels?: boolean | Currency$paymentChannelsArgs<ExtArgs>
     _count?: boolean | CurrencyCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type CurrencyIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
@@ -5370,12 +5502,14 @@ export namespace Prisma {
   export type $CurrencyPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "Currency"
     objects: {
-      wallets: Prisma.$WalletPayload<ExtArgs>[]
+      FromCurrencyPair: Prisma.$CurrencyPairPayload<ExtArgs>[]
+      ToCurrencyPair: Prisma.$CurrencyPairPayload<ExtArgs>[]
       exchangesFrom: Prisma.$ExchangePayload<ExtArgs>[]
       exchangesTo: Prisma.$ExchangePayload<ExtArgs>[]
       FeeSetting: Prisma.$FeeSettingPayload<ExtArgs>[]
-      paymentChannels: Prisma.$PaymentChannelPayload<ExtArgs>[]
       LiquidityPool: Prisma.$LiquidityPoolPayload<ExtArgs>[]
+      wallets: Prisma.$WalletPayload<ExtArgs>[]
+      paymentChannels: Prisma.$PaymentChannelPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -5778,12 +5912,14 @@ export namespace Prisma {
    */
   export interface Prisma__CurrencyClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
-    wallets<T extends Currency$walletsArgs<ExtArgs> = {}>(args?: Subset<T, Currency$walletsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$WalletPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    FromCurrencyPair<T extends Currency$FromCurrencyPairArgs<ExtArgs> = {}>(args?: Subset<T, Currency$FromCurrencyPairArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$CurrencyPairPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    ToCurrencyPair<T extends Currency$ToCurrencyPairArgs<ExtArgs> = {}>(args?: Subset<T, Currency$ToCurrencyPairArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$CurrencyPairPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     exchangesFrom<T extends Currency$exchangesFromArgs<ExtArgs> = {}>(args?: Subset<T, Currency$exchangesFromArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ExchangePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     exchangesTo<T extends Currency$exchangesToArgs<ExtArgs> = {}>(args?: Subset<T, Currency$exchangesToArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ExchangePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     FeeSetting<T extends Currency$FeeSettingArgs<ExtArgs> = {}>(args?: Subset<T, Currency$FeeSettingArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$FeeSettingPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
-    paymentChannels<T extends Currency$paymentChannelsArgs<ExtArgs> = {}>(args?: Subset<T, Currency$paymentChannelsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PaymentChannelPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     LiquidityPool<T extends Currency$LiquidityPoolArgs<ExtArgs> = {}>(args?: Subset<T, Currency$LiquidityPoolArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$LiquidityPoolPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    wallets<T extends Currency$walletsArgs<ExtArgs> = {}>(args?: Subset<T, Currency$walletsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$WalletPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    paymentChannels<T extends Currency$paymentChannelsArgs<ExtArgs> = {}>(args?: Subset<T, Currency$paymentChannelsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PaymentChannelPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -6207,27 +6343,51 @@ export namespace Prisma {
   }
 
   /**
-   * Currency.wallets
+   * Currency.FromCurrencyPair
    */
-  export type Currency$walletsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type Currency$FromCurrencyPairArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the Wallet
+     * Select specific fields to fetch from the CurrencyPair
      */
-    select?: WalletSelect<ExtArgs> | null
+    select?: CurrencyPairSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the Wallet
+     * Omit specific fields from the CurrencyPair
      */
-    omit?: WalletOmit<ExtArgs> | null
+    omit?: CurrencyPairOmit<ExtArgs> | null
     /**
      * Choose, which related nodes to fetch as well
      */
-    include?: WalletInclude<ExtArgs> | null
-    where?: WalletWhereInput
-    orderBy?: WalletOrderByWithRelationInput | WalletOrderByWithRelationInput[]
-    cursor?: WalletWhereUniqueInput
+    include?: CurrencyPairInclude<ExtArgs> | null
+    where?: CurrencyPairWhereInput
+    orderBy?: CurrencyPairOrderByWithRelationInput | CurrencyPairOrderByWithRelationInput[]
+    cursor?: CurrencyPairWhereUniqueInput
     take?: number
     skip?: number
-    distinct?: WalletScalarFieldEnum | WalletScalarFieldEnum[]
+    distinct?: CurrencyPairScalarFieldEnum | CurrencyPairScalarFieldEnum[]
+  }
+
+  /**
+   * Currency.ToCurrencyPair
+   */
+  export type Currency$ToCurrencyPairArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CurrencyPair
+     */
+    select?: CurrencyPairSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CurrencyPair
+     */
+    omit?: CurrencyPairOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CurrencyPairInclude<ExtArgs> | null
+    where?: CurrencyPairWhereInput
+    orderBy?: CurrencyPairOrderByWithRelationInput | CurrencyPairOrderByWithRelationInput[]
+    cursor?: CurrencyPairWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: CurrencyPairScalarFieldEnum | CurrencyPairScalarFieldEnum[]
   }
 
   /**
@@ -6303,30 +6463,6 @@ export namespace Prisma {
   }
 
   /**
-   * Currency.paymentChannels
-   */
-  export type Currency$paymentChannelsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the PaymentChannel
-     */
-    select?: PaymentChannelSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the PaymentChannel
-     */
-    omit?: PaymentChannelOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: PaymentChannelInclude<ExtArgs> | null
-    where?: PaymentChannelWhereInput
-    orderBy?: PaymentChannelOrderByWithRelationInput | PaymentChannelOrderByWithRelationInput[]
-    cursor?: PaymentChannelWhereUniqueInput
-    take?: number
-    skip?: number
-    distinct?: PaymentChannelScalarFieldEnum | PaymentChannelScalarFieldEnum[]
-  }
-
-  /**
    * Currency.LiquidityPool
    */
   export type Currency$LiquidityPoolArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -6351,6 +6487,54 @@ export namespace Prisma {
   }
 
   /**
+   * Currency.wallets
+   */
+  export type Currency$walletsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Wallet
+     */
+    select?: WalletSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Wallet
+     */
+    omit?: WalletOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: WalletInclude<ExtArgs> | null
+    where?: WalletWhereInput
+    orderBy?: WalletOrderByWithRelationInput | WalletOrderByWithRelationInput[]
+    cursor?: WalletWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: WalletScalarFieldEnum | WalletScalarFieldEnum[]
+  }
+
+  /**
+   * Currency.paymentChannels
+   */
+  export type Currency$paymentChannelsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PaymentChannel
+     */
+    select?: PaymentChannelSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PaymentChannel
+     */
+    omit?: PaymentChannelOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PaymentChannelInclude<ExtArgs> | null
+    where?: PaymentChannelWhereInput
+    orderBy?: PaymentChannelOrderByWithRelationInput | PaymentChannelOrderByWithRelationInput[]
+    cursor?: PaymentChannelWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: PaymentChannelScalarFieldEnum | PaymentChannelScalarFieldEnum[]
+  }
+
+  /**
    * Currency without action
    */
   export type CurrencyDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -6366,6 +6550,1145 @@ export namespace Prisma {
      * Choose, which related nodes to fetch as well
      */
     include?: CurrencyInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model CurrencyPair
+   */
+
+  export type AggregateCurrencyPair = {
+    _count: CurrencyPairCountAggregateOutputType | null
+    _avg: CurrencyPairAvgAggregateOutputType | null
+    _sum: CurrencyPairSumAggregateOutputType | null
+    _min: CurrencyPairMinAggregateOutputType | null
+    _max: CurrencyPairMaxAggregateOutputType | null
+  }
+
+  export type CurrencyPairAvgAggregateOutputType = {
+    rate: Decimal | null
+  }
+
+  export type CurrencyPairSumAggregateOutputType = {
+    rate: Decimal | null
+  }
+
+  export type CurrencyPairMinAggregateOutputType = {
+    id: string | null
+    fromCurrencyId: string | null
+    toCurrencyId: string | null
+    rate: Decimal | null
+    isInverseRate: boolean | null
+    isActive: boolean | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type CurrencyPairMaxAggregateOutputType = {
+    id: string | null
+    fromCurrencyId: string | null
+    toCurrencyId: string | null
+    rate: Decimal | null
+    isInverseRate: boolean | null
+    isActive: boolean | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type CurrencyPairCountAggregateOutputType = {
+    id: number
+    fromCurrencyId: number
+    toCurrencyId: number
+    rate: number
+    isInverseRate: number
+    isActive: number
+    createdAt: number
+    updatedAt: number
+    _all: number
+  }
+
+
+  export type CurrencyPairAvgAggregateInputType = {
+    rate?: true
+  }
+
+  export type CurrencyPairSumAggregateInputType = {
+    rate?: true
+  }
+
+  export type CurrencyPairMinAggregateInputType = {
+    id?: true
+    fromCurrencyId?: true
+    toCurrencyId?: true
+    rate?: true
+    isInverseRate?: true
+    isActive?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type CurrencyPairMaxAggregateInputType = {
+    id?: true
+    fromCurrencyId?: true
+    toCurrencyId?: true
+    rate?: true
+    isInverseRate?: true
+    isActive?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type CurrencyPairCountAggregateInputType = {
+    id?: true
+    fromCurrencyId?: true
+    toCurrencyId?: true
+    rate?: true
+    isInverseRate?: true
+    isActive?: true
+    createdAt?: true
+    updatedAt?: true
+    _all?: true
+  }
+
+  export type CurrencyPairAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which CurrencyPair to aggregate.
+     */
+    where?: CurrencyPairWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of CurrencyPairs to fetch.
+     */
+    orderBy?: CurrencyPairOrderByWithRelationInput | CurrencyPairOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: CurrencyPairWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` CurrencyPairs from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` CurrencyPairs.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned CurrencyPairs
+    **/
+    _count?: true | CurrencyPairCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: CurrencyPairAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: CurrencyPairSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: CurrencyPairMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: CurrencyPairMaxAggregateInputType
+  }
+
+  export type GetCurrencyPairAggregateType<T extends CurrencyPairAggregateArgs> = {
+        [P in keyof T & keyof AggregateCurrencyPair]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateCurrencyPair[P]>
+      : GetScalarType<T[P], AggregateCurrencyPair[P]>
+  }
+
+
+
+
+  export type CurrencyPairGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: CurrencyPairWhereInput
+    orderBy?: CurrencyPairOrderByWithAggregationInput | CurrencyPairOrderByWithAggregationInput[]
+    by: CurrencyPairScalarFieldEnum[] | CurrencyPairScalarFieldEnum
+    having?: CurrencyPairScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: CurrencyPairCountAggregateInputType | true
+    _avg?: CurrencyPairAvgAggregateInputType
+    _sum?: CurrencyPairSumAggregateInputType
+    _min?: CurrencyPairMinAggregateInputType
+    _max?: CurrencyPairMaxAggregateInputType
+  }
+
+  export type CurrencyPairGroupByOutputType = {
+    id: string
+    fromCurrencyId: string
+    toCurrencyId: string
+    rate: Decimal
+    isInverseRate: boolean
+    isActive: boolean
+    createdAt: Date
+    updatedAt: Date
+    _count: CurrencyPairCountAggregateOutputType | null
+    _avg: CurrencyPairAvgAggregateOutputType | null
+    _sum: CurrencyPairSumAggregateOutputType | null
+    _min: CurrencyPairMinAggregateOutputType | null
+    _max: CurrencyPairMaxAggregateOutputType | null
+  }
+
+  type GetCurrencyPairGroupByPayload<T extends CurrencyPairGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<CurrencyPairGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof CurrencyPairGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], CurrencyPairGroupByOutputType[P]>
+            : GetScalarType<T[P], CurrencyPairGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type CurrencyPairSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    fromCurrencyId?: boolean
+    toCurrencyId?: boolean
+    rate?: boolean
+    isInverseRate?: boolean
+    isActive?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    fromCurrency?: boolean | CurrencyDefaultArgs<ExtArgs>
+    toCurrency?: boolean | CurrencyDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["currencyPair"]>
+
+  export type CurrencyPairSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    fromCurrencyId?: boolean
+    toCurrencyId?: boolean
+    rate?: boolean
+    isInverseRate?: boolean
+    isActive?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    fromCurrency?: boolean | CurrencyDefaultArgs<ExtArgs>
+    toCurrency?: boolean | CurrencyDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["currencyPair"]>
+
+  export type CurrencyPairSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    fromCurrencyId?: boolean
+    toCurrencyId?: boolean
+    rate?: boolean
+    isInverseRate?: boolean
+    isActive?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    fromCurrency?: boolean | CurrencyDefaultArgs<ExtArgs>
+    toCurrency?: boolean | CurrencyDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["currencyPair"]>
+
+  export type CurrencyPairSelectScalar = {
+    id?: boolean
+    fromCurrencyId?: boolean
+    toCurrencyId?: boolean
+    rate?: boolean
+    isInverseRate?: boolean
+    isActive?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }
+
+  export type CurrencyPairOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "fromCurrencyId" | "toCurrencyId" | "rate" | "isInverseRate" | "isActive" | "createdAt" | "updatedAt", ExtArgs["result"]["currencyPair"]>
+  export type CurrencyPairInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    fromCurrency?: boolean | CurrencyDefaultArgs<ExtArgs>
+    toCurrency?: boolean | CurrencyDefaultArgs<ExtArgs>
+  }
+  export type CurrencyPairIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    fromCurrency?: boolean | CurrencyDefaultArgs<ExtArgs>
+    toCurrency?: boolean | CurrencyDefaultArgs<ExtArgs>
+  }
+  export type CurrencyPairIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    fromCurrency?: boolean | CurrencyDefaultArgs<ExtArgs>
+    toCurrency?: boolean | CurrencyDefaultArgs<ExtArgs>
+  }
+
+  export type $CurrencyPairPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "CurrencyPair"
+    objects: {
+      fromCurrency: Prisma.$CurrencyPayload<ExtArgs>
+      toCurrency: Prisma.$CurrencyPayload<ExtArgs>
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      fromCurrencyId: string
+      toCurrencyId: string
+      rate: Prisma.Decimal
+      isInverseRate: boolean
+      isActive: boolean
+      createdAt: Date
+      updatedAt: Date
+    }, ExtArgs["result"]["currencyPair"]>
+    composites: {}
+  }
+
+  type CurrencyPairGetPayload<S extends boolean | null | undefined | CurrencyPairDefaultArgs> = $Result.GetResult<Prisma.$CurrencyPairPayload, S>
+
+  type CurrencyPairCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<CurrencyPairFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: CurrencyPairCountAggregateInputType | true
+    }
+
+  export interface CurrencyPairDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['CurrencyPair'], meta: { name: 'CurrencyPair' } }
+    /**
+     * Find zero or one CurrencyPair that matches the filter.
+     * @param {CurrencyPairFindUniqueArgs} args - Arguments to find a CurrencyPair
+     * @example
+     * // Get one CurrencyPair
+     * const currencyPair = await prisma.currencyPair.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends CurrencyPairFindUniqueArgs>(args: SelectSubset<T, CurrencyPairFindUniqueArgs<ExtArgs>>): Prisma__CurrencyPairClient<$Result.GetResult<Prisma.$CurrencyPairPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one CurrencyPair that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {CurrencyPairFindUniqueOrThrowArgs} args - Arguments to find a CurrencyPair
+     * @example
+     * // Get one CurrencyPair
+     * const currencyPair = await prisma.currencyPair.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends CurrencyPairFindUniqueOrThrowArgs>(args: SelectSubset<T, CurrencyPairFindUniqueOrThrowArgs<ExtArgs>>): Prisma__CurrencyPairClient<$Result.GetResult<Prisma.$CurrencyPairPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first CurrencyPair that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {CurrencyPairFindFirstArgs} args - Arguments to find a CurrencyPair
+     * @example
+     * // Get one CurrencyPair
+     * const currencyPair = await prisma.currencyPair.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends CurrencyPairFindFirstArgs>(args?: SelectSubset<T, CurrencyPairFindFirstArgs<ExtArgs>>): Prisma__CurrencyPairClient<$Result.GetResult<Prisma.$CurrencyPairPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first CurrencyPair that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {CurrencyPairFindFirstOrThrowArgs} args - Arguments to find a CurrencyPair
+     * @example
+     * // Get one CurrencyPair
+     * const currencyPair = await prisma.currencyPair.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends CurrencyPairFindFirstOrThrowArgs>(args?: SelectSubset<T, CurrencyPairFindFirstOrThrowArgs<ExtArgs>>): Prisma__CurrencyPairClient<$Result.GetResult<Prisma.$CurrencyPairPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more CurrencyPairs that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {CurrencyPairFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all CurrencyPairs
+     * const currencyPairs = await prisma.currencyPair.findMany()
+     * 
+     * // Get first 10 CurrencyPairs
+     * const currencyPairs = await prisma.currencyPair.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const currencyPairWithIdOnly = await prisma.currencyPair.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends CurrencyPairFindManyArgs>(args?: SelectSubset<T, CurrencyPairFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$CurrencyPairPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a CurrencyPair.
+     * @param {CurrencyPairCreateArgs} args - Arguments to create a CurrencyPair.
+     * @example
+     * // Create one CurrencyPair
+     * const CurrencyPair = await prisma.currencyPair.create({
+     *   data: {
+     *     // ... data to create a CurrencyPair
+     *   }
+     * })
+     * 
+     */
+    create<T extends CurrencyPairCreateArgs>(args: SelectSubset<T, CurrencyPairCreateArgs<ExtArgs>>): Prisma__CurrencyPairClient<$Result.GetResult<Prisma.$CurrencyPairPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many CurrencyPairs.
+     * @param {CurrencyPairCreateManyArgs} args - Arguments to create many CurrencyPairs.
+     * @example
+     * // Create many CurrencyPairs
+     * const currencyPair = await prisma.currencyPair.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends CurrencyPairCreateManyArgs>(args?: SelectSubset<T, CurrencyPairCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many CurrencyPairs and returns the data saved in the database.
+     * @param {CurrencyPairCreateManyAndReturnArgs} args - Arguments to create many CurrencyPairs.
+     * @example
+     * // Create many CurrencyPairs
+     * const currencyPair = await prisma.currencyPair.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many CurrencyPairs and only return the `id`
+     * const currencyPairWithIdOnly = await prisma.currencyPair.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends CurrencyPairCreateManyAndReturnArgs>(args?: SelectSubset<T, CurrencyPairCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$CurrencyPairPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a CurrencyPair.
+     * @param {CurrencyPairDeleteArgs} args - Arguments to delete one CurrencyPair.
+     * @example
+     * // Delete one CurrencyPair
+     * const CurrencyPair = await prisma.currencyPair.delete({
+     *   where: {
+     *     // ... filter to delete one CurrencyPair
+     *   }
+     * })
+     * 
+     */
+    delete<T extends CurrencyPairDeleteArgs>(args: SelectSubset<T, CurrencyPairDeleteArgs<ExtArgs>>): Prisma__CurrencyPairClient<$Result.GetResult<Prisma.$CurrencyPairPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one CurrencyPair.
+     * @param {CurrencyPairUpdateArgs} args - Arguments to update one CurrencyPair.
+     * @example
+     * // Update one CurrencyPair
+     * const currencyPair = await prisma.currencyPair.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends CurrencyPairUpdateArgs>(args: SelectSubset<T, CurrencyPairUpdateArgs<ExtArgs>>): Prisma__CurrencyPairClient<$Result.GetResult<Prisma.$CurrencyPairPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more CurrencyPairs.
+     * @param {CurrencyPairDeleteManyArgs} args - Arguments to filter CurrencyPairs to delete.
+     * @example
+     * // Delete a few CurrencyPairs
+     * const { count } = await prisma.currencyPair.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends CurrencyPairDeleteManyArgs>(args?: SelectSubset<T, CurrencyPairDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more CurrencyPairs.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {CurrencyPairUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many CurrencyPairs
+     * const currencyPair = await prisma.currencyPair.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends CurrencyPairUpdateManyArgs>(args: SelectSubset<T, CurrencyPairUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more CurrencyPairs and returns the data updated in the database.
+     * @param {CurrencyPairUpdateManyAndReturnArgs} args - Arguments to update many CurrencyPairs.
+     * @example
+     * // Update many CurrencyPairs
+     * const currencyPair = await prisma.currencyPair.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more CurrencyPairs and only return the `id`
+     * const currencyPairWithIdOnly = await prisma.currencyPair.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends CurrencyPairUpdateManyAndReturnArgs>(args: SelectSubset<T, CurrencyPairUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$CurrencyPairPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one CurrencyPair.
+     * @param {CurrencyPairUpsertArgs} args - Arguments to update or create a CurrencyPair.
+     * @example
+     * // Update or create a CurrencyPair
+     * const currencyPair = await prisma.currencyPair.upsert({
+     *   create: {
+     *     // ... data to create a CurrencyPair
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the CurrencyPair we want to update
+     *   }
+     * })
+     */
+    upsert<T extends CurrencyPairUpsertArgs>(args: SelectSubset<T, CurrencyPairUpsertArgs<ExtArgs>>): Prisma__CurrencyPairClient<$Result.GetResult<Prisma.$CurrencyPairPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of CurrencyPairs.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {CurrencyPairCountArgs} args - Arguments to filter CurrencyPairs to count.
+     * @example
+     * // Count the number of CurrencyPairs
+     * const count = await prisma.currencyPair.count({
+     *   where: {
+     *     // ... the filter for the CurrencyPairs we want to count
+     *   }
+     * })
+    **/
+    count<T extends CurrencyPairCountArgs>(
+      args?: Subset<T, CurrencyPairCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], CurrencyPairCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a CurrencyPair.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {CurrencyPairAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends CurrencyPairAggregateArgs>(args: Subset<T, CurrencyPairAggregateArgs>): Prisma.PrismaPromise<GetCurrencyPairAggregateType<T>>
+
+    /**
+     * Group by CurrencyPair.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {CurrencyPairGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends CurrencyPairGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: CurrencyPairGroupByArgs['orderBy'] }
+        : { orderBy?: CurrencyPairGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, CurrencyPairGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetCurrencyPairGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the CurrencyPair model
+   */
+  readonly fields: CurrencyPairFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for CurrencyPair.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__CurrencyPairClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    fromCurrency<T extends CurrencyDefaultArgs<ExtArgs> = {}>(args?: Subset<T, CurrencyDefaultArgs<ExtArgs>>): Prisma__CurrencyClient<$Result.GetResult<Prisma.$CurrencyPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    toCurrency<T extends CurrencyDefaultArgs<ExtArgs> = {}>(args?: Subset<T, CurrencyDefaultArgs<ExtArgs>>): Prisma__CurrencyClient<$Result.GetResult<Prisma.$CurrencyPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the CurrencyPair model
+   */
+  interface CurrencyPairFieldRefs {
+    readonly id: FieldRef<"CurrencyPair", 'String'>
+    readonly fromCurrencyId: FieldRef<"CurrencyPair", 'String'>
+    readonly toCurrencyId: FieldRef<"CurrencyPair", 'String'>
+    readonly rate: FieldRef<"CurrencyPair", 'Decimal'>
+    readonly isInverseRate: FieldRef<"CurrencyPair", 'Boolean'>
+    readonly isActive: FieldRef<"CurrencyPair", 'Boolean'>
+    readonly createdAt: FieldRef<"CurrencyPair", 'DateTime'>
+    readonly updatedAt: FieldRef<"CurrencyPair", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * CurrencyPair findUnique
+   */
+  export type CurrencyPairFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CurrencyPair
+     */
+    select?: CurrencyPairSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CurrencyPair
+     */
+    omit?: CurrencyPairOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CurrencyPairInclude<ExtArgs> | null
+    /**
+     * Filter, which CurrencyPair to fetch.
+     */
+    where: CurrencyPairWhereUniqueInput
+  }
+
+  /**
+   * CurrencyPair findUniqueOrThrow
+   */
+  export type CurrencyPairFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CurrencyPair
+     */
+    select?: CurrencyPairSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CurrencyPair
+     */
+    omit?: CurrencyPairOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CurrencyPairInclude<ExtArgs> | null
+    /**
+     * Filter, which CurrencyPair to fetch.
+     */
+    where: CurrencyPairWhereUniqueInput
+  }
+
+  /**
+   * CurrencyPair findFirst
+   */
+  export type CurrencyPairFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CurrencyPair
+     */
+    select?: CurrencyPairSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CurrencyPair
+     */
+    omit?: CurrencyPairOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CurrencyPairInclude<ExtArgs> | null
+    /**
+     * Filter, which CurrencyPair to fetch.
+     */
+    where?: CurrencyPairWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of CurrencyPairs to fetch.
+     */
+    orderBy?: CurrencyPairOrderByWithRelationInput | CurrencyPairOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for CurrencyPairs.
+     */
+    cursor?: CurrencyPairWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` CurrencyPairs from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` CurrencyPairs.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of CurrencyPairs.
+     */
+    distinct?: CurrencyPairScalarFieldEnum | CurrencyPairScalarFieldEnum[]
+  }
+
+  /**
+   * CurrencyPair findFirstOrThrow
+   */
+  export type CurrencyPairFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CurrencyPair
+     */
+    select?: CurrencyPairSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CurrencyPair
+     */
+    omit?: CurrencyPairOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CurrencyPairInclude<ExtArgs> | null
+    /**
+     * Filter, which CurrencyPair to fetch.
+     */
+    where?: CurrencyPairWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of CurrencyPairs to fetch.
+     */
+    orderBy?: CurrencyPairOrderByWithRelationInput | CurrencyPairOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for CurrencyPairs.
+     */
+    cursor?: CurrencyPairWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` CurrencyPairs from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` CurrencyPairs.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of CurrencyPairs.
+     */
+    distinct?: CurrencyPairScalarFieldEnum | CurrencyPairScalarFieldEnum[]
+  }
+
+  /**
+   * CurrencyPair findMany
+   */
+  export type CurrencyPairFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CurrencyPair
+     */
+    select?: CurrencyPairSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CurrencyPair
+     */
+    omit?: CurrencyPairOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CurrencyPairInclude<ExtArgs> | null
+    /**
+     * Filter, which CurrencyPairs to fetch.
+     */
+    where?: CurrencyPairWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of CurrencyPairs to fetch.
+     */
+    orderBy?: CurrencyPairOrderByWithRelationInput | CurrencyPairOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing CurrencyPairs.
+     */
+    cursor?: CurrencyPairWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` CurrencyPairs from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` CurrencyPairs.
+     */
+    skip?: number
+    distinct?: CurrencyPairScalarFieldEnum | CurrencyPairScalarFieldEnum[]
+  }
+
+  /**
+   * CurrencyPair create
+   */
+  export type CurrencyPairCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CurrencyPair
+     */
+    select?: CurrencyPairSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CurrencyPair
+     */
+    omit?: CurrencyPairOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CurrencyPairInclude<ExtArgs> | null
+    /**
+     * The data needed to create a CurrencyPair.
+     */
+    data: XOR<CurrencyPairCreateInput, CurrencyPairUncheckedCreateInput>
+  }
+
+  /**
+   * CurrencyPair createMany
+   */
+  export type CurrencyPairCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many CurrencyPairs.
+     */
+    data: CurrencyPairCreateManyInput | CurrencyPairCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * CurrencyPair createManyAndReturn
+   */
+  export type CurrencyPairCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CurrencyPair
+     */
+    select?: CurrencyPairSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the CurrencyPair
+     */
+    omit?: CurrencyPairOmit<ExtArgs> | null
+    /**
+     * The data used to create many CurrencyPairs.
+     */
+    data: CurrencyPairCreateManyInput | CurrencyPairCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CurrencyPairIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * CurrencyPair update
+   */
+  export type CurrencyPairUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CurrencyPair
+     */
+    select?: CurrencyPairSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CurrencyPair
+     */
+    omit?: CurrencyPairOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CurrencyPairInclude<ExtArgs> | null
+    /**
+     * The data needed to update a CurrencyPair.
+     */
+    data: XOR<CurrencyPairUpdateInput, CurrencyPairUncheckedUpdateInput>
+    /**
+     * Choose, which CurrencyPair to update.
+     */
+    where: CurrencyPairWhereUniqueInput
+  }
+
+  /**
+   * CurrencyPair updateMany
+   */
+  export type CurrencyPairUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update CurrencyPairs.
+     */
+    data: XOR<CurrencyPairUpdateManyMutationInput, CurrencyPairUncheckedUpdateManyInput>
+    /**
+     * Filter which CurrencyPairs to update
+     */
+    where?: CurrencyPairWhereInput
+    /**
+     * Limit how many CurrencyPairs to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * CurrencyPair updateManyAndReturn
+   */
+  export type CurrencyPairUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CurrencyPair
+     */
+    select?: CurrencyPairSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the CurrencyPair
+     */
+    omit?: CurrencyPairOmit<ExtArgs> | null
+    /**
+     * The data used to update CurrencyPairs.
+     */
+    data: XOR<CurrencyPairUpdateManyMutationInput, CurrencyPairUncheckedUpdateManyInput>
+    /**
+     * Filter which CurrencyPairs to update
+     */
+    where?: CurrencyPairWhereInput
+    /**
+     * Limit how many CurrencyPairs to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CurrencyPairIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * CurrencyPair upsert
+   */
+  export type CurrencyPairUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CurrencyPair
+     */
+    select?: CurrencyPairSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CurrencyPair
+     */
+    omit?: CurrencyPairOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CurrencyPairInclude<ExtArgs> | null
+    /**
+     * The filter to search for the CurrencyPair to update in case it exists.
+     */
+    where: CurrencyPairWhereUniqueInput
+    /**
+     * In case the CurrencyPair found by the `where` argument doesn't exist, create a new CurrencyPair with this data.
+     */
+    create: XOR<CurrencyPairCreateInput, CurrencyPairUncheckedCreateInput>
+    /**
+     * In case the CurrencyPair was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<CurrencyPairUpdateInput, CurrencyPairUncheckedUpdateInput>
+  }
+
+  /**
+   * CurrencyPair delete
+   */
+  export type CurrencyPairDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CurrencyPair
+     */
+    select?: CurrencyPairSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CurrencyPair
+     */
+    omit?: CurrencyPairOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CurrencyPairInclude<ExtArgs> | null
+    /**
+     * Filter which CurrencyPair to delete.
+     */
+    where: CurrencyPairWhereUniqueInput
+  }
+
+  /**
+   * CurrencyPair deleteMany
+   */
+  export type CurrencyPairDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which CurrencyPairs to delete
+     */
+    where?: CurrencyPairWhereInput
+    /**
+     * Limit how many CurrencyPairs to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * CurrencyPair without action
+   */
+  export type CurrencyPairDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CurrencyPair
+     */
+    select?: CurrencyPairSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CurrencyPair
+     */
+    omit?: CurrencyPairOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CurrencyPairInclude<ExtArgs> | null
   }
 
 
@@ -6399,6 +7722,7 @@ export namespace Prisma {
     balance: Decimal | null
     frozen: Decimal | null
     updatedAt: Date | null
+    userId: string | null
   }
 
   export type LiquidityPoolMaxAggregateOutputType = {
@@ -6409,6 +7733,7 @@ export namespace Prisma {
     balance: Decimal | null
     frozen: Decimal | null
     updatedAt: Date | null
+    userId: string | null
   }
 
   export type LiquidityPoolCountAggregateOutputType = {
@@ -6419,6 +7744,7 @@ export namespace Prisma {
     balance: number
     frozen: number
     updatedAt: number
+    userId: number
     _all: number
   }
 
@@ -6441,6 +7767,7 @@ export namespace Prisma {
     balance?: true
     frozen?: true
     updatedAt?: true
+    userId?: true
   }
 
   export type LiquidityPoolMaxAggregateInputType = {
@@ -6451,6 +7778,7 @@ export namespace Prisma {
     balance?: true
     frozen?: true
     updatedAt?: true
+    userId?: true
   }
 
   export type LiquidityPoolCountAggregateInputType = {
@@ -6461,6 +7789,7 @@ export namespace Prisma {
     balance?: true
     frozen?: true
     updatedAt?: true
+    userId?: true
     _all?: true
   }
 
@@ -6558,6 +7887,7 @@ export namespace Prisma {
     balance: Decimal
     frozen: Decimal
     updatedAt: Date
+    userId: string
     _count: LiquidityPoolCountAggregateOutputType | null
     _avg: LiquidityPoolAvgAggregateOutputType | null
     _sum: LiquidityPoolSumAggregateOutputType | null
@@ -6587,8 +7917,12 @@ export namespace Prisma {
     balance?: boolean
     frozen?: boolean
     updatedAt?: boolean
-    paymentChannel?: boolean | PaymentChannelDefaultArgs<ExtArgs>
+    userId?: boolean
+    BridgeTransfer?: boolean | LiquidityPool$BridgeTransferArgs<ExtArgs>
     currency?: boolean | CurrencyDefaultArgs<ExtArgs>
+    paymentChannel?: boolean | PaymentChannelDefaultArgs<ExtArgs>
+    user?: boolean | UserDefaultArgs<ExtArgs>
+    _count?: boolean | LiquidityPoolCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["liquidityPool"]>
 
   export type LiquidityPoolSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -6599,8 +7933,10 @@ export namespace Prisma {
     balance?: boolean
     frozen?: boolean
     updatedAt?: boolean
-    paymentChannel?: boolean | PaymentChannelDefaultArgs<ExtArgs>
+    userId?: boolean
     currency?: boolean | CurrencyDefaultArgs<ExtArgs>
+    paymentChannel?: boolean | PaymentChannelDefaultArgs<ExtArgs>
+    user?: boolean | UserDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["liquidityPool"]>
 
   export type LiquidityPoolSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -6611,8 +7947,10 @@ export namespace Prisma {
     balance?: boolean
     frozen?: boolean
     updatedAt?: boolean
-    paymentChannel?: boolean | PaymentChannelDefaultArgs<ExtArgs>
+    userId?: boolean
     currency?: boolean | CurrencyDefaultArgs<ExtArgs>
+    paymentChannel?: boolean | PaymentChannelDefaultArgs<ExtArgs>
+    user?: boolean | UserDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["liquidityPool"]>
 
   export type LiquidityPoolSelectScalar = {
@@ -6623,27 +7961,35 @@ export namespace Prisma {
     balance?: boolean
     frozen?: boolean
     updatedAt?: boolean
+    userId?: boolean
   }
 
-  export type LiquidityPoolOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "paymentChannelId" | "currencyId" | "address" | "balance" | "frozen" | "updatedAt", ExtArgs["result"]["liquidityPool"]>
+  export type LiquidityPoolOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "paymentChannelId" | "currencyId" | "address" | "balance" | "frozen" | "updatedAt" | "userId", ExtArgs["result"]["liquidityPool"]>
   export type LiquidityPoolInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    paymentChannel?: boolean | PaymentChannelDefaultArgs<ExtArgs>
+    BridgeTransfer?: boolean | LiquidityPool$BridgeTransferArgs<ExtArgs>
     currency?: boolean | CurrencyDefaultArgs<ExtArgs>
+    paymentChannel?: boolean | PaymentChannelDefaultArgs<ExtArgs>
+    user?: boolean | UserDefaultArgs<ExtArgs>
+    _count?: boolean | LiquidityPoolCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type LiquidityPoolIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    paymentChannel?: boolean | PaymentChannelDefaultArgs<ExtArgs>
     currency?: boolean | CurrencyDefaultArgs<ExtArgs>
+    paymentChannel?: boolean | PaymentChannelDefaultArgs<ExtArgs>
+    user?: boolean | UserDefaultArgs<ExtArgs>
   }
   export type LiquidityPoolIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    paymentChannel?: boolean | PaymentChannelDefaultArgs<ExtArgs>
     currency?: boolean | CurrencyDefaultArgs<ExtArgs>
+    paymentChannel?: boolean | PaymentChannelDefaultArgs<ExtArgs>
+    user?: boolean | UserDefaultArgs<ExtArgs>
   }
 
   export type $LiquidityPoolPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "LiquidityPool"
     objects: {
-      paymentChannel: Prisma.$PaymentChannelPayload<ExtArgs>
+      BridgeTransfer: Prisma.$BridgeTransferPayload<ExtArgs>[]
       currency: Prisma.$CurrencyPayload<ExtArgs>
+      paymentChannel: Prisma.$PaymentChannelPayload<ExtArgs>
+      user: Prisma.$UserPayload<ExtArgs>
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -6653,6 +7999,7 @@ export namespace Prisma {
       balance: Prisma.Decimal
       frozen: Prisma.Decimal
       updatedAt: Date
+      userId: string
     }, ExtArgs["result"]["liquidityPool"]>
     composites: {}
   }
@@ -7047,8 +8394,10 @@ export namespace Prisma {
    */
   export interface Prisma__LiquidityPoolClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
-    paymentChannel<T extends PaymentChannelDefaultArgs<ExtArgs> = {}>(args?: Subset<T, PaymentChannelDefaultArgs<ExtArgs>>): Prisma__PaymentChannelClient<$Result.GetResult<Prisma.$PaymentChannelPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    BridgeTransfer<T extends LiquidityPool$BridgeTransferArgs<ExtArgs> = {}>(args?: Subset<T, LiquidityPool$BridgeTransferArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$BridgeTransferPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     currency<T extends CurrencyDefaultArgs<ExtArgs> = {}>(args?: Subset<T, CurrencyDefaultArgs<ExtArgs>>): Prisma__CurrencyClient<$Result.GetResult<Prisma.$CurrencyPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    paymentChannel<T extends PaymentChannelDefaultArgs<ExtArgs> = {}>(args?: Subset<T, PaymentChannelDefaultArgs<ExtArgs>>): Prisma__PaymentChannelClient<$Result.GetResult<Prisma.$PaymentChannelPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    user<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -7085,6 +8434,7 @@ export namespace Prisma {
     readonly balance: FieldRef<"LiquidityPool", 'Decimal'>
     readonly frozen: FieldRef<"LiquidityPool", 'Decimal'>
     readonly updatedAt: FieldRef<"LiquidityPool", 'DateTime'>
+    readonly userId: FieldRef<"LiquidityPool", 'String'>
   }
     
 
@@ -7481,6 +8831,30 @@ export namespace Prisma {
   }
 
   /**
+   * LiquidityPool.BridgeTransfer
+   */
+  export type LiquidityPool$BridgeTransferArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the BridgeTransfer
+     */
+    select?: BridgeTransferSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the BridgeTransfer
+     */
+    omit?: BridgeTransferOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: BridgeTransferInclude<ExtArgs> | null
+    where?: BridgeTransferWhereInput
+    orderBy?: BridgeTransferOrderByWithRelationInput | BridgeTransferOrderByWithRelationInput[]
+    cursor?: BridgeTransferWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: BridgeTransferScalarFieldEnum | BridgeTransferScalarFieldEnum[]
+  }
+
+  /**
    * LiquidityPool without action
    */
   export type LiquidityPoolDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -7717,13 +9091,13 @@ export namespace Prisma {
     frozen?: boolean
     createdAt?: boolean
     updatedAt?: boolean
-    user?: boolean | UserDefaultArgs<ExtArgs>
-    currency?: boolean | CurrencyDefaultArgs<ExtArgs>
     deposits?: boolean | Wallet$depositsArgs<ExtArgs>
-    withdrawals?: boolean | Wallet$withdrawalsArgs<ExtArgs>
     Refund?: boolean | Wallet$RefundArgs<ExtArgs>
     transfersFrom?: boolean | Wallet$transfersFromArgs<ExtArgs>
     transfersTo?: boolean | Wallet$transfersToArgs<ExtArgs>
+    currency?: boolean | CurrencyDefaultArgs<ExtArgs>
+    user?: boolean | UserDefaultArgs<ExtArgs>
+    withdrawals?: boolean | Wallet$withdrawalsArgs<ExtArgs>
     _count?: boolean | WalletCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["wallet"]>
 
@@ -7735,8 +9109,8 @@ export namespace Prisma {
     frozen?: boolean
     createdAt?: boolean
     updatedAt?: boolean
-    user?: boolean | UserDefaultArgs<ExtArgs>
     currency?: boolean | CurrencyDefaultArgs<ExtArgs>
+    user?: boolean | UserDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["wallet"]>
 
   export type WalletSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -7747,8 +9121,8 @@ export namespace Prisma {
     frozen?: boolean
     createdAt?: boolean
     updatedAt?: boolean
-    user?: boolean | UserDefaultArgs<ExtArgs>
     currency?: boolean | CurrencyDefaultArgs<ExtArgs>
+    user?: boolean | UserDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["wallet"]>
 
   export type WalletSelectScalar = {
@@ -7763,34 +9137,34 @@ export namespace Prisma {
 
   export type WalletOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "userId" | "currencyId" | "balance" | "frozen" | "createdAt" | "updatedAt", ExtArgs["result"]["wallet"]>
   export type WalletInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    user?: boolean | UserDefaultArgs<ExtArgs>
-    currency?: boolean | CurrencyDefaultArgs<ExtArgs>
     deposits?: boolean | Wallet$depositsArgs<ExtArgs>
-    withdrawals?: boolean | Wallet$withdrawalsArgs<ExtArgs>
     Refund?: boolean | Wallet$RefundArgs<ExtArgs>
     transfersFrom?: boolean | Wallet$transfersFromArgs<ExtArgs>
     transfersTo?: boolean | Wallet$transfersToArgs<ExtArgs>
+    currency?: boolean | CurrencyDefaultArgs<ExtArgs>
+    user?: boolean | UserDefaultArgs<ExtArgs>
+    withdrawals?: boolean | Wallet$withdrawalsArgs<ExtArgs>
     _count?: boolean | WalletCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type WalletIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    user?: boolean | UserDefaultArgs<ExtArgs>
     currency?: boolean | CurrencyDefaultArgs<ExtArgs>
+    user?: boolean | UserDefaultArgs<ExtArgs>
   }
   export type WalletIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    user?: boolean | UserDefaultArgs<ExtArgs>
     currency?: boolean | CurrencyDefaultArgs<ExtArgs>
+    user?: boolean | UserDefaultArgs<ExtArgs>
   }
 
   export type $WalletPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "Wallet"
     objects: {
-      user: Prisma.$UserPayload<ExtArgs>
-      currency: Prisma.$CurrencyPayload<ExtArgs>
       deposits: Prisma.$DepositPayload<ExtArgs>[]
-      withdrawals: Prisma.$WithdrawalPayload<ExtArgs>[]
       Refund: Prisma.$RefundPayload<ExtArgs>[]
       transfersFrom: Prisma.$TransferPayload<ExtArgs>[]
       transfersTo: Prisma.$TransferPayload<ExtArgs>[]
+      currency: Prisma.$CurrencyPayload<ExtArgs>
+      user: Prisma.$UserPayload<ExtArgs>
+      withdrawals: Prisma.$WithdrawalPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -8194,13 +9568,13 @@ export namespace Prisma {
    */
   export interface Prisma__WalletClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
-    user<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
-    currency<T extends CurrencyDefaultArgs<ExtArgs> = {}>(args?: Subset<T, CurrencyDefaultArgs<ExtArgs>>): Prisma__CurrencyClient<$Result.GetResult<Prisma.$CurrencyPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     deposits<T extends Wallet$depositsArgs<ExtArgs> = {}>(args?: Subset<T, Wallet$depositsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$DepositPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
-    withdrawals<T extends Wallet$withdrawalsArgs<ExtArgs> = {}>(args?: Subset<T, Wallet$withdrawalsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$WithdrawalPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     Refund<T extends Wallet$RefundArgs<ExtArgs> = {}>(args?: Subset<T, Wallet$RefundArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$RefundPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     transfersFrom<T extends Wallet$transfersFromArgs<ExtArgs> = {}>(args?: Subset<T, Wallet$transfersFromArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$TransferPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     transfersTo<T extends Wallet$transfersToArgs<ExtArgs> = {}>(args?: Subset<T, Wallet$transfersToArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$TransferPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    currency<T extends CurrencyDefaultArgs<ExtArgs> = {}>(args?: Subset<T, CurrencyDefaultArgs<ExtArgs>>): Prisma__CurrencyClient<$Result.GetResult<Prisma.$CurrencyPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    user<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    withdrawals<T extends Wallet$withdrawalsArgs<ExtArgs> = {}>(args?: Subset<T, Wallet$withdrawalsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$WithdrawalPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -8657,30 +10031,6 @@ export namespace Prisma {
   }
 
   /**
-   * Wallet.withdrawals
-   */
-  export type Wallet$withdrawalsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the Withdrawal
-     */
-    select?: WithdrawalSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the Withdrawal
-     */
-    omit?: WithdrawalOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: WithdrawalInclude<ExtArgs> | null
-    where?: WithdrawalWhereInput
-    orderBy?: WithdrawalOrderByWithRelationInput | WithdrawalOrderByWithRelationInput[]
-    cursor?: WithdrawalWhereUniqueInput
-    take?: number
-    skip?: number
-    distinct?: WithdrawalScalarFieldEnum | WithdrawalScalarFieldEnum[]
-  }
-
-  /**
    * Wallet.Refund
    */
   export type Wallet$RefundArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -8753,6 +10103,30 @@ export namespace Prisma {
   }
 
   /**
+   * Wallet.withdrawals
+   */
+  export type Wallet$withdrawalsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Withdrawal
+     */
+    select?: WithdrawalSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Withdrawal
+     */
+    omit?: WithdrawalOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: WithdrawalInclude<ExtArgs> | null
+    where?: WithdrawalWhereInput
+    orderBy?: WithdrawalOrderByWithRelationInput | WithdrawalOrderByWithRelationInput[]
+    cursor?: WithdrawalWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: WithdrawalScalarFieldEnum | WithdrawalScalarFieldEnum[]
+  }
+
+  /**
    * Wallet without action
    */
   export type WalletDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -8805,7 +10179,7 @@ export namespace Prisma {
     completedAt: Date | null
     failedAt: Date | null
     paymentChannelId: string | null
-    bridgeTransferid: string | null
+    documentUrl: string | null
   }
 
   export type DepositMaxAggregateOutputType = {
@@ -8820,7 +10194,7 @@ export namespace Prisma {
     completedAt: Date | null
     failedAt: Date | null
     paymentChannelId: string | null
-    bridgeTransferid: string | null
+    documentUrl: string | null
   }
 
   export type DepositCountAggregateOutputType = {
@@ -8835,7 +10209,7 @@ export namespace Prisma {
     completedAt: number
     failedAt: number
     paymentChannelId: number
-    bridgeTransferid: number
+    documentUrl: number
     _all: number
   }
 
@@ -8862,7 +10236,7 @@ export namespace Prisma {
     completedAt?: true
     failedAt?: true
     paymentChannelId?: true
-    bridgeTransferid?: true
+    documentUrl?: true
   }
 
   export type DepositMaxAggregateInputType = {
@@ -8877,7 +10251,7 @@ export namespace Prisma {
     completedAt?: true
     failedAt?: true
     paymentChannelId?: true
-    bridgeTransferid?: true
+    documentUrl?: true
   }
 
   export type DepositCountAggregateInputType = {
@@ -8892,7 +10266,7 @@ export namespace Prisma {
     completedAt?: true
     failedAt?: true
     paymentChannelId?: true
-    bridgeTransferid?: true
+    documentUrl?: true
     _all?: true
   }
 
@@ -8994,7 +10368,7 @@ export namespace Prisma {
     completedAt: Date | null
     failedAt: Date | null
     paymentChannelId: string
-    bridgeTransferid: string | null
+    documentUrl: string | null
     _count: DepositCountAggregateOutputType | null
     _avg: DepositAvgAggregateOutputType | null
     _sum: DepositSumAggregateOutputType | null
@@ -9028,9 +10402,9 @@ export namespace Prisma {
     completedAt?: boolean
     failedAt?: boolean
     paymentChannelId?: boolean
-    bridgeTransferid?: boolean
+    documentUrl?: boolean
+    BridgeTransfer?: boolean | Deposit$BridgeTransferArgs<ExtArgs>
     paymentChannel?: boolean | PaymentChannelDefaultArgs<ExtArgs>
-    bridgeTransfer?: boolean | Deposit$bridgeTransferArgs<ExtArgs>
     user?: boolean | UserDefaultArgs<ExtArgs>
     wallet?: boolean | WalletDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["deposit"]>
@@ -9047,9 +10421,8 @@ export namespace Prisma {
     completedAt?: boolean
     failedAt?: boolean
     paymentChannelId?: boolean
-    bridgeTransferid?: boolean
+    documentUrl?: boolean
     paymentChannel?: boolean | PaymentChannelDefaultArgs<ExtArgs>
-    bridgeTransfer?: boolean | Deposit$bridgeTransferArgs<ExtArgs>
     user?: boolean | UserDefaultArgs<ExtArgs>
     wallet?: boolean | WalletDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["deposit"]>
@@ -9066,9 +10439,8 @@ export namespace Prisma {
     completedAt?: boolean
     failedAt?: boolean
     paymentChannelId?: boolean
-    bridgeTransferid?: boolean
+    documentUrl?: boolean
     paymentChannel?: boolean | PaymentChannelDefaultArgs<ExtArgs>
-    bridgeTransfer?: boolean | Deposit$bridgeTransferArgs<ExtArgs>
     user?: boolean | UserDefaultArgs<ExtArgs>
     wallet?: boolean | WalletDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["deposit"]>
@@ -9085,25 +10457,23 @@ export namespace Prisma {
     completedAt?: boolean
     failedAt?: boolean
     paymentChannelId?: boolean
-    bridgeTransferid?: boolean
+    documentUrl?: boolean
   }
 
-  export type DepositOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "userId" | "walletId" | "amount" | "fee" | "status" | "reference" | "createdAt" | "completedAt" | "failedAt" | "paymentChannelId" | "bridgeTransferid", ExtArgs["result"]["deposit"]>
+  export type DepositOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "userId" | "walletId" | "amount" | "fee" | "status" | "reference" | "createdAt" | "completedAt" | "failedAt" | "paymentChannelId" | "documentUrl", ExtArgs["result"]["deposit"]>
   export type DepositInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    BridgeTransfer?: boolean | Deposit$BridgeTransferArgs<ExtArgs>
     paymentChannel?: boolean | PaymentChannelDefaultArgs<ExtArgs>
-    bridgeTransfer?: boolean | Deposit$bridgeTransferArgs<ExtArgs>
     user?: boolean | UserDefaultArgs<ExtArgs>
     wallet?: boolean | WalletDefaultArgs<ExtArgs>
   }
   export type DepositIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     paymentChannel?: boolean | PaymentChannelDefaultArgs<ExtArgs>
-    bridgeTransfer?: boolean | Deposit$bridgeTransferArgs<ExtArgs>
     user?: boolean | UserDefaultArgs<ExtArgs>
     wallet?: boolean | WalletDefaultArgs<ExtArgs>
   }
   export type DepositIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     paymentChannel?: boolean | PaymentChannelDefaultArgs<ExtArgs>
-    bridgeTransfer?: boolean | Deposit$bridgeTransferArgs<ExtArgs>
     user?: boolean | UserDefaultArgs<ExtArgs>
     wallet?: boolean | WalletDefaultArgs<ExtArgs>
   }
@@ -9111,8 +10481,8 @@ export namespace Prisma {
   export type $DepositPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "Deposit"
     objects: {
+      BridgeTransfer: Prisma.$BridgeTransferPayload<ExtArgs> | null
       paymentChannel: Prisma.$PaymentChannelPayload<ExtArgs>
-      bridgeTransfer: Prisma.$BridgeTransferPayload<ExtArgs> | null
       user: Prisma.$UserPayload<ExtArgs>
       wallet: Prisma.$WalletPayload<ExtArgs>
     }
@@ -9128,7 +10498,7 @@ export namespace Prisma {
       completedAt: Date | null
       failedAt: Date | null
       paymentChannelId: string
-      bridgeTransferid: string | null
+      documentUrl: string | null
     }, ExtArgs["result"]["deposit"]>
     composites: {}
   }
@@ -9523,8 +10893,8 @@ export namespace Prisma {
    */
   export interface Prisma__DepositClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
+    BridgeTransfer<T extends Deposit$BridgeTransferArgs<ExtArgs> = {}>(args?: Subset<T, Deposit$BridgeTransferArgs<ExtArgs>>): Prisma__BridgeTransferClient<$Result.GetResult<Prisma.$BridgeTransferPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     paymentChannel<T extends PaymentChannelDefaultArgs<ExtArgs> = {}>(args?: Subset<T, PaymentChannelDefaultArgs<ExtArgs>>): Prisma__PaymentChannelClient<$Result.GetResult<Prisma.$PaymentChannelPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
-    bridgeTransfer<T extends Deposit$bridgeTransferArgs<ExtArgs> = {}>(args?: Subset<T, Deposit$bridgeTransferArgs<ExtArgs>>): Prisma__BridgeTransferClient<$Result.GetResult<Prisma.$BridgeTransferPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     user<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     wallet<T extends WalletDefaultArgs<ExtArgs> = {}>(args?: Subset<T, WalletDefaultArgs<ExtArgs>>): Prisma__WalletClient<$Result.GetResult<Prisma.$WalletPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     /**
@@ -9567,7 +10937,7 @@ export namespace Prisma {
     readonly completedAt: FieldRef<"Deposit", 'DateTime'>
     readonly failedAt: FieldRef<"Deposit", 'DateTime'>
     readonly paymentChannelId: FieldRef<"Deposit", 'String'>
-    readonly bridgeTransferid: FieldRef<"Deposit", 'String'>
+    readonly documentUrl: FieldRef<"Deposit", 'String'>
   }
     
 
@@ -9964,9 +11334,9 @@ export namespace Prisma {
   }
 
   /**
-   * Deposit.bridgeTransfer
+   * Deposit.BridgeTransfer
    */
-  export type Deposit$bridgeTransferArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type Deposit$BridgeTransferArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
      * Select specific fields to fetch from the BridgeTransfer
      */
@@ -10035,7 +11405,9 @@ export namespace Prisma {
     completedAt: Date | null
     failedAt: Date | null
     paymentChannelId: string | null
-    bridgeTransferid: string | null
+    bridgeTransferId: string | null
+    receiverAddress: string | null
+    addressOwnerName: string | null
   }
 
   export type WithdrawalMaxAggregateOutputType = {
@@ -10050,7 +11422,9 @@ export namespace Prisma {
     completedAt: Date | null
     failedAt: Date | null
     paymentChannelId: string | null
-    bridgeTransferid: string | null
+    bridgeTransferId: string | null
+    receiverAddress: string | null
+    addressOwnerName: string | null
   }
 
   export type WithdrawalCountAggregateOutputType = {
@@ -10065,7 +11439,9 @@ export namespace Prisma {
     completedAt: number
     failedAt: number
     paymentChannelId: number
-    bridgeTransferid: number
+    bridgeTransferId: number
+    receiverAddress: number
+    addressOwnerName: number
     _all: number
   }
 
@@ -10092,7 +11468,9 @@ export namespace Prisma {
     completedAt?: true
     failedAt?: true
     paymentChannelId?: true
-    bridgeTransferid?: true
+    bridgeTransferId?: true
+    receiverAddress?: true
+    addressOwnerName?: true
   }
 
   export type WithdrawalMaxAggregateInputType = {
@@ -10107,7 +11485,9 @@ export namespace Prisma {
     completedAt?: true
     failedAt?: true
     paymentChannelId?: true
-    bridgeTransferid?: true
+    bridgeTransferId?: true
+    receiverAddress?: true
+    addressOwnerName?: true
   }
 
   export type WithdrawalCountAggregateInputType = {
@@ -10122,7 +11502,9 @@ export namespace Prisma {
     completedAt?: true
     failedAt?: true
     paymentChannelId?: true
-    bridgeTransferid?: true
+    bridgeTransferId?: true
+    receiverAddress?: true
+    addressOwnerName?: true
     _all?: true
   }
 
@@ -10224,7 +11606,9 @@ export namespace Prisma {
     completedAt: Date | null
     failedAt: Date | null
     paymentChannelId: string
-    bridgeTransferid: string | null
+    bridgeTransferId: string | null
+    receiverAddress: string
+    addressOwnerName: string
     _count: WithdrawalCountAggregateOutputType | null
     _avg: WithdrawalAvgAggregateOutputType | null
     _sum: WithdrawalSumAggregateOutputType | null
@@ -10258,9 +11642,11 @@ export namespace Prisma {
     completedAt?: boolean
     failedAt?: boolean
     paymentChannelId?: boolean
-    bridgeTransferid?: boolean
+    bridgeTransferId?: boolean
+    receiverAddress?: boolean
+    addressOwnerName?: boolean
+    BridgeTransfer?: boolean | Withdrawal$BridgeTransferArgs<ExtArgs>
     paymentChannel?: boolean | PaymentChannelDefaultArgs<ExtArgs>
-    bridgeTransfer?: boolean | Withdrawal$bridgeTransferArgs<ExtArgs>
     user?: boolean | UserDefaultArgs<ExtArgs>
     wallet?: boolean | WalletDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["withdrawal"]>
@@ -10277,9 +11663,10 @@ export namespace Prisma {
     completedAt?: boolean
     failedAt?: boolean
     paymentChannelId?: boolean
-    bridgeTransferid?: boolean
+    bridgeTransferId?: boolean
+    receiverAddress?: boolean
+    addressOwnerName?: boolean
     paymentChannel?: boolean | PaymentChannelDefaultArgs<ExtArgs>
-    bridgeTransfer?: boolean | Withdrawal$bridgeTransferArgs<ExtArgs>
     user?: boolean | UserDefaultArgs<ExtArgs>
     wallet?: boolean | WalletDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["withdrawal"]>
@@ -10296,9 +11683,10 @@ export namespace Prisma {
     completedAt?: boolean
     failedAt?: boolean
     paymentChannelId?: boolean
-    bridgeTransferid?: boolean
+    bridgeTransferId?: boolean
+    receiverAddress?: boolean
+    addressOwnerName?: boolean
     paymentChannel?: boolean | PaymentChannelDefaultArgs<ExtArgs>
-    bridgeTransfer?: boolean | Withdrawal$bridgeTransferArgs<ExtArgs>
     user?: boolean | UserDefaultArgs<ExtArgs>
     wallet?: boolean | WalletDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["withdrawal"]>
@@ -10315,25 +11703,25 @@ export namespace Prisma {
     completedAt?: boolean
     failedAt?: boolean
     paymentChannelId?: boolean
-    bridgeTransferid?: boolean
+    bridgeTransferId?: boolean
+    receiverAddress?: boolean
+    addressOwnerName?: boolean
   }
 
-  export type WithdrawalOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "userId" | "walletId" | "amount" | "fee" | "status" | "reference" | "createdAt" | "completedAt" | "failedAt" | "paymentChannelId" | "bridgeTransferid", ExtArgs["result"]["withdrawal"]>
+  export type WithdrawalOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "userId" | "walletId" | "amount" | "fee" | "status" | "reference" | "createdAt" | "completedAt" | "failedAt" | "paymentChannelId" | "bridgeTransferId" | "receiverAddress" | "addressOwnerName", ExtArgs["result"]["withdrawal"]>
   export type WithdrawalInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    BridgeTransfer?: boolean | Withdrawal$BridgeTransferArgs<ExtArgs>
     paymentChannel?: boolean | PaymentChannelDefaultArgs<ExtArgs>
-    bridgeTransfer?: boolean | Withdrawal$bridgeTransferArgs<ExtArgs>
     user?: boolean | UserDefaultArgs<ExtArgs>
     wallet?: boolean | WalletDefaultArgs<ExtArgs>
   }
   export type WithdrawalIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     paymentChannel?: boolean | PaymentChannelDefaultArgs<ExtArgs>
-    bridgeTransfer?: boolean | Withdrawal$bridgeTransferArgs<ExtArgs>
     user?: boolean | UserDefaultArgs<ExtArgs>
     wallet?: boolean | WalletDefaultArgs<ExtArgs>
   }
   export type WithdrawalIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     paymentChannel?: boolean | PaymentChannelDefaultArgs<ExtArgs>
-    bridgeTransfer?: boolean | Withdrawal$bridgeTransferArgs<ExtArgs>
     user?: boolean | UserDefaultArgs<ExtArgs>
     wallet?: boolean | WalletDefaultArgs<ExtArgs>
   }
@@ -10341,8 +11729,8 @@ export namespace Prisma {
   export type $WithdrawalPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "Withdrawal"
     objects: {
+      BridgeTransfer: Prisma.$BridgeTransferPayload<ExtArgs> | null
       paymentChannel: Prisma.$PaymentChannelPayload<ExtArgs>
-      bridgeTransfer: Prisma.$BridgeTransferPayload<ExtArgs> | null
       user: Prisma.$UserPayload<ExtArgs>
       wallet: Prisma.$WalletPayload<ExtArgs>
     }
@@ -10358,7 +11746,9 @@ export namespace Prisma {
       completedAt: Date | null
       failedAt: Date | null
       paymentChannelId: string
-      bridgeTransferid: string | null
+      bridgeTransferId: string | null
+      receiverAddress: string
+      addressOwnerName: string
     }, ExtArgs["result"]["withdrawal"]>
     composites: {}
   }
@@ -10753,8 +12143,8 @@ export namespace Prisma {
    */
   export interface Prisma__WithdrawalClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
+    BridgeTransfer<T extends Withdrawal$BridgeTransferArgs<ExtArgs> = {}>(args?: Subset<T, Withdrawal$BridgeTransferArgs<ExtArgs>>): Prisma__BridgeTransferClient<$Result.GetResult<Prisma.$BridgeTransferPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     paymentChannel<T extends PaymentChannelDefaultArgs<ExtArgs> = {}>(args?: Subset<T, PaymentChannelDefaultArgs<ExtArgs>>): Prisma__PaymentChannelClient<$Result.GetResult<Prisma.$PaymentChannelPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
-    bridgeTransfer<T extends Withdrawal$bridgeTransferArgs<ExtArgs> = {}>(args?: Subset<T, Withdrawal$bridgeTransferArgs<ExtArgs>>): Prisma__BridgeTransferClient<$Result.GetResult<Prisma.$BridgeTransferPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     user<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     wallet<T extends WalletDefaultArgs<ExtArgs> = {}>(args?: Subset<T, WalletDefaultArgs<ExtArgs>>): Prisma__WalletClient<$Result.GetResult<Prisma.$WalletPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     /**
@@ -10797,7 +12187,9 @@ export namespace Prisma {
     readonly completedAt: FieldRef<"Withdrawal", 'DateTime'>
     readonly failedAt: FieldRef<"Withdrawal", 'DateTime'>
     readonly paymentChannelId: FieldRef<"Withdrawal", 'String'>
-    readonly bridgeTransferid: FieldRef<"Withdrawal", 'String'>
+    readonly bridgeTransferId: FieldRef<"Withdrawal", 'String'>
+    readonly receiverAddress: FieldRef<"Withdrawal", 'String'>
+    readonly addressOwnerName: FieldRef<"Withdrawal", 'String'>
   }
     
 
@@ -11194,9 +12586,9 @@ export namespace Prisma {
   }
 
   /**
-   * Withdrawal.bridgeTransfer
+   * Withdrawal.BridgeTransfer
    */
-  export type Withdrawal$bridgeTransferArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type Withdrawal$BridgeTransferArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
      * Select specific fields to fetch from the BridgeTransfer
      */
@@ -11237,76 +12629,100 @@ export namespace Prisma {
 
   export type AggregateBridgeTransfer = {
     _count: BridgeTransferCountAggregateOutputType | null
+    _avg: BridgeTransferAvgAggregateOutputType | null
+    _sum: BridgeTransferSumAggregateOutputType | null
     _min: BridgeTransferMinAggregateOutputType | null
     _max: BridgeTransferMaxAggregateOutputType | null
   }
 
+  export type BridgeTransferAvgAggregateOutputType = {
+    amount: Decimal | null
+  }
+
+  export type BridgeTransferSumAggregateOutputType = {
+    amount: Decimal | null
+  }
+
   export type BridgeTransferMinAggregateOutputType = {
     id: string | null
-    depositId: string | null
-    withdrawalId: string | null
-    channelId: string | null
     status: $Enums.BridgeStatus | null
     createdAt: Date | null
     completedAt: Date | null
     failedAt: Date | null
+    depositId: string | null
+    withdrawalId: string | null
+    liquidityPoolId: string | null
+    amount: Decimal | null
   }
 
   export type BridgeTransferMaxAggregateOutputType = {
     id: string | null
-    depositId: string | null
-    withdrawalId: string | null
-    channelId: string | null
     status: $Enums.BridgeStatus | null
     createdAt: Date | null
     completedAt: Date | null
     failedAt: Date | null
+    depositId: string | null
+    withdrawalId: string | null
+    liquidityPoolId: string | null
+    amount: Decimal | null
   }
 
   export type BridgeTransferCountAggregateOutputType = {
     id: number
-    depositId: number
-    withdrawalId: number
-    channelId: number
     status: number
     createdAt: number
     completedAt: number
     failedAt: number
+    depositId: number
+    withdrawalId: number
+    liquidityPoolId: number
+    amount: number
     _all: number
   }
 
 
+  export type BridgeTransferAvgAggregateInputType = {
+    amount?: true
+  }
+
+  export type BridgeTransferSumAggregateInputType = {
+    amount?: true
+  }
+
   export type BridgeTransferMinAggregateInputType = {
     id?: true
-    depositId?: true
-    withdrawalId?: true
-    channelId?: true
     status?: true
     createdAt?: true
     completedAt?: true
     failedAt?: true
+    depositId?: true
+    withdrawalId?: true
+    liquidityPoolId?: true
+    amount?: true
   }
 
   export type BridgeTransferMaxAggregateInputType = {
     id?: true
-    depositId?: true
-    withdrawalId?: true
-    channelId?: true
     status?: true
     createdAt?: true
     completedAt?: true
     failedAt?: true
+    depositId?: true
+    withdrawalId?: true
+    liquidityPoolId?: true
+    amount?: true
   }
 
   export type BridgeTransferCountAggregateInputType = {
     id?: true
-    depositId?: true
-    withdrawalId?: true
-    channelId?: true
     status?: true
     createdAt?: true
     completedAt?: true
     failedAt?: true
+    depositId?: true
+    withdrawalId?: true
+    liquidityPoolId?: true
+    amount?: true
     _all?: true
   }
 
@@ -11348,6 +12764,18 @@ export namespace Prisma {
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
      * 
+     * Select which fields to average
+    **/
+    _avg?: BridgeTransferAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: BridgeTransferSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
      * Select which fields to find the minimum value
     **/
     _min?: BridgeTransferMinAggregateInputType
@@ -11378,20 +12806,25 @@ export namespace Prisma {
     take?: number
     skip?: number
     _count?: BridgeTransferCountAggregateInputType | true
+    _avg?: BridgeTransferAvgAggregateInputType
+    _sum?: BridgeTransferSumAggregateInputType
     _min?: BridgeTransferMinAggregateInputType
     _max?: BridgeTransferMaxAggregateInputType
   }
 
   export type BridgeTransferGroupByOutputType = {
     id: string
-    depositId: string
-    withdrawalId: string
-    channelId: string
     status: $Enums.BridgeStatus
     createdAt: Date
     completedAt: Date | null
     failedAt: Date | null
+    depositId: string | null
+    withdrawalId: string | null
+    liquidityPoolId: string | null
+    amount: Decimal
     _count: BridgeTransferCountAggregateOutputType | null
+    _avg: BridgeTransferAvgAggregateOutputType | null
+    _sum: BridgeTransferSumAggregateOutputType | null
     _min: BridgeTransferMinAggregateOutputType | null
     _max: BridgeTransferMaxAggregateOutputType | null
   }
@@ -11412,84 +12845,95 @@ export namespace Prisma {
 
   export type BridgeTransferSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
-    depositId?: boolean
-    withdrawalId?: boolean
-    channelId?: boolean
     status?: boolean
     createdAt?: boolean
     completedAt?: boolean
     failedAt?: boolean
-    paymentChannel?: boolean | PaymentChannelDefaultArgs<ExtArgs>
-    Deposit?: boolean | BridgeTransfer$DepositArgs<ExtArgs>
-    Withdrawal?: boolean | BridgeTransfer$WithdrawalArgs<ExtArgs>
-    _count?: boolean | BridgeTransferCountOutputTypeDefaultArgs<ExtArgs>
+    depositId?: boolean
+    withdrawalId?: boolean
+    liquidityPoolId?: boolean
+    amount?: boolean
+    deposit?: boolean | BridgeTransfer$depositArgs<ExtArgs>
+    liquidityPool?: boolean | BridgeTransfer$liquidityPoolArgs<ExtArgs>
+    withdrawal?: boolean | BridgeTransfer$withdrawalArgs<ExtArgs>
   }, ExtArgs["result"]["bridgeTransfer"]>
 
   export type BridgeTransferSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
-    depositId?: boolean
-    withdrawalId?: boolean
-    channelId?: boolean
     status?: boolean
     createdAt?: boolean
     completedAt?: boolean
     failedAt?: boolean
-    paymentChannel?: boolean | PaymentChannelDefaultArgs<ExtArgs>
+    depositId?: boolean
+    withdrawalId?: boolean
+    liquidityPoolId?: boolean
+    amount?: boolean
+    deposit?: boolean | BridgeTransfer$depositArgs<ExtArgs>
+    liquidityPool?: boolean | BridgeTransfer$liquidityPoolArgs<ExtArgs>
+    withdrawal?: boolean | BridgeTransfer$withdrawalArgs<ExtArgs>
   }, ExtArgs["result"]["bridgeTransfer"]>
 
   export type BridgeTransferSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
-    depositId?: boolean
-    withdrawalId?: boolean
-    channelId?: boolean
     status?: boolean
     createdAt?: boolean
     completedAt?: boolean
     failedAt?: boolean
-    paymentChannel?: boolean | PaymentChannelDefaultArgs<ExtArgs>
+    depositId?: boolean
+    withdrawalId?: boolean
+    liquidityPoolId?: boolean
+    amount?: boolean
+    deposit?: boolean | BridgeTransfer$depositArgs<ExtArgs>
+    liquidityPool?: boolean | BridgeTransfer$liquidityPoolArgs<ExtArgs>
+    withdrawal?: boolean | BridgeTransfer$withdrawalArgs<ExtArgs>
   }, ExtArgs["result"]["bridgeTransfer"]>
 
   export type BridgeTransferSelectScalar = {
     id?: boolean
-    depositId?: boolean
-    withdrawalId?: boolean
-    channelId?: boolean
     status?: boolean
     createdAt?: boolean
     completedAt?: boolean
     failedAt?: boolean
+    depositId?: boolean
+    withdrawalId?: boolean
+    liquidityPoolId?: boolean
+    amount?: boolean
   }
 
-  export type BridgeTransferOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "depositId" | "withdrawalId" | "channelId" | "status" | "createdAt" | "completedAt" | "failedAt", ExtArgs["result"]["bridgeTransfer"]>
+  export type BridgeTransferOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "status" | "createdAt" | "completedAt" | "failedAt" | "depositId" | "withdrawalId" | "liquidityPoolId" | "amount", ExtArgs["result"]["bridgeTransfer"]>
   export type BridgeTransferInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    paymentChannel?: boolean | PaymentChannelDefaultArgs<ExtArgs>
-    Deposit?: boolean | BridgeTransfer$DepositArgs<ExtArgs>
-    Withdrawal?: boolean | BridgeTransfer$WithdrawalArgs<ExtArgs>
-    _count?: boolean | BridgeTransferCountOutputTypeDefaultArgs<ExtArgs>
+    deposit?: boolean | BridgeTransfer$depositArgs<ExtArgs>
+    liquidityPool?: boolean | BridgeTransfer$liquidityPoolArgs<ExtArgs>
+    withdrawal?: boolean | BridgeTransfer$withdrawalArgs<ExtArgs>
   }
   export type BridgeTransferIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    paymentChannel?: boolean | PaymentChannelDefaultArgs<ExtArgs>
+    deposit?: boolean | BridgeTransfer$depositArgs<ExtArgs>
+    liquidityPool?: boolean | BridgeTransfer$liquidityPoolArgs<ExtArgs>
+    withdrawal?: boolean | BridgeTransfer$withdrawalArgs<ExtArgs>
   }
   export type BridgeTransferIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    paymentChannel?: boolean | PaymentChannelDefaultArgs<ExtArgs>
+    deposit?: boolean | BridgeTransfer$depositArgs<ExtArgs>
+    liquidityPool?: boolean | BridgeTransfer$liquidityPoolArgs<ExtArgs>
+    withdrawal?: boolean | BridgeTransfer$withdrawalArgs<ExtArgs>
   }
 
   export type $BridgeTransferPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "BridgeTransfer"
     objects: {
-      paymentChannel: Prisma.$PaymentChannelPayload<ExtArgs>
-      Deposit: Prisma.$DepositPayload<ExtArgs>[]
-      Withdrawal: Prisma.$WithdrawalPayload<ExtArgs>[]
+      deposit: Prisma.$DepositPayload<ExtArgs> | null
+      liquidityPool: Prisma.$LiquidityPoolPayload<ExtArgs> | null
+      withdrawal: Prisma.$WithdrawalPayload<ExtArgs> | null
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
-      depositId: string
-      withdrawalId: string
-      channelId: string
       status: $Enums.BridgeStatus
       createdAt: Date
       completedAt: Date | null
       failedAt: Date | null
+      depositId: string | null
+      withdrawalId: string | null
+      liquidityPoolId: string | null
+      amount: Prisma.Decimal
     }, ExtArgs["result"]["bridgeTransfer"]>
     composites: {}
   }
@@ -11884,9 +13328,9 @@ export namespace Prisma {
    */
   export interface Prisma__BridgeTransferClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
-    paymentChannel<T extends PaymentChannelDefaultArgs<ExtArgs> = {}>(args?: Subset<T, PaymentChannelDefaultArgs<ExtArgs>>): Prisma__PaymentChannelClient<$Result.GetResult<Prisma.$PaymentChannelPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
-    Deposit<T extends BridgeTransfer$DepositArgs<ExtArgs> = {}>(args?: Subset<T, BridgeTransfer$DepositArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$DepositPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
-    Withdrawal<T extends BridgeTransfer$WithdrawalArgs<ExtArgs> = {}>(args?: Subset<T, BridgeTransfer$WithdrawalArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$WithdrawalPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    deposit<T extends BridgeTransfer$depositArgs<ExtArgs> = {}>(args?: Subset<T, BridgeTransfer$depositArgs<ExtArgs>>): Prisma__DepositClient<$Result.GetResult<Prisma.$DepositPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    liquidityPool<T extends BridgeTransfer$liquidityPoolArgs<ExtArgs> = {}>(args?: Subset<T, BridgeTransfer$liquidityPoolArgs<ExtArgs>>): Prisma__LiquidityPoolClient<$Result.GetResult<Prisma.$LiquidityPoolPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    withdrawal<T extends BridgeTransfer$withdrawalArgs<ExtArgs> = {}>(args?: Subset<T, BridgeTransfer$withdrawalArgs<ExtArgs>>): Prisma__WithdrawalClient<$Result.GetResult<Prisma.$WithdrawalPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -11917,13 +13361,14 @@ export namespace Prisma {
    */
   interface BridgeTransferFieldRefs {
     readonly id: FieldRef<"BridgeTransfer", 'String'>
-    readonly depositId: FieldRef<"BridgeTransfer", 'String'>
-    readonly withdrawalId: FieldRef<"BridgeTransfer", 'String'>
-    readonly channelId: FieldRef<"BridgeTransfer", 'String'>
     readonly status: FieldRef<"BridgeTransfer", 'BridgeStatus'>
     readonly createdAt: FieldRef<"BridgeTransfer", 'DateTime'>
     readonly completedAt: FieldRef<"BridgeTransfer", 'DateTime'>
     readonly failedAt: FieldRef<"BridgeTransfer", 'DateTime'>
+    readonly depositId: FieldRef<"BridgeTransfer", 'String'>
+    readonly withdrawalId: FieldRef<"BridgeTransfer", 'String'>
+    readonly liquidityPoolId: FieldRef<"BridgeTransfer", 'String'>
+    readonly amount: FieldRef<"BridgeTransfer", 'Decimal'>
   }
     
 
@@ -12142,7 +13587,7 @@ export namespace Prisma {
     /**
      * The data needed to create a BridgeTransfer.
      */
-    data: XOR<BridgeTransferCreateInput, BridgeTransferUncheckedCreateInput>
+    data?: XOR<BridgeTransferCreateInput, BridgeTransferUncheckedCreateInput>
   }
 
   /**
@@ -12320,9 +13765,9 @@ export namespace Prisma {
   }
 
   /**
-   * BridgeTransfer.Deposit
+   * BridgeTransfer.deposit
    */
-  export type BridgeTransfer$DepositArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type BridgeTransfer$depositArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
      * Select specific fields to fetch from the Deposit
      */
@@ -12336,17 +13781,31 @@ export namespace Prisma {
      */
     include?: DepositInclude<ExtArgs> | null
     where?: DepositWhereInput
-    orderBy?: DepositOrderByWithRelationInput | DepositOrderByWithRelationInput[]
-    cursor?: DepositWhereUniqueInput
-    take?: number
-    skip?: number
-    distinct?: DepositScalarFieldEnum | DepositScalarFieldEnum[]
   }
 
   /**
-   * BridgeTransfer.Withdrawal
+   * BridgeTransfer.liquidityPool
    */
-  export type BridgeTransfer$WithdrawalArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type BridgeTransfer$liquidityPoolArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the LiquidityPool
+     */
+    select?: LiquidityPoolSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the LiquidityPool
+     */
+    omit?: LiquidityPoolOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: LiquidityPoolInclude<ExtArgs> | null
+    where?: LiquidityPoolWhereInput
+  }
+
+  /**
+   * BridgeTransfer.withdrawal
+   */
+  export type BridgeTransfer$withdrawalArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
      * Select specific fields to fetch from the Withdrawal
      */
@@ -12360,11 +13819,6 @@ export namespace Prisma {
      */
     include?: WithdrawalInclude<ExtArgs> | null
     where?: WithdrawalWhereInput
-    orderBy?: WithdrawalOrderByWithRelationInput | WithdrawalOrderByWithRelationInput[]
-    cursor?: WithdrawalWhereUniqueInput
-    take?: number
-    skip?: number
-    distinct?: WithdrawalScalarFieldEnum | WithdrawalScalarFieldEnum[]
   }
 
   /**
@@ -12628,9 +14082,9 @@ export namespace Prisma {
     createdAt?: boolean
     completedAt?: boolean
     failedAt?: boolean
-    User?: boolean | Transfer$UserArgs<ExtArgs>
     fromWallet?: boolean | WalletDefaultArgs<ExtArgs>
     toWallet?: boolean | WalletDefaultArgs<ExtArgs>
+    User?: boolean | Transfer$UserArgs<ExtArgs>
     _count?: boolean | TransferCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["transfer"]>
 
@@ -12679,9 +14133,9 @@ export namespace Prisma {
 
   export type TransferOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "fromWalletId" | "toWalletId" | "amount" | "fee" | "status" | "note" | "createdAt" | "completedAt" | "failedAt", ExtArgs["result"]["transfer"]>
   export type TransferInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    User?: boolean | Transfer$UserArgs<ExtArgs>
     fromWallet?: boolean | WalletDefaultArgs<ExtArgs>
     toWallet?: boolean | WalletDefaultArgs<ExtArgs>
+    User?: boolean | Transfer$UserArgs<ExtArgs>
     _count?: boolean | TransferCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type TransferIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -12696,9 +14150,9 @@ export namespace Prisma {
   export type $TransferPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "Transfer"
     objects: {
-      User: Prisma.$UserPayload<ExtArgs>[]
       fromWallet: Prisma.$WalletPayload<ExtArgs>
       toWallet: Prisma.$WalletPayload<ExtArgs>
+      User: Prisma.$UserPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -13105,9 +14559,9 @@ export namespace Prisma {
    */
   export interface Prisma__TransferClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
-    User<T extends Transfer$UserArgs<ExtArgs> = {}>(args?: Subset<T, Transfer$UserArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     fromWallet<T extends WalletDefaultArgs<ExtArgs> = {}>(args?: Subset<T, WalletDefaultArgs<ExtArgs>>): Prisma__WalletClient<$Result.GetResult<Prisma.$WalletPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     toWallet<T extends WalletDefaultArgs<ExtArgs> = {}>(args?: Subset<T, WalletDefaultArgs<ExtArgs>>): Prisma__WalletClient<$Result.GetResult<Prisma.$WalletPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    User<T extends Transfer$UserArgs<ExtArgs> = {}>(args?: Subset<T, Transfer$UserArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -18258,7 +19712,8 @@ export namespace Prisma {
     role: 'role',
     createdAt: 'createdAt',
     updatedAt: 'updatedAt',
-    deletedAt: 'deletedAt'
+    deletedAt: 'deletedAt',
+    isDeleted: 'isDeleted'
   };
 
   export type UserScalarFieldEnum = (typeof UserScalarFieldEnum)[keyof typeof UserScalarFieldEnum]
@@ -18286,6 +19741,20 @@ export namespace Prisma {
   export type CurrencyScalarFieldEnum = (typeof CurrencyScalarFieldEnum)[keyof typeof CurrencyScalarFieldEnum]
 
 
+  export const CurrencyPairScalarFieldEnum: {
+    id: 'id',
+    fromCurrencyId: 'fromCurrencyId',
+    toCurrencyId: 'toCurrencyId',
+    rate: 'rate',
+    isInverseRate: 'isInverseRate',
+    isActive: 'isActive',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt'
+  };
+
+  export type CurrencyPairScalarFieldEnum = (typeof CurrencyPairScalarFieldEnum)[keyof typeof CurrencyPairScalarFieldEnum]
+
+
   export const LiquidityPoolScalarFieldEnum: {
     id: 'id',
     paymentChannelId: 'paymentChannelId',
@@ -18293,7 +19762,8 @@ export namespace Prisma {
     address: 'address',
     balance: 'balance',
     frozen: 'frozen',
-    updatedAt: 'updatedAt'
+    updatedAt: 'updatedAt',
+    userId: 'userId'
   };
 
   export type LiquidityPoolScalarFieldEnum = (typeof LiquidityPoolScalarFieldEnum)[keyof typeof LiquidityPoolScalarFieldEnum]
@@ -18324,7 +19794,7 @@ export namespace Prisma {
     completedAt: 'completedAt',
     failedAt: 'failedAt',
     paymentChannelId: 'paymentChannelId',
-    bridgeTransferid: 'bridgeTransferid'
+    documentUrl: 'documentUrl'
   };
 
   export type DepositScalarFieldEnum = (typeof DepositScalarFieldEnum)[keyof typeof DepositScalarFieldEnum]
@@ -18342,7 +19812,9 @@ export namespace Prisma {
     completedAt: 'completedAt',
     failedAt: 'failedAt',
     paymentChannelId: 'paymentChannelId',
-    bridgeTransferid: 'bridgeTransferid'
+    bridgeTransferId: 'bridgeTransferId',
+    receiverAddress: 'receiverAddress',
+    addressOwnerName: 'addressOwnerName'
   };
 
   export type WithdrawalScalarFieldEnum = (typeof WithdrawalScalarFieldEnum)[keyof typeof WithdrawalScalarFieldEnum]
@@ -18350,13 +19822,14 @@ export namespace Prisma {
 
   export const BridgeTransferScalarFieldEnum: {
     id: 'id',
-    depositId: 'depositId',
-    withdrawalId: 'withdrawalId',
-    channelId: 'channelId',
     status: 'status',
     createdAt: 'createdAt',
     completedAt: 'completedAt',
-    failedAt: 'failedAt'
+    failedAt: 'failedAt',
+    depositId: 'depositId',
+    withdrawalId: 'withdrawalId',
+    liquidityPoolId: 'liquidityPoolId',
+    amount: 'amount'
   };
 
   export type BridgeTransferScalarFieldEnum = (typeof BridgeTransferScalarFieldEnum)[keyof typeof BridgeTransferScalarFieldEnum]
@@ -18746,13 +20219,15 @@ export namespace Prisma {
     createdAt?: DateTimeFilter<"User"> | Date | string
     updatedAt?: DateTimeFilter<"User"> | Date | string
     deletedAt?: DateTimeNullableFilter<"User"> | Date | string | null
-    wallet?: WalletListRelationFilter
+    isDeleted?: BoolFilter<"User"> | boolean
+    ActivityLog?: ActivityLogListRelationFilter
     deposits?: DepositListRelationFilter
+    initiatedExchanges?: ExchangeListRelationFilter
+    LiquidityPool?: LiquidityPoolListRelationFilter
+    refunds?: RefundListRelationFilter
+    wallet?: WalletListRelationFilter
     withdrawals?: WithdrawalListRelationFilter
     transfers?: TransferListRelationFilter
-    refunds?: RefundListRelationFilter
-    initiatedExchanges?: ExchangeListRelationFilter
-    ActivityLog?: ActivityLogListRelationFilter
   }
 
   export type UserOrderByWithRelationInput = {
@@ -18780,13 +20255,15 @@ export namespace Prisma {
     createdAt?: SortOrder
     updatedAt?: SortOrder
     deletedAt?: SortOrderInput | SortOrder
-    wallet?: WalletOrderByRelationAggregateInput
+    isDeleted?: SortOrder
+    ActivityLog?: ActivityLogOrderByRelationAggregateInput
     deposits?: DepositOrderByRelationAggregateInput
+    initiatedExchanges?: ExchangeOrderByRelationAggregateInput
+    LiquidityPool?: LiquidityPoolOrderByRelationAggregateInput
+    refunds?: RefundOrderByRelationAggregateInput
+    wallet?: WalletOrderByRelationAggregateInput
     withdrawals?: WithdrawalOrderByRelationAggregateInput
     transfers?: TransferOrderByRelationAggregateInput
-    refunds?: RefundOrderByRelationAggregateInput
-    initiatedExchanges?: ExchangeOrderByRelationAggregateInput
-    ActivityLog?: ActivityLogOrderByRelationAggregateInput
   }
 
   export type UserWhereUniqueInput = Prisma.AtLeast<{
@@ -18817,13 +20294,15 @@ export namespace Prisma {
     createdAt?: DateTimeFilter<"User"> | Date | string
     updatedAt?: DateTimeFilter<"User"> | Date | string
     deletedAt?: DateTimeNullableFilter<"User"> | Date | string | null
-    wallet?: WalletListRelationFilter
+    isDeleted?: BoolFilter<"User"> | boolean
+    ActivityLog?: ActivityLogListRelationFilter
     deposits?: DepositListRelationFilter
+    initiatedExchanges?: ExchangeListRelationFilter
+    LiquidityPool?: LiquidityPoolListRelationFilter
+    refunds?: RefundListRelationFilter
+    wallet?: WalletListRelationFilter
     withdrawals?: WithdrawalListRelationFilter
     transfers?: TransferListRelationFilter
-    refunds?: RefundListRelationFilter
-    initiatedExchanges?: ExchangeListRelationFilter
-    ActivityLog?: ActivityLogListRelationFilter
   }, "id" | "email" | "phoneNumber" | "documentNumber">
 
   export type UserOrderByWithAggregationInput = {
@@ -18851,6 +20330,7 @@ export namespace Prisma {
     createdAt?: SortOrder
     updatedAt?: SortOrder
     deletedAt?: SortOrderInput | SortOrder
+    isDeleted?: SortOrder
     _count?: UserCountOrderByAggregateInput
     _max?: UserMaxOrderByAggregateInput
     _min?: UserMinOrderByAggregateInput
@@ -18884,6 +20364,7 @@ export namespace Prisma {
     createdAt?: DateTimeWithAggregatesFilter<"User"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"User"> | Date | string
     deletedAt?: DateTimeNullableWithAggregatesFilter<"User"> | Date | string | null
+    isDeleted?: BoolWithAggregatesFilter<"User"> | boolean
   }
 
   export type PaymentChannelWhereInput = {
@@ -18894,11 +20375,10 @@ export namespace Prisma {
     name?: StringFilter<"PaymentChannel"> | string
     description?: StringNullableFilter<"PaymentChannel"> | string | null
     createdAt?: DateTimeFilter<"PaymentChannel"> | Date | string
-    bridgeTransfers?: XOR<BridgeTransferNullableScalarRelationFilter, BridgeTransferWhereInput> | null
-    currencies?: CurrencyListRelationFilter
     Deposit?: DepositListRelationFilter
-    Withdrawal?: WithdrawalListRelationFilter
     LiquidityPool?: LiquidityPoolListRelationFilter
+    Withdrawal?: WithdrawalListRelationFilter
+    currencies?: CurrencyListRelationFilter
   }
 
   export type PaymentChannelOrderByWithRelationInput = {
@@ -18906,11 +20386,10 @@ export namespace Prisma {
     name?: SortOrder
     description?: SortOrderInput | SortOrder
     createdAt?: SortOrder
-    bridgeTransfers?: BridgeTransferOrderByWithRelationInput
-    currencies?: CurrencyOrderByRelationAggregateInput
     Deposit?: DepositOrderByRelationAggregateInput
-    Withdrawal?: WithdrawalOrderByRelationAggregateInput
     LiquidityPool?: LiquidityPoolOrderByRelationAggregateInput
+    Withdrawal?: WithdrawalOrderByRelationAggregateInput
+    currencies?: CurrencyOrderByRelationAggregateInput
   }
 
   export type PaymentChannelWhereUniqueInput = Prisma.AtLeast<{
@@ -18921,11 +20400,10 @@ export namespace Prisma {
     NOT?: PaymentChannelWhereInput | PaymentChannelWhereInput[]
     description?: StringNullableFilter<"PaymentChannel"> | string | null
     createdAt?: DateTimeFilter<"PaymentChannel"> | Date | string
-    bridgeTransfers?: XOR<BridgeTransferNullableScalarRelationFilter, BridgeTransferWhereInput> | null
-    currencies?: CurrencyListRelationFilter
     Deposit?: DepositListRelationFilter
-    Withdrawal?: WithdrawalListRelationFilter
     LiquidityPool?: LiquidityPoolListRelationFilter
+    Withdrawal?: WithdrawalListRelationFilter
+    currencies?: CurrencyListRelationFilter
   }, "id" | "name">
 
   export type PaymentChannelOrderByWithAggregationInput = {
@@ -18958,12 +20436,14 @@ export namespace Prisma {
     symbol?: StringFilter<"Currency"> | string
     decimals?: IntFilter<"Currency"> | number
     createdAt?: DateTimeFilter<"Currency"> | Date | string
-    wallets?: WalletListRelationFilter
+    FromCurrencyPair?: CurrencyPairListRelationFilter
+    ToCurrencyPair?: CurrencyPairListRelationFilter
     exchangesFrom?: ExchangeListRelationFilter
     exchangesTo?: ExchangeListRelationFilter
     FeeSetting?: FeeSettingListRelationFilter
-    paymentChannels?: PaymentChannelListRelationFilter
     LiquidityPool?: LiquidityPoolListRelationFilter
+    wallets?: WalletListRelationFilter
+    paymentChannels?: PaymentChannelListRelationFilter
   }
 
   export type CurrencyOrderByWithRelationInput = {
@@ -18973,12 +20453,14 @@ export namespace Prisma {
     symbol?: SortOrder
     decimals?: SortOrder
     createdAt?: SortOrder
-    wallets?: WalletOrderByRelationAggregateInput
+    FromCurrencyPair?: CurrencyPairOrderByRelationAggregateInput
+    ToCurrencyPair?: CurrencyPairOrderByRelationAggregateInput
     exchangesFrom?: ExchangeOrderByRelationAggregateInput
     exchangesTo?: ExchangeOrderByRelationAggregateInput
     FeeSetting?: FeeSettingOrderByRelationAggregateInput
-    paymentChannels?: PaymentChannelOrderByRelationAggregateInput
     LiquidityPool?: LiquidityPoolOrderByRelationAggregateInput
+    wallets?: WalletOrderByRelationAggregateInput
+    paymentChannels?: PaymentChannelOrderByRelationAggregateInput
   }
 
   export type CurrencyWhereUniqueInput = Prisma.AtLeast<{
@@ -18991,12 +20473,14 @@ export namespace Prisma {
     symbol?: StringFilter<"Currency"> | string
     decimals?: IntFilter<"Currency"> | number
     createdAt?: DateTimeFilter<"Currency"> | Date | string
-    wallets?: WalletListRelationFilter
+    FromCurrencyPair?: CurrencyPairListRelationFilter
+    ToCurrencyPair?: CurrencyPairListRelationFilter
     exchangesFrom?: ExchangeListRelationFilter
     exchangesTo?: ExchangeListRelationFilter
     FeeSetting?: FeeSettingListRelationFilter
-    paymentChannels?: PaymentChannelListRelationFilter
     LiquidityPool?: LiquidityPoolListRelationFilter
+    wallets?: WalletListRelationFilter
+    paymentChannels?: PaymentChannelListRelationFilter
   }, "id" | "code">
 
   export type CurrencyOrderByWithAggregationInput = {
@@ -19025,6 +20509,82 @@ export namespace Prisma {
     createdAt?: DateTimeWithAggregatesFilter<"Currency"> | Date | string
   }
 
+  export type CurrencyPairWhereInput = {
+    AND?: CurrencyPairWhereInput | CurrencyPairWhereInput[]
+    OR?: CurrencyPairWhereInput[]
+    NOT?: CurrencyPairWhereInput | CurrencyPairWhereInput[]
+    id?: StringFilter<"CurrencyPair"> | string
+    fromCurrencyId?: StringFilter<"CurrencyPair"> | string
+    toCurrencyId?: StringFilter<"CurrencyPair"> | string
+    rate?: DecimalFilter<"CurrencyPair"> | Decimal | DecimalJsLike | number | string
+    isInverseRate?: BoolFilter<"CurrencyPair"> | boolean
+    isActive?: BoolFilter<"CurrencyPair"> | boolean
+    createdAt?: DateTimeFilter<"CurrencyPair"> | Date | string
+    updatedAt?: DateTimeFilter<"CurrencyPair"> | Date | string
+    fromCurrency?: XOR<CurrencyScalarRelationFilter, CurrencyWhereInput>
+    toCurrency?: XOR<CurrencyScalarRelationFilter, CurrencyWhereInput>
+  }
+
+  export type CurrencyPairOrderByWithRelationInput = {
+    id?: SortOrder
+    fromCurrencyId?: SortOrder
+    toCurrencyId?: SortOrder
+    rate?: SortOrder
+    isInverseRate?: SortOrder
+    isActive?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    fromCurrency?: CurrencyOrderByWithRelationInput
+    toCurrency?: CurrencyOrderByWithRelationInput
+  }
+
+  export type CurrencyPairWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    fromCurrencyId_toCurrencyId?: CurrencyPairFromCurrencyIdToCurrencyIdCompoundUniqueInput
+    AND?: CurrencyPairWhereInput | CurrencyPairWhereInput[]
+    OR?: CurrencyPairWhereInput[]
+    NOT?: CurrencyPairWhereInput | CurrencyPairWhereInput[]
+    fromCurrencyId?: StringFilter<"CurrencyPair"> | string
+    toCurrencyId?: StringFilter<"CurrencyPair"> | string
+    rate?: DecimalFilter<"CurrencyPair"> | Decimal | DecimalJsLike | number | string
+    isInverseRate?: BoolFilter<"CurrencyPair"> | boolean
+    isActive?: BoolFilter<"CurrencyPair"> | boolean
+    createdAt?: DateTimeFilter<"CurrencyPair"> | Date | string
+    updatedAt?: DateTimeFilter<"CurrencyPair"> | Date | string
+    fromCurrency?: XOR<CurrencyScalarRelationFilter, CurrencyWhereInput>
+    toCurrency?: XOR<CurrencyScalarRelationFilter, CurrencyWhereInput>
+  }, "id" | "fromCurrencyId_toCurrencyId">
+
+  export type CurrencyPairOrderByWithAggregationInput = {
+    id?: SortOrder
+    fromCurrencyId?: SortOrder
+    toCurrencyId?: SortOrder
+    rate?: SortOrder
+    isInverseRate?: SortOrder
+    isActive?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    _count?: CurrencyPairCountOrderByAggregateInput
+    _avg?: CurrencyPairAvgOrderByAggregateInput
+    _max?: CurrencyPairMaxOrderByAggregateInput
+    _min?: CurrencyPairMinOrderByAggregateInput
+    _sum?: CurrencyPairSumOrderByAggregateInput
+  }
+
+  export type CurrencyPairScalarWhereWithAggregatesInput = {
+    AND?: CurrencyPairScalarWhereWithAggregatesInput | CurrencyPairScalarWhereWithAggregatesInput[]
+    OR?: CurrencyPairScalarWhereWithAggregatesInput[]
+    NOT?: CurrencyPairScalarWhereWithAggregatesInput | CurrencyPairScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"CurrencyPair"> | string
+    fromCurrencyId?: StringWithAggregatesFilter<"CurrencyPair"> | string
+    toCurrencyId?: StringWithAggregatesFilter<"CurrencyPair"> | string
+    rate?: DecimalWithAggregatesFilter<"CurrencyPair"> | Decimal | DecimalJsLike | number | string
+    isInverseRate?: BoolWithAggregatesFilter<"CurrencyPair"> | boolean
+    isActive?: BoolWithAggregatesFilter<"CurrencyPair"> | boolean
+    createdAt?: DateTimeWithAggregatesFilter<"CurrencyPair"> | Date | string
+    updatedAt?: DateTimeWithAggregatesFilter<"CurrencyPair"> | Date | string
+  }
+
   export type LiquidityPoolWhereInput = {
     AND?: LiquidityPoolWhereInput | LiquidityPoolWhereInput[]
     OR?: LiquidityPoolWhereInput[]
@@ -19036,8 +20596,11 @@ export namespace Prisma {
     balance?: DecimalFilter<"LiquidityPool"> | Decimal | DecimalJsLike | number | string
     frozen?: DecimalFilter<"LiquidityPool"> | Decimal | DecimalJsLike | number | string
     updatedAt?: DateTimeFilter<"LiquidityPool"> | Date | string
-    paymentChannel?: XOR<PaymentChannelScalarRelationFilter, PaymentChannelWhereInput>
+    userId?: StringFilter<"LiquidityPool"> | string
+    BridgeTransfer?: BridgeTransferListRelationFilter
     currency?: XOR<CurrencyScalarRelationFilter, CurrencyWhereInput>
+    paymentChannel?: XOR<PaymentChannelScalarRelationFilter, PaymentChannelWhereInput>
+    user?: XOR<UserScalarRelationFilter, UserWhereInput>
   }
 
   export type LiquidityPoolOrderByWithRelationInput = {
@@ -19048,24 +20611,30 @@ export namespace Prisma {
     balance?: SortOrder
     frozen?: SortOrder
     updatedAt?: SortOrder
-    paymentChannel?: PaymentChannelOrderByWithRelationInput
+    userId?: SortOrder
+    BridgeTransfer?: BridgeTransferOrderByRelationAggregateInput
     currency?: CurrencyOrderByWithRelationInput
+    paymentChannel?: PaymentChannelOrderByWithRelationInput
+    user?: UserOrderByWithRelationInput
   }
 
   export type LiquidityPoolWhereUniqueInput = Prisma.AtLeast<{
     id?: string
-    paymentChannelId?: string
     AND?: LiquidityPoolWhereInput | LiquidityPoolWhereInput[]
     OR?: LiquidityPoolWhereInput[]
     NOT?: LiquidityPoolWhereInput | LiquidityPoolWhereInput[]
+    paymentChannelId?: StringFilter<"LiquidityPool"> | string
     currencyId?: StringFilter<"LiquidityPool"> | string
     address?: StringFilter<"LiquidityPool"> | string
     balance?: DecimalFilter<"LiquidityPool"> | Decimal | DecimalJsLike | number | string
     frozen?: DecimalFilter<"LiquidityPool"> | Decimal | DecimalJsLike | number | string
     updatedAt?: DateTimeFilter<"LiquidityPool"> | Date | string
-    paymentChannel?: XOR<PaymentChannelScalarRelationFilter, PaymentChannelWhereInput>
+    userId?: StringFilter<"LiquidityPool"> | string
+    BridgeTransfer?: BridgeTransferListRelationFilter
     currency?: XOR<CurrencyScalarRelationFilter, CurrencyWhereInput>
-  }, "id" | "paymentChannelId">
+    paymentChannel?: XOR<PaymentChannelScalarRelationFilter, PaymentChannelWhereInput>
+    user?: XOR<UserScalarRelationFilter, UserWhereInput>
+  }, "id">
 
   export type LiquidityPoolOrderByWithAggregationInput = {
     id?: SortOrder
@@ -19075,6 +20644,7 @@ export namespace Prisma {
     balance?: SortOrder
     frozen?: SortOrder
     updatedAt?: SortOrder
+    userId?: SortOrder
     _count?: LiquidityPoolCountOrderByAggregateInput
     _avg?: LiquidityPoolAvgOrderByAggregateInput
     _max?: LiquidityPoolMaxOrderByAggregateInput
@@ -19093,6 +20663,7 @@ export namespace Prisma {
     balance?: DecimalWithAggregatesFilter<"LiquidityPool"> | Decimal | DecimalJsLike | number | string
     frozen?: DecimalWithAggregatesFilter<"LiquidityPool"> | Decimal | DecimalJsLike | number | string
     updatedAt?: DateTimeWithAggregatesFilter<"LiquidityPool"> | Date | string
+    userId?: StringWithAggregatesFilter<"LiquidityPool"> | string
   }
 
   export type WalletWhereInput = {
@@ -19106,13 +20677,13 @@ export namespace Prisma {
     frozen?: DecimalFilter<"Wallet"> | Decimal | DecimalJsLike | number | string
     createdAt?: DateTimeFilter<"Wallet"> | Date | string
     updatedAt?: DateTimeFilter<"Wallet"> | Date | string
-    user?: XOR<UserScalarRelationFilter, UserWhereInput>
-    currency?: XOR<CurrencyScalarRelationFilter, CurrencyWhereInput>
     deposits?: DepositListRelationFilter
-    withdrawals?: WithdrawalListRelationFilter
     Refund?: RefundListRelationFilter
     transfersFrom?: TransferListRelationFilter
     transfersTo?: TransferListRelationFilter
+    currency?: XOR<CurrencyScalarRelationFilter, CurrencyWhereInput>
+    user?: XOR<UserScalarRelationFilter, UserWhereInput>
+    withdrawals?: WithdrawalListRelationFilter
   }
 
   export type WalletOrderByWithRelationInput = {
@@ -19123,13 +20694,13 @@ export namespace Prisma {
     frozen?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
-    user?: UserOrderByWithRelationInput
-    currency?: CurrencyOrderByWithRelationInput
     deposits?: DepositOrderByRelationAggregateInput
-    withdrawals?: WithdrawalOrderByRelationAggregateInput
     Refund?: RefundOrderByRelationAggregateInput
     transfersFrom?: TransferOrderByRelationAggregateInput
     transfersTo?: TransferOrderByRelationAggregateInput
+    currency?: CurrencyOrderByWithRelationInput
+    user?: UserOrderByWithRelationInput
+    withdrawals?: WithdrawalOrderByRelationAggregateInput
   }
 
   export type WalletWhereUniqueInput = Prisma.AtLeast<{
@@ -19144,13 +20715,13 @@ export namespace Prisma {
     frozen?: DecimalFilter<"Wallet"> | Decimal | DecimalJsLike | number | string
     createdAt?: DateTimeFilter<"Wallet"> | Date | string
     updatedAt?: DateTimeFilter<"Wallet"> | Date | string
-    user?: XOR<UserScalarRelationFilter, UserWhereInput>
-    currency?: XOR<CurrencyScalarRelationFilter, CurrencyWhereInput>
     deposits?: DepositListRelationFilter
-    withdrawals?: WithdrawalListRelationFilter
     Refund?: RefundListRelationFilter
     transfersFrom?: TransferListRelationFilter
     transfersTo?: TransferListRelationFilter
+    currency?: XOR<CurrencyScalarRelationFilter, CurrencyWhereInput>
+    user?: XOR<UserScalarRelationFilter, UserWhereInput>
+    withdrawals?: WithdrawalListRelationFilter
   }, "id" | "userId_currencyId">
 
   export type WalletOrderByWithAggregationInput = {
@@ -19196,9 +20767,9 @@ export namespace Prisma {
     completedAt?: DateTimeNullableFilter<"Deposit"> | Date | string | null
     failedAt?: DateTimeNullableFilter<"Deposit"> | Date | string | null
     paymentChannelId?: StringFilter<"Deposit"> | string
-    bridgeTransferid?: StringNullableFilter<"Deposit"> | string | null
+    documentUrl?: StringNullableFilter<"Deposit"> | string | null
+    BridgeTransfer?: XOR<BridgeTransferNullableScalarRelationFilter, BridgeTransferWhereInput> | null
     paymentChannel?: XOR<PaymentChannelScalarRelationFilter, PaymentChannelWhereInput>
-    bridgeTransfer?: XOR<BridgeTransferNullableScalarRelationFilter, BridgeTransferWhereInput> | null
     user?: XOR<UserScalarRelationFilter, UserWhereInput>
     wallet?: XOR<WalletScalarRelationFilter, WalletWhereInput>
   }
@@ -19215,9 +20786,9 @@ export namespace Prisma {
     completedAt?: SortOrderInput | SortOrder
     failedAt?: SortOrderInput | SortOrder
     paymentChannelId?: SortOrder
-    bridgeTransferid?: SortOrderInput | SortOrder
+    documentUrl?: SortOrderInput | SortOrder
+    BridgeTransfer?: BridgeTransferOrderByWithRelationInput
     paymentChannel?: PaymentChannelOrderByWithRelationInput
-    bridgeTransfer?: BridgeTransferOrderByWithRelationInput
     user?: UserOrderByWithRelationInput
     wallet?: WalletOrderByWithRelationInput
   }
@@ -19237,9 +20808,9 @@ export namespace Prisma {
     completedAt?: DateTimeNullableFilter<"Deposit"> | Date | string | null
     failedAt?: DateTimeNullableFilter<"Deposit"> | Date | string | null
     paymentChannelId?: StringFilter<"Deposit"> | string
-    bridgeTransferid?: StringNullableFilter<"Deposit"> | string | null
+    documentUrl?: StringNullableFilter<"Deposit"> | string | null
+    BridgeTransfer?: XOR<BridgeTransferNullableScalarRelationFilter, BridgeTransferWhereInput> | null
     paymentChannel?: XOR<PaymentChannelScalarRelationFilter, PaymentChannelWhereInput>
-    bridgeTransfer?: XOR<BridgeTransferNullableScalarRelationFilter, BridgeTransferWhereInput> | null
     user?: XOR<UserScalarRelationFilter, UserWhereInput>
     wallet?: XOR<WalletScalarRelationFilter, WalletWhereInput>
   }, "id" | "reference">
@@ -19256,7 +20827,7 @@ export namespace Prisma {
     completedAt?: SortOrderInput | SortOrder
     failedAt?: SortOrderInput | SortOrder
     paymentChannelId?: SortOrder
-    bridgeTransferid?: SortOrderInput | SortOrder
+    documentUrl?: SortOrderInput | SortOrder
     _count?: DepositCountOrderByAggregateInput
     _avg?: DepositAvgOrderByAggregateInput
     _max?: DepositMaxOrderByAggregateInput
@@ -19279,7 +20850,7 @@ export namespace Prisma {
     completedAt?: DateTimeNullableWithAggregatesFilter<"Deposit"> | Date | string | null
     failedAt?: DateTimeNullableWithAggregatesFilter<"Deposit"> | Date | string | null
     paymentChannelId?: StringWithAggregatesFilter<"Deposit"> | string
-    bridgeTransferid?: StringNullableWithAggregatesFilter<"Deposit"> | string | null
+    documentUrl?: StringNullableWithAggregatesFilter<"Deposit"> | string | null
   }
 
   export type WithdrawalWhereInput = {
@@ -19297,9 +20868,11 @@ export namespace Prisma {
     completedAt?: DateTimeNullableFilter<"Withdrawal"> | Date | string | null
     failedAt?: DateTimeNullableFilter<"Withdrawal"> | Date | string | null
     paymentChannelId?: StringFilter<"Withdrawal"> | string
-    bridgeTransferid?: StringNullableFilter<"Withdrawal"> | string | null
+    bridgeTransferId?: StringNullableFilter<"Withdrawal"> | string | null
+    receiverAddress?: StringFilter<"Withdrawal"> | string
+    addressOwnerName?: StringFilter<"Withdrawal"> | string
+    BridgeTransfer?: XOR<BridgeTransferNullableScalarRelationFilter, BridgeTransferWhereInput> | null
     paymentChannel?: XOR<PaymentChannelScalarRelationFilter, PaymentChannelWhereInput>
-    bridgeTransfer?: XOR<BridgeTransferNullableScalarRelationFilter, BridgeTransferWhereInput> | null
     user?: XOR<UserScalarRelationFilter, UserWhereInput>
     wallet?: XOR<WalletScalarRelationFilter, WalletWhereInput>
   }
@@ -19316,9 +20889,11 @@ export namespace Prisma {
     completedAt?: SortOrderInput | SortOrder
     failedAt?: SortOrderInput | SortOrder
     paymentChannelId?: SortOrder
-    bridgeTransferid?: SortOrderInput | SortOrder
+    bridgeTransferId?: SortOrderInput | SortOrder
+    receiverAddress?: SortOrder
+    addressOwnerName?: SortOrder
+    BridgeTransfer?: BridgeTransferOrderByWithRelationInput
     paymentChannel?: PaymentChannelOrderByWithRelationInput
-    bridgeTransfer?: BridgeTransferOrderByWithRelationInput
     user?: UserOrderByWithRelationInput
     wallet?: WalletOrderByWithRelationInput
   }
@@ -19338,9 +20913,11 @@ export namespace Prisma {
     completedAt?: DateTimeNullableFilter<"Withdrawal"> | Date | string | null
     failedAt?: DateTimeNullableFilter<"Withdrawal"> | Date | string | null
     paymentChannelId?: StringFilter<"Withdrawal"> | string
-    bridgeTransferid?: StringNullableFilter<"Withdrawal"> | string | null
+    bridgeTransferId?: StringNullableFilter<"Withdrawal"> | string | null
+    receiverAddress?: StringFilter<"Withdrawal"> | string
+    addressOwnerName?: StringFilter<"Withdrawal"> | string
+    BridgeTransfer?: XOR<BridgeTransferNullableScalarRelationFilter, BridgeTransferWhereInput> | null
     paymentChannel?: XOR<PaymentChannelScalarRelationFilter, PaymentChannelWhereInput>
-    bridgeTransfer?: XOR<BridgeTransferNullableScalarRelationFilter, BridgeTransferWhereInput> | null
     user?: XOR<UserScalarRelationFilter, UserWhereInput>
     wallet?: XOR<WalletScalarRelationFilter, WalletWhereInput>
   }, "id" | "reference">
@@ -19357,7 +20934,9 @@ export namespace Prisma {
     completedAt?: SortOrderInput | SortOrder
     failedAt?: SortOrderInput | SortOrder
     paymentChannelId?: SortOrder
-    bridgeTransferid?: SortOrderInput | SortOrder
+    bridgeTransferId?: SortOrderInput | SortOrder
+    receiverAddress?: SortOrder
+    addressOwnerName?: SortOrder
     _count?: WithdrawalCountOrderByAggregateInput
     _avg?: WithdrawalAvgOrderByAggregateInput
     _max?: WithdrawalMaxOrderByAggregateInput
@@ -19380,7 +20959,9 @@ export namespace Prisma {
     completedAt?: DateTimeNullableWithAggregatesFilter<"Withdrawal"> | Date | string | null
     failedAt?: DateTimeNullableWithAggregatesFilter<"Withdrawal"> | Date | string | null
     paymentChannelId?: StringWithAggregatesFilter<"Withdrawal"> | string
-    bridgeTransferid?: StringNullableWithAggregatesFilter<"Withdrawal"> | string | null
+    bridgeTransferId?: StringNullableWithAggregatesFilter<"Withdrawal"> | string | null
+    receiverAddress?: StringWithAggregatesFilter<"Withdrawal"> | string
+    addressOwnerName?: StringWithAggregatesFilter<"Withdrawal"> | string
   }
 
   export type BridgeTransferWhereInput = {
@@ -19388,37 +20969,38 @@ export namespace Prisma {
     OR?: BridgeTransferWhereInput[]
     NOT?: BridgeTransferWhereInput | BridgeTransferWhereInput[]
     id?: StringFilter<"BridgeTransfer"> | string
-    depositId?: StringFilter<"BridgeTransfer"> | string
-    withdrawalId?: StringFilter<"BridgeTransfer"> | string
-    channelId?: StringFilter<"BridgeTransfer"> | string
     status?: EnumBridgeStatusFilter<"BridgeTransfer"> | $Enums.BridgeStatus
     createdAt?: DateTimeFilter<"BridgeTransfer"> | Date | string
     completedAt?: DateTimeNullableFilter<"BridgeTransfer"> | Date | string | null
     failedAt?: DateTimeNullableFilter<"BridgeTransfer"> | Date | string | null
-    paymentChannel?: XOR<PaymentChannelScalarRelationFilter, PaymentChannelWhereInput>
-    Deposit?: DepositListRelationFilter
-    Withdrawal?: WithdrawalListRelationFilter
+    depositId?: StringNullableFilter<"BridgeTransfer"> | string | null
+    withdrawalId?: StringNullableFilter<"BridgeTransfer"> | string | null
+    liquidityPoolId?: StringNullableFilter<"BridgeTransfer"> | string | null
+    amount?: DecimalFilter<"BridgeTransfer"> | Decimal | DecimalJsLike | number | string
+    deposit?: XOR<DepositNullableScalarRelationFilter, DepositWhereInput> | null
+    liquidityPool?: XOR<LiquidityPoolNullableScalarRelationFilter, LiquidityPoolWhereInput> | null
+    withdrawal?: XOR<WithdrawalNullableScalarRelationFilter, WithdrawalWhereInput> | null
   }
 
   export type BridgeTransferOrderByWithRelationInput = {
     id?: SortOrder
-    depositId?: SortOrder
-    withdrawalId?: SortOrder
-    channelId?: SortOrder
     status?: SortOrder
     createdAt?: SortOrder
     completedAt?: SortOrderInput | SortOrder
     failedAt?: SortOrderInput | SortOrder
-    paymentChannel?: PaymentChannelOrderByWithRelationInput
-    Deposit?: DepositOrderByRelationAggregateInput
-    Withdrawal?: WithdrawalOrderByRelationAggregateInput
+    depositId?: SortOrderInput | SortOrder
+    withdrawalId?: SortOrderInput | SortOrder
+    liquidityPoolId?: SortOrderInput | SortOrder
+    amount?: SortOrder
+    deposit?: DepositOrderByWithRelationInput
+    liquidityPool?: LiquidityPoolOrderByWithRelationInput
+    withdrawal?: WithdrawalOrderByWithRelationInput
   }
 
   export type BridgeTransferWhereUniqueInput = Prisma.AtLeast<{
     id?: string
     depositId?: string
     withdrawalId?: string
-    channelId?: string
     AND?: BridgeTransferWhereInput | BridgeTransferWhereInput[]
     OR?: BridgeTransferWhereInput[]
     NOT?: BridgeTransferWhereInput | BridgeTransferWhereInput[]
@@ -19426,23 +21008,28 @@ export namespace Prisma {
     createdAt?: DateTimeFilter<"BridgeTransfer"> | Date | string
     completedAt?: DateTimeNullableFilter<"BridgeTransfer"> | Date | string | null
     failedAt?: DateTimeNullableFilter<"BridgeTransfer"> | Date | string | null
-    paymentChannel?: XOR<PaymentChannelScalarRelationFilter, PaymentChannelWhereInput>
-    Deposit?: DepositListRelationFilter
-    Withdrawal?: WithdrawalListRelationFilter
-  }, "id" | "depositId" | "withdrawalId" | "channelId">
+    liquidityPoolId?: StringNullableFilter<"BridgeTransfer"> | string | null
+    amount?: DecimalFilter<"BridgeTransfer"> | Decimal | DecimalJsLike | number | string
+    deposit?: XOR<DepositNullableScalarRelationFilter, DepositWhereInput> | null
+    liquidityPool?: XOR<LiquidityPoolNullableScalarRelationFilter, LiquidityPoolWhereInput> | null
+    withdrawal?: XOR<WithdrawalNullableScalarRelationFilter, WithdrawalWhereInput> | null
+  }, "id" | "depositId" | "withdrawalId">
 
   export type BridgeTransferOrderByWithAggregationInput = {
     id?: SortOrder
-    depositId?: SortOrder
-    withdrawalId?: SortOrder
-    channelId?: SortOrder
     status?: SortOrder
     createdAt?: SortOrder
     completedAt?: SortOrderInput | SortOrder
     failedAt?: SortOrderInput | SortOrder
+    depositId?: SortOrderInput | SortOrder
+    withdrawalId?: SortOrderInput | SortOrder
+    liquidityPoolId?: SortOrderInput | SortOrder
+    amount?: SortOrder
     _count?: BridgeTransferCountOrderByAggregateInput
+    _avg?: BridgeTransferAvgOrderByAggregateInput
     _max?: BridgeTransferMaxOrderByAggregateInput
     _min?: BridgeTransferMinOrderByAggregateInput
+    _sum?: BridgeTransferSumOrderByAggregateInput
   }
 
   export type BridgeTransferScalarWhereWithAggregatesInput = {
@@ -19450,13 +21037,14 @@ export namespace Prisma {
     OR?: BridgeTransferScalarWhereWithAggregatesInput[]
     NOT?: BridgeTransferScalarWhereWithAggregatesInput | BridgeTransferScalarWhereWithAggregatesInput[]
     id?: StringWithAggregatesFilter<"BridgeTransfer"> | string
-    depositId?: StringWithAggregatesFilter<"BridgeTransfer"> | string
-    withdrawalId?: StringWithAggregatesFilter<"BridgeTransfer"> | string
-    channelId?: StringWithAggregatesFilter<"BridgeTransfer"> | string
     status?: EnumBridgeStatusWithAggregatesFilter<"BridgeTransfer"> | $Enums.BridgeStatus
     createdAt?: DateTimeWithAggregatesFilter<"BridgeTransfer"> | Date | string
     completedAt?: DateTimeNullableWithAggregatesFilter<"BridgeTransfer"> | Date | string | null
     failedAt?: DateTimeNullableWithAggregatesFilter<"BridgeTransfer"> | Date | string | null
+    depositId?: StringNullableWithAggregatesFilter<"BridgeTransfer"> | string | null
+    withdrawalId?: StringNullableWithAggregatesFilter<"BridgeTransfer"> | string | null
+    liquidityPoolId?: StringNullableWithAggregatesFilter<"BridgeTransfer"> | string | null
+    amount?: DecimalWithAggregatesFilter<"BridgeTransfer"> | Decimal | DecimalJsLike | number | string
   }
 
   export type TransferWhereInput = {
@@ -19473,9 +21061,9 @@ export namespace Prisma {
     createdAt?: DateTimeFilter<"Transfer"> | Date | string
     completedAt?: DateTimeNullableFilter<"Transfer"> | Date | string | null
     failedAt?: DateTimeNullableFilter<"Transfer"> | Date | string | null
-    User?: UserListRelationFilter
     fromWallet?: XOR<WalletScalarRelationFilter, WalletWhereInput>
     toWallet?: XOR<WalletScalarRelationFilter, WalletWhereInput>
+    User?: UserListRelationFilter
   }
 
   export type TransferOrderByWithRelationInput = {
@@ -19489,9 +21077,9 @@ export namespace Prisma {
     createdAt?: SortOrder
     completedAt?: SortOrderInput | SortOrder
     failedAt?: SortOrderInput | SortOrder
-    User?: UserOrderByRelationAggregateInput
     fromWallet?: WalletOrderByWithRelationInput
     toWallet?: WalletOrderByWithRelationInput
+    User?: UserOrderByRelationAggregateInput
   }
 
   export type TransferWhereUniqueInput = Prisma.AtLeast<{
@@ -19508,9 +21096,9 @@ export namespace Prisma {
     createdAt?: DateTimeFilter<"Transfer"> | Date | string
     completedAt?: DateTimeNullableFilter<"Transfer"> | Date | string | null
     failedAt?: DateTimeNullableFilter<"Transfer"> | Date | string | null
-    User?: UserListRelationFilter
     fromWallet?: XOR<WalletScalarRelationFilter, WalletWhereInput>
     toWallet?: XOR<WalletScalarRelationFilter, WalletWhereInput>
+    User?: UserListRelationFilter
   }, "id">
 
   export type TransferOrderByWithAggregationInput = {
@@ -19887,13 +21475,15 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     deletedAt?: Date | string | null
-    wallet?: WalletCreateNestedManyWithoutUserInput
+    isDeleted?: boolean
+    ActivityLog?: ActivityLogCreateNestedManyWithoutUserInput
     deposits?: DepositCreateNestedManyWithoutUserInput
+    initiatedExchanges?: ExchangeCreateNestedManyWithoutInitiatorInput
+    LiquidityPool?: LiquidityPoolCreateNestedManyWithoutUserInput
+    refunds?: RefundCreateNestedManyWithoutUserInput
+    wallet?: WalletCreateNestedManyWithoutUserInput
     withdrawals?: WithdrawalCreateNestedManyWithoutUserInput
     transfers?: TransferCreateNestedManyWithoutUserInput
-    refunds?: RefundCreateNestedManyWithoutUserInput
-    initiatedExchanges?: ExchangeCreateNestedManyWithoutInitiatorInput
-    ActivityLog?: ActivityLogCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateInput = {
@@ -19921,13 +21511,15 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     deletedAt?: Date | string | null
-    wallet?: WalletUncheckedCreateNestedManyWithoutUserInput
+    isDeleted?: boolean
+    ActivityLog?: ActivityLogUncheckedCreateNestedManyWithoutUserInput
     deposits?: DepositUncheckedCreateNestedManyWithoutUserInput
+    initiatedExchanges?: ExchangeUncheckedCreateNestedManyWithoutInitiatorInput
+    LiquidityPool?: LiquidityPoolUncheckedCreateNestedManyWithoutUserInput
+    refunds?: RefundUncheckedCreateNestedManyWithoutUserInput
+    wallet?: WalletUncheckedCreateNestedManyWithoutUserInput
     withdrawals?: WithdrawalUncheckedCreateNestedManyWithoutUserInput
     transfers?: TransferUncheckedCreateNestedManyWithoutUserInput
-    refunds?: RefundUncheckedCreateNestedManyWithoutUserInput
-    initiatedExchanges?: ExchangeUncheckedCreateNestedManyWithoutInitiatorInput
-    ActivityLog?: ActivityLogUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserUpdateInput = {
@@ -19955,13 +21547,15 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    wallet?: WalletUpdateManyWithoutUserNestedInput
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
+    ActivityLog?: ActivityLogUpdateManyWithoutUserNestedInput
     deposits?: DepositUpdateManyWithoutUserNestedInput
+    initiatedExchanges?: ExchangeUpdateManyWithoutInitiatorNestedInput
+    LiquidityPool?: LiquidityPoolUpdateManyWithoutUserNestedInput
+    refunds?: RefundUpdateManyWithoutUserNestedInput
+    wallet?: WalletUpdateManyWithoutUserNestedInput
     withdrawals?: WithdrawalUpdateManyWithoutUserNestedInput
     transfers?: TransferUpdateManyWithoutUserNestedInput
-    refunds?: RefundUpdateManyWithoutUserNestedInput
-    initiatedExchanges?: ExchangeUpdateManyWithoutInitiatorNestedInput
-    ActivityLog?: ActivityLogUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateInput = {
@@ -19989,13 +21583,15 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    wallet?: WalletUncheckedUpdateManyWithoutUserNestedInput
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
+    ActivityLog?: ActivityLogUncheckedUpdateManyWithoutUserNestedInput
     deposits?: DepositUncheckedUpdateManyWithoutUserNestedInput
+    initiatedExchanges?: ExchangeUncheckedUpdateManyWithoutInitiatorNestedInput
+    LiquidityPool?: LiquidityPoolUncheckedUpdateManyWithoutUserNestedInput
+    refunds?: RefundUncheckedUpdateManyWithoutUserNestedInput
+    wallet?: WalletUncheckedUpdateManyWithoutUserNestedInput
     withdrawals?: WithdrawalUncheckedUpdateManyWithoutUserNestedInput
     transfers?: TransferUncheckedUpdateManyWithoutUserNestedInput
-    refunds?: RefundUncheckedUpdateManyWithoutUserNestedInput
-    initiatedExchanges?: ExchangeUncheckedUpdateManyWithoutInitiatorNestedInput
-    ActivityLog?: ActivityLogUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserCreateManyInput = {
@@ -20023,6 +21619,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     deletedAt?: Date | string | null
+    isDeleted?: boolean
   }
 
   export type UserUpdateManyMutationInput = {
@@ -20050,6 +21647,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
   }
 
   export type UserUncheckedUpdateManyInput = {
@@ -20077,6 +21675,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
   }
 
   export type PaymentChannelCreateInput = {
@@ -20084,11 +21683,10 @@ export namespace Prisma {
     name: string
     description?: string | null
     createdAt?: Date | string
-    bridgeTransfers?: BridgeTransferCreateNestedOneWithoutPaymentChannelInput
-    currencies?: CurrencyCreateNestedManyWithoutPaymentChannelsInput
     Deposit?: DepositCreateNestedManyWithoutPaymentChannelInput
-    Withdrawal?: WithdrawalCreateNestedManyWithoutPaymentChannelInput
     LiquidityPool?: LiquidityPoolCreateNestedManyWithoutPaymentChannelInput
+    Withdrawal?: WithdrawalCreateNestedManyWithoutPaymentChannelInput
+    currencies?: CurrencyCreateNestedManyWithoutPaymentChannelsInput
   }
 
   export type PaymentChannelUncheckedCreateInput = {
@@ -20096,11 +21694,10 @@ export namespace Prisma {
     name: string
     description?: string | null
     createdAt?: Date | string
-    bridgeTransfers?: BridgeTransferUncheckedCreateNestedOneWithoutPaymentChannelInput
-    currencies?: CurrencyUncheckedCreateNestedManyWithoutPaymentChannelsInput
     Deposit?: DepositUncheckedCreateNestedManyWithoutPaymentChannelInput
-    Withdrawal?: WithdrawalUncheckedCreateNestedManyWithoutPaymentChannelInput
     LiquidityPool?: LiquidityPoolUncheckedCreateNestedManyWithoutPaymentChannelInput
+    Withdrawal?: WithdrawalUncheckedCreateNestedManyWithoutPaymentChannelInput
+    currencies?: CurrencyUncheckedCreateNestedManyWithoutPaymentChannelsInput
   }
 
   export type PaymentChannelUpdateInput = {
@@ -20108,11 +21705,10 @@ export namespace Prisma {
     name?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    bridgeTransfers?: BridgeTransferUpdateOneWithoutPaymentChannelNestedInput
-    currencies?: CurrencyUpdateManyWithoutPaymentChannelsNestedInput
     Deposit?: DepositUpdateManyWithoutPaymentChannelNestedInput
-    Withdrawal?: WithdrawalUpdateManyWithoutPaymentChannelNestedInput
     LiquidityPool?: LiquidityPoolUpdateManyWithoutPaymentChannelNestedInput
+    Withdrawal?: WithdrawalUpdateManyWithoutPaymentChannelNestedInput
+    currencies?: CurrencyUpdateManyWithoutPaymentChannelsNestedInput
   }
 
   export type PaymentChannelUncheckedUpdateInput = {
@@ -20120,11 +21716,10 @@ export namespace Prisma {
     name?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    bridgeTransfers?: BridgeTransferUncheckedUpdateOneWithoutPaymentChannelNestedInput
-    currencies?: CurrencyUncheckedUpdateManyWithoutPaymentChannelsNestedInput
     Deposit?: DepositUncheckedUpdateManyWithoutPaymentChannelNestedInput
-    Withdrawal?: WithdrawalUncheckedUpdateManyWithoutPaymentChannelNestedInput
     LiquidityPool?: LiquidityPoolUncheckedUpdateManyWithoutPaymentChannelNestedInput
+    Withdrawal?: WithdrawalUncheckedUpdateManyWithoutPaymentChannelNestedInput
+    currencies?: CurrencyUncheckedUpdateManyWithoutPaymentChannelsNestedInput
   }
 
   export type PaymentChannelCreateManyInput = {
@@ -20155,12 +21750,14 @@ export namespace Prisma {
     symbol: string
     decimals?: number
     createdAt?: Date | string
-    wallets?: WalletCreateNestedManyWithoutCurrencyInput
+    FromCurrencyPair?: CurrencyPairCreateNestedManyWithoutFromCurrencyInput
+    ToCurrencyPair?: CurrencyPairCreateNestedManyWithoutToCurrencyInput
     exchangesFrom?: ExchangeCreateNestedManyWithoutFromCurrencyInput
     exchangesTo?: ExchangeCreateNestedManyWithoutToCurrencyInput
     FeeSetting?: FeeSettingCreateNestedManyWithoutCurrencyInput
-    paymentChannels?: PaymentChannelCreateNestedManyWithoutCurrenciesInput
     LiquidityPool?: LiquidityPoolCreateNestedManyWithoutCurrencyInput
+    wallets?: WalletCreateNestedManyWithoutCurrencyInput
+    paymentChannels?: PaymentChannelCreateNestedManyWithoutCurrenciesInput
   }
 
   export type CurrencyUncheckedCreateInput = {
@@ -20170,12 +21767,14 @@ export namespace Prisma {
     symbol: string
     decimals?: number
     createdAt?: Date | string
-    wallets?: WalletUncheckedCreateNestedManyWithoutCurrencyInput
+    FromCurrencyPair?: CurrencyPairUncheckedCreateNestedManyWithoutFromCurrencyInput
+    ToCurrencyPair?: CurrencyPairUncheckedCreateNestedManyWithoutToCurrencyInput
     exchangesFrom?: ExchangeUncheckedCreateNestedManyWithoutFromCurrencyInput
     exchangesTo?: ExchangeUncheckedCreateNestedManyWithoutToCurrencyInput
     FeeSetting?: FeeSettingUncheckedCreateNestedManyWithoutCurrencyInput
-    paymentChannels?: PaymentChannelUncheckedCreateNestedManyWithoutCurrenciesInput
     LiquidityPool?: LiquidityPoolUncheckedCreateNestedManyWithoutCurrencyInput
+    wallets?: WalletUncheckedCreateNestedManyWithoutCurrencyInput
+    paymentChannels?: PaymentChannelUncheckedCreateNestedManyWithoutCurrenciesInput
   }
 
   export type CurrencyUpdateInput = {
@@ -20185,12 +21784,14 @@ export namespace Prisma {
     symbol?: StringFieldUpdateOperationsInput | string
     decimals?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    wallets?: WalletUpdateManyWithoutCurrencyNestedInput
+    FromCurrencyPair?: CurrencyPairUpdateManyWithoutFromCurrencyNestedInput
+    ToCurrencyPair?: CurrencyPairUpdateManyWithoutToCurrencyNestedInput
     exchangesFrom?: ExchangeUpdateManyWithoutFromCurrencyNestedInput
     exchangesTo?: ExchangeUpdateManyWithoutToCurrencyNestedInput
     FeeSetting?: FeeSettingUpdateManyWithoutCurrencyNestedInput
-    paymentChannels?: PaymentChannelUpdateManyWithoutCurrenciesNestedInput
     LiquidityPool?: LiquidityPoolUpdateManyWithoutCurrencyNestedInput
+    wallets?: WalletUpdateManyWithoutCurrencyNestedInput
+    paymentChannels?: PaymentChannelUpdateManyWithoutCurrenciesNestedInput
   }
 
   export type CurrencyUncheckedUpdateInput = {
@@ -20200,12 +21801,14 @@ export namespace Prisma {
     symbol?: StringFieldUpdateOperationsInput | string
     decimals?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    wallets?: WalletUncheckedUpdateManyWithoutCurrencyNestedInput
+    FromCurrencyPair?: CurrencyPairUncheckedUpdateManyWithoutFromCurrencyNestedInput
+    ToCurrencyPair?: CurrencyPairUncheckedUpdateManyWithoutToCurrencyNestedInput
     exchangesFrom?: ExchangeUncheckedUpdateManyWithoutFromCurrencyNestedInput
     exchangesTo?: ExchangeUncheckedUpdateManyWithoutToCurrencyNestedInput
     FeeSetting?: FeeSettingUncheckedUpdateManyWithoutCurrencyNestedInput
-    paymentChannels?: PaymentChannelUncheckedUpdateManyWithoutCurrenciesNestedInput
     LiquidityPool?: LiquidityPoolUncheckedUpdateManyWithoutCurrencyNestedInput
+    wallets?: WalletUncheckedUpdateManyWithoutCurrencyNestedInput
+    paymentChannels?: PaymentChannelUncheckedUpdateManyWithoutCurrenciesNestedInput
   }
 
   export type CurrencyCreateManyInput = {
@@ -20235,14 +21838,91 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
+  export type CurrencyPairCreateInput = {
+    id?: string
+    rate: Decimal | DecimalJsLike | number | string
+    isInverseRate?: boolean
+    isActive?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    fromCurrency: CurrencyCreateNestedOneWithoutFromCurrencyPairInput
+    toCurrency: CurrencyCreateNestedOneWithoutToCurrencyPairInput
+  }
+
+  export type CurrencyPairUncheckedCreateInput = {
+    id?: string
+    fromCurrencyId: string
+    toCurrencyId: string
+    rate: Decimal | DecimalJsLike | number | string
+    isInverseRate?: boolean
+    isActive?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type CurrencyPairUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    rate?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    isInverseRate?: BoolFieldUpdateOperationsInput | boolean
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    fromCurrency?: CurrencyUpdateOneRequiredWithoutFromCurrencyPairNestedInput
+    toCurrency?: CurrencyUpdateOneRequiredWithoutToCurrencyPairNestedInput
+  }
+
+  export type CurrencyPairUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    fromCurrencyId?: StringFieldUpdateOperationsInput | string
+    toCurrencyId?: StringFieldUpdateOperationsInput | string
+    rate?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    isInverseRate?: BoolFieldUpdateOperationsInput | boolean
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type CurrencyPairCreateManyInput = {
+    id?: string
+    fromCurrencyId: string
+    toCurrencyId: string
+    rate: Decimal | DecimalJsLike | number | string
+    isInverseRate?: boolean
+    isActive?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type CurrencyPairUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    rate?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    isInverseRate?: BoolFieldUpdateOperationsInput | boolean
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type CurrencyPairUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    fromCurrencyId?: StringFieldUpdateOperationsInput | string
+    toCurrencyId?: StringFieldUpdateOperationsInput | string
+    rate?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    isInverseRate?: BoolFieldUpdateOperationsInput | boolean
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
   export type LiquidityPoolCreateInput = {
     id?: string
     address: string
     balance?: Decimal | DecimalJsLike | number | string
     frozen?: Decimal | DecimalJsLike | number | string
     updatedAt?: Date | string
-    paymentChannel: PaymentChannelCreateNestedOneWithoutLiquidityPoolInput
+    BridgeTransfer?: BridgeTransferCreateNestedManyWithoutLiquidityPoolInput
     currency: CurrencyCreateNestedOneWithoutLiquidityPoolInput
+    paymentChannel: PaymentChannelCreateNestedOneWithoutLiquidityPoolInput
+    user: UserCreateNestedOneWithoutLiquidityPoolInput
   }
 
   export type LiquidityPoolUncheckedCreateInput = {
@@ -20253,6 +21933,8 @@ export namespace Prisma {
     balance?: Decimal | DecimalJsLike | number | string
     frozen?: Decimal | DecimalJsLike | number | string
     updatedAt?: Date | string
+    userId: string
+    BridgeTransfer?: BridgeTransferUncheckedCreateNestedManyWithoutLiquidityPoolInput
   }
 
   export type LiquidityPoolUpdateInput = {
@@ -20261,8 +21943,10 @@ export namespace Prisma {
     balance?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     frozen?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    paymentChannel?: PaymentChannelUpdateOneRequiredWithoutLiquidityPoolNestedInput
+    BridgeTransfer?: BridgeTransferUpdateManyWithoutLiquidityPoolNestedInput
     currency?: CurrencyUpdateOneRequiredWithoutLiquidityPoolNestedInput
+    paymentChannel?: PaymentChannelUpdateOneRequiredWithoutLiquidityPoolNestedInput
+    user?: UserUpdateOneRequiredWithoutLiquidityPoolNestedInput
   }
 
   export type LiquidityPoolUncheckedUpdateInput = {
@@ -20273,6 +21957,8 @@ export namespace Prisma {
     balance?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     frozen?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    userId?: StringFieldUpdateOperationsInput | string
+    BridgeTransfer?: BridgeTransferUncheckedUpdateManyWithoutLiquidityPoolNestedInput
   }
 
   export type LiquidityPoolCreateManyInput = {
@@ -20283,6 +21969,7 @@ export namespace Prisma {
     balance?: Decimal | DecimalJsLike | number | string
     frozen?: Decimal | DecimalJsLike | number | string
     updatedAt?: Date | string
+    userId: string
   }
 
   export type LiquidityPoolUpdateManyMutationInput = {
@@ -20301,6 +21988,7 @@ export namespace Prisma {
     balance?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     frozen?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    userId?: StringFieldUpdateOperationsInput | string
   }
 
   export type WalletCreateInput = {
@@ -20309,13 +21997,13 @@ export namespace Prisma {
     frozen?: Decimal | DecimalJsLike | number | string
     createdAt?: Date | string
     updatedAt?: Date | string
-    user: UserCreateNestedOneWithoutWalletInput
-    currency: CurrencyCreateNestedOneWithoutWalletsInput
     deposits?: DepositCreateNestedManyWithoutWalletInput
-    withdrawals?: WithdrawalCreateNestedManyWithoutWalletInput
     Refund?: RefundCreateNestedManyWithoutWalletInput
     transfersFrom?: TransferCreateNestedManyWithoutFromWalletInput
     transfersTo?: TransferCreateNestedManyWithoutToWalletInput
+    currency: CurrencyCreateNestedOneWithoutWalletsInput
+    user: UserCreateNestedOneWithoutWalletInput
+    withdrawals?: WithdrawalCreateNestedManyWithoutWalletInput
   }
 
   export type WalletUncheckedCreateInput = {
@@ -20327,10 +22015,10 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     deposits?: DepositUncheckedCreateNestedManyWithoutWalletInput
-    withdrawals?: WithdrawalUncheckedCreateNestedManyWithoutWalletInput
     Refund?: RefundUncheckedCreateNestedManyWithoutWalletInput
     transfersFrom?: TransferUncheckedCreateNestedManyWithoutFromWalletInput
     transfersTo?: TransferUncheckedCreateNestedManyWithoutToWalletInput
+    withdrawals?: WithdrawalUncheckedCreateNestedManyWithoutWalletInput
   }
 
   export type WalletUpdateInput = {
@@ -20339,13 +22027,13 @@ export namespace Prisma {
     frozen?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    user?: UserUpdateOneRequiredWithoutWalletNestedInput
-    currency?: CurrencyUpdateOneRequiredWithoutWalletsNestedInput
     deposits?: DepositUpdateManyWithoutWalletNestedInput
-    withdrawals?: WithdrawalUpdateManyWithoutWalletNestedInput
     Refund?: RefundUpdateManyWithoutWalletNestedInput
     transfersFrom?: TransferUpdateManyWithoutFromWalletNestedInput
     transfersTo?: TransferUpdateManyWithoutToWalletNestedInput
+    currency?: CurrencyUpdateOneRequiredWithoutWalletsNestedInput
+    user?: UserUpdateOneRequiredWithoutWalletNestedInput
+    withdrawals?: WithdrawalUpdateManyWithoutWalletNestedInput
   }
 
   export type WalletUncheckedUpdateInput = {
@@ -20357,10 +22045,10 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     deposits?: DepositUncheckedUpdateManyWithoutWalletNestedInput
-    withdrawals?: WithdrawalUncheckedUpdateManyWithoutWalletNestedInput
     Refund?: RefundUncheckedUpdateManyWithoutWalletNestedInput
     transfersFrom?: TransferUncheckedUpdateManyWithoutFromWalletNestedInput
     transfersTo?: TransferUncheckedUpdateManyWithoutToWalletNestedInput
+    withdrawals?: WithdrawalUncheckedUpdateManyWithoutWalletNestedInput
   }
 
   export type WalletCreateManyInput = {
@@ -20400,8 +22088,9 @@ export namespace Prisma {
     createdAt?: Date | string
     completedAt?: Date | string | null
     failedAt?: Date | string | null
+    documentUrl?: string | null
+    BridgeTransfer?: BridgeTransferCreateNestedOneWithoutDepositInput
     paymentChannel: PaymentChannelCreateNestedOneWithoutDepositInput
-    bridgeTransfer?: BridgeTransferCreateNestedOneWithoutDepositInput
     user: UserCreateNestedOneWithoutDepositsInput
     wallet: WalletCreateNestedOneWithoutDepositsInput
   }
@@ -20418,7 +22107,8 @@ export namespace Prisma {
     completedAt?: Date | string | null
     failedAt?: Date | string | null
     paymentChannelId: string
-    bridgeTransferid?: string | null
+    documentUrl?: string | null
+    BridgeTransfer?: BridgeTransferUncheckedCreateNestedOneWithoutDepositInput
   }
 
   export type DepositUpdateInput = {
@@ -20430,8 +22120,9 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     failedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    documentUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    BridgeTransfer?: BridgeTransferUpdateOneWithoutDepositNestedInput
     paymentChannel?: PaymentChannelUpdateOneRequiredWithoutDepositNestedInput
-    bridgeTransfer?: BridgeTransferUpdateOneWithoutDepositNestedInput
     user?: UserUpdateOneRequiredWithoutDepositsNestedInput
     wallet?: WalletUpdateOneRequiredWithoutDepositsNestedInput
   }
@@ -20448,7 +22139,8 @@ export namespace Prisma {
     completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     failedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     paymentChannelId?: StringFieldUpdateOperationsInput | string
-    bridgeTransferid?: NullableStringFieldUpdateOperationsInput | string | null
+    documentUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    BridgeTransfer?: BridgeTransferUncheckedUpdateOneWithoutDepositNestedInput
   }
 
   export type DepositCreateManyInput = {
@@ -20463,7 +22155,7 @@ export namespace Prisma {
     completedAt?: Date | string | null
     failedAt?: Date | string | null
     paymentChannelId: string
-    bridgeTransferid?: string | null
+    documentUrl?: string | null
   }
 
   export type DepositUpdateManyMutationInput = {
@@ -20475,6 +22167,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     failedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    documentUrl?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type DepositUncheckedUpdateManyInput = {
@@ -20489,7 +22182,7 @@ export namespace Prisma {
     completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     failedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     paymentChannelId?: StringFieldUpdateOperationsInput | string
-    bridgeTransferid?: NullableStringFieldUpdateOperationsInput | string | null
+    documentUrl?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type WithdrawalCreateInput = {
@@ -20501,8 +22194,11 @@ export namespace Prisma {
     createdAt?: Date | string
     completedAt?: Date | string | null
     failedAt?: Date | string | null
+    bridgeTransferId?: string | null
+    receiverAddress: string
+    addressOwnerName: string
+    BridgeTransfer?: BridgeTransferCreateNestedOneWithoutWithdrawalInput
     paymentChannel: PaymentChannelCreateNestedOneWithoutWithdrawalInput
-    bridgeTransfer?: BridgeTransferCreateNestedOneWithoutWithdrawalInput
     user: UserCreateNestedOneWithoutWithdrawalsInput
     wallet: WalletCreateNestedOneWithoutWithdrawalsInput
   }
@@ -20519,7 +22215,10 @@ export namespace Prisma {
     completedAt?: Date | string | null
     failedAt?: Date | string | null
     paymentChannelId: string
-    bridgeTransferid?: string | null
+    bridgeTransferId?: string | null
+    receiverAddress: string
+    addressOwnerName: string
+    BridgeTransfer?: BridgeTransferUncheckedCreateNestedOneWithoutWithdrawalInput
   }
 
   export type WithdrawalUpdateInput = {
@@ -20531,8 +22230,11 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     failedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    bridgeTransferId?: NullableStringFieldUpdateOperationsInput | string | null
+    receiverAddress?: StringFieldUpdateOperationsInput | string
+    addressOwnerName?: StringFieldUpdateOperationsInput | string
+    BridgeTransfer?: BridgeTransferUpdateOneWithoutWithdrawalNestedInput
     paymentChannel?: PaymentChannelUpdateOneRequiredWithoutWithdrawalNestedInput
-    bridgeTransfer?: BridgeTransferUpdateOneWithoutWithdrawalNestedInput
     user?: UserUpdateOneRequiredWithoutWithdrawalsNestedInput
     wallet?: WalletUpdateOneRequiredWithoutWithdrawalsNestedInput
   }
@@ -20549,7 +22251,10 @@ export namespace Prisma {
     completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     failedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     paymentChannelId?: StringFieldUpdateOperationsInput | string
-    bridgeTransferid?: NullableStringFieldUpdateOperationsInput | string | null
+    bridgeTransferId?: NullableStringFieldUpdateOperationsInput | string | null
+    receiverAddress?: StringFieldUpdateOperationsInput | string
+    addressOwnerName?: StringFieldUpdateOperationsInput | string
+    BridgeTransfer?: BridgeTransferUncheckedUpdateOneWithoutWithdrawalNestedInput
   }
 
   export type WithdrawalCreateManyInput = {
@@ -20564,7 +22269,9 @@ export namespace Prisma {
     completedAt?: Date | string | null
     failedAt?: Date | string | null
     paymentChannelId: string
-    bridgeTransferid?: string | null
+    bridgeTransferId?: string | null
+    receiverAddress: string
+    addressOwnerName: string
   }
 
   export type WithdrawalUpdateManyMutationInput = {
@@ -20576,6 +22283,9 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     failedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    bridgeTransferId?: NullableStringFieldUpdateOperationsInput | string | null
+    receiverAddress?: StringFieldUpdateOperationsInput | string
+    addressOwnerName?: StringFieldUpdateOperationsInput | string
   }
 
   export type WithdrawalUncheckedUpdateManyInput = {
@@ -20590,91 +22300,90 @@ export namespace Prisma {
     completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     failedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     paymentChannelId?: StringFieldUpdateOperationsInput | string
-    bridgeTransferid?: NullableStringFieldUpdateOperationsInput | string | null
+    bridgeTransferId?: NullableStringFieldUpdateOperationsInput | string | null
+    receiverAddress?: StringFieldUpdateOperationsInput | string
+    addressOwnerName?: StringFieldUpdateOperationsInput | string
   }
 
   export type BridgeTransferCreateInput = {
     id?: string
-    depositId: string
-    withdrawalId: string
     status?: $Enums.BridgeStatus
     createdAt?: Date | string
     completedAt?: Date | string | null
     failedAt?: Date | string | null
-    paymentChannel: PaymentChannelCreateNestedOneWithoutBridgeTransfersInput
-    Deposit?: DepositCreateNestedManyWithoutBridgeTransferInput
-    Withdrawal?: WithdrawalCreateNestedManyWithoutBridgeTransferInput
+    amount?: Decimal | DecimalJsLike | number | string
+    deposit?: DepositCreateNestedOneWithoutBridgeTransferInput
+    liquidityPool?: LiquidityPoolCreateNestedOneWithoutBridgeTransferInput
+    withdrawal?: WithdrawalCreateNestedOneWithoutBridgeTransferInput
   }
 
   export type BridgeTransferUncheckedCreateInput = {
     id?: string
-    depositId: string
-    withdrawalId: string
-    channelId: string
     status?: $Enums.BridgeStatus
     createdAt?: Date | string
     completedAt?: Date | string | null
     failedAt?: Date | string | null
-    Deposit?: DepositUncheckedCreateNestedManyWithoutBridgeTransferInput
-    Withdrawal?: WithdrawalUncheckedCreateNestedManyWithoutBridgeTransferInput
+    depositId?: string | null
+    withdrawalId?: string | null
+    liquidityPoolId?: string | null
+    amount?: Decimal | DecimalJsLike | number | string
   }
 
   export type BridgeTransferUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
-    depositId?: StringFieldUpdateOperationsInput | string
-    withdrawalId?: StringFieldUpdateOperationsInput | string
     status?: EnumBridgeStatusFieldUpdateOperationsInput | $Enums.BridgeStatus
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     failedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    paymentChannel?: PaymentChannelUpdateOneRequiredWithoutBridgeTransfersNestedInput
-    Deposit?: DepositUpdateManyWithoutBridgeTransferNestedInput
-    Withdrawal?: WithdrawalUpdateManyWithoutBridgeTransferNestedInput
+    amount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    deposit?: DepositUpdateOneWithoutBridgeTransferNestedInput
+    liquidityPool?: LiquidityPoolUpdateOneWithoutBridgeTransferNestedInput
+    withdrawal?: WithdrawalUpdateOneWithoutBridgeTransferNestedInput
   }
 
   export type BridgeTransferUncheckedUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
-    depositId?: StringFieldUpdateOperationsInput | string
-    withdrawalId?: StringFieldUpdateOperationsInput | string
-    channelId?: StringFieldUpdateOperationsInput | string
     status?: EnumBridgeStatusFieldUpdateOperationsInput | $Enums.BridgeStatus
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     failedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    Deposit?: DepositUncheckedUpdateManyWithoutBridgeTransferNestedInput
-    Withdrawal?: WithdrawalUncheckedUpdateManyWithoutBridgeTransferNestedInput
+    depositId?: NullableStringFieldUpdateOperationsInput | string | null
+    withdrawalId?: NullableStringFieldUpdateOperationsInput | string | null
+    liquidityPoolId?: NullableStringFieldUpdateOperationsInput | string | null
+    amount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
   }
 
   export type BridgeTransferCreateManyInput = {
     id?: string
-    depositId: string
-    withdrawalId: string
-    channelId: string
     status?: $Enums.BridgeStatus
     createdAt?: Date | string
     completedAt?: Date | string | null
     failedAt?: Date | string | null
+    depositId?: string | null
+    withdrawalId?: string | null
+    liquidityPoolId?: string | null
+    amount?: Decimal | DecimalJsLike | number | string
   }
 
   export type BridgeTransferUpdateManyMutationInput = {
     id?: StringFieldUpdateOperationsInput | string
-    depositId?: StringFieldUpdateOperationsInput | string
-    withdrawalId?: StringFieldUpdateOperationsInput | string
     status?: EnumBridgeStatusFieldUpdateOperationsInput | $Enums.BridgeStatus
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     failedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    amount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
   }
 
   export type BridgeTransferUncheckedUpdateManyInput = {
     id?: StringFieldUpdateOperationsInput | string
-    depositId?: StringFieldUpdateOperationsInput | string
-    withdrawalId?: StringFieldUpdateOperationsInput | string
-    channelId?: StringFieldUpdateOperationsInput | string
     status?: EnumBridgeStatusFieldUpdateOperationsInput | $Enums.BridgeStatus
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     failedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    depositId?: NullableStringFieldUpdateOperationsInput | string | null
+    withdrawalId?: NullableStringFieldUpdateOperationsInput | string | null
+    liquidityPoolId?: NullableStringFieldUpdateOperationsInput | string | null
+    amount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
   }
 
   export type TransferCreateInput = {
@@ -20686,9 +22395,9 @@ export namespace Prisma {
     createdAt?: Date | string
     completedAt?: Date | string | null
     failedAt?: Date | string | null
-    User?: UserCreateNestedManyWithoutTransfersInput
     fromWallet: WalletCreateNestedOneWithoutTransfersFromInput
     toWallet: WalletCreateNestedOneWithoutTransfersToInput
+    User?: UserCreateNestedManyWithoutTransfersInput
   }
 
   export type TransferUncheckedCreateInput = {
@@ -20714,9 +22423,9 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     failedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    User?: UserUpdateManyWithoutTransfersNestedInput
     fromWallet?: WalletUpdateOneRequiredWithoutTransfersFromNestedInput
     toWallet?: WalletUpdateOneRequiredWithoutTransfersToNestedInput
+    User?: UserUpdateManyWithoutTransfersNestedInput
   }
 
   export type TransferUncheckedUpdateInput = {
@@ -21177,16 +22886,40 @@ export namespace Prisma {
     not?: NestedDateTimeFilter<$PrismaModel> | Date | string
   }
 
-  export type WalletListRelationFilter = {
-    every?: WalletWhereInput
-    some?: WalletWhereInput
-    none?: WalletWhereInput
+  export type ActivityLogListRelationFilter = {
+    every?: ActivityLogWhereInput
+    some?: ActivityLogWhereInput
+    none?: ActivityLogWhereInput
   }
 
   export type DepositListRelationFilter = {
     every?: DepositWhereInput
     some?: DepositWhereInput
     none?: DepositWhereInput
+  }
+
+  export type ExchangeListRelationFilter = {
+    every?: ExchangeWhereInput
+    some?: ExchangeWhereInput
+    none?: ExchangeWhereInput
+  }
+
+  export type LiquidityPoolListRelationFilter = {
+    every?: LiquidityPoolWhereInput
+    some?: LiquidityPoolWhereInput
+    none?: LiquidityPoolWhereInput
+  }
+
+  export type RefundListRelationFilter = {
+    every?: RefundWhereInput
+    some?: RefundWhereInput
+    none?: RefundWhereInput
+  }
+
+  export type WalletListRelationFilter = {
+    every?: WalletWhereInput
+    some?: WalletWhereInput
+    none?: WalletWhereInput
   }
 
   export type WithdrawalListRelationFilter = {
@@ -21201,34 +22934,32 @@ export namespace Prisma {
     none?: TransferWhereInput
   }
 
-  export type RefundListRelationFilter = {
-    every?: RefundWhereInput
-    some?: RefundWhereInput
-    none?: RefundWhereInput
-  }
-
-  export type ExchangeListRelationFilter = {
-    every?: ExchangeWhereInput
-    some?: ExchangeWhereInput
-    none?: ExchangeWhereInput
-  }
-
-  export type ActivityLogListRelationFilter = {
-    every?: ActivityLogWhereInput
-    some?: ActivityLogWhereInput
-    none?: ActivityLogWhereInput
-  }
-
   export type SortOrderInput = {
     sort: SortOrder
     nulls?: NullsOrder
   }
 
-  export type WalletOrderByRelationAggregateInput = {
+  export type ActivityLogOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
 
   export type DepositOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type ExchangeOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type LiquidityPoolOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type RefundOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type WalletOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
 
@@ -21237,18 +22968,6 @@ export namespace Prisma {
   }
 
   export type TransferOrderByRelationAggregateInput = {
-    _count?: SortOrder
-  }
-
-  export type RefundOrderByRelationAggregateInput = {
-    _count?: SortOrder
-  }
-
-  export type ExchangeOrderByRelationAggregateInput = {
-    _count?: SortOrder
-  }
-
-  export type ActivityLogOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
 
@@ -21277,6 +22996,7 @@ export namespace Prisma {
     createdAt?: SortOrder
     updatedAt?: SortOrder
     deletedAt?: SortOrder
+    isDeleted?: SortOrder
   }
 
   export type UserMaxOrderByAggregateInput = {
@@ -21304,6 +23024,7 @@ export namespace Prisma {
     createdAt?: SortOrder
     updatedAt?: SortOrder
     deletedAt?: SortOrder
+    isDeleted?: SortOrder
   }
 
   export type UserMinOrderByAggregateInput = {
@@ -21331,6 +23052,7 @@ export namespace Prisma {
     createdAt?: SortOrder
     updatedAt?: SortOrder
     deletedAt?: SortOrder
+    isDeleted?: SortOrder
   }
 
   export type StringWithAggregatesFilter<$PrismaModel = never> = {
@@ -21435,28 +23157,13 @@ export namespace Prisma {
     _max?: NestedDateTimeFilter<$PrismaModel>
   }
 
-  export type BridgeTransferNullableScalarRelationFilter = {
-    is?: BridgeTransferWhereInput | null
-    isNot?: BridgeTransferWhereInput | null
-  }
-
   export type CurrencyListRelationFilter = {
     every?: CurrencyWhereInput
     some?: CurrencyWhereInput
     none?: CurrencyWhereInput
   }
 
-  export type LiquidityPoolListRelationFilter = {
-    every?: LiquidityPoolWhereInput
-    some?: LiquidityPoolWhereInput
-    none?: LiquidityPoolWhereInput
-  }
-
   export type CurrencyOrderByRelationAggregateInput = {
-    _count?: SortOrder
-  }
-
-  export type LiquidityPoolOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
 
@@ -21492,6 +23199,12 @@ export namespace Prisma {
     not?: NestedIntFilter<$PrismaModel> | number
   }
 
+  export type CurrencyPairListRelationFilter = {
+    every?: CurrencyPairWhereInput
+    some?: CurrencyPairWhereInput
+    none?: CurrencyPairWhereInput
+  }
+
   export type FeeSettingListRelationFilter = {
     every?: FeeSettingWhereInput
     some?: FeeSettingWhereInput
@@ -21502,6 +23215,10 @@ export namespace Prisma {
     every?: PaymentChannelWhereInput
     some?: PaymentChannelWhereInput
     none?: PaymentChannelWhereInput
+  }
+
+  export type CurrencyPairOrderByRelationAggregateInput = {
+    _count?: SortOrder
   }
 
   export type FeeSettingOrderByRelationAggregateInput = {
@@ -21574,54 +23291,55 @@ export namespace Prisma {
     not?: NestedDecimalFilter<$PrismaModel> | Decimal | DecimalJsLike | number | string
   }
 
-  export type PaymentChannelScalarRelationFilter = {
-    is?: PaymentChannelWhereInput
-    isNot?: PaymentChannelWhereInput
-  }
-
   export type CurrencyScalarRelationFilter = {
     is?: CurrencyWhereInput
     isNot?: CurrencyWhereInput
   }
 
-  export type LiquidityPoolCountOrderByAggregateInput = {
+  export type CurrencyPairFromCurrencyIdToCurrencyIdCompoundUniqueInput = {
+    fromCurrencyId: string
+    toCurrencyId: string
+  }
+
+  export type CurrencyPairCountOrderByAggregateInput = {
     id?: SortOrder
-    paymentChannelId?: SortOrder
-    currencyId?: SortOrder
-    address?: SortOrder
-    balance?: SortOrder
-    frozen?: SortOrder
+    fromCurrencyId?: SortOrder
+    toCurrencyId?: SortOrder
+    rate?: SortOrder
+    isInverseRate?: SortOrder
+    isActive?: SortOrder
+    createdAt?: SortOrder
     updatedAt?: SortOrder
   }
 
-  export type LiquidityPoolAvgOrderByAggregateInput = {
-    balance?: SortOrder
-    frozen?: SortOrder
+  export type CurrencyPairAvgOrderByAggregateInput = {
+    rate?: SortOrder
   }
 
-  export type LiquidityPoolMaxOrderByAggregateInput = {
+  export type CurrencyPairMaxOrderByAggregateInput = {
     id?: SortOrder
-    paymentChannelId?: SortOrder
-    currencyId?: SortOrder
-    address?: SortOrder
-    balance?: SortOrder
-    frozen?: SortOrder
+    fromCurrencyId?: SortOrder
+    toCurrencyId?: SortOrder
+    rate?: SortOrder
+    isInverseRate?: SortOrder
+    isActive?: SortOrder
+    createdAt?: SortOrder
     updatedAt?: SortOrder
   }
 
-  export type LiquidityPoolMinOrderByAggregateInput = {
+  export type CurrencyPairMinOrderByAggregateInput = {
     id?: SortOrder
-    paymentChannelId?: SortOrder
-    currencyId?: SortOrder
-    address?: SortOrder
-    balance?: SortOrder
-    frozen?: SortOrder
+    fromCurrencyId?: SortOrder
+    toCurrencyId?: SortOrder
+    rate?: SortOrder
+    isInverseRate?: SortOrder
+    isActive?: SortOrder
+    createdAt?: SortOrder
     updatedAt?: SortOrder
   }
 
-  export type LiquidityPoolSumOrderByAggregateInput = {
-    balance?: SortOrder
-    frozen?: SortOrder
+  export type CurrencyPairSumOrderByAggregateInput = {
+    rate?: SortOrder
   }
 
   export type DecimalWithAggregatesFilter<$PrismaModel = never> = {
@@ -21640,9 +23358,67 @@ export namespace Prisma {
     _max?: NestedDecimalFilter<$PrismaModel>
   }
 
+  export type BridgeTransferListRelationFilter = {
+    every?: BridgeTransferWhereInput
+    some?: BridgeTransferWhereInput
+    none?: BridgeTransferWhereInput
+  }
+
+  export type PaymentChannelScalarRelationFilter = {
+    is?: PaymentChannelWhereInput
+    isNot?: PaymentChannelWhereInput
+  }
+
   export type UserScalarRelationFilter = {
     is?: UserWhereInput
     isNot?: UserWhereInput
+  }
+
+  export type BridgeTransferOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type LiquidityPoolCountOrderByAggregateInput = {
+    id?: SortOrder
+    paymentChannelId?: SortOrder
+    currencyId?: SortOrder
+    address?: SortOrder
+    balance?: SortOrder
+    frozen?: SortOrder
+    updatedAt?: SortOrder
+    userId?: SortOrder
+  }
+
+  export type LiquidityPoolAvgOrderByAggregateInput = {
+    balance?: SortOrder
+    frozen?: SortOrder
+  }
+
+  export type LiquidityPoolMaxOrderByAggregateInput = {
+    id?: SortOrder
+    paymentChannelId?: SortOrder
+    currencyId?: SortOrder
+    address?: SortOrder
+    balance?: SortOrder
+    frozen?: SortOrder
+    updatedAt?: SortOrder
+    userId?: SortOrder
+  }
+
+  export type LiquidityPoolMinOrderByAggregateInput = {
+    id?: SortOrder
+    paymentChannelId?: SortOrder
+    currencyId?: SortOrder
+    address?: SortOrder
+    balance?: SortOrder
+    frozen?: SortOrder
+    updatedAt?: SortOrder
+    userId?: SortOrder
+  }
+
+  export type LiquidityPoolSumOrderByAggregateInput = {
+    balance?: SortOrder
+    frozen?: SortOrder
   }
 
   export type WalletUserIdCurrencyIdCompoundUniqueInput = {
@@ -21697,6 +23473,11 @@ export namespace Prisma {
     not?: NestedEnumDepositStatusFilter<$PrismaModel> | $Enums.DepositStatus
   }
 
+  export type BridgeTransferNullableScalarRelationFilter = {
+    is?: BridgeTransferWhereInput | null
+    isNot?: BridgeTransferWhereInput | null
+  }
+
   export type WalletScalarRelationFilter = {
     is?: WalletWhereInput
     isNot?: WalletWhereInput
@@ -21714,7 +23495,7 @@ export namespace Prisma {
     completedAt?: SortOrder
     failedAt?: SortOrder
     paymentChannelId?: SortOrder
-    bridgeTransferid?: SortOrder
+    documentUrl?: SortOrder
   }
 
   export type DepositAvgOrderByAggregateInput = {
@@ -21734,7 +23515,7 @@ export namespace Prisma {
     completedAt?: SortOrder
     failedAt?: SortOrder
     paymentChannelId?: SortOrder
-    bridgeTransferid?: SortOrder
+    documentUrl?: SortOrder
   }
 
   export type DepositMinOrderByAggregateInput = {
@@ -21749,7 +23530,7 @@ export namespace Prisma {
     completedAt?: SortOrder
     failedAt?: SortOrder
     paymentChannelId?: SortOrder
-    bridgeTransferid?: SortOrder
+    documentUrl?: SortOrder
   }
 
   export type DepositSumOrderByAggregateInput = {
@@ -21786,7 +23567,9 @@ export namespace Prisma {
     completedAt?: SortOrder
     failedAt?: SortOrder
     paymentChannelId?: SortOrder
-    bridgeTransferid?: SortOrder
+    bridgeTransferId?: SortOrder
+    receiverAddress?: SortOrder
+    addressOwnerName?: SortOrder
   }
 
   export type WithdrawalAvgOrderByAggregateInput = {
@@ -21806,7 +23589,9 @@ export namespace Prisma {
     completedAt?: SortOrder
     failedAt?: SortOrder
     paymentChannelId?: SortOrder
-    bridgeTransferid?: SortOrder
+    bridgeTransferId?: SortOrder
+    receiverAddress?: SortOrder
+    addressOwnerName?: SortOrder
   }
 
   export type WithdrawalMinOrderByAggregateInput = {
@@ -21821,7 +23606,9 @@ export namespace Prisma {
     completedAt?: SortOrder
     failedAt?: SortOrder
     paymentChannelId?: SortOrder
-    bridgeTransferid?: SortOrder
+    bridgeTransferId?: SortOrder
+    receiverAddress?: SortOrder
+    addressOwnerName?: SortOrder
   }
 
   export type WithdrawalSumOrderByAggregateInput = {
@@ -21846,37 +23633,63 @@ export namespace Prisma {
     not?: NestedEnumBridgeStatusFilter<$PrismaModel> | $Enums.BridgeStatus
   }
 
+  export type DepositNullableScalarRelationFilter = {
+    is?: DepositWhereInput | null
+    isNot?: DepositWhereInput | null
+  }
+
+  export type LiquidityPoolNullableScalarRelationFilter = {
+    is?: LiquidityPoolWhereInput | null
+    isNot?: LiquidityPoolWhereInput | null
+  }
+
+  export type WithdrawalNullableScalarRelationFilter = {
+    is?: WithdrawalWhereInput | null
+    isNot?: WithdrawalWhereInput | null
+  }
+
   export type BridgeTransferCountOrderByAggregateInput = {
     id?: SortOrder
-    depositId?: SortOrder
-    withdrawalId?: SortOrder
-    channelId?: SortOrder
     status?: SortOrder
     createdAt?: SortOrder
     completedAt?: SortOrder
     failedAt?: SortOrder
+    depositId?: SortOrder
+    withdrawalId?: SortOrder
+    liquidityPoolId?: SortOrder
+    amount?: SortOrder
+  }
+
+  export type BridgeTransferAvgOrderByAggregateInput = {
+    amount?: SortOrder
   }
 
   export type BridgeTransferMaxOrderByAggregateInput = {
     id?: SortOrder
-    depositId?: SortOrder
-    withdrawalId?: SortOrder
-    channelId?: SortOrder
     status?: SortOrder
     createdAt?: SortOrder
     completedAt?: SortOrder
     failedAt?: SortOrder
+    depositId?: SortOrder
+    withdrawalId?: SortOrder
+    liquidityPoolId?: SortOrder
+    amount?: SortOrder
   }
 
   export type BridgeTransferMinOrderByAggregateInput = {
     id?: SortOrder
-    depositId?: SortOrder
-    withdrawalId?: SortOrder
-    channelId?: SortOrder
     status?: SortOrder
     createdAt?: SortOrder
     completedAt?: SortOrder
     failedAt?: SortOrder
+    depositId?: SortOrder
+    withdrawalId?: SortOrder
+    liquidityPoolId?: SortOrder
+    amount?: SortOrder
+  }
+
+  export type BridgeTransferSumOrderByAggregateInput = {
+    amount?: SortOrder
   }
 
   export type EnumBridgeStatusWithAggregatesFilter<$PrismaModel = never> = {
@@ -22293,11 +24106,11 @@ export namespace Prisma {
     _max?: NestedDecimalNullableFilter<$PrismaModel>
   }
 
-  export type WalletCreateNestedManyWithoutUserInput = {
-    create?: XOR<WalletCreateWithoutUserInput, WalletUncheckedCreateWithoutUserInput> | WalletCreateWithoutUserInput[] | WalletUncheckedCreateWithoutUserInput[]
-    connectOrCreate?: WalletCreateOrConnectWithoutUserInput | WalletCreateOrConnectWithoutUserInput[]
-    createMany?: WalletCreateManyUserInputEnvelope
-    connect?: WalletWhereUniqueInput | WalletWhereUniqueInput[]
+  export type ActivityLogCreateNestedManyWithoutUserInput = {
+    create?: XOR<ActivityLogCreateWithoutUserInput, ActivityLogUncheckedCreateWithoutUserInput> | ActivityLogCreateWithoutUserInput[] | ActivityLogUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: ActivityLogCreateOrConnectWithoutUserInput | ActivityLogCreateOrConnectWithoutUserInput[]
+    createMany?: ActivityLogCreateManyUserInputEnvelope
+    connect?: ActivityLogWhereUniqueInput | ActivityLogWhereUniqueInput[]
   }
 
   export type DepositCreateNestedManyWithoutUserInput = {
@@ -22305,6 +24118,34 @@ export namespace Prisma {
     connectOrCreate?: DepositCreateOrConnectWithoutUserInput | DepositCreateOrConnectWithoutUserInput[]
     createMany?: DepositCreateManyUserInputEnvelope
     connect?: DepositWhereUniqueInput | DepositWhereUniqueInput[]
+  }
+
+  export type ExchangeCreateNestedManyWithoutInitiatorInput = {
+    create?: XOR<ExchangeCreateWithoutInitiatorInput, ExchangeUncheckedCreateWithoutInitiatorInput> | ExchangeCreateWithoutInitiatorInput[] | ExchangeUncheckedCreateWithoutInitiatorInput[]
+    connectOrCreate?: ExchangeCreateOrConnectWithoutInitiatorInput | ExchangeCreateOrConnectWithoutInitiatorInput[]
+    createMany?: ExchangeCreateManyInitiatorInputEnvelope
+    connect?: ExchangeWhereUniqueInput | ExchangeWhereUniqueInput[]
+  }
+
+  export type LiquidityPoolCreateNestedManyWithoutUserInput = {
+    create?: XOR<LiquidityPoolCreateWithoutUserInput, LiquidityPoolUncheckedCreateWithoutUserInput> | LiquidityPoolCreateWithoutUserInput[] | LiquidityPoolUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: LiquidityPoolCreateOrConnectWithoutUserInput | LiquidityPoolCreateOrConnectWithoutUserInput[]
+    createMany?: LiquidityPoolCreateManyUserInputEnvelope
+    connect?: LiquidityPoolWhereUniqueInput | LiquidityPoolWhereUniqueInput[]
+  }
+
+  export type RefundCreateNestedManyWithoutUserInput = {
+    create?: XOR<RefundCreateWithoutUserInput, RefundUncheckedCreateWithoutUserInput> | RefundCreateWithoutUserInput[] | RefundUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: RefundCreateOrConnectWithoutUserInput | RefundCreateOrConnectWithoutUserInput[]
+    createMany?: RefundCreateManyUserInputEnvelope
+    connect?: RefundWhereUniqueInput | RefundWhereUniqueInput[]
+  }
+
+  export type WalletCreateNestedManyWithoutUserInput = {
+    create?: XOR<WalletCreateWithoutUserInput, WalletUncheckedCreateWithoutUserInput> | WalletCreateWithoutUserInput[] | WalletUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: WalletCreateOrConnectWithoutUserInput | WalletCreateOrConnectWithoutUserInput[]
+    createMany?: WalletCreateManyUserInputEnvelope
+    connect?: WalletWhereUniqueInput | WalletWhereUniqueInput[]
   }
 
   export type WithdrawalCreateNestedManyWithoutUserInput = {
@@ -22320,32 +24161,11 @@ export namespace Prisma {
     connect?: TransferWhereUniqueInput | TransferWhereUniqueInput[]
   }
 
-  export type RefundCreateNestedManyWithoutUserInput = {
-    create?: XOR<RefundCreateWithoutUserInput, RefundUncheckedCreateWithoutUserInput> | RefundCreateWithoutUserInput[] | RefundUncheckedCreateWithoutUserInput[]
-    connectOrCreate?: RefundCreateOrConnectWithoutUserInput | RefundCreateOrConnectWithoutUserInput[]
-    createMany?: RefundCreateManyUserInputEnvelope
-    connect?: RefundWhereUniqueInput | RefundWhereUniqueInput[]
-  }
-
-  export type ExchangeCreateNestedManyWithoutInitiatorInput = {
-    create?: XOR<ExchangeCreateWithoutInitiatorInput, ExchangeUncheckedCreateWithoutInitiatorInput> | ExchangeCreateWithoutInitiatorInput[] | ExchangeUncheckedCreateWithoutInitiatorInput[]
-    connectOrCreate?: ExchangeCreateOrConnectWithoutInitiatorInput | ExchangeCreateOrConnectWithoutInitiatorInput[]
-    createMany?: ExchangeCreateManyInitiatorInputEnvelope
-    connect?: ExchangeWhereUniqueInput | ExchangeWhereUniqueInput[]
-  }
-
-  export type ActivityLogCreateNestedManyWithoutUserInput = {
+  export type ActivityLogUncheckedCreateNestedManyWithoutUserInput = {
     create?: XOR<ActivityLogCreateWithoutUserInput, ActivityLogUncheckedCreateWithoutUserInput> | ActivityLogCreateWithoutUserInput[] | ActivityLogUncheckedCreateWithoutUserInput[]
     connectOrCreate?: ActivityLogCreateOrConnectWithoutUserInput | ActivityLogCreateOrConnectWithoutUserInput[]
     createMany?: ActivityLogCreateManyUserInputEnvelope
     connect?: ActivityLogWhereUniqueInput | ActivityLogWhereUniqueInput[]
-  }
-
-  export type WalletUncheckedCreateNestedManyWithoutUserInput = {
-    create?: XOR<WalletCreateWithoutUserInput, WalletUncheckedCreateWithoutUserInput> | WalletCreateWithoutUserInput[] | WalletUncheckedCreateWithoutUserInput[]
-    connectOrCreate?: WalletCreateOrConnectWithoutUserInput | WalletCreateOrConnectWithoutUserInput[]
-    createMany?: WalletCreateManyUserInputEnvelope
-    connect?: WalletWhereUniqueInput | WalletWhereUniqueInput[]
   }
 
   export type DepositUncheckedCreateNestedManyWithoutUserInput = {
@@ -22353,6 +24173,34 @@ export namespace Prisma {
     connectOrCreate?: DepositCreateOrConnectWithoutUserInput | DepositCreateOrConnectWithoutUserInput[]
     createMany?: DepositCreateManyUserInputEnvelope
     connect?: DepositWhereUniqueInput | DepositWhereUniqueInput[]
+  }
+
+  export type ExchangeUncheckedCreateNestedManyWithoutInitiatorInput = {
+    create?: XOR<ExchangeCreateWithoutInitiatorInput, ExchangeUncheckedCreateWithoutInitiatorInput> | ExchangeCreateWithoutInitiatorInput[] | ExchangeUncheckedCreateWithoutInitiatorInput[]
+    connectOrCreate?: ExchangeCreateOrConnectWithoutInitiatorInput | ExchangeCreateOrConnectWithoutInitiatorInput[]
+    createMany?: ExchangeCreateManyInitiatorInputEnvelope
+    connect?: ExchangeWhereUniqueInput | ExchangeWhereUniqueInput[]
+  }
+
+  export type LiquidityPoolUncheckedCreateNestedManyWithoutUserInput = {
+    create?: XOR<LiquidityPoolCreateWithoutUserInput, LiquidityPoolUncheckedCreateWithoutUserInput> | LiquidityPoolCreateWithoutUserInput[] | LiquidityPoolUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: LiquidityPoolCreateOrConnectWithoutUserInput | LiquidityPoolCreateOrConnectWithoutUserInput[]
+    createMany?: LiquidityPoolCreateManyUserInputEnvelope
+    connect?: LiquidityPoolWhereUniqueInput | LiquidityPoolWhereUniqueInput[]
+  }
+
+  export type RefundUncheckedCreateNestedManyWithoutUserInput = {
+    create?: XOR<RefundCreateWithoutUserInput, RefundUncheckedCreateWithoutUserInput> | RefundCreateWithoutUserInput[] | RefundUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: RefundCreateOrConnectWithoutUserInput | RefundCreateOrConnectWithoutUserInput[]
+    createMany?: RefundCreateManyUserInputEnvelope
+    connect?: RefundWhereUniqueInput | RefundWhereUniqueInput[]
+  }
+
+  export type WalletUncheckedCreateNestedManyWithoutUserInput = {
+    create?: XOR<WalletCreateWithoutUserInput, WalletUncheckedCreateWithoutUserInput> | WalletCreateWithoutUserInput[] | WalletUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: WalletCreateOrConnectWithoutUserInput | WalletCreateOrConnectWithoutUserInput[]
+    createMany?: WalletCreateManyUserInputEnvelope
+    connect?: WalletWhereUniqueInput | WalletWhereUniqueInput[]
   }
 
   export type WithdrawalUncheckedCreateNestedManyWithoutUserInput = {
@@ -22366,27 +24214,6 @@ export namespace Prisma {
     create?: XOR<TransferCreateWithoutUserInput, TransferUncheckedCreateWithoutUserInput> | TransferCreateWithoutUserInput[] | TransferUncheckedCreateWithoutUserInput[]
     connectOrCreate?: TransferCreateOrConnectWithoutUserInput | TransferCreateOrConnectWithoutUserInput[]
     connect?: TransferWhereUniqueInput | TransferWhereUniqueInput[]
-  }
-
-  export type RefundUncheckedCreateNestedManyWithoutUserInput = {
-    create?: XOR<RefundCreateWithoutUserInput, RefundUncheckedCreateWithoutUserInput> | RefundCreateWithoutUserInput[] | RefundUncheckedCreateWithoutUserInput[]
-    connectOrCreate?: RefundCreateOrConnectWithoutUserInput | RefundCreateOrConnectWithoutUserInput[]
-    createMany?: RefundCreateManyUserInputEnvelope
-    connect?: RefundWhereUniqueInput | RefundWhereUniqueInput[]
-  }
-
-  export type ExchangeUncheckedCreateNestedManyWithoutInitiatorInput = {
-    create?: XOR<ExchangeCreateWithoutInitiatorInput, ExchangeUncheckedCreateWithoutInitiatorInput> | ExchangeCreateWithoutInitiatorInput[] | ExchangeUncheckedCreateWithoutInitiatorInput[]
-    connectOrCreate?: ExchangeCreateOrConnectWithoutInitiatorInput | ExchangeCreateOrConnectWithoutInitiatorInput[]
-    createMany?: ExchangeCreateManyInitiatorInputEnvelope
-    connect?: ExchangeWhereUniqueInput | ExchangeWhereUniqueInput[]
-  }
-
-  export type ActivityLogUncheckedCreateNestedManyWithoutUserInput = {
-    create?: XOR<ActivityLogCreateWithoutUserInput, ActivityLogUncheckedCreateWithoutUserInput> | ActivityLogCreateWithoutUserInput[] | ActivityLogUncheckedCreateWithoutUserInput[]
-    connectOrCreate?: ActivityLogCreateOrConnectWithoutUserInput | ActivityLogCreateOrConnectWithoutUserInput[]
-    createMany?: ActivityLogCreateManyUserInputEnvelope
-    connect?: ActivityLogWhereUniqueInput | ActivityLogWhereUniqueInput[]
   }
 
   export type StringFieldUpdateOperationsInput = {
@@ -22421,18 +24248,18 @@ export namespace Prisma {
     set?: Date | string
   }
 
-  export type WalletUpdateManyWithoutUserNestedInput = {
-    create?: XOR<WalletCreateWithoutUserInput, WalletUncheckedCreateWithoutUserInput> | WalletCreateWithoutUserInput[] | WalletUncheckedCreateWithoutUserInput[]
-    connectOrCreate?: WalletCreateOrConnectWithoutUserInput | WalletCreateOrConnectWithoutUserInput[]
-    upsert?: WalletUpsertWithWhereUniqueWithoutUserInput | WalletUpsertWithWhereUniqueWithoutUserInput[]
-    createMany?: WalletCreateManyUserInputEnvelope
-    set?: WalletWhereUniqueInput | WalletWhereUniqueInput[]
-    disconnect?: WalletWhereUniqueInput | WalletWhereUniqueInput[]
-    delete?: WalletWhereUniqueInput | WalletWhereUniqueInput[]
-    connect?: WalletWhereUniqueInput | WalletWhereUniqueInput[]
-    update?: WalletUpdateWithWhereUniqueWithoutUserInput | WalletUpdateWithWhereUniqueWithoutUserInput[]
-    updateMany?: WalletUpdateManyWithWhereWithoutUserInput | WalletUpdateManyWithWhereWithoutUserInput[]
-    deleteMany?: WalletScalarWhereInput | WalletScalarWhereInput[]
+  export type ActivityLogUpdateManyWithoutUserNestedInput = {
+    create?: XOR<ActivityLogCreateWithoutUserInput, ActivityLogUncheckedCreateWithoutUserInput> | ActivityLogCreateWithoutUserInput[] | ActivityLogUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: ActivityLogCreateOrConnectWithoutUserInput | ActivityLogCreateOrConnectWithoutUserInput[]
+    upsert?: ActivityLogUpsertWithWhereUniqueWithoutUserInput | ActivityLogUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: ActivityLogCreateManyUserInputEnvelope
+    set?: ActivityLogWhereUniqueInput | ActivityLogWhereUniqueInput[]
+    disconnect?: ActivityLogWhereUniqueInput | ActivityLogWhereUniqueInput[]
+    delete?: ActivityLogWhereUniqueInput | ActivityLogWhereUniqueInput[]
+    connect?: ActivityLogWhereUniqueInput | ActivityLogWhereUniqueInput[]
+    update?: ActivityLogUpdateWithWhereUniqueWithoutUserInput | ActivityLogUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: ActivityLogUpdateManyWithWhereWithoutUserInput | ActivityLogUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: ActivityLogScalarWhereInput | ActivityLogScalarWhereInput[]
   }
 
   export type DepositUpdateManyWithoutUserNestedInput = {
@@ -22447,6 +24274,62 @@ export namespace Prisma {
     update?: DepositUpdateWithWhereUniqueWithoutUserInput | DepositUpdateWithWhereUniqueWithoutUserInput[]
     updateMany?: DepositUpdateManyWithWhereWithoutUserInput | DepositUpdateManyWithWhereWithoutUserInput[]
     deleteMany?: DepositScalarWhereInput | DepositScalarWhereInput[]
+  }
+
+  export type ExchangeUpdateManyWithoutInitiatorNestedInput = {
+    create?: XOR<ExchangeCreateWithoutInitiatorInput, ExchangeUncheckedCreateWithoutInitiatorInput> | ExchangeCreateWithoutInitiatorInput[] | ExchangeUncheckedCreateWithoutInitiatorInput[]
+    connectOrCreate?: ExchangeCreateOrConnectWithoutInitiatorInput | ExchangeCreateOrConnectWithoutInitiatorInput[]
+    upsert?: ExchangeUpsertWithWhereUniqueWithoutInitiatorInput | ExchangeUpsertWithWhereUniqueWithoutInitiatorInput[]
+    createMany?: ExchangeCreateManyInitiatorInputEnvelope
+    set?: ExchangeWhereUniqueInput | ExchangeWhereUniqueInput[]
+    disconnect?: ExchangeWhereUniqueInput | ExchangeWhereUniqueInput[]
+    delete?: ExchangeWhereUniqueInput | ExchangeWhereUniqueInput[]
+    connect?: ExchangeWhereUniqueInput | ExchangeWhereUniqueInput[]
+    update?: ExchangeUpdateWithWhereUniqueWithoutInitiatorInput | ExchangeUpdateWithWhereUniqueWithoutInitiatorInput[]
+    updateMany?: ExchangeUpdateManyWithWhereWithoutInitiatorInput | ExchangeUpdateManyWithWhereWithoutInitiatorInput[]
+    deleteMany?: ExchangeScalarWhereInput | ExchangeScalarWhereInput[]
+  }
+
+  export type LiquidityPoolUpdateManyWithoutUserNestedInput = {
+    create?: XOR<LiquidityPoolCreateWithoutUserInput, LiquidityPoolUncheckedCreateWithoutUserInput> | LiquidityPoolCreateWithoutUserInput[] | LiquidityPoolUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: LiquidityPoolCreateOrConnectWithoutUserInput | LiquidityPoolCreateOrConnectWithoutUserInput[]
+    upsert?: LiquidityPoolUpsertWithWhereUniqueWithoutUserInput | LiquidityPoolUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: LiquidityPoolCreateManyUserInputEnvelope
+    set?: LiquidityPoolWhereUniqueInput | LiquidityPoolWhereUniqueInput[]
+    disconnect?: LiquidityPoolWhereUniqueInput | LiquidityPoolWhereUniqueInput[]
+    delete?: LiquidityPoolWhereUniqueInput | LiquidityPoolWhereUniqueInput[]
+    connect?: LiquidityPoolWhereUniqueInput | LiquidityPoolWhereUniqueInput[]
+    update?: LiquidityPoolUpdateWithWhereUniqueWithoutUserInput | LiquidityPoolUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: LiquidityPoolUpdateManyWithWhereWithoutUserInput | LiquidityPoolUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: LiquidityPoolScalarWhereInput | LiquidityPoolScalarWhereInput[]
+  }
+
+  export type RefundUpdateManyWithoutUserNestedInput = {
+    create?: XOR<RefundCreateWithoutUserInput, RefundUncheckedCreateWithoutUserInput> | RefundCreateWithoutUserInput[] | RefundUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: RefundCreateOrConnectWithoutUserInput | RefundCreateOrConnectWithoutUserInput[]
+    upsert?: RefundUpsertWithWhereUniqueWithoutUserInput | RefundUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: RefundCreateManyUserInputEnvelope
+    set?: RefundWhereUniqueInput | RefundWhereUniqueInput[]
+    disconnect?: RefundWhereUniqueInput | RefundWhereUniqueInput[]
+    delete?: RefundWhereUniqueInput | RefundWhereUniqueInput[]
+    connect?: RefundWhereUniqueInput | RefundWhereUniqueInput[]
+    update?: RefundUpdateWithWhereUniqueWithoutUserInput | RefundUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: RefundUpdateManyWithWhereWithoutUserInput | RefundUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: RefundScalarWhereInput | RefundScalarWhereInput[]
+  }
+
+  export type WalletUpdateManyWithoutUserNestedInput = {
+    create?: XOR<WalletCreateWithoutUserInput, WalletUncheckedCreateWithoutUserInput> | WalletCreateWithoutUserInput[] | WalletUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: WalletCreateOrConnectWithoutUserInput | WalletCreateOrConnectWithoutUserInput[]
+    upsert?: WalletUpsertWithWhereUniqueWithoutUserInput | WalletUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: WalletCreateManyUserInputEnvelope
+    set?: WalletWhereUniqueInput | WalletWhereUniqueInput[]
+    disconnect?: WalletWhereUniqueInput | WalletWhereUniqueInput[]
+    delete?: WalletWhereUniqueInput | WalletWhereUniqueInput[]
+    connect?: WalletWhereUniqueInput | WalletWhereUniqueInput[]
+    update?: WalletUpdateWithWhereUniqueWithoutUserInput | WalletUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: WalletUpdateManyWithWhereWithoutUserInput | WalletUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: WalletScalarWhereInput | WalletScalarWhereInput[]
   }
 
   export type WithdrawalUpdateManyWithoutUserNestedInput = {
@@ -22476,35 +24359,7 @@ export namespace Prisma {
     deleteMany?: TransferScalarWhereInput | TransferScalarWhereInput[]
   }
 
-  export type RefundUpdateManyWithoutUserNestedInput = {
-    create?: XOR<RefundCreateWithoutUserInput, RefundUncheckedCreateWithoutUserInput> | RefundCreateWithoutUserInput[] | RefundUncheckedCreateWithoutUserInput[]
-    connectOrCreate?: RefundCreateOrConnectWithoutUserInput | RefundCreateOrConnectWithoutUserInput[]
-    upsert?: RefundUpsertWithWhereUniqueWithoutUserInput | RefundUpsertWithWhereUniqueWithoutUserInput[]
-    createMany?: RefundCreateManyUserInputEnvelope
-    set?: RefundWhereUniqueInput | RefundWhereUniqueInput[]
-    disconnect?: RefundWhereUniqueInput | RefundWhereUniqueInput[]
-    delete?: RefundWhereUniqueInput | RefundWhereUniqueInput[]
-    connect?: RefundWhereUniqueInput | RefundWhereUniqueInput[]
-    update?: RefundUpdateWithWhereUniqueWithoutUserInput | RefundUpdateWithWhereUniqueWithoutUserInput[]
-    updateMany?: RefundUpdateManyWithWhereWithoutUserInput | RefundUpdateManyWithWhereWithoutUserInput[]
-    deleteMany?: RefundScalarWhereInput | RefundScalarWhereInput[]
-  }
-
-  export type ExchangeUpdateManyWithoutInitiatorNestedInput = {
-    create?: XOR<ExchangeCreateWithoutInitiatorInput, ExchangeUncheckedCreateWithoutInitiatorInput> | ExchangeCreateWithoutInitiatorInput[] | ExchangeUncheckedCreateWithoutInitiatorInput[]
-    connectOrCreate?: ExchangeCreateOrConnectWithoutInitiatorInput | ExchangeCreateOrConnectWithoutInitiatorInput[]
-    upsert?: ExchangeUpsertWithWhereUniqueWithoutInitiatorInput | ExchangeUpsertWithWhereUniqueWithoutInitiatorInput[]
-    createMany?: ExchangeCreateManyInitiatorInputEnvelope
-    set?: ExchangeWhereUniqueInput | ExchangeWhereUniqueInput[]
-    disconnect?: ExchangeWhereUniqueInput | ExchangeWhereUniqueInput[]
-    delete?: ExchangeWhereUniqueInput | ExchangeWhereUniqueInput[]
-    connect?: ExchangeWhereUniqueInput | ExchangeWhereUniqueInput[]
-    update?: ExchangeUpdateWithWhereUniqueWithoutInitiatorInput | ExchangeUpdateWithWhereUniqueWithoutInitiatorInput[]
-    updateMany?: ExchangeUpdateManyWithWhereWithoutInitiatorInput | ExchangeUpdateManyWithWhereWithoutInitiatorInput[]
-    deleteMany?: ExchangeScalarWhereInput | ExchangeScalarWhereInput[]
-  }
-
-  export type ActivityLogUpdateManyWithoutUserNestedInput = {
+  export type ActivityLogUncheckedUpdateManyWithoutUserNestedInput = {
     create?: XOR<ActivityLogCreateWithoutUserInput, ActivityLogUncheckedCreateWithoutUserInput> | ActivityLogCreateWithoutUserInput[] | ActivityLogUncheckedCreateWithoutUserInput[]
     connectOrCreate?: ActivityLogCreateOrConnectWithoutUserInput | ActivityLogCreateOrConnectWithoutUserInput[]
     upsert?: ActivityLogUpsertWithWhereUniqueWithoutUserInput | ActivityLogUpsertWithWhereUniqueWithoutUserInput[]
@@ -22516,20 +24371,6 @@ export namespace Prisma {
     update?: ActivityLogUpdateWithWhereUniqueWithoutUserInput | ActivityLogUpdateWithWhereUniqueWithoutUserInput[]
     updateMany?: ActivityLogUpdateManyWithWhereWithoutUserInput | ActivityLogUpdateManyWithWhereWithoutUserInput[]
     deleteMany?: ActivityLogScalarWhereInput | ActivityLogScalarWhereInput[]
-  }
-
-  export type WalletUncheckedUpdateManyWithoutUserNestedInput = {
-    create?: XOR<WalletCreateWithoutUserInput, WalletUncheckedCreateWithoutUserInput> | WalletCreateWithoutUserInput[] | WalletUncheckedCreateWithoutUserInput[]
-    connectOrCreate?: WalletCreateOrConnectWithoutUserInput | WalletCreateOrConnectWithoutUserInput[]
-    upsert?: WalletUpsertWithWhereUniqueWithoutUserInput | WalletUpsertWithWhereUniqueWithoutUserInput[]
-    createMany?: WalletCreateManyUserInputEnvelope
-    set?: WalletWhereUniqueInput | WalletWhereUniqueInput[]
-    disconnect?: WalletWhereUniqueInput | WalletWhereUniqueInput[]
-    delete?: WalletWhereUniqueInput | WalletWhereUniqueInput[]
-    connect?: WalletWhereUniqueInput | WalletWhereUniqueInput[]
-    update?: WalletUpdateWithWhereUniqueWithoutUserInput | WalletUpdateWithWhereUniqueWithoutUserInput[]
-    updateMany?: WalletUpdateManyWithWhereWithoutUserInput | WalletUpdateManyWithWhereWithoutUserInput[]
-    deleteMany?: WalletScalarWhereInput | WalletScalarWhereInput[]
   }
 
   export type DepositUncheckedUpdateManyWithoutUserNestedInput = {
@@ -22544,6 +24385,62 @@ export namespace Prisma {
     update?: DepositUpdateWithWhereUniqueWithoutUserInput | DepositUpdateWithWhereUniqueWithoutUserInput[]
     updateMany?: DepositUpdateManyWithWhereWithoutUserInput | DepositUpdateManyWithWhereWithoutUserInput[]
     deleteMany?: DepositScalarWhereInput | DepositScalarWhereInput[]
+  }
+
+  export type ExchangeUncheckedUpdateManyWithoutInitiatorNestedInput = {
+    create?: XOR<ExchangeCreateWithoutInitiatorInput, ExchangeUncheckedCreateWithoutInitiatorInput> | ExchangeCreateWithoutInitiatorInput[] | ExchangeUncheckedCreateWithoutInitiatorInput[]
+    connectOrCreate?: ExchangeCreateOrConnectWithoutInitiatorInput | ExchangeCreateOrConnectWithoutInitiatorInput[]
+    upsert?: ExchangeUpsertWithWhereUniqueWithoutInitiatorInput | ExchangeUpsertWithWhereUniqueWithoutInitiatorInput[]
+    createMany?: ExchangeCreateManyInitiatorInputEnvelope
+    set?: ExchangeWhereUniqueInput | ExchangeWhereUniqueInput[]
+    disconnect?: ExchangeWhereUniqueInput | ExchangeWhereUniqueInput[]
+    delete?: ExchangeWhereUniqueInput | ExchangeWhereUniqueInput[]
+    connect?: ExchangeWhereUniqueInput | ExchangeWhereUniqueInput[]
+    update?: ExchangeUpdateWithWhereUniqueWithoutInitiatorInput | ExchangeUpdateWithWhereUniqueWithoutInitiatorInput[]
+    updateMany?: ExchangeUpdateManyWithWhereWithoutInitiatorInput | ExchangeUpdateManyWithWhereWithoutInitiatorInput[]
+    deleteMany?: ExchangeScalarWhereInput | ExchangeScalarWhereInput[]
+  }
+
+  export type LiquidityPoolUncheckedUpdateManyWithoutUserNestedInput = {
+    create?: XOR<LiquidityPoolCreateWithoutUserInput, LiquidityPoolUncheckedCreateWithoutUserInput> | LiquidityPoolCreateWithoutUserInput[] | LiquidityPoolUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: LiquidityPoolCreateOrConnectWithoutUserInput | LiquidityPoolCreateOrConnectWithoutUserInput[]
+    upsert?: LiquidityPoolUpsertWithWhereUniqueWithoutUserInput | LiquidityPoolUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: LiquidityPoolCreateManyUserInputEnvelope
+    set?: LiquidityPoolWhereUniqueInput | LiquidityPoolWhereUniqueInput[]
+    disconnect?: LiquidityPoolWhereUniqueInput | LiquidityPoolWhereUniqueInput[]
+    delete?: LiquidityPoolWhereUniqueInput | LiquidityPoolWhereUniqueInput[]
+    connect?: LiquidityPoolWhereUniqueInput | LiquidityPoolWhereUniqueInput[]
+    update?: LiquidityPoolUpdateWithWhereUniqueWithoutUserInput | LiquidityPoolUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: LiquidityPoolUpdateManyWithWhereWithoutUserInput | LiquidityPoolUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: LiquidityPoolScalarWhereInput | LiquidityPoolScalarWhereInput[]
+  }
+
+  export type RefundUncheckedUpdateManyWithoutUserNestedInput = {
+    create?: XOR<RefundCreateWithoutUserInput, RefundUncheckedCreateWithoutUserInput> | RefundCreateWithoutUserInput[] | RefundUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: RefundCreateOrConnectWithoutUserInput | RefundCreateOrConnectWithoutUserInput[]
+    upsert?: RefundUpsertWithWhereUniqueWithoutUserInput | RefundUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: RefundCreateManyUserInputEnvelope
+    set?: RefundWhereUniqueInput | RefundWhereUniqueInput[]
+    disconnect?: RefundWhereUniqueInput | RefundWhereUniqueInput[]
+    delete?: RefundWhereUniqueInput | RefundWhereUniqueInput[]
+    connect?: RefundWhereUniqueInput | RefundWhereUniqueInput[]
+    update?: RefundUpdateWithWhereUniqueWithoutUserInput | RefundUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: RefundUpdateManyWithWhereWithoutUserInput | RefundUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: RefundScalarWhereInput | RefundScalarWhereInput[]
+  }
+
+  export type WalletUncheckedUpdateManyWithoutUserNestedInput = {
+    create?: XOR<WalletCreateWithoutUserInput, WalletUncheckedCreateWithoutUserInput> | WalletCreateWithoutUserInput[] | WalletUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: WalletCreateOrConnectWithoutUserInput | WalletCreateOrConnectWithoutUserInput[]
+    upsert?: WalletUpsertWithWhereUniqueWithoutUserInput | WalletUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: WalletCreateManyUserInputEnvelope
+    set?: WalletWhereUniqueInput | WalletWhereUniqueInput[]
+    disconnect?: WalletWhereUniqueInput | WalletWhereUniqueInput[]
+    delete?: WalletWhereUniqueInput | WalletWhereUniqueInput[]
+    connect?: WalletWhereUniqueInput | WalletWhereUniqueInput[]
+    update?: WalletUpdateWithWhereUniqueWithoutUserInput | WalletUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: WalletUpdateManyWithWhereWithoutUserInput | WalletUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: WalletScalarWhereInput | WalletScalarWhereInput[]
   }
 
   export type WithdrawalUncheckedUpdateManyWithoutUserNestedInput = {
@@ -22573,72 +24470,11 @@ export namespace Prisma {
     deleteMany?: TransferScalarWhereInput | TransferScalarWhereInput[]
   }
 
-  export type RefundUncheckedUpdateManyWithoutUserNestedInput = {
-    create?: XOR<RefundCreateWithoutUserInput, RefundUncheckedCreateWithoutUserInput> | RefundCreateWithoutUserInput[] | RefundUncheckedCreateWithoutUserInput[]
-    connectOrCreate?: RefundCreateOrConnectWithoutUserInput | RefundCreateOrConnectWithoutUserInput[]
-    upsert?: RefundUpsertWithWhereUniqueWithoutUserInput | RefundUpsertWithWhereUniqueWithoutUserInput[]
-    createMany?: RefundCreateManyUserInputEnvelope
-    set?: RefundWhereUniqueInput | RefundWhereUniqueInput[]
-    disconnect?: RefundWhereUniqueInput | RefundWhereUniqueInput[]
-    delete?: RefundWhereUniqueInput | RefundWhereUniqueInput[]
-    connect?: RefundWhereUniqueInput | RefundWhereUniqueInput[]
-    update?: RefundUpdateWithWhereUniqueWithoutUserInput | RefundUpdateWithWhereUniqueWithoutUserInput[]
-    updateMany?: RefundUpdateManyWithWhereWithoutUserInput | RefundUpdateManyWithWhereWithoutUserInput[]
-    deleteMany?: RefundScalarWhereInput | RefundScalarWhereInput[]
-  }
-
-  export type ExchangeUncheckedUpdateManyWithoutInitiatorNestedInput = {
-    create?: XOR<ExchangeCreateWithoutInitiatorInput, ExchangeUncheckedCreateWithoutInitiatorInput> | ExchangeCreateWithoutInitiatorInput[] | ExchangeUncheckedCreateWithoutInitiatorInput[]
-    connectOrCreate?: ExchangeCreateOrConnectWithoutInitiatorInput | ExchangeCreateOrConnectWithoutInitiatorInput[]
-    upsert?: ExchangeUpsertWithWhereUniqueWithoutInitiatorInput | ExchangeUpsertWithWhereUniqueWithoutInitiatorInput[]
-    createMany?: ExchangeCreateManyInitiatorInputEnvelope
-    set?: ExchangeWhereUniqueInput | ExchangeWhereUniqueInput[]
-    disconnect?: ExchangeWhereUniqueInput | ExchangeWhereUniqueInput[]
-    delete?: ExchangeWhereUniqueInput | ExchangeWhereUniqueInput[]
-    connect?: ExchangeWhereUniqueInput | ExchangeWhereUniqueInput[]
-    update?: ExchangeUpdateWithWhereUniqueWithoutInitiatorInput | ExchangeUpdateWithWhereUniqueWithoutInitiatorInput[]
-    updateMany?: ExchangeUpdateManyWithWhereWithoutInitiatorInput | ExchangeUpdateManyWithWhereWithoutInitiatorInput[]
-    deleteMany?: ExchangeScalarWhereInput | ExchangeScalarWhereInput[]
-  }
-
-  export type ActivityLogUncheckedUpdateManyWithoutUserNestedInput = {
-    create?: XOR<ActivityLogCreateWithoutUserInput, ActivityLogUncheckedCreateWithoutUserInput> | ActivityLogCreateWithoutUserInput[] | ActivityLogUncheckedCreateWithoutUserInput[]
-    connectOrCreate?: ActivityLogCreateOrConnectWithoutUserInput | ActivityLogCreateOrConnectWithoutUserInput[]
-    upsert?: ActivityLogUpsertWithWhereUniqueWithoutUserInput | ActivityLogUpsertWithWhereUniqueWithoutUserInput[]
-    createMany?: ActivityLogCreateManyUserInputEnvelope
-    set?: ActivityLogWhereUniqueInput | ActivityLogWhereUniqueInput[]
-    disconnect?: ActivityLogWhereUniqueInput | ActivityLogWhereUniqueInput[]
-    delete?: ActivityLogWhereUniqueInput | ActivityLogWhereUniqueInput[]
-    connect?: ActivityLogWhereUniqueInput | ActivityLogWhereUniqueInput[]
-    update?: ActivityLogUpdateWithWhereUniqueWithoutUserInput | ActivityLogUpdateWithWhereUniqueWithoutUserInput[]
-    updateMany?: ActivityLogUpdateManyWithWhereWithoutUserInput | ActivityLogUpdateManyWithWhereWithoutUserInput[]
-    deleteMany?: ActivityLogScalarWhereInput | ActivityLogScalarWhereInput[]
-  }
-
-  export type BridgeTransferCreateNestedOneWithoutPaymentChannelInput = {
-    create?: XOR<BridgeTransferCreateWithoutPaymentChannelInput, BridgeTransferUncheckedCreateWithoutPaymentChannelInput>
-    connectOrCreate?: BridgeTransferCreateOrConnectWithoutPaymentChannelInput
-    connect?: BridgeTransferWhereUniqueInput
-  }
-
-  export type CurrencyCreateNestedManyWithoutPaymentChannelsInput = {
-    create?: XOR<CurrencyCreateWithoutPaymentChannelsInput, CurrencyUncheckedCreateWithoutPaymentChannelsInput> | CurrencyCreateWithoutPaymentChannelsInput[] | CurrencyUncheckedCreateWithoutPaymentChannelsInput[]
-    connectOrCreate?: CurrencyCreateOrConnectWithoutPaymentChannelsInput | CurrencyCreateOrConnectWithoutPaymentChannelsInput[]
-    connect?: CurrencyWhereUniqueInput | CurrencyWhereUniqueInput[]
-  }
-
   export type DepositCreateNestedManyWithoutPaymentChannelInput = {
     create?: XOR<DepositCreateWithoutPaymentChannelInput, DepositUncheckedCreateWithoutPaymentChannelInput> | DepositCreateWithoutPaymentChannelInput[] | DepositUncheckedCreateWithoutPaymentChannelInput[]
     connectOrCreate?: DepositCreateOrConnectWithoutPaymentChannelInput | DepositCreateOrConnectWithoutPaymentChannelInput[]
     createMany?: DepositCreateManyPaymentChannelInputEnvelope
     connect?: DepositWhereUniqueInput | DepositWhereUniqueInput[]
-  }
-
-  export type WithdrawalCreateNestedManyWithoutPaymentChannelInput = {
-    create?: XOR<WithdrawalCreateWithoutPaymentChannelInput, WithdrawalUncheckedCreateWithoutPaymentChannelInput> | WithdrawalCreateWithoutPaymentChannelInput[] | WithdrawalUncheckedCreateWithoutPaymentChannelInput[]
-    connectOrCreate?: WithdrawalCreateOrConnectWithoutPaymentChannelInput | WithdrawalCreateOrConnectWithoutPaymentChannelInput[]
-    createMany?: WithdrawalCreateManyPaymentChannelInputEnvelope
-    connect?: WithdrawalWhereUniqueInput | WithdrawalWhereUniqueInput[]
   }
 
   export type LiquidityPoolCreateNestedManyWithoutPaymentChannelInput = {
@@ -22648,13 +24484,14 @@ export namespace Prisma {
     connect?: LiquidityPoolWhereUniqueInput | LiquidityPoolWhereUniqueInput[]
   }
 
-  export type BridgeTransferUncheckedCreateNestedOneWithoutPaymentChannelInput = {
-    create?: XOR<BridgeTransferCreateWithoutPaymentChannelInput, BridgeTransferUncheckedCreateWithoutPaymentChannelInput>
-    connectOrCreate?: BridgeTransferCreateOrConnectWithoutPaymentChannelInput
-    connect?: BridgeTransferWhereUniqueInput
+  export type WithdrawalCreateNestedManyWithoutPaymentChannelInput = {
+    create?: XOR<WithdrawalCreateWithoutPaymentChannelInput, WithdrawalUncheckedCreateWithoutPaymentChannelInput> | WithdrawalCreateWithoutPaymentChannelInput[] | WithdrawalUncheckedCreateWithoutPaymentChannelInput[]
+    connectOrCreate?: WithdrawalCreateOrConnectWithoutPaymentChannelInput | WithdrawalCreateOrConnectWithoutPaymentChannelInput[]
+    createMany?: WithdrawalCreateManyPaymentChannelInputEnvelope
+    connect?: WithdrawalWhereUniqueInput | WithdrawalWhereUniqueInput[]
   }
 
-  export type CurrencyUncheckedCreateNestedManyWithoutPaymentChannelsInput = {
+  export type CurrencyCreateNestedManyWithoutPaymentChannelsInput = {
     create?: XOR<CurrencyCreateWithoutPaymentChannelsInput, CurrencyUncheckedCreateWithoutPaymentChannelsInput> | CurrencyCreateWithoutPaymentChannelsInput[] | CurrencyUncheckedCreateWithoutPaymentChannelsInput[]
     connectOrCreate?: CurrencyCreateOrConnectWithoutPaymentChannelsInput | CurrencyCreateOrConnectWithoutPaymentChannelsInput[]
     connect?: CurrencyWhereUniqueInput | CurrencyWhereUniqueInput[]
@@ -22667,13 +24504,6 @@ export namespace Prisma {
     connect?: DepositWhereUniqueInput | DepositWhereUniqueInput[]
   }
 
-  export type WithdrawalUncheckedCreateNestedManyWithoutPaymentChannelInput = {
-    create?: XOR<WithdrawalCreateWithoutPaymentChannelInput, WithdrawalUncheckedCreateWithoutPaymentChannelInput> | WithdrawalCreateWithoutPaymentChannelInput[] | WithdrawalUncheckedCreateWithoutPaymentChannelInput[]
-    connectOrCreate?: WithdrawalCreateOrConnectWithoutPaymentChannelInput | WithdrawalCreateOrConnectWithoutPaymentChannelInput[]
-    createMany?: WithdrawalCreateManyPaymentChannelInputEnvelope
-    connect?: WithdrawalWhereUniqueInput | WithdrawalWhereUniqueInput[]
-  }
-
   export type LiquidityPoolUncheckedCreateNestedManyWithoutPaymentChannelInput = {
     create?: XOR<LiquidityPoolCreateWithoutPaymentChannelInput, LiquidityPoolUncheckedCreateWithoutPaymentChannelInput> | LiquidityPoolCreateWithoutPaymentChannelInput[] | LiquidityPoolUncheckedCreateWithoutPaymentChannelInput[]
     connectOrCreate?: LiquidityPoolCreateOrConnectWithoutPaymentChannelInput | LiquidityPoolCreateOrConnectWithoutPaymentChannelInput[]
@@ -22681,27 +24511,17 @@ export namespace Prisma {
     connect?: LiquidityPoolWhereUniqueInput | LiquidityPoolWhereUniqueInput[]
   }
 
-  export type BridgeTransferUpdateOneWithoutPaymentChannelNestedInput = {
-    create?: XOR<BridgeTransferCreateWithoutPaymentChannelInput, BridgeTransferUncheckedCreateWithoutPaymentChannelInput>
-    connectOrCreate?: BridgeTransferCreateOrConnectWithoutPaymentChannelInput
-    upsert?: BridgeTransferUpsertWithoutPaymentChannelInput
-    disconnect?: BridgeTransferWhereInput | boolean
-    delete?: BridgeTransferWhereInput | boolean
-    connect?: BridgeTransferWhereUniqueInput
-    update?: XOR<XOR<BridgeTransferUpdateToOneWithWhereWithoutPaymentChannelInput, BridgeTransferUpdateWithoutPaymentChannelInput>, BridgeTransferUncheckedUpdateWithoutPaymentChannelInput>
+  export type WithdrawalUncheckedCreateNestedManyWithoutPaymentChannelInput = {
+    create?: XOR<WithdrawalCreateWithoutPaymentChannelInput, WithdrawalUncheckedCreateWithoutPaymentChannelInput> | WithdrawalCreateWithoutPaymentChannelInput[] | WithdrawalUncheckedCreateWithoutPaymentChannelInput[]
+    connectOrCreate?: WithdrawalCreateOrConnectWithoutPaymentChannelInput | WithdrawalCreateOrConnectWithoutPaymentChannelInput[]
+    createMany?: WithdrawalCreateManyPaymentChannelInputEnvelope
+    connect?: WithdrawalWhereUniqueInput | WithdrawalWhereUniqueInput[]
   }
 
-  export type CurrencyUpdateManyWithoutPaymentChannelsNestedInput = {
+  export type CurrencyUncheckedCreateNestedManyWithoutPaymentChannelsInput = {
     create?: XOR<CurrencyCreateWithoutPaymentChannelsInput, CurrencyUncheckedCreateWithoutPaymentChannelsInput> | CurrencyCreateWithoutPaymentChannelsInput[] | CurrencyUncheckedCreateWithoutPaymentChannelsInput[]
     connectOrCreate?: CurrencyCreateOrConnectWithoutPaymentChannelsInput | CurrencyCreateOrConnectWithoutPaymentChannelsInput[]
-    upsert?: CurrencyUpsertWithWhereUniqueWithoutPaymentChannelsInput | CurrencyUpsertWithWhereUniqueWithoutPaymentChannelsInput[]
-    set?: CurrencyWhereUniqueInput | CurrencyWhereUniqueInput[]
-    disconnect?: CurrencyWhereUniqueInput | CurrencyWhereUniqueInput[]
-    delete?: CurrencyWhereUniqueInput | CurrencyWhereUniqueInput[]
     connect?: CurrencyWhereUniqueInput | CurrencyWhereUniqueInput[]
-    update?: CurrencyUpdateWithWhereUniqueWithoutPaymentChannelsInput | CurrencyUpdateWithWhereUniqueWithoutPaymentChannelsInput[]
-    updateMany?: CurrencyUpdateManyWithWhereWithoutPaymentChannelsInput | CurrencyUpdateManyWithWhereWithoutPaymentChannelsInput[]
-    deleteMany?: CurrencyScalarWhereInput | CurrencyScalarWhereInput[]
   }
 
   export type DepositUpdateManyWithoutPaymentChannelNestedInput = {
@@ -22718,20 +24538,6 @@ export namespace Prisma {
     deleteMany?: DepositScalarWhereInput | DepositScalarWhereInput[]
   }
 
-  export type WithdrawalUpdateManyWithoutPaymentChannelNestedInput = {
-    create?: XOR<WithdrawalCreateWithoutPaymentChannelInput, WithdrawalUncheckedCreateWithoutPaymentChannelInput> | WithdrawalCreateWithoutPaymentChannelInput[] | WithdrawalUncheckedCreateWithoutPaymentChannelInput[]
-    connectOrCreate?: WithdrawalCreateOrConnectWithoutPaymentChannelInput | WithdrawalCreateOrConnectWithoutPaymentChannelInput[]
-    upsert?: WithdrawalUpsertWithWhereUniqueWithoutPaymentChannelInput | WithdrawalUpsertWithWhereUniqueWithoutPaymentChannelInput[]
-    createMany?: WithdrawalCreateManyPaymentChannelInputEnvelope
-    set?: WithdrawalWhereUniqueInput | WithdrawalWhereUniqueInput[]
-    disconnect?: WithdrawalWhereUniqueInput | WithdrawalWhereUniqueInput[]
-    delete?: WithdrawalWhereUniqueInput | WithdrawalWhereUniqueInput[]
-    connect?: WithdrawalWhereUniqueInput | WithdrawalWhereUniqueInput[]
-    update?: WithdrawalUpdateWithWhereUniqueWithoutPaymentChannelInput | WithdrawalUpdateWithWhereUniqueWithoutPaymentChannelInput[]
-    updateMany?: WithdrawalUpdateManyWithWhereWithoutPaymentChannelInput | WithdrawalUpdateManyWithWhereWithoutPaymentChannelInput[]
-    deleteMany?: WithdrawalScalarWhereInput | WithdrawalScalarWhereInput[]
-  }
-
   export type LiquidityPoolUpdateManyWithoutPaymentChannelNestedInput = {
     create?: XOR<LiquidityPoolCreateWithoutPaymentChannelInput, LiquidityPoolUncheckedCreateWithoutPaymentChannelInput> | LiquidityPoolCreateWithoutPaymentChannelInput[] | LiquidityPoolUncheckedCreateWithoutPaymentChannelInput[]
     connectOrCreate?: LiquidityPoolCreateOrConnectWithoutPaymentChannelInput | LiquidityPoolCreateOrConnectWithoutPaymentChannelInput[]
@@ -22746,17 +24552,21 @@ export namespace Prisma {
     deleteMany?: LiquidityPoolScalarWhereInput | LiquidityPoolScalarWhereInput[]
   }
 
-  export type BridgeTransferUncheckedUpdateOneWithoutPaymentChannelNestedInput = {
-    create?: XOR<BridgeTransferCreateWithoutPaymentChannelInput, BridgeTransferUncheckedCreateWithoutPaymentChannelInput>
-    connectOrCreate?: BridgeTransferCreateOrConnectWithoutPaymentChannelInput
-    upsert?: BridgeTransferUpsertWithoutPaymentChannelInput
-    disconnect?: BridgeTransferWhereInput | boolean
-    delete?: BridgeTransferWhereInput | boolean
-    connect?: BridgeTransferWhereUniqueInput
-    update?: XOR<XOR<BridgeTransferUpdateToOneWithWhereWithoutPaymentChannelInput, BridgeTransferUpdateWithoutPaymentChannelInput>, BridgeTransferUncheckedUpdateWithoutPaymentChannelInput>
+  export type WithdrawalUpdateManyWithoutPaymentChannelNestedInput = {
+    create?: XOR<WithdrawalCreateWithoutPaymentChannelInput, WithdrawalUncheckedCreateWithoutPaymentChannelInput> | WithdrawalCreateWithoutPaymentChannelInput[] | WithdrawalUncheckedCreateWithoutPaymentChannelInput[]
+    connectOrCreate?: WithdrawalCreateOrConnectWithoutPaymentChannelInput | WithdrawalCreateOrConnectWithoutPaymentChannelInput[]
+    upsert?: WithdrawalUpsertWithWhereUniqueWithoutPaymentChannelInput | WithdrawalUpsertWithWhereUniqueWithoutPaymentChannelInput[]
+    createMany?: WithdrawalCreateManyPaymentChannelInputEnvelope
+    set?: WithdrawalWhereUniqueInput | WithdrawalWhereUniqueInput[]
+    disconnect?: WithdrawalWhereUniqueInput | WithdrawalWhereUniqueInput[]
+    delete?: WithdrawalWhereUniqueInput | WithdrawalWhereUniqueInput[]
+    connect?: WithdrawalWhereUniqueInput | WithdrawalWhereUniqueInput[]
+    update?: WithdrawalUpdateWithWhereUniqueWithoutPaymentChannelInput | WithdrawalUpdateWithWhereUniqueWithoutPaymentChannelInput[]
+    updateMany?: WithdrawalUpdateManyWithWhereWithoutPaymentChannelInput | WithdrawalUpdateManyWithWhereWithoutPaymentChannelInput[]
+    deleteMany?: WithdrawalScalarWhereInput | WithdrawalScalarWhereInput[]
   }
 
-  export type CurrencyUncheckedUpdateManyWithoutPaymentChannelsNestedInput = {
+  export type CurrencyUpdateManyWithoutPaymentChannelsNestedInput = {
     create?: XOR<CurrencyCreateWithoutPaymentChannelsInput, CurrencyUncheckedCreateWithoutPaymentChannelsInput> | CurrencyCreateWithoutPaymentChannelsInput[] | CurrencyUncheckedCreateWithoutPaymentChannelsInput[]
     connectOrCreate?: CurrencyCreateOrConnectWithoutPaymentChannelsInput | CurrencyCreateOrConnectWithoutPaymentChannelsInput[]
     upsert?: CurrencyUpsertWithWhereUniqueWithoutPaymentChannelsInput | CurrencyUpsertWithWhereUniqueWithoutPaymentChannelsInput[]
@@ -22783,20 +24593,6 @@ export namespace Prisma {
     deleteMany?: DepositScalarWhereInput | DepositScalarWhereInput[]
   }
 
-  export type WithdrawalUncheckedUpdateManyWithoutPaymentChannelNestedInput = {
-    create?: XOR<WithdrawalCreateWithoutPaymentChannelInput, WithdrawalUncheckedCreateWithoutPaymentChannelInput> | WithdrawalCreateWithoutPaymentChannelInput[] | WithdrawalUncheckedCreateWithoutPaymentChannelInput[]
-    connectOrCreate?: WithdrawalCreateOrConnectWithoutPaymentChannelInput | WithdrawalCreateOrConnectWithoutPaymentChannelInput[]
-    upsert?: WithdrawalUpsertWithWhereUniqueWithoutPaymentChannelInput | WithdrawalUpsertWithWhereUniqueWithoutPaymentChannelInput[]
-    createMany?: WithdrawalCreateManyPaymentChannelInputEnvelope
-    set?: WithdrawalWhereUniqueInput | WithdrawalWhereUniqueInput[]
-    disconnect?: WithdrawalWhereUniqueInput | WithdrawalWhereUniqueInput[]
-    delete?: WithdrawalWhereUniqueInput | WithdrawalWhereUniqueInput[]
-    connect?: WithdrawalWhereUniqueInput | WithdrawalWhereUniqueInput[]
-    update?: WithdrawalUpdateWithWhereUniqueWithoutPaymentChannelInput | WithdrawalUpdateWithWhereUniqueWithoutPaymentChannelInput[]
-    updateMany?: WithdrawalUpdateManyWithWhereWithoutPaymentChannelInput | WithdrawalUpdateManyWithWhereWithoutPaymentChannelInput[]
-    deleteMany?: WithdrawalScalarWhereInput | WithdrawalScalarWhereInput[]
-  }
-
   export type LiquidityPoolUncheckedUpdateManyWithoutPaymentChannelNestedInput = {
     create?: XOR<LiquidityPoolCreateWithoutPaymentChannelInput, LiquidityPoolUncheckedCreateWithoutPaymentChannelInput> | LiquidityPoolCreateWithoutPaymentChannelInput[] | LiquidityPoolUncheckedCreateWithoutPaymentChannelInput[]
     connectOrCreate?: LiquidityPoolCreateOrConnectWithoutPaymentChannelInput | LiquidityPoolCreateOrConnectWithoutPaymentChannelInput[]
@@ -22811,11 +24607,45 @@ export namespace Prisma {
     deleteMany?: LiquidityPoolScalarWhereInput | LiquidityPoolScalarWhereInput[]
   }
 
-  export type WalletCreateNestedManyWithoutCurrencyInput = {
-    create?: XOR<WalletCreateWithoutCurrencyInput, WalletUncheckedCreateWithoutCurrencyInput> | WalletCreateWithoutCurrencyInput[] | WalletUncheckedCreateWithoutCurrencyInput[]
-    connectOrCreate?: WalletCreateOrConnectWithoutCurrencyInput | WalletCreateOrConnectWithoutCurrencyInput[]
-    createMany?: WalletCreateManyCurrencyInputEnvelope
-    connect?: WalletWhereUniqueInput | WalletWhereUniqueInput[]
+  export type WithdrawalUncheckedUpdateManyWithoutPaymentChannelNestedInput = {
+    create?: XOR<WithdrawalCreateWithoutPaymentChannelInput, WithdrawalUncheckedCreateWithoutPaymentChannelInput> | WithdrawalCreateWithoutPaymentChannelInput[] | WithdrawalUncheckedCreateWithoutPaymentChannelInput[]
+    connectOrCreate?: WithdrawalCreateOrConnectWithoutPaymentChannelInput | WithdrawalCreateOrConnectWithoutPaymentChannelInput[]
+    upsert?: WithdrawalUpsertWithWhereUniqueWithoutPaymentChannelInput | WithdrawalUpsertWithWhereUniqueWithoutPaymentChannelInput[]
+    createMany?: WithdrawalCreateManyPaymentChannelInputEnvelope
+    set?: WithdrawalWhereUniqueInput | WithdrawalWhereUniqueInput[]
+    disconnect?: WithdrawalWhereUniqueInput | WithdrawalWhereUniqueInput[]
+    delete?: WithdrawalWhereUniqueInput | WithdrawalWhereUniqueInput[]
+    connect?: WithdrawalWhereUniqueInput | WithdrawalWhereUniqueInput[]
+    update?: WithdrawalUpdateWithWhereUniqueWithoutPaymentChannelInput | WithdrawalUpdateWithWhereUniqueWithoutPaymentChannelInput[]
+    updateMany?: WithdrawalUpdateManyWithWhereWithoutPaymentChannelInput | WithdrawalUpdateManyWithWhereWithoutPaymentChannelInput[]
+    deleteMany?: WithdrawalScalarWhereInput | WithdrawalScalarWhereInput[]
+  }
+
+  export type CurrencyUncheckedUpdateManyWithoutPaymentChannelsNestedInput = {
+    create?: XOR<CurrencyCreateWithoutPaymentChannelsInput, CurrencyUncheckedCreateWithoutPaymentChannelsInput> | CurrencyCreateWithoutPaymentChannelsInput[] | CurrencyUncheckedCreateWithoutPaymentChannelsInput[]
+    connectOrCreate?: CurrencyCreateOrConnectWithoutPaymentChannelsInput | CurrencyCreateOrConnectWithoutPaymentChannelsInput[]
+    upsert?: CurrencyUpsertWithWhereUniqueWithoutPaymentChannelsInput | CurrencyUpsertWithWhereUniqueWithoutPaymentChannelsInput[]
+    set?: CurrencyWhereUniqueInput | CurrencyWhereUniqueInput[]
+    disconnect?: CurrencyWhereUniqueInput | CurrencyWhereUniqueInput[]
+    delete?: CurrencyWhereUniqueInput | CurrencyWhereUniqueInput[]
+    connect?: CurrencyWhereUniqueInput | CurrencyWhereUniqueInput[]
+    update?: CurrencyUpdateWithWhereUniqueWithoutPaymentChannelsInput | CurrencyUpdateWithWhereUniqueWithoutPaymentChannelsInput[]
+    updateMany?: CurrencyUpdateManyWithWhereWithoutPaymentChannelsInput | CurrencyUpdateManyWithWhereWithoutPaymentChannelsInput[]
+    deleteMany?: CurrencyScalarWhereInput | CurrencyScalarWhereInput[]
+  }
+
+  export type CurrencyPairCreateNestedManyWithoutFromCurrencyInput = {
+    create?: XOR<CurrencyPairCreateWithoutFromCurrencyInput, CurrencyPairUncheckedCreateWithoutFromCurrencyInput> | CurrencyPairCreateWithoutFromCurrencyInput[] | CurrencyPairUncheckedCreateWithoutFromCurrencyInput[]
+    connectOrCreate?: CurrencyPairCreateOrConnectWithoutFromCurrencyInput | CurrencyPairCreateOrConnectWithoutFromCurrencyInput[]
+    createMany?: CurrencyPairCreateManyFromCurrencyInputEnvelope
+    connect?: CurrencyPairWhereUniqueInput | CurrencyPairWhereUniqueInput[]
+  }
+
+  export type CurrencyPairCreateNestedManyWithoutToCurrencyInput = {
+    create?: XOR<CurrencyPairCreateWithoutToCurrencyInput, CurrencyPairUncheckedCreateWithoutToCurrencyInput> | CurrencyPairCreateWithoutToCurrencyInput[] | CurrencyPairUncheckedCreateWithoutToCurrencyInput[]
+    connectOrCreate?: CurrencyPairCreateOrConnectWithoutToCurrencyInput | CurrencyPairCreateOrConnectWithoutToCurrencyInput[]
+    createMany?: CurrencyPairCreateManyToCurrencyInputEnvelope
+    connect?: CurrencyPairWhereUniqueInput | CurrencyPairWhereUniqueInput[]
   }
 
   export type ExchangeCreateNestedManyWithoutFromCurrencyInput = {
@@ -22839,12 +24669,6 @@ export namespace Prisma {
     connect?: FeeSettingWhereUniqueInput | FeeSettingWhereUniqueInput[]
   }
 
-  export type PaymentChannelCreateNestedManyWithoutCurrenciesInput = {
-    create?: XOR<PaymentChannelCreateWithoutCurrenciesInput, PaymentChannelUncheckedCreateWithoutCurrenciesInput> | PaymentChannelCreateWithoutCurrenciesInput[] | PaymentChannelUncheckedCreateWithoutCurrenciesInput[]
-    connectOrCreate?: PaymentChannelCreateOrConnectWithoutCurrenciesInput | PaymentChannelCreateOrConnectWithoutCurrenciesInput[]
-    connect?: PaymentChannelWhereUniqueInput | PaymentChannelWhereUniqueInput[]
-  }
-
   export type LiquidityPoolCreateNestedManyWithoutCurrencyInput = {
     create?: XOR<LiquidityPoolCreateWithoutCurrencyInput, LiquidityPoolUncheckedCreateWithoutCurrencyInput> | LiquidityPoolCreateWithoutCurrencyInput[] | LiquidityPoolUncheckedCreateWithoutCurrencyInput[]
     connectOrCreate?: LiquidityPoolCreateOrConnectWithoutCurrencyInput | LiquidityPoolCreateOrConnectWithoutCurrencyInput[]
@@ -22852,11 +24676,31 @@ export namespace Prisma {
     connect?: LiquidityPoolWhereUniqueInput | LiquidityPoolWhereUniqueInput[]
   }
 
-  export type WalletUncheckedCreateNestedManyWithoutCurrencyInput = {
+  export type WalletCreateNestedManyWithoutCurrencyInput = {
     create?: XOR<WalletCreateWithoutCurrencyInput, WalletUncheckedCreateWithoutCurrencyInput> | WalletCreateWithoutCurrencyInput[] | WalletUncheckedCreateWithoutCurrencyInput[]
     connectOrCreate?: WalletCreateOrConnectWithoutCurrencyInput | WalletCreateOrConnectWithoutCurrencyInput[]
     createMany?: WalletCreateManyCurrencyInputEnvelope
     connect?: WalletWhereUniqueInput | WalletWhereUniqueInput[]
+  }
+
+  export type PaymentChannelCreateNestedManyWithoutCurrenciesInput = {
+    create?: XOR<PaymentChannelCreateWithoutCurrenciesInput, PaymentChannelUncheckedCreateWithoutCurrenciesInput> | PaymentChannelCreateWithoutCurrenciesInput[] | PaymentChannelUncheckedCreateWithoutCurrenciesInput[]
+    connectOrCreate?: PaymentChannelCreateOrConnectWithoutCurrenciesInput | PaymentChannelCreateOrConnectWithoutCurrenciesInput[]
+    connect?: PaymentChannelWhereUniqueInput | PaymentChannelWhereUniqueInput[]
+  }
+
+  export type CurrencyPairUncheckedCreateNestedManyWithoutFromCurrencyInput = {
+    create?: XOR<CurrencyPairCreateWithoutFromCurrencyInput, CurrencyPairUncheckedCreateWithoutFromCurrencyInput> | CurrencyPairCreateWithoutFromCurrencyInput[] | CurrencyPairUncheckedCreateWithoutFromCurrencyInput[]
+    connectOrCreate?: CurrencyPairCreateOrConnectWithoutFromCurrencyInput | CurrencyPairCreateOrConnectWithoutFromCurrencyInput[]
+    createMany?: CurrencyPairCreateManyFromCurrencyInputEnvelope
+    connect?: CurrencyPairWhereUniqueInput | CurrencyPairWhereUniqueInput[]
+  }
+
+  export type CurrencyPairUncheckedCreateNestedManyWithoutToCurrencyInput = {
+    create?: XOR<CurrencyPairCreateWithoutToCurrencyInput, CurrencyPairUncheckedCreateWithoutToCurrencyInput> | CurrencyPairCreateWithoutToCurrencyInput[] | CurrencyPairUncheckedCreateWithoutToCurrencyInput[]
+    connectOrCreate?: CurrencyPairCreateOrConnectWithoutToCurrencyInput | CurrencyPairCreateOrConnectWithoutToCurrencyInput[]
+    createMany?: CurrencyPairCreateManyToCurrencyInputEnvelope
+    connect?: CurrencyPairWhereUniqueInput | CurrencyPairWhereUniqueInput[]
   }
 
   export type ExchangeUncheckedCreateNestedManyWithoutFromCurrencyInput = {
@@ -22880,17 +24724,24 @@ export namespace Prisma {
     connect?: FeeSettingWhereUniqueInput | FeeSettingWhereUniqueInput[]
   }
 
-  export type PaymentChannelUncheckedCreateNestedManyWithoutCurrenciesInput = {
-    create?: XOR<PaymentChannelCreateWithoutCurrenciesInput, PaymentChannelUncheckedCreateWithoutCurrenciesInput> | PaymentChannelCreateWithoutCurrenciesInput[] | PaymentChannelUncheckedCreateWithoutCurrenciesInput[]
-    connectOrCreate?: PaymentChannelCreateOrConnectWithoutCurrenciesInput | PaymentChannelCreateOrConnectWithoutCurrenciesInput[]
-    connect?: PaymentChannelWhereUniqueInput | PaymentChannelWhereUniqueInput[]
-  }
-
   export type LiquidityPoolUncheckedCreateNestedManyWithoutCurrencyInput = {
     create?: XOR<LiquidityPoolCreateWithoutCurrencyInput, LiquidityPoolUncheckedCreateWithoutCurrencyInput> | LiquidityPoolCreateWithoutCurrencyInput[] | LiquidityPoolUncheckedCreateWithoutCurrencyInput[]
     connectOrCreate?: LiquidityPoolCreateOrConnectWithoutCurrencyInput | LiquidityPoolCreateOrConnectWithoutCurrencyInput[]
     createMany?: LiquidityPoolCreateManyCurrencyInputEnvelope
     connect?: LiquidityPoolWhereUniqueInput | LiquidityPoolWhereUniqueInput[]
+  }
+
+  export type WalletUncheckedCreateNestedManyWithoutCurrencyInput = {
+    create?: XOR<WalletCreateWithoutCurrencyInput, WalletUncheckedCreateWithoutCurrencyInput> | WalletCreateWithoutCurrencyInput[] | WalletUncheckedCreateWithoutCurrencyInput[]
+    connectOrCreate?: WalletCreateOrConnectWithoutCurrencyInput | WalletCreateOrConnectWithoutCurrencyInput[]
+    createMany?: WalletCreateManyCurrencyInputEnvelope
+    connect?: WalletWhereUniqueInput | WalletWhereUniqueInput[]
+  }
+
+  export type PaymentChannelUncheckedCreateNestedManyWithoutCurrenciesInput = {
+    create?: XOR<PaymentChannelCreateWithoutCurrenciesInput, PaymentChannelUncheckedCreateWithoutCurrenciesInput> | PaymentChannelCreateWithoutCurrenciesInput[] | PaymentChannelUncheckedCreateWithoutCurrenciesInput[]
+    connectOrCreate?: PaymentChannelCreateOrConnectWithoutCurrenciesInput | PaymentChannelCreateOrConnectWithoutCurrenciesInput[]
+    connect?: PaymentChannelWhereUniqueInput | PaymentChannelWhereUniqueInput[]
   }
 
   export type IntFieldUpdateOperationsInput = {
@@ -22901,18 +24752,32 @@ export namespace Prisma {
     divide?: number
   }
 
-  export type WalletUpdateManyWithoutCurrencyNestedInput = {
-    create?: XOR<WalletCreateWithoutCurrencyInput, WalletUncheckedCreateWithoutCurrencyInput> | WalletCreateWithoutCurrencyInput[] | WalletUncheckedCreateWithoutCurrencyInput[]
-    connectOrCreate?: WalletCreateOrConnectWithoutCurrencyInput | WalletCreateOrConnectWithoutCurrencyInput[]
-    upsert?: WalletUpsertWithWhereUniqueWithoutCurrencyInput | WalletUpsertWithWhereUniqueWithoutCurrencyInput[]
-    createMany?: WalletCreateManyCurrencyInputEnvelope
-    set?: WalletWhereUniqueInput | WalletWhereUniqueInput[]
-    disconnect?: WalletWhereUniqueInput | WalletWhereUniqueInput[]
-    delete?: WalletWhereUniqueInput | WalletWhereUniqueInput[]
-    connect?: WalletWhereUniqueInput | WalletWhereUniqueInput[]
-    update?: WalletUpdateWithWhereUniqueWithoutCurrencyInput | WalletUpdateWithWhereUniqueWithoutCurrencyInput[]
-    updateMany?: WalletUpdateManyWithWhereWithoutCurrencyInput | WalletUpdateManyWithWhereWithoutCurrencyInput[]
-    deleteMany?: WalletScalarWhereInput | WalletScalarWhereInput[]
+  export type CurrencyPairUpdateManyWithoutFromCurrencyNestedInput = {
+    create?: XOR<CurrencyPairCreateWithoutFromCurrencyInput, CurrencyPairUncheckedCreateWithoutFromCurrencyInput> | CurrencyPairCreateWithoutFromCurrencyInput[] | CurrencyPairUncheckedCreateWithoutFromCurrencyInput[]
+    connectOrCreate?: CurrencyPairCreateOrConnectWithoutFromCurrencyInput | CurrencyPairCreateOrConnectWithoutFromCurrencyInput[]
+    upsert?: CurrencyPairUpsertWithWhereUniqueWithoutFromCurrencyInput | CurrencyPairUpsertWithWhereUniqueWithoutFromCurrencyInput[]
+    createMany?: CurrencyPairCreateManyFromCurrencyInputEnvelope
+    set?: CurrencyPairWhereUniqueInput | CurrencyPairWhereUniqueInput[]
+    disconnect?: CurrencyPairWhereUniqueInput | CurrencyPairWhereUniqueInput[]
+    delete?: CurrencyPairWhereUniqueInput | CurrencyPairWhereUniqueInput[]
+    connect?: CurrencyPairWhereUniqueInput | CurrencyPairWhereUniqueInput[]
+    update?: CurrencyPairUpdateWithWhereUniqueWithoutFromCurrencyInput | CurrencyPairUpdateWithWhereUniqueWithoutFromCurrencyInput[]
+    updateMany?: CurrencyPairUpdateManyWithWhereWithoutFromCurrencyInput | CurrencyPairUpdateManyWithWhereWithoutFromCurrencyInput[]
+    deleteMany?: CurrencyPairScalarWhereInput | CurrencyPairScalarWhereInput[]
+  }
+
+  export type CurrencyPairUpdateManyWithoutToCurrencyNestedInput = {
+    create?: XOR<CurrencyPairCreateWithoutToCurrencyInput, CurrencyPairUncheckedCreateWithoutToCurrencyInput> | CurrencyPairCreateWithoutToCurrencyInput[] | CurrencyPairUncheckedCreateWithoutToCurrencyInput[]
+    connectOrCreate?: CurrencyPairCreateOrConnectWithoutToCurrencyInput | CurrencyPairCreateOrConnectWithoutToCurrencyInput[]
+    upsert?: CurrencyPairUpsertWithWhereUniqueWithoutToCurrencyInput | CurrencyPairUpsertWithWhereUniqueWithoutToCurrencyInput[]
+    createMany?: CurrencyPairCreateManyToCurrencyInputEnvelope
+    set?: CurrencyPairWhereUniqueInput | CurrencyPairWhereUniqueInput[]
+    disconnect?: CurrencyPairWhereUniqueInput | CurrencyPairWhereUniqueInput[]
+    delete?: CurrencyPairWhereUniqueInput | CurrencyPairWhereUniqueInput[]
+    connect?: CurrencyPairWhereUniqueInput | CurrencyPairWhereUniqueInput[]
+    update?: CurrencyPairUpdateWithWhereUniqueWithoutToCurrencyInput | CurrencyPairUpdateWithWhereUniqueWithoutToCurrencyInput[]
+    updateMany?: CurrencyPairUpdateManyWithWhereWithoutToCurrencyInput | CurrencyPairUpdateManyWithWhereWithoutToCurrencyInput[]
+    deleteMany?: CurrencyPairScalarWhereInput | CurrencyPairScalarWhereInput[]
   }
 
   export type ExchangeUpdateManyWithoutFromCurrencyNestedInput = {
@@ -22957,19 +24822,6 @@ export namespace Prisma {
     deleteMany?: FeeSettingScalarWhereInput | FeeSettingScalarWhereInput[]
   }
 
-  export type PaymentChannelUpdateManyWithoutCurrenciesNestedInput = {
-    create?: XOR<PaymentChannelCreateWithoutCurrenciesInput, PaymentChannelUncheckedCreateWithoutCurrenciesInput> | PaymentChannelCreateWithoutCurrenciesInput[] | PaymentChannelUncheckedCreateWithoutCurrenciesInput[]
-    connectOrCreate?: PaymentChannelCreateOrConnectWithoutCurrenciesInput | PaymentChannelCreateOrConnectWithoutCurrenciesInput[]
-    upsert?: PaymentChannelUpsertWithWhereUniqueWithoutCurrenciesInput | PaymentChannelUpsertWithWhereUniqueWithoutCurrenciesInput[]
-    set?: PaymentChannelWhereUniqueInput | PaymentChannelWhereUniqueInput[]
-    disconnect?: PaymentChannelWhereUniqueInput | PaymentChannelWhereUniqueInput[]
-    delete?: PaymentChannelWhereUniqueInput | PaymentChannelWhereUniqueInput[]
-    connect?: PaymentChannelWhereUniqueInput | PaymentChannelWhereUniqueInput[]
-    update?: PaymentChannelUpdateWithWhereUniqueWithoutCurrenciesInput | PaymentChannelUpdateWithWhereUniqueWithoutCurrenciesInput[]
-    updateMany?: PaymentChannelUpdateManyWithWhereWithoutCurrenciesInput | PaymentChannelUpdateManyWithWhereWithoutCurrenciesInput[]
-    deleteMany?: PaymentChannelScalarWhereInput | PaymentChannelScalarWhereInput[]
-  }
-
   export type LiquidityPoolUpdateManyWithoutCurrencyNestedInput = {
     create?: XOR<LiquidityPoolCreateWithoutCurrencyInput, LiquidityPoolUncheckedCreateWithoutCurrencyInput> | LiquidityPoolCreateWithoutCurrencyInput[] | LiquidityPoolUncheckedCreateWithoutCurrencyInput[]
     connectOrCreate?: LiquidityPoolCreateOrConnectWithoutCurrencyInput | LiquidityPoolCreateOrConnectWithoutCurrencyInput[]
@@ -22984,7 +24836,7 @@ export namespace Prisma {
     deleteMany?: LiquidityPoolScalarWhereInput | LiquidityPoolScalarWhereInput[]
   }
 
-  export type WalletUncheckedUpdateManyWithoutCurrencyNestedInput = {
+  export type WalletUpdateManyWithoutCurrencyNestedInput = {
     create?: XOR<WalletCreateWithoutCurrencyInput, WalletUncheckedCreateWithoutCurrencyInput> | WalletCreateWithoutCurrencyInput[] | WalletUncheckedCreateWithoutCurrencyInput[]
     connectOrCreate?: WalletCreateOrConnectWithoutCurrencyInput | WalletCreateOrConnectWithoutCurrencyInput[]
     upsert?: WalletUpsertWithWhereUniqueWithoutCurrencyInput | WalletUpsertWithWhereUniqueWithoutCurrencyInput[]
@@ -22996,6 +24848,47 @@ export namespace Prisma {
     update?: WalletUpdateWithWhereUniqueWithoutCurrencyInput | WalletUpdateWithWhereUniqueWithoutCurrencyInput[]
     updateMany?: WalletUpdateManyWithWhereWithoutCurrencyInput | WalletUpdateManyWithWhereWithoutCurrencyInput[]
     deleteMany?: WalletScalarWhereInput | WalletScalarWhereInput[]
+  }
+
+  export type PaymentChannelUpdateManyWithoutCurrenciesNestedInput = {
+    create?: XOR<PaymentChannelCreateWithoutCurrenciesInput, PaymentChannelUncheckedCreateWithoutCurrenciesInput> | PaymentChannelCreateWithoutCurrenciesInput[] | PaymentChannelUncheckedCreateWithoutCurrenciesInput[]
+    connectOrCreate?: PaymentChannelCreateOrConnectWithoutCurrenciesInput | PaymentChannelCreateOrConnectWithoutCurrenciesInput[]
+    upsert?: PaymentChannelUpsertWithWhereUniqueWithoutCurrenciesInput | PaymentChannelUpsertWithWhereUniqueWithoutCurrenciesInput[]
+    set?: PaymentChannelWhereUniqueInput | PaymentChannelWhereUniqueInput[]
+    disconnect?: PaymentChannelWhereUniqueInput | PaymentChannelWhereUniqueInput[]
+    delete?: PaymentChannelWhereUniqueInput | PaymentChannelWhereUniqueInput[]
+    connect?: PaymentChannelWhereUniqueInput | PaymentChannelWhereUniqueInput[]
+    update?: PaymentChannelUpdateWithWhereUniqueWithoutCurrenciesInput | PaymentChannelUpdateWithWhereUniqueWithoutCurrenciesInput[]
+    updateMany?: PaymentChannelUpdateManyWithWhereWithoutCurrenciesInput | PaymentChannelUpdateManyWithWhereWithoutCurrenciesInput[]
+    deleteMany?: PaymentChannelScalarWhereInput | PaymentChannelScalarWhereInput[]
+  }
+
+  export type CurrencyPairUncheckedUpdateManyWithoutFromCurrencyNestedInput = {
+    create?: XOR<CurrencyPairCreateWithoutFromCurrencyInput, CurrencyPairUncheckedCreateWithoutFromCurrencyInput> | CurrencyPairCreateWithoutFromCurrencyInput[] | CurrencyPairUncheckedCreateWithoutFromCurrencyInput[]
+    connectOrCreate?: CurrencyPairCreateOrConnectWithoutFromCurrencyInput | CurrencyPairCreateOrConnectWithoutFromCurrencyInput[]
+    upsert?: CurrencyPairUpsertWithWhereUniqueWithoutFromCurrencyInput | CurrencyPairUpsertWithWhereUniqueWithoutFromCurrencyInput[]
+    createMany?: CurrencyPairCreateManyFromCurrencyInputEnvelope
+    set?: CurrencyPairWhereUniqueInput | CurrencyPairWhereUniqueInput[]
+    disconnect?: CurrencyPairWhereUniqueInput | CurrencyPairWhereUniqueInput[]
+    delete?: CurrencyPairWhereUniqueInput | CurrencyPairWhereUniqueInput[]
+    connect?: CurrencyPairWhereUniqueInput | CurrencyPairWhereUniqueInput[]
+    update?: CurrencyPairUpdateWithWhereUniqueWithoutFromCurrencyInput | CurrencyPairUpdateWithWhereUniqueWithoutFromCurrencyInput[]
+    updateMany?: CurrencyPairUpdateManyWithWhereWithoutFromCurrencyInput | CurrencyPairUpdateManyWithWhereWithoutFromCurrencyInput[]
+    deleteMany?: CurrencyPairScalarWhereInput | CurrencyPairScalarWhereInput[]
+  }
+
+  export type CurrencyPairUncheckedUpdateManyWithoutToCurrencyNestedInput = {
+    create?: XOR<CurrencyPairCreateWithoutToCurrencyInput, CurrencyPairUncheckedCreateWithoutToCurrencyInput> | CurrencyPairCreateWithoutToCurrencyInput[] | CurrencyPairUncheckedCreateWithoutToCurrencyInput[]
+    connectOrCreate?: CurrencyPairCreateOrConnectWithoutToCurrencyInput | CurrencyPairCreateOrConnectWithoutToCurrencyInput[]
+    upsert?: CurrencyPairUpsertWithWhereUniqueWithoutToCurrencyInput | CurrencyPairUpsertWithWhereUniqueWithoutToCurrencyInput[]
+    createMany?: CurrencyPairCreateManyToCurrencyInputEnvelope
+    set?: CurrencyPairWhereUniqueInput | CurrencyPairWhereUniqueInput[]
+    disconnect?: CurrencyPairWhereUniqueInput | CurrencyPairWhereUniqueInput[]
+    delete?: CurrencyPairWhereUniqueInput | CurrencyPairWhereUniqueInput[]
+    connect?: CurrencyPairWhereUniqueInput | CurrencyPairWhereUniqueInput[]
+    update?: CurrencyPairUpdateWithWhereUniqueWithoutToCurrencyInput | CurrencyPairUpdateWithWhereUniqueWithoutToCurrencyInput[]
+    updateMany?: CurrencyPairUpdateManyWithWhereWithoutToCurrencyInput | CurrencyPairUpdateManyWithWhereWithoutToCurrencyInput[]
+    deleteMany?: CurrencyPairScalarWhereInput | CurrencyPairScalarWhereInput[]
   }
 
   export type ExchangeUncheckedUpdateManyWithoutFromCurrencyNestedInput = {
@@ -23040,19 +24933,6 @@ export namespace Prisma {
     deleteMany?: FeeSettingScalarWhereInput | FeeSettingScalarWhereInput[]
   }
 
-  export type PaymentChannelUncheckedUpdateManyWithoutCurrenciesNestedInput = {
-    create?: XOR<PaymentChannelCreateWithoutCurrenciesInput, PaymentChannelUncheckedCreateWithoutCurrenciesInput> | PaymentChannelCreateWithoutCurrenciesInput[] | PaymentChannelUncheckedCreateWithoutCurrenciesInput[]
-    connectOrCreate?: PaymentChannelCreateOrConnectWithoutCurrenciesInput | PaymentChannelCreateOrConnectWithoutCurrenciesInput[]
-    upsert?: PaymentChannelUpsertWithWhereUniqueWithoutCurrenciesInput | PaymentChannelUpsertWithWhereUniqueWithoutCurrenciesInput[]
-    set?: PaymentChannelWhereUniqueInput | PaymentChannelWhereUniqueInput[]
-    disconnect?: PaymentChannelWhereUniqueInput | PaymentChannelWhereUniqueInput[]
-    delete?: PaymentChannelWhereUniqueInput | PaymentChannelWhereUniqueInput[]
-    connect?: PaymentChannelWhereUniqueInput | PaymentChannelWhereUniqueInput[]
-    update?: PaymentChannelUpdateWithWhereUniqueWithoutCurrenciesInput | PaymentChannelUpdateWithWhereUniqueWithoutCurrenciesInput[]
-    updateMany?: PaymentChannelUpdateManyWithWhereWithoutCurrenciesInput | PaymentChannelUpdateManyWithWhereWithoutCurrenciesInput[]
-    deleteMany?: PaymentChannelScalarWhereInput | PaymentChannelScalarWhereInput[]
-  }
-
   export type LiquidityPoolUncheckedUpdateManyWithoutCurrencyNestedInput = {
     create?: XOR<LiquidityPoolCreateWithoutCurrencyInput, LiquidityPoolUncheckedCreateWithoutCurrencyInput> | LiquidityPoolCreateWithoutCurrencyInput[] | LiquidityPoolUncheckedCreateWithoutCurrencyInput[]
     connectOrCreate?: LiquidityPoolCreateOrConnectWithoutCurrencyInput | LiquidityPoolCreateOrConnectWithoutCurrencyInput[]
@@ -23067,15 +24947,42 @@ export namespace Prisma {
     deleteMany?: LiquidityPoolScalarWhereInput | LiquidityPoolScalarWhereInput[]
   }
 
-  export type PaymentChannelCreateNestedOneWithoutLiquidityPoolInput = {
-    create?: XOR<PaymentChannelCreateWithoutLiquidityPoolInput, PaymentChannelUncheckedCreateWithoutLiquidityPoolInput>
-    connectOrCreate?: PaymentChannelCreateOrConnectWithoutLiquidityPoolInput
-    connect?: PaymentChannelWhereUniqueInput
+  export type WalletUncheckedUpdateManyWithoutCurrencyNestedInput = {
+    create?: XOR<WalletCreateWithoutCurrencyInput, WalletUncheckedCreateWithoutCurrencyInput> | WalletCreateWithoutCurrencyInput[] | WalletUncheckedCreateWithoutCurrencyInput[]
+    connectOrCreate?: WalletCreateOrConnectWithoutCurrencyInput | WalletCreateOrConnectWithoutCurrencyInput[]
+    upsert?: WalletUpsertWithWhereUniqueWithoutCurrencyInput | WalletUpsertWithWhereUniqueWithoutCurrencyInput[]
+    createMany?: WalletCreateManyCurrencyInputEnvelope
+    set?: WalletWhereUniqueInput | WalletWhereUniqueInput[]
+    disconnect?: WalletWhereUniqueInput | WalletWhereUniqueInput[]
+    delete?: WalletWhereUniqueInput | WalletWhereUniqueInput[]
+    connect?: WalletWhereUniqueInput | WalletWhereUniqueInput[]
+    update?: WalletUpdateWithWhereUniqueWithoutCurrencyInput | WalletUpdateWithWhereUniqueWithoutCurrencyInput[]
+    updateMany?: WalletUpdateManyWithWhereWithoutCurrencyInput | WalletUpdateManyWithWhereWithoutCurrencyInput[]
+    deleteMany?: WalletScalarWhereInput | WalletScalarWhereInput[]
   }
 
-  export type CurrencyCreateNestedOneWithoutLiquidityPoolInput = {
-    create?: XOR<CurrencyCreateWithoutLiquidityPoolInput, CurrencyUncheckedCreateWithoutLiquidityPoolInput>
-    connectOrCreate?: CurrencyCreateOrConnectWithoutLiquidityPoolInput
+  export type PaymentChannelUncheckedUpdateManyWithoutCurrenciesNestedInput = {
+    create?: XOR<PaymentChannelCreateWithoutCurrenciesInput, PaymentChannelUncheckedCreateWithoutCurrenciesInput> | PaymentChannelCreateWithoutCurrenciesInput[] | PaymentChannelUncheckedCreateWithoutCurrenciesInput[]
+    connectOrCreate?: PaymentChannelCreateOrConnectWithoutCurrenciesInput | PaymentChannelCreateOrConnectWithoutCurrenciesInput[]
+    upsert?: PaymentChannelUpsertWithWhereUniqueWithoutCurrenciesInput | PaymentChannelUpsertWithWhereUniqueWithoutCurrenciesInput[]
+    set?: PaymentChannelWhereUniqueInput | PaymentChannelWhereUniqueInput[]
+    disconnect?: PaymentChannelWhereUniqueInput | PaymentChannelWhereUniqueInput[]
+    delete?: PaymentChannelWhereUniqueInput | PaymentChannelWhereUniqueInput[]
+    connect?: PaymentChannelWhereUniqueInput | PaymentChannelWhereUniqueInput[]
+    update?: PaymentChannelUpdateWithWhereUniqueWithoutCurrenciesInput | PaymentChannelUpdateWithWhereUniqueWithoutCurrenciesInput[]
+    updateMany?: PaymentChannelUpdateManyWithWhereWithoutCurrenciesInput | PaymentChannelUpdateManyWithWhereWithoutCurrenciesInput[]
+    deleteMany?: PaymentChannelScalarWhereInput | PaymentChannelScalarWhereInput[]
+  }
+
+  export type CurrencyCreateNestedOneWithoutFromCurrencyPairInput = {
+    create?: XOR<CurrencyCreateWithoutFromCurrencyPairInput, CurrencyUncheckedCreateWithoutFromCurrencyPairInput>
+    connectOrCreate?: CurrencyCreateOrConnectWithoutFromCurrencyPairInput
+    connect?: CurrencyWhereUniqueInput
+  }
+
+  export type CurrencyCreateNestedOneWithoutToCurrencyPairInput = {
+    create?: XOR<CurrencyCreateWithoutToCurrencyPairInput, CurrencyUncheckedCreateWithoutToCurrencyPairInput>
+    connectOrCreate?: CurrencyCreateOrConnectWithoutToCurrencyPairInput
     connect?: CurrencyWhereUniqueInput
   }
 
@@ -23087,12 +24994,66 @@ export namespace Prisma {
     divide?: Decimal | DecimalJsLike | number | string
   }
 
-  export type PaymentChannelUpdateOneRequiredWithoutLiquidityPoolNestedInput = {
+  export type CurrencyUpdateOneRequiredWithoutFromCurrencyPairNestedInput = {
+    create?: XOR<CurrencyCreateWithoutFromCurrencyPairInput, CurrencyUncheckedCreateWithoutFromCurrencyPairInput>
+    connectOrCreate?: CurrencyCreateOrConnectWithoutFromCurrencyPairInput
+    upsert?: CurrencyUpsertWithoutFromCurrencyPairInput
+    connect?: CurrencyWhereUniqueInput
+    update?: XOR<XOR<CurrencyUpdateToOneWithWhereWithoutFromCurrencyPairInput, CurrencyUpdateWithoutFromCurrencyPairInput>, CurrencyUncheckedUpdateWithoutFromCurrencyPairInput>
+  }
+
+  export type CurrencyUpdateOneRequiredWithoutToCurrencyPairNestedInput = {
+    create?: XOR<CurrencyCreateWithoutToCurrencyPairInput, CurrencyUncheckedCreateWithoutToCurrencyPairInput>
+    connectOrCreate?: CurrencyCreateOrConnectWithoutToCurrencyPairInput
+    upsert?: CurrencyUpsertWithoutToCurrencyPairInput
+    connect?: CurrencyWhereUniqueInput
+    update?: XOR<XOR<CurrencyUpdateToOneWithWhereWithoutToCurrencyPairInput, CurrencyUpdateWithoutToCurrencyPairInput>, CurrencyUncheckedUpdateWithoutToCurrencyPairInput>
+  }
+
+  export type BridgeTransferCreateNestedManyWithoutLiquidityPoolInput = {
+    create?: XOR<BridgeTransferCreateWithoutLiquidityPoolInput, BridgeTransferUncheckedCreateWithoutLiquidityPoolInput> | BridgeTransferCreateWithoutLiquidityPoolInput[] | BridgeTransferUncheckedCreateWithoutLiquidityPoolInput[]
+    connectOrCreate?: BridgeTransferCreateOrConnectWithoutLiquidityPoolInput | BridgeTransferCreateOrConnectWithoutLiquidityPoolInput[]
+    createMany?: BridgeTransferCreateManyLiquidityPoolInputEnvelope
+    connect?: BridgeTransferWhereUniqueInput | BridgeTransferWhereUniqueInput[]
+  }
+
+  export type CurrencyCreateNestedOneWithoutLiquidityPoolInput = {
+    create?: XOR<CurrencyCreateWithoutLiquidityPoolInput, CurrencyUncheckedCreateWithoutLiquidityPoolInput>
+    connectOrCreate?: CurrencyCreateOrConnectWithoutLiquidityPoolInput
+    connect?: CurrencyWhereUniqueInput
+  }
+
+  export type PaymentChannelCreateNestedOneWithoutLiquidityPoolInput = {
     create?: XOR<PaymentChannelCreateWithoutLiquidityPoolInput, PaymentChannelUncheckedCreateWithoutLiquidityPoolInput>
     connectOrCreate?: PaymentChannelCreateOrConnectWithoutLiquidityPoolInput
-    upsert?: PaymentChannelUpsertWithoutLiquidityPoolInput
     connect?: PaymentChannelWhereUniqueInput
-    update?: XOR<XOR<PaymentChannelUpdateToOneWithWhereWithoutLiquidityPoolInput, PaymentChannelUpdateWithoutLiquidityPoolInput>, PaymentChannelUncheckedUpdateWithoutLiquidityPoolInput>
+  }
+
+  export type UserCreateNestedOneWithoutLiquidityPoolInput = {
+    create?: XOR<UserCreateWithoutLiquidityPoolInput, UserUncheckedCreateWithoutLiquidityPoolInput>
+    connectOrCreate?: UserCreateOrConnectWithoutLiquidityPoolInput
+    connect?: UserWhereUniqueInput
+  }
+
+  export type BridgeTransferUncheckedCreateNestedManyWithoutLiquidityPoolInput = {
+    create?: XOR<BridgeTransferCreateWithoutLiquidityPoolInput, BridgeTransferUncheckedCreateWithoutLiquidityPoolInput> | BridgeTransferCreateWithoutLiquidityPoolInput[] | BridgeTransferUncheckedCreateWithoutLiquidityPoolInput[]
+    connectOrCreate?: BridgeTransferCreateOrConnectWithoutLiquidityPoolInput | BridgeTransferCreateOrConnectWithoutLiquidityPoolInput[]
+    createMany?: BridgeTransferCreateManyLiquidityPoolInputEnvelope
+    connect?: BridgeTransferWhereUniqueInput | BridgeTransferWhereUniqueInput[]
+  }
+
+  export type BridgeTransferUpdateManyWithoutLiquidityPoolNestedInput = {
+    create?: XOR<BridgeTransferCreateWithoutLiquidityPoolInput, BridgeTransferUncheckedCreateWithoutLiquidityPoolInput> | BridgeTransferCreateWithoutLiquidityPoolInput[] | BridgeTransferUncheckedCreateWithoutLiquidityPoolInput[]
+    connectOrCreate?: BridgeTransferCreateOrConnectWithoutLiquidityPoolInput | BridgeTransferCreateOrConnectWithoutLiquidityPoolInput[]
+    upsert?: BridgeTransferUpsertWithWhereUniqueWithoutLiquidityPoolInput | BridgeTransferUpsertWithWhereUniqueWithoutLiquidityPoolInput[]
+    createMany?: BridgeTransferCreateManyLiquidityPoolInputEnvelope
+    set?: BridgeTransferWhereUniqueInput | BridgeTransferWhereUniqueInput[]
+    disconnect?: BridgeTransferWhereUniqueInput | BridgeTransferWhereUniqueInput[]
+    delete?: BridgeTransferWhereUniqueInput | BridgeTransferWhereUniqueInput[]
+    connect?: BridgeTransferWhereUniqueInput | BridgeTransferWhereUniqueInput[]
+    update?: BridgeTransferUpdateWithWhereUniqueWithoutLiquidityPoolInput | BridgeTransferUpdateWithWhereUniqueWithoutLiquidityPoolInput[]
+    updateMany?: BridgeTransferUpdateManyWithWhereWithoutLiquidityPoolInput | BridgeTransferUpdateManyWithWhereWithoutLiquidityPoolInput[]
+    deleteMany?: BridgeTransferScalarWhereInput | BridgeTransferScalarWhereInput[]
   }
 
   export type CurrencyUpdateOneRequiredWithoutLiquidityPoolNestedInput = {
@@ -23103,16 +25064,34 @@ export namespace Prisma {
     update?: XOR<XOR<CurrencyUpdateToOneWithWhereWithoutLiquidityPoolInput, CurrencyUpdateWithoutLiquidityPoolInput>, CurrencyUncheckedUpdateWithoutLiquidityPoolInput>
   }
 
-  export type UserCreateNestedOneWithoutWalletInput = {
-    create?: XOR<UserCreateWithoutWalletInput, UserUncheckedCreateWithoutWalletInput>
-    connectOrCreate?: UserCreateOrConnectWithoutWalletInput
-    connect?: UserWhereUniqueInput
+  export type PaymentChannelUpdateOneRequiredWithoutLiquidityPoolNestedInput = {
+    create?: XOR<PaymentChannelCreateWithoutLiquidityPoolInput, PaymentChannelUncheckedCreateWithoutLiquidityPoolInput>
+    connectOrCreate?: PaymentChannelCreateOrConnectWithoutLiquidityPoolInput
+    upsert?: PaymentChannelUpsertWithoutLiquidityPoolInput
+    connect?: PaymentChannelWhereUniqueInput
+    update?: XOR<XOR<PaymentChannelUpdateToOneWithWhereWithoutLiquidityPoolInput, PaymentChannelUpdateWithoutLiquidityPoolInput>, PaymentChannelUncheckedUpdateWithoutLiquidityPoolInput>
   }
 
-  export type CurrencyCreateNestedOneWithoutWalletsInput = {
-    create?: XOR<CurrencyCreateWithoutWalletsInput, CurrencyUncheckedCreateWithoutWalletsInput>
-    connectOrCreate?: CurrencyCreateOrConnectWithoutWalletsInput
-    connect?: CurrencyWhereUniqueInput
+  export type UserUpdateOneRequiredWithoutLiquidityPoolNestedInput = {
+    create?: XOR<UserCreateWithoutLiquidityPoolInput, UserUncheckedCreateWithoutLiquidityPoolInput>
+    connectOrCreate?: UserCreateOrConnectWithoutLiquidityPoolInput
+    upsert?: UserUpsertWithoutLiquidityPoolInput
+    connect?: UserWhereUniqueInput
+    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutLiquidityPoolInput, UserUpdateWithoutLiquidityPoolInput>, UserUncheckedUpdateWithoutLiquidityPoolInput>
+  }
+
+  export type BridgeTransferUncheckedUpdateManyWithoutLiquidityPoolNestedInput = {
+    create?: XOR<BridgeTransferCreateWithoutLiquidityPoolInput, BridgeTransferUncheckedCreateWithoutLiquidityPoolInput> | BridgeTransferCreateWithoutLiquidityPoolInput[] | BridgeTransferUncheckedCreateWithoutLiquidityPoolInput[]
+    connectOrCreate?: BridgeTransferCreateOrConnectWithoutLiquidityPoolInput | BridgeTransferCreateOrConnectWithoutLiquidityPoolInput[]
+    upsert?: BridgeTransferUpsertWithWhereUniqueWithoutLiquidityPoolInput | BridgeTransferUpsertWithWhereUniqueWithoutLiquidityPoolInput[]
+    createMany?: BridgeTransferCreateManyLiquidityPoolInputEnvelope
+    set?: BridgeTransferWhereUniqueInput | BridgeTransferWhereUniqueInput[]
+    disconnect?: BridgeTransferWhereUniqueInput | BridgeTransferWhereUniqueInput[]
+    delete?: BridgeTransferWhereUniqueInput | BridgeTransferWhereUniqueInput[]
+    connect?: BridgeTransferWhereUniqueInput | BridgeTransferWhereUniqueInput[]
+    update?: BridgeTransferUpdateWithWhereUniqueWithoutLiquidityPoolInput | BridgeTransferUpdateWithWhereUniqueWithoutLiquidityPoolInput[]
+    updateMany?: BridgeTransferUpdateManyWithWhereWithoutLiquidityPoolInput | BridgeTransferUpdateManyWithWhereWithoutLiquidityPoolInput[]
+    deleteMany?: BridgeTransferScalarWhereInput | BridgeTransferScalarWhereInput[]
   }
 
   export type DepositCreateNestedManyWithoutWalletInput = {
@@ -23120,13 +25099,6 @@ export namespace Prisma {
     connectOrCreate?: DepositCreateOrConnectWithoutWalletInput | DepositCreateOrConnectWithoutWalletInput[]
     createMany?: DepositCreateManyWalletInputEnvelope
     connect?: DepositWhereUniqueInput | DepositWhereUniqueInput[]
-  }
-
-  export type WithdrawalCreateNestedManyWithoutWalletInput = {
-    create?: XOR<WithdrawalCreateWithoutWalletInput, WithdrawalUncheckedCreateWithoutWalletInput> | WithdrawalCreateWithoutWalletInput[] | WithdrawalUncheckedCreateWithoutWalletInput[]
-    connectOrCreate?: WithdrawalCreateOrConnectWithoutWalletInput | WithdrawalCreateOrConnectWithoutWalletInput[]
-    createMany?: WithdrawalCreateManyWalletInputEnvelope
-    connect?: WithdrawalWhereUniqueInput | WithdrawalWhereUniqueInput[]
   }
 
   export type RefundCreateNestedManyWithoutWalletInput = {
@@ -23150,18 +25122,30 @@ export namespace Prisma {
     connect?: TransferWhereUniqueInput | TransferWhereUniqueInput[]
   }
 
+  export type CurrencyCreateNestedOneWithoutWalletsInput = {
+    create?: XOR<CurrencyCreateWithoutWalletsInput, CurrencyUncheckedCreateWithoutWalletsInput>
+    connectOrCreate?: CurrencyCreateOrConnectWithoutWalletsInput
+    connect?: CurrencyWhereUniqueInput
+  }
+
+  export type UserCreateNestedOneWithoutWalletInput = {
+    create?: XOR<UserCreateWithoutWalletInput, UserUncheckedCreateWithoutWalletInput>
+    connectOrCreate?: UserCreateOrConnectWithoutWalletInput
+    connect?: UserWhereUniqueInput
+  }
+
+  export type WithdrawalCreateNestedManyWithoutWalletInput = {
+    create?: XOR<WithdrawalCreateWithoutWalletInput, WithdrawalUncheckedCreateWithoutWalletInput> | WithdrawalCreateWithoutWalletInput[] | WithdrawalUncheckedCreateWithoutWalletInput[]
+    connectOrCreate?: WithdrawalCreateOrConnectWithoutWalletInput | WithdrawalCreateOrConnectWithoutWalletInput[]
+    createMany?: WithdrawalCreateManyWalletInputEnvelope
+    connect?: WithdrawalWhereUniqueInput | WithdrawalWhereUniqueInput[]
+  }
+
   export type DepositUncheckedCreateNestedManyWithoutWalletInput = {
     create?: XOR<DepositCreateWithoutWalletInput, DepositUncheckedCreateWithoutWalletInput> | DepositCreateWithoutWalletInput[] | DepositUncheckedCreateWithoutWalletInput[]
     connectOrCreate?: DepositCreateOrConnectWithoutWalletInput | DepositCreateOrConnectWithoutWalletInput[]
     createMany?: DepositCreateManyWalletInputEnvelope
     connect?: DepositWhereUniqueInput | DepositWhereUniqueInput[]
-  }
-
-  export type WithdrawalUncheckedCreateNestedManyWithoutWalletInput = {
-    create?: XOR<WithdrawalCreateWithoutWalletInput, WithdrawalUncheckedCreateWithoutWalletInput> | WithdrawalCreateWithoutWalletInput[] | WithdrawalUncheckedCreateWithoutWalletInput[]
-    connectOrCreate?: WithdrawalCreateOrConnectWithoutWalletInput | WithdrawalCreateOrConnectWithoutWalletInput[]
-    createMany?: WithdrawalCreateManyWalletInputEnvelope
-    connect?: WithdrawalWhereUniqueInput | WithdrawalWhereUniqueInput[]
   }
 
   export type RefundUncheckedCreateNestedManyWithoutWalletInput = {
@@ -23185,20 +25169,11 @@ export namespace Prisma {
     connect?: TransferWhereUniqueInput | TransferWhereUniqueInput[]
   }
 
-  export type UserUpdateOneRequiredWithoutWalletNestedInput = {
-    create?: XOR<UserCreateWithoutWalletInput, UserUncheckedCreateWithoutWalletInput>
-    connectOrCreate?: UserCreateOrConnectWithoutWalletInput
-    upsert?: UserUpsertWithoutWalletInput
-    connect?: UserWhereUniqueInput
-    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutWalletInput, UserUpdateWithoutWalletInput>, UserUncheckedUpdateWithoutWalletInput>
-  }
-
-  export type CurrencyUpdateOneRequiredWithoutWalletsNestedInput = {
-    create?: XOR<CurrencyCreateWithoutWalletsInput, CurrencyUncheckedCreateWithoutWalletsInput>
-    connectOrCreate?: CurrencyCreateOrConnectWithoutWalletsInput
-    upsert?: CurrencyUpsertWithoutWalletsInput
-    connect?: CurrencyWhereUniqueInput
-    update?: XOR<XOR<CurrencyUpdateToOneWithWhereWithoutWalletsInput, CurrencyUpdateWithoutWalletsInput>, CurrencyUncheckedUpdateWithoutWalletsInput>
+  export type WithdrawalUncheckedCreateNestedManyWithoutWalletInput = {
+    create?: XOR<WithdrawalCreateWithoutWalletInput, WithdrawalUncheckedCreateWithoutWalletInput> | WithdrawalCreateWithoutWalletInput[] | WithdrawalUncheckedCreateWithoutWalletInput[]
+    connectOrCreate?: WithdrawalCreateOrConnectWithoutWalletInput | WithdrawalCreateOrConnectWithoutWalletInput[]
+    createMany?: WithdrawalCreateManyWalletInputEnvelope
+    connect?: WithdrawalWhereUniqueInput | WithdrawalWhereUniqueInput[]
   }
 
   export type DepositUpdateManyWithoutWalletNestedInput = {
@@ -23213,20 +25188,6 @@ export namespace Prisma {
     update?: DepositUpdateWithWhereUniqueWithoutWalletInput | DepositUpdateWithWhereUniqueWithoutWalletInput[]
     updateMany?: DepositUpdateManyWithWhereWithoutWalletInput | DepositUpdateManyWithWhereWithoutWalletInput[]
     deleteMany?: DepositScalarWhereInput | DepositScalarWhereInput[]
-  }
-
-  export type WithdrawalUpdateManyWithoutWalletNestedInput = {
-    create?: XOR<WithdrawalCreateWithoutWalletInput, WithdrawalUncheckedCreateWithoutWalletInput> | WithdrawalCreateWithoutWalletInput[] | WithdrawalUncheckedCreateWithoutWalletInput[]
-    connectOrCreate?: WithdrawalCreateOrConnectWithoutWalletInput | WithdrawalCreateOrConnectWithoutWalletInput[]
-    upsert?: WithdrawalUpsertWithWhereUniqueWithoutWalletInput | WithdrawalUpsertWithWhereUniqueWithoutWalletInput[]
-    createMany?: WithdrawalCreateManyWalletInputEnvelope
-    set?: WithdrawalWhereUniqueInput | WithdrawalWhereUniqueInput[]
-    disconnect?: WithdrawalWhereUniqueInput | WithdrawalWhereUniqueInput[]
-    delete?: WithdrawalWhereUniqueInput | WithdrawalWhereUniqueInput[]
-    connect?: WithdrawalWhereUniqueInput | WithdrawalWhereUniqueInput[]
-    update?: WithdrawalUpdateWithWhereUniqueWithoutWalletInput | WithdrawalUpdateWithWhereUniqueWithoutWalletInput[]
-    updateMany?: WithdrawalUpdateManyWithWhereWithoutWalletInput | WithdrawalUpdateManyWithWhereWithoutWalletInput[]
-    deleteMany?: WithdrawalScalarWhereInput | WithdrawalScalarWhereInput[]
   }
 
   export type RefundUpdateManyWithoutWalletNestedInput = {
@@ -23271,6 +25232,36 @@ export namespace Prisma {
     deleteMany?: TransferScalarWhereInput | TransferScalarWhereInput[]
   }
 
+  export type CurrencyUpdateOneRequiredWithoutWalletsNestedInput = {
+    create?: XOR<CurrencyCreateWithoutWalletsInput, CurrencyUncheckedCreateWithoutWalletsInput>
+    connectOrCreate?: CurrencyCreateOrConnectWithoutWalletsInput
+    upsert?: CurrencyUpsertWithoutWalletsInput
+    connect?: CurrencyWhereUniqueInput
+    update?: XOR<XOR<CurrencyUpdateToOneWithWhereWithoutWalletsInput, CurrencyUpdateWithoutWalletsInput>, CurrencyUncheckedUpdateWithoutWalletsInput>
+  }
+
+  export type UserUpdateOneRequiredWithoutWalletNestedInput = {
+    create?: XOR<UserCreateWithoutWalletInput, UserUncheckedCreateWithoutWalletInput>
+    connectOrCreate?: UserCreateOrConnectWithoutWalletInput
+    upsert?: UserUpsertWithoutWalletInput
+    connect?: UserWhereUniqueInput
+    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutWalletInput, UserUpdateWithoutWalletInput>, UserUncheckedUpdateWithoutWalletInput>
+  }
+
+  export type WithdrawalUpdateManyWithoutWalletNestedInput = {
+    create?: XOR<WithdrawalCreateWithoutWalletInput, WithdrawalUncheckedCreateWithoutWalletInput> | WithdrawalCreateWithoutWalletInput[] | WithdrawalUncheckedCreateWithoutWalletInput[]
+    connectOrCreate?: WithdrawalCreateOrConnectWithoutWalletInput | WithdrawalCreateOrConnectWithoutWalletInput[]
+    upsert?: WithdrawalUpsertWithWhereUniqueWithoutWalletInput | WithdrawalUpsertWithWhereUniqueWithoutWalletInput[]
+    createMany?: WithdrawalCreateManyWalletInputEnvelope
+    set?: WithdrawalWhereUniqueInput | WithdrawalWhereUniqueInput[]
+    disconnect?: WithdrawalWhereUniqueInput | WithdrawalWhereUniqueInput[]
+    delete?: WithdrawalWhereUniqueInput | WithdrawalWhereUniqueInput[]
+    connect?: WithdrawalWhereUniqueInput | WithdrawalWhereUniqueInput[]
+    update?: WithdrawalUpdateWithWhereUniqueWithoutWalletInput | WithdrawalUpdateWithWhereUniqueWithoutWalletInput[]
+    updateMany?: WithdrawalUpdateManyWithWhereWithoutWalletInput | WithdrawalUpdateManyWithWhereWithoutWalletInput[]
+    deleteMany?: WithdrawalScalarWhereInput | WithdrawalScalarWhereInput[]
+  }
+
   export type DepositUncheckedUpdateManyWithoutWalletNestedInput = {
     create?: XOR<DepositCreateWithoutWalletInput, DepositUncheckedCreateWithoutWalletInput> | DepositCreateWithoutWalletInput[] | DepositUncheckedCreateWithoutWalletInput[]
     connectOrCreate?: DepositCreateOrConnectWithoutWalletInput | DepositCreateOrConnectWithoutWalletInput[]
@@ -23283,20 +25274,6 @@ export namespace Prisma {
     update?: DepositUpdateWithWhereUniqueWithoutWalletInput | DepositUpdateWithWhereUniqueWithoutWalletInput[]
     updateMany?: DepositUpdateManyWithWhereWithoutWalletInput | DepositUpdateManyWithWhereWithoutWalletInput[]
     deleteMany?: DepositScalarWhereInput | DepositScalarWhereInput[]
-  }
-
-  export type WithdrawalUncheckedUpdateManyWithoutWalletNestedInput = {
-    create?: XOR<WithdrawalCreateWithoutWalletInput, WithdrawalUncheckedCreateWithoutWalletInput> | WithdrawalCreateWithoutWalletInput[] | WithdrawalUncheckedCreateWithoutWalletInput[]
-    connectOrCreate?: WithdrawalCreateOrConnectWithoutWalletInput | WithdrawalCreateOrConnectWithoutWalletInput[]
-    upsert?: WithdrawalUpsertWithWhereUniqueWithoutWalletInput | WithdrawalUpsertWithWhereUniqueWithoutWalletInput[]
-    createMany?: WithdrawalCreateManyWalletInputEnvelope
-    set?: WithdrawalWhereUniqueInput | WithdrawalWhereUniqueInput[]
-    disconnect?: WithdrawalWhereUniqueInput | WithdrawalWhereUniqueInput[]
-    delete?: WithdrawalWhereUniqueInput | WithdrawalWhereUniqueInput[]
-    connect?: WithdrawalWhereUniqueInput | WithdrawalWhereUniqueInput[]
-    update?: WithdrawalUpdateWithWhereUniqueWithoutWalletInput | WithdrawalUpdateWithWhereUniqueWithoutWalletInput[]
-    updateMany?: WithdrawalUpdateManyWithWhereWithoutWalletInput | WithdrawalUpdateManyWithWhereWithoutWalletInput[]
-    deleteMany?: WithdrawalScalarWhereInput | WithdrawalScalarWhereInput[]
   }
 
   export type RefundUncheckedUpdateManyWithoutWalletNestedInput = {
@@ -23341,16 +25318,30 @@ export namespace Prisma {
     deleteMany?: TransferScalarWhereInput | TransferScalarWhereInput[]
   }
 
-  export type PaymentChannelCreateNestedOneWithoutDepositInput = {
-    create?: XOR<PaymentChannelCreateWithoutDepositInput, PaymentChannelUncheckedCreateWithoutDepositInput>
-    connectOrCreate?: PaymentChannelCreateOrConnectWithoutDepositInput
-    connect?: PaymentChannelWhereUniqueInput
+  export type WithdrawalUncheckedUpdateManyWithoutWalletNestedInput = {
+    create?: XOR<WithdrawalCreateWithoutWalletInput, WithdrawalUncheckedCreateWithoutWalletInput> | WithdrawalCreateWithoutWalletInput[] | WithdrawalUncheckedCreateWithoutWalletInput[]
+    connectOrCreate?: WithdrawalCreateOrConnectWithoutWalletInput | WithdrawalCreateOrConnectWithoutWalletInput[]
+    upsert?: WithdrawalUpsertWithWhereUniqueWithoutWalletInput | WithdrawalUpsertWithWhereUniqueWithoutWalletInput[]
+    createMany?: WithdrawalCreateManyWalletInputEnvelope
+    set?: WithdrawalWhereUniqueInput | WithdrawalWhereUniqueInput[]
+    disconnect?: WithdrawalWhereUniqueInput | WithdrawalWhereUniqueInput[]
+    delete?: WithdrawalWhereUniqueInput | WithdrawalWhereUniqueInput[]
+    connect?: WithdrawalWhereUniqueInput | WithdrawalWhereUniqueInput[]
+    update?: WithdrawalUpdateWithWhereUniqueWithoutWalletInput | WithdrawalUpdateWithWhereUniqueWithoutWalletInput[]
+    updateMany?: WithdrawalUpdateManyWithWhereWithoutWalletInput | WithdrawalUpdateManyWithWhereWithoutWalletInput[]
+    deleteMany?: WithdrawalScalarWhereInput | WithdrawalScalarWhereInput[]
   }
 
   export type BridgeTransferCreateNestedOneWithoutDepositInput = {
     create?: XOR<BridgeTransferCreateWithoutDepositInput, BridgeTransferUncheckedCreateWithoutDepositInput>
     connectOrCreate?: BridgeTransferCreateOrConnectWithoutDepositInput
     connect?: BridgeTransferWhereUniqueInput
+  }
+
+  export type PaymentChannelCreateNestedOneWithoutDepositInput = {
+    create?: XOR<PaymentChannelCreateWithoutDepositInput, PaymentChannelUncheckedCreateWithoutDepositInput>
+    connectOrCreate?: PaymentChannelCreateOrConnectWithoutDepositInput
+    connect?: PaymentChannelWhereUniqueInput
   }
 
   export type UserCreateNestedOneWithoutDepositsInput = {
@@ -23365,16 +25356,14 @@ export namespace Prisma {
     connect?: WalletWhereUniqueInput
   }
 
-  export type EnumDepositStatusFieldUpdateOperationsInput = {
-    set?: $Enums.DepositStatus
+  export type BridgeTransferUncheckedCreateNestedOneWithoutDepositInput = {
+    create?: XOR<BridgeTransferCreateWithoutDepositInput, BridgeTransferUncheckedCreateWithoutDepositInput>
+    connectOrCreate?: BridgeTransferCreateOrConnectWithoutDepositInput
+    connect?: BridgeTransferWhereUniqueInput
   }
 
-  export type PaymentChannelUpdateOneRequiredWithoutDepositNestedInput = {
-    create?: XOR<PaymentChannelCreateWithoutDepositInput, PaymentChannelUncheckedCreateWithoutDepositInput>
-    connectOrCreate?: PaymentChannelCreateOrConnectWithoutDepositInput
-    upsert?: PaymentChannelUpsertWithoutDepositInput
-    connect?: PaymentChannelWhereUniqueInput
-    update?: XOR<XOR<PaymentChannelUpdateToOneWithWhereWithoutDepositInput, PaymentChannelUpdateWithoutDepositInput>, PaymentChannelUncheckedUpdateWithoutDepositInput>
+  export type EnumDepositStatusFieldUpdateOperationsInput = {
+    set?: $Enums.DepositStatus
   }
 
   export type BridgeTransferUpdateOneWithoutDepositNestedInput = {
@@ -23385,6 +25374,14 @@ export namespace Prisma {
     delete?: BridgeTransferWhereInput | boolean
     connect?: BridgeTransferWhereUniqueInput
     update?: XOR<XOR<BridgeTransferUpdateToOneWithWhereWithoutDepositInput, BridgeTransferUpdateWithoutDepositInput>, BridgeTransferUncheckedUpdateWithoutDepositInput>
+  }
+
+  export type PaymentChannelUpdateOneRequiredWithoutDepositNestedInput = {
+    create?: XOR<PaymentChannelCreateWithoutDepositInput, PaymentChannelUncheckedCreateWithoutDepositInput>
+    connectOrCreate?: PaymentChannelCreateOrConnectWithoutDepositInput
+    upsert?: PaymentChannelUpsertWithoutDepositInput
+    connect?: PaymentChannelWhereUniqueInput
+    update?: XOR<XOR<PaymentChannelUpdateToOneWithWhereWithoutDepositInput, PaymentChannelUpdateWithoutDepositInput>, PaymentChannelUncheckedUpdateWithoutDepositInput>
   }
 
   export type UserUpdateOneRequiredWithoutDepositsNestedInput = {
@@ -23403,16 +25400,26 @@ export namespace Prisma {
     update?: XOR<XOR<WalletUpdateToOneWithWhereWithoutDepositsInput, WalletUpdateWithoutDepositsInput>, WalletUncheckedUpdateWithoutDepositsInput>
   }
 
-  export type PaymentChannelCreateNestedOneWithoutWithdrawalInput = {
-    create?: XOR<PaymentChannelCreateWithoutWithdrawalInput, PaymentChannelUncheckedCreateWithoutWithdrawalInput>
-    connectOrCreate?: PaymentChannelCreateOrConnectWithoutWithdrawalInput
-    connect?: PaymentChannelWhereUniqueInput
+  export type BridgeTransferUncheckedUpdateOneWithoutDepositNestedInput = {
+    create?: XOR<BridgeTransferCreateWithoutDepositInput, BridgeTransferUncheckedCreateWithoutDepositInput>
+    connectOrCreate?: BridgeTransferCreateOrConnectWithoutDepositInput
+    upsert?: BridgeTransferUpsertWithoutDepositInput
+    disconnect?: BridgeTransferWhereInput | boolean
+    delete?: BridgeTransferWhereInput | boolean
+    connect?: BridgeTransferWhereUniqueInput
+    update?: XOR<XOR<BridgeTransferUpdateToOneWithWhereWithoutDepositInput, BridgeTransferUpdateWithoutDepositInput>, BridgeTransferUncheckedUpdateWithoutDepositInput>
   }
 
   export type BridgeTransferCreateNestedOneWithoutWithdrawalInput = {
     create?: XOR<BridgeTransferCreateWithoutWithdrawalInput, BridgeTransferUncheckedCreateWithoutWithdrawalInput>
     connectOrCreate?: BridgeTransferCreateOrConnectWithoutWithdrawalInput
     connect?: BridgeTransferWhereUniqueInput
+  }
+
+  export type PaymentChannelCreateNestedOneWithoutWithdrawalInput = {
+    create?: XOR<PaymentChannelCreateWithoutWithdrawalInput, PaymentChannelUncheckedCreateWithoutWithdrawalInput>
+    connectOrCreate?: PaymentChannelCreateOrConnectWithoutWithdrawalInput
+    connect?: PaymentChannelWhereUniqueInput
   }
 
   export type UserCreateNestedOneWithoutWithdrawalsInput = {
@@ -23427,16 +25434,14 @@ export namespace Prisma {
     connect?: WalletWhereUniqueInput
   }
 
-  export type EnumWithdrawalStatusFieldUpdateOperationsInput = {
-    set?: $Enums.WithdrawalStatus
+  export type BridgeTransferUncheckedCreateNestedOneWithoutWithdrawalInput = {
+    create?: XOR<BridgeTransferCreateWithoutWithdrawalInput, BridgeTransferUncheckedCreateWithoutWithdrawalInput>
+    connectOrCreate?: BridgeTransferCreateOrConnectWithoutWithdrawalInput
+    connect?: BridgeTransferWhereUniqueInput
   }
 
-  export type PaymentChannelUpdateOneRequiredWithoutWithdrawalNestedInput = {
-    create?: XOR<PaymentChannelCreateWithoutWithdrawalInput, PaymentChannelUncheckedCreateWithoutWithdrawalInput>
-    connectOrCreate?: PaymentChannelCreateOrConnectWithoutWithdrawalInput
-    upsert?: PaymentChannelUpsertWithoutWithdrawalInput
-    connect?: PaymentChannelWhereUniqueInput
-    update?: XOR<XOR<PaymentChannelUpdateToOneWithWhereWithoutWithdrawalInput, PaymentChannelUpdateWithoutWithdrawalInput>, PaymentChannelUncheckedUpdateWithoutWithdrawalInput>
+  export type EnumWithdrawalStatusFieldUpdateOperationsInput = {
+    set?: $Enums.WithdrawalStatus
   }
 
   export type BridgeTransferUpdateOneWithoutWithdrawalNestedInput = {
@@ -23447,6 +25452,14 @@ export namespace Prisma {
     delete?: BridgeTransferWhereInput | boolean
     connect?: BridgeTransferWhereUniqueInput
     update?: XOR<XOR<BridgeTransferUpdateToOneWithWhereWithoutWithdrawalInput, BridgeTransferUpdateWithoutWithdrawalInput>, BridgeTransferUncheckedUpdateWithoutWithdrawalInput>
+  }
+
+  export type PaymentChannelUpdateOneRequiredWithoutWithdrawalNestedInput = {
+    create?: XOR<PaymentChannelCreateWithoutWithdrawalInput, PaymentChannelUncheckedCreateWithoutWithdrawalInput>
+    connectOrCreate?: PaymentChannelCreateOrConnectWithoutWithdrawalInput
+    upsert?: PaymentChannelUpsertWithoutWithdrawalInput
+    connect?: PaymentChannelWhereUniqueInput
+    update?: XOR<XOR<PaymentChannelUpdateToOneWithWhereWithoutWithdrawalInput, PaymentChannelUpdateWithoutWithdrawalInput>, PaymentChannelUncheckedUpdateWithoutWithdrawalInput>
   }
 
   export type UserUpdateOneRequiredWithoutWithdrawalsNestedInput = {
@@ -23465,112 +25478,66 @@ export namespace Prisma {
     update?: XOR<XOR<WalletUpdateToOneWithWhereWithoutWithdrawalsInput, WalletUpdateWithoutWithdrawalsInput>, WalletUncheckedUpdateWithoutWithdrawalsInput>
   }
 
-  export type PaymentChannelCreateNestedOneWithoutBridgeTransfersInput = {
-    create?: XOR<PaymentChannelCreateWithoutBridgeTransfersInput, PaymentChannelUncheckedCreateWithoutBridgeTransfersInput>
-    connectOrCreate?: PaymentChannelCreateOrConnectWithoutBridgeTransfersInput
-    connect?: PaymentChannelWhereUniqueInput
+  export type BridgeTransferUncheckedUpdateOneWithoutWithdrawalNestedInput = {
+    create?: XOR<BridgeTransferCreateWithoutWithdrawalInput, BridgeTransferUncheckedCreateWithoutWithdrawalInput>
+    connectOrCreate?: BridgeTransferCreateOrConnectWithoutWithdrawalInput
+    upsert?: BridgeTransferUpsertWithoutWithdrawalInput
+    disconnect?: BridgeTransferWhereInput | boolean
+    delete?: BridgeTransferWhereInput | boolean
+    connect?: BridgeTransferWhereUniqueInput
+    update?: XOR<XOR<BridgeTransferUpdateToOneWithWhereWithoutWithdrawalInput, BridgeTransferUpdateWithoutWithdrawalInput>, BridgeTransferUncheckedUpdateWithoutWithdrawalInput>
   }
 
-  export type DepositCreateNestedManyWithoutBridgeTransferInput = {
-    create?: XOR<DepositCreateWithoutBridgeTransferInput, DepositUncheckedCreateWithoutBridgeTransferInput> | DepositCreateWithoutBridgeTransferInput[] | DepositUncheckedCreateWithoutBridgeTransferInput[]
-    connectOrCreate?: DepositCreateOrConnectWithoutBridgeTransferInput | DepositCreateOrConnectWithoutBridgeTransferInput[]
-    createMany?: DepositCreateManyBridgeTransferInputEnvelope
-    connect?: DepositWhereUniqueInput | DepositWhereUniqueInput[]
+  export type DepositCreateNestedOneWithoutBridgeTransferInput = {
+    create?: XOR<DepositCreateWithoutBridgeTransferInput, DepositUncheckedCreateWithoutBridgeTransferInput>
+    connectOrCreate?: DepositCreateOrConnectWithoutBridgeTransferInput
+    connect?: DepositWhereUniqueInput
   }
 
-  export type WithdrawalCreateNestedManyWithoutBridgeTransferInput = {
-    create?: XOR<WithdrawalCreateWithoutBridgeTransferInput, WithdrawalUncheckedCreateWithoutBridgeTransferInput> | WithdrawalCreateWithoutBridgeTransferInput[] | WithdrawalUncheckedCreateWithoutBridgeTransferInput[]
-    connectOrCreate?: WithdrawalCreateOrConnectWithoutBridgeTransferInput | WithdrawalCreateOrConnectWithoutBridgeTransferInput[]
-    createMany?: WithdrawalCreateManyBridgeTransferInputEnvelope
-    connect?: WithdrawalWhereUniqueInput | WithdrawalWhereUniqueInput[]
+  export type LiquidityPoolCreateNestedOneWithoutBridgeTransferInput = {
+    create?: XOR<LiquidityPoolCreateWithoutBridgeTransferInput, LiquidityPoolUncheckedCreateWithoutBridgeTransferInput>
+    connectOrCreate?: LiquidityPoolCreateOrConnectWithoutBridgeTransferInput
+    connect?: LiquidityPoolWhereUniqueInput
   }
 
-  export type DepositUncheckedCreateNestedManyWithoutBridgeTransferInput = {
-    create?: XOR<DepositCreateWithoutBridgeTransferInput, DepositUncheckedCreateWithoutBridgeTransferInput> | DepositCreateWithoutBridgeTransferInput[] | DepositUncheckedCreateWithoutBridgeTransferInput[]
-    connectOrCreate?: DepositCreateOrConnectWithoutBridgeTransferInput | DepositCreateOrConnectWithoutBridgeTransferInput[]
-    createMany?: DepositCreateManyBridgeTransferInputEnvelope
-    connect?: DepositWhereUniqueInput | DepositWhereUniqueInput[]
-  }
-
-  export type WithdrawalUncheckedCreateNestedManyWithoutBridgeTransferInput = {
-    create?: XOR<WithdrawalCreateWithoutBridgeTransferInput, WithdrawalUncheckedCreateWithoutBridgeTransferInput> | WithdrawalCreateWithoutBridgeTransferInput[] | WithdrawalUncheckedCreateWithoutBridgeTransferInput[]
-    connectOrCreate?: WithdrawalCreateOrConnectWithoutBridgeTransferInput | WithdrawalCreateOrConnectWithoutBridgeTransferInput[]
-    createMany?: WithdrawalCreateManyBridgeTransferInputEnvelope
-    connect?: WithdrawalWhereUniqueInput | WithdrawalWhereUniqueInput[]
+  export type WithdrawalCreateNestedOneWithoutBridgeTransferInput = {
+    create?: XOR<WithdrawalCreateWithoutBridgeTransferInput, WithdrawalUncheckedCreateWithoutBridgeTransferInput>
+    connectOrCreate?: WithdrawalCreateOrConnectWithoutBridgeTransferInput
+    connect?: WithdrawalWhereUniqueInput
   }
 
   export type EnumBridgeStatusFieldUpdateOperationsInput = {
     set?: $Enums.BridgeStatus
   }
 
-  export type PaymentChannelUpdateOneRequiredWithoutBridgeTransfersNestedInput = {
-    create?: XOR<PaymentChannelCreateWithoutBridgeTransfersInput, PaymentChannelUncheckedCreateWithoutBridgeTransfersInput>
-    connectOrCreate?: PaymentChannelCreateOrConnectWithoutBridgeTransfersInput
-    upsert?: PaymentChannelUpsertWithoutBridgeTransfersInput
-    connect?: PaymentChannelWhereUniqueInput
-    update?: XOR<XOR<PaymentChannelUpdateToOneWithWhereWithoutBridgeTransfersInput, PaymentChannelUpdateWithoutBridgeTransfersInput>, PaymentChannelUncheckedUpdateWithoutBridgeTransfersInput>
+  export type DepositUpdateOneWithoutBridgeTransferNestedInput = {
+    create?: XOR<DepositCreateWithoutBridgeTransferInput, DepositUncheckedCreateWithoutBridgeTransferInput>
+    connectOrCreate?: DepositCreateOrConnectWithoutBridgeTransferInput
+    upsert?: DepositUpsertWithoutBridgeTransferInput
+    disconnect?: DepositWhereInput | boolean
+    delete?: DepositWhereInput | boolean
+    connect?: DepositWhereUniqueInput
+    update?: XOR<XOR<DepositUpdateToOneWithWhereWithoutBridgeTransferInput, DepositUpdateWithoutBridgeTransferInput>, DepositUncheckedUpdateWithoutBridgeTransferInput>
   }
 
-  export type DepositUpdateManyWithoutBridgeTransferNestedInput = {
-    create?: XOR<DepositCreateWithoutBridgeTransferInput, DepositUncheckedCreateWithoutBridgeTransferInput> | DepositCreateWithoutBridgeTransferInput[] | DepositUncheckedCreateWithoutBridgeTransferInput[]
-    connectOrCreate?: DepositCreateOrConnectWithoutBridgeTransferInput | DepositCreateOrConnectWithoutBridgeTransferInput[]
-    upsert?: DepositUpsertWithWhereUniqueWithoutBridgeTransferInput | DepositUpsertWithWhereUniqueWithoutBridgeTransferInput[]
-    createMany?: DepositCreateManyBridgeTransferInputEnvelope
-    set?: DepositWhereUniqueInput | DepositWhereUniqueInput[]
-    disconnect?: DepositWhereUniqueInput | DepositWhereUniqueInput[]
-    delete?: DepositWhereUniqueInput | DepositWhereUniqueInput[]
-    connect?: DepositWhereUniqueInput | DepositWhereUniqueInput[]
-    update?: DepositUpdateWithWhereUniqueWithoutBridgeTransferInput | DepositUpdateWithWhereUniqueWithoutBridgeTransferInput[]
-    updateMany?: DepositUpdateManyWithWhereWithoutBridgeTransferInput | DepositUpdateManyWithWhereWithoutBridgeTransferInput[]
-    deleteMany?: DepositScalarWhereInput | DepositScalarWhereInput[]
+  export type LiquidityPoolUpdateOneWithoutBridgeTransferNestedInput = {
+    create?: XOR<LiquidityPoolCreateWithoutBridgeTransferInput, LiquidityPoolUncheckedCreateWithoutBridgeTransferInput>
+    connectOrCreate?: LiquidityPoolCreateOrConnectWithoutBridgeTransferInput
+    upsert?: LiquidityPoolUpsertWithoutBridgeTransferInput
+    disconnect?: LiquidityPoolWhereInput | boolean
+    delete?: LiquidityPoolWhereInput | boolean
+    connect?: LiquidityPoolWhereUniqueInput
+    update?: XOR<XOR<LiquidityPoolUpdateToOneWithWhereWithoutBridgeTransferInput, LiquidityPoolUpdateWithoutBridgeTransferInput>, LiquidityPoolUncheckedUpdateWithoutBridgeTransferInput>
   }
 
-  export type WithdrawalUpdateManyWithoutBridgeTransferNestedInput = {
-    create?: XOR<WithdrawalCreateWithoutBridgeTransferInput, WithdrawalUncheckedCreateWithoutBridgeTransferInput> | WithdrawalCreateWithoutBridgeTransferInput[] | WithdrawalUncheckedCreateWithoutBridgeTransferInput[]
-    connectOrCreate?: WithdrawalCreateOrConnectWithoutBridgeTransferInput | WithdrawalCreateOrConnectWithoutBridgeTransferInput[]
-    upsert?: WithdrawalUpsertWithWhereUniqueWithoutBridgeTransferInput | WithdrawalUpsertWithWhereUniqueWithoutBridgeTransferInput[]
-    createMany?: WithdrawalCreateManyBridgeTransferInputEnvelope
-    set?: WithdrawalWhereUniqueInput | WithdrawalWhereUniqueInput[]
-    disconnect?: WithdrawalWhereUniqueInput | WithdrawalWhereUniqueInput[]
-    delete?: WithdrawalWhereUniqueInput | WithdrawalWhereUniqueInput[]
-    connect?: WithdrawalWhereUniqueInput | WithdrawalWhereUniqueInput[]
-    update?: WithdrawalUpdateWithWhereUniqueWithoutBridgeTransferInput | WithdrawalUpdateWithWhereUniqueWithoutBridgeTransferInput[]
-    updateMany?: WithdrawalUpdateManyWithWhereWithoutBridgeTransferInput | WithdrawalUpdateManyWithWhereWithoutBridgeTransferInput[]
-    deleteMany?: WithdrawalScalarWhereInput | WithdrawalScalarWhereInput[]
-  }
-
-  export type DepositUncheckedUpdateManyWithoutBridgeTransferNestedInput = {
-    create?: XOR<DepositCreateWithoutBridgeTransferInput, DepositUncheckedCreateWithoutBridgeTransferInput> | DepositCreateWithoutBridgeTransferInput[] | DepositUncheckedCreateWithoutBridgeTransferInput[]
-    connectOrCreate?: DepositCreateOrConnectWithoutBridgeTransferInput | DepositCreateOrConnectWithoutBridgeTransferInput[]
-    upsert?: DepositUpsertWithWhereUniqueWithoutBridgeTransferInput | DepositUpsertWithWhereUniqueWithoutBridgeTransferInput[]
-    createMany?: DepositCreateManyBridgeTransferInputEnvelope
-    set?: DepositWhereUniqueInput | DepositWhereUniqueInput[]
-    disconnect?: DepositWhereUniqueInput | DepositWhereUniqueInput[]
-    delete?: DepositWhereUniqueInput | DepositWhereUniqueInput[]
-    connect?: DepositWhereUniqueInput | DepositWhereUniqueInput[]
-    update?: DepositUpdateWithWhereUniqueWithoutBridgeTransferInput | DepositUpdateWithWhereUniqueWithoutBridgeTransferInput[]
-    updateMany?: DepositUpdateManyWithWhereWithoutBridgeTransferInput | DepositUpdateManyWithWhereWithoutBridgeTransferInput[]
-    deleteMany?: DepositScalarWhereInput | DepositScalarWhereInput[]
-  }
-
-  export type WithdrawalUncheckedUpdateManyWithoutBridgeTransferNestedInput = {
-    create?: XOR<WithdrawalCreateWithoutBridgeTransferInput, WithdrawalUncheckedCreateWithoutBridgeTransferInput> | WithdrawalCreateWithoutBridgeTransferInput[] | WithdrawalUncheckedCreateWithoutBridgeTransferInput[]
-    connectOrCreate?: WithdrawalCreateOrConnectWithoutBridgeTransferInput | WithdrawalCreateOrConnectWithoutBridgeTransferInput[]
-    upsert?: WithdrawalUpsertWithWhereUniqueWithoutBridgeTransferInput | WithdrawalUpsertWithWhereUniqueWithoutBridgeTransferInput[]
-    createMany?: WithdrawalCreateManyBridgeTransferInputEnvelope
-    set?: WithdrawalWhereUniqueInput | WithdrawalWhereUniqueInput[]
-    disconnect?: WithdrawalWhereUniqueInput | WithdrawalWhereUniqueInput[]
-    delete?: WithdrawalWhereUniqueInput | WithdrawalWhereUniqueInput[]
-    connect?: WithdrawalWhereUniqueInput | WithdrawalWhereUniqueInput[]
-    update?: WithdrawalUpdateWithWhereUniqueWithoutBridgeTransferInput | WithdrawalUpdateWithWhereUniqueWithoutBridgeTransferInput[]
-    updateMany?: WithdrawalUpdateManyWithWhereWithoutBridgeTransferInput | WithdrawalUpdateManyWithWhereWithoutBridgeTransferInput[]
-    deleteMany?: WithdrawalScalarWhereInput | WithdrawalScalarWhereInput[]
-  }
-
-  export type UserCreateNestedManyWithoutTransfersInput = {
-    create?: XOR<UserCreateWithoutTransfersInput, UserUncheckedCreateWithoutTransfersInput> | UserCreateWithoutTransfersInput[] | UserUncheckedCreateWithoutTransfersInput[]
-    connectOrCreate?: UserCreateOrConnectWithoutTransfersInput | UserCreateOrConnectWithoutTransfersInput[]
-    connect?: UserWhereUniqueInput | UserWhereUniqueInput[]
+  export type WithdrawalUpdateOneWithoutBridgeTransferNestedInput = {
+    create?: XOR<WithdrawalCreateWithoutBridgeTransferInput, WithdrawalUncheckedCreateWithoutBridgeTransferInput>
+    connectOrCreate?: WithdrawalCreateOrConnectWithoutBridgeTransferInput
+    upsert?: WithdrawalUpsertWithoutBridgeTransferInput
+    disconnect?: WithdrawalWhereInput | boolean
+    delete?: WithdrawalWhereInput | boolean
+    connect?: WithdrawalWhereUniqueInput
+    update?: XOR<XOR<WithdrawalUpdateToOneWithWhereWithoutBridgeTransferInput, WithdrawalUpdateWithoutBridgeTransferInput>, WithdrawalUncheckedUpdateWithoutBridgeTransferInput>
   }
 
   export type WalletCreateNestedOneWithoutTransfersFromInput = {
@@ -23585,6 +25552,12 @@ export namespace Prisma {
     connect?: WalletWhereUniqueInput
   }
 
+  export type UserCreateNestedManyWithoutTransfersInput = {
+    create?: XOR<UserCreateWithoutTransfersInput, UserUncheckedCreateWithoutTransfersInput> | UserCreateWithoutTransfersInput[] | UserUncheckedCreateWithoutTransfersInput[]
+    connectOrCreate?: UserCreateOrConnectWithoutTransfersInput | UserCreateOrConnectWithoutTransfersInput[]
+    connect?: UserWhereUniqueInput | UserWhereUniqueInput[]
+  }
+
   export type UserUncheckedCreateNestedManyWithoutTransfersInput = {
     create?: XOR<UserCreateWithoutTransfersInput, UserUncheckedCreateWithoutTransfersInput> | UserCreateWithoutTransfersInput[] | UserUncheckedCreateWithoutTransfersInput[]
     connectOrCreate?: UserCreateOrConnectWithoutTransfersInput | UserCreateOrConnectWithoutTransfersInput[]
@@ -23593,19 +25566,6 @@ export namespace Prisma {
 
   export type EnumTransferStatusFieldUpdateOperationsInput = {
     set?: $Enums.TransferStatus
-  }
-
-  export type UserUpdateManyWithoutTransfersNestedInput = {
-    create?: XOR<UserCreateWithoutTransfersInput, UserUncheckedCreateWithoutTransfersInput> | UserCreateWithoutTransfersInput[] | UserUncheckedCreateWithoutTransfersInput[]
-    connectOrCreate?: UserCreateOrConnectWithoutTransfersInput | UserCreateOrConnectWithoutTransfersInput[]
-    upsert?: UserUpsertWithWhereUniqueWithoutTransfersInput | UserUpsertWithWhereUniqueWithoutTransfersInput[]
-    set?: UserWhereUniqueInput | UserWhereUniqueInput[]
-    disconnect?: UserWhereUniqueInput | UserWhereUniqueInput[]
-    delete?: UserWhereUniqueInput | UserWhereUniqueInput[]
-    connect?: UserWhereUniqueInput | UserWhereUniqueInput[]
-    update?: UserUpdateWithWhereUniqueWithoutTransfersInput | UserUpdateWithWhereUniqueWithoutTransfersInput[]
-    updateMany?: UserUpdateManyWithWhereWithoutTransfersInput | UserUpdateManyWithWhereWithoutTransfersInput[]
-    deleteMany?: UserScalarWhereInput | UserScalarWhereInput[]
   }
 
   export type WalletUpdateOneRequiredWithoutTransfersFromNestedInput = {
@@ -23622,6 +25582,19 @@ export namespace Prisma {
     upsert?: WalletUpsertWithoutTransfersToInput
     connect?: WalletWhereUniqueInput
     update?: XOR<XOR<WalletUpdateToOneWithWhereWithoutTransfersToInput, WalletUpdateWithoutTransfersToInput>, WalletUncheckedUpdateWithoutTransfersToInput>
+  }
+
+  export type UserUpdateManyWithoutTransfersNestedInput = {
+    create?: XOR<UserCreateWithoutTransfersInput, UserUncheckedCreateWithoutTransfersInput> | UserCreateWithoutTransfersInput[] | UserUncheckedCreateWithoutTransfersInput[]
+    connectOrCreate?: UserCreateOrConnectWithoutTransfersInput | UserCreateOrConnectWithoutTransfersInput[]
+    upsert?: UserUpsertWithWhereUniqueWithoutTransfersInput | UserUpsertWithWhereUniqueWithoutTransfersInput[]
+    set?: UserWhereUniqueInput | UserWhereUniqueInput[]
+    disconnect?: UserWhereUniqueInput | UserWhereUniqueInput[]
+    delete?: UserWhereUniqueInput | UserWhereUniqueInput[]
+    connect?: UserWhereUniqueInput | UserWhereUniqueInput[]
+    update?: UserUpdateWithWhereUniqueWithoutTransfersInput | UserUpdateWithWhereUniqueWithoutTransfersInput[]
+    updateMany?: UserUpdateManyWithWhereWithoutTransfersInput | UserUpdateManyWithWhereWithoutTransfersInput[]
+    deleteMany?: UserScalarWhereInput | UserScalarWhereInput[]
   }
 
   export type UserUncheckedUpdateManyWithoutTransfersNestedInput = {
@@ -24203,41 +26176,35 @@ export namespace Prisma {
     _max?: NestedDecimalNullableFilter<$PrismaModel>
   }
 
-  export type WalletCreateWithoutUserInput = {
+  export type ActivityLogCreateWithoutUserInput = {
     id?: string
-    balance?: Decimal | DecimalJsLike | number | string
-    frozen?: Decimal | DecimalJsLike | number | string
+    action: string
+    referenceId?: string | null
+    metadata?: NullableJsonNullValueInput | InputJsonValue
+    role?: $Enums.UserRole | null
+    ipAddress?: string | null
+    userAgent?: string | null
     createdAt?: Date | string
-    updatedAt?: Date | string
-    currency: CurrencyCreateNestedOneWithoutWalletsInput
-    deposits?: DepositCreateNestedManyWithoutWalletInput
-    withdrawals?: WithdrawalCreateNestedManyWithoutWalletInput
-    Refund?: RefundCreateNestedManyWithoutWalletInput
-    transfersFrom?: TransferCreateNestedManyWithoutFromWalletInput
-    transfersTo?: TransferCreateNestedManyWithoutToWalletInput
   }
 
-  export type WalletUncheckedCreateWithoutUserInput = {
+  export type ActivityLogUncheckedCreateWithoutUserInput = {
     id?: string
-    currencyId: string
-    balance?: Decimal | DecimalJsLike | number | string
-    frozen?: Decimal | DecimalJsLike | number | string
+    action: string
+    referenceId?: string | null
+    metadata?: NullableJsonNullValueInput | InputJsonValue
+    role?: $Enums.UserRole | null
+    ipAddress?: string | null
+    userAgent?: string | null
     createdAt?: Date | string
-    updatedAt?: Date | string
-    deposits?: DepositUncheckedCreateNestedManyWithoutWalletInput
-    withdrawals?: WithdrawalUncheckedCreateNestedManyWithoutWalletInput
-    Refund?: RefundUncheckedCreateNestedManyWithoutWalletInput
-    transfersFrom?: TransferUncheckedCreateNestedManyWithoutFromWalletInput
-    transfersTo?: TransferUncheckedCreateNestedManyWithoutToWalletInput
   }
 
-  export type WalletCreateOrConnectWithoutUserInput = {
-    where: WalletWhereUniqueInput
-    create: XOR<WalletCreateWithoutUserInput, WalletUncheckedCreateWithoutUserInput>
+  export type ActivityLogCreateOrConnectWithoutUserInput = {
+    where: ActivityLogWhereUniqueInput
+    create: XOR<ActivityLogCreateWithoutUserInput, ActivityLogUncheckedCreateWithoutUserInput>
   }
 
-  export type WalletCreateManyUserInputEnvelope = {
-    data: WalletCreateManyUserInput | WalletCreateManyUserInput[]
+  export type ActivityLogCreateManyUserInputEnvelope = {
+    data: ActivityLogCreateManyUserInput | ActivityLogCreateManyUserInput[]
     skipDuplicates?: boolean
   }
 
@@ -24250,8 +26217,9 @@ export namespace Prisma {
     createdAt?: Date | string
     completedAt?: Date | string | null
     failedAt?: Date | string | null
+    documentUrl?: string | null
+    BridgeTransfer?: BridgeTransferCreateNestedOneWithoutDepositInput
     paymentChannel: PaymentChannelCreateNestedOneWithoutDepositInput
-    bridgeTransfer?: BridgeTransferCreateNestedOneWithoutDepositInput
     wallet: WalletCreateNestedOneWithoutDepositsInput
   }
 
@@ -24266,7 +26234,8 @@ export namespace Prisma {
     completedAt?: Date | string | null
     failedAt?: Date | string | null
     paymentChannelId: string
-    bridgeTransferid?: string | null
+    documentUrl?: string | null
+    BridgeTransfer?: BridgeTransferUncheckedCreateNestedOneWithoutDepositInput
   }
 
   export type DepositCreateOrConnectWithoutUserInput = {
@@ -24279,6 +26248,146 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
+  export type ExchangeCreateWithoutInitiatorInput = {
+    id?: string
+    fromAmount: Decimal | DecimalJsLike | number | string
+    toAmount: Decimal | DecimalJsLike | number | string
+    exchangeRate: Decimal | DecimalJsLike | number | string
+    feePercentage?: Decimal | DecimalJsLike | number | string
+    status?: $Enums.ExchangeStatus
+    createdAt?: Date | string
+    completedAt?: Date | string | null
+    failedAt?: Date | string | null
+    fromCurrency: CurrencyCreateNestedOneWithoutExchangesFromInput
+    toCurrency: CurrencyCreateNestedOneWithoutExchangesToInput
+  }
+
+  export type ExchangeUncheckedCreateWithoutInitiatorInput = {
+    id?: string
+    fromCurrencyId: string
+    toCurrencyId: string
+    fromAmount: Decimal | DecimalJsLike | number | string
+    toAmount: Decimal | DecimalJsLike | number | string
+    exchangeRate: Decimal | DecimalJsLike | number | string
+    feePercentage?: Decimal | DecimalJsLike | number | string
+    status?: $Enums.ExchangeStatus
+    createdAt?: Date | string
+    completedAt?: Date | string | null
+    failedAt?: Date | string | null
+  }
+
+  export type ExchangeCreateOrConnectWithoutInitiatorInput = {
+    where: ExchangeWhereUniqueInput
+    create: XOR<ExchangeCreateWithoutInitiatorInput, ExchangeUncheckedCreateWithoutInitiatorInput>
+  }
+
+  export type ExchangeCreateManyInitiatorInputEnvelope = {
+    data: ExchangeCreateManyInitiatorInput | ExchangeCreateManyInitiatorInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type LiquidityPoolCreateWithoutUserInput = {
+    id?: string
+    address: string
+    balance?: Decimal | DecimalJsLike | number | string
+    frozen?: Decimal | DecimalJsLike | number | string
+    updatedAt?: Date | string
+    BridgeTransfer?: BridgeTransferCreateNestedManyWithoutLiquidityPoolInput
+    currency: CurrencyCreateNestedOneWithoutLiquidityPoolInput
+    paymentChannel: PaymentChannelCreateNestedOneWithoutLiquidityPoolInput
+  }
+
+  export type LiquidityPoolUncheckedCreateWithoutUserInput = {
+    id?: string
+    paymentChannelId: string
+    currencyId: string
+    address: string
+    balance?: Decimal | DecimalJsLike | number | string
+    frozen?: Decimal | DecimalJsLike | number | string
+    updatedAt?: Date | string
+    BridgeTransfer?: BridgeTransferUncheckedCreateNestedManyWithoutLiquidityPoolInput
+  }
+
+  export type LiquidityPoolCreateOrConnectWithoutUserInput = {
+    where: LiquidityPoolWhereUniqueInput
+    create: XOR<LiquidityPoolCreateWithoutUserInput, LiquidityPoolUncheckedCreateWithoutUserInput>
+  }
+
+  export type LiquidityPoolCreateManyUserInputEnvelope = {
+    data: LiquidityPoolCreateManyUserInput | LiquidityPoolCreateManyUserInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type RefundCreateWithoutUserInput = {
+    id?: string
+    amount: Decimal | DecimalJsLike | number | string
+    reason?: string | null
+    status?: $Enums.RefundStatus
+    createdAt?: Date | string
+    completedAt?: Date | string | null
+    failedAt?: Date | string | null
+    wallet: WalletCreateNestedOneWithoutRefundInput
+  }
+
+  export type RefundUncheckedCreateWithoutUserInput = {
+    id?: string
+    walletId: string
+    amount: Decimal | DecimalJsLike | number | string
+    reason?: string | null
+    status?: $Enums.RefundStatus
+    createdAt?: Date | string
+    completedAt?: Date | string | null
+    failedAt?: Date | string | null
+  }
+
+  export type RefundCreateOrConnectWithoutUserInput = {
+    where: RefundWhereUniqueInput
+    create: XOR<RefundCreateWithoutUserInput, RefundUncheckedCreateWithoutUserInput>
+  }
+
+  export type RefundCreateManyUserInputEnvelope = {
+    data: RefundCreateManyUserInput | RefundCreateManyUserInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type WalletCreateWithoutUserInput = {
+    id?: string
+    balance?: Decimal | DecimalJsLike | number | string
+    frozen?: Decimal | DecimalJsLike | number | string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    deposits?: DepositCreateNestedManyWithoutWalletInput
+    Refund?: RefundCreateNestedManyWithoutWalletInput
+    transfersFrom?: TransferCreateNestedManyWithoutFromWalletInput
+    transfersTo?: TransferCreateNestedManyWithoutToWalletInput
+    currency: CurrencyCreateNestedOneWithoutWalletsInput
+    withdrawals?: WithdrawalCreateNestedManyWithoutWalletInput
+  }
+
+  export type WalletUncheckedCreateWithoutUserInput = {
+    id?: string
+    currencyId: string
+    balance?: Decimal | DecimalJsLike | number | string
+    frozen?: Decimal | DecimalJsLike | number | string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    deposits?: DepositUncheckedCreateNestedManyWithoutWalletInput
+    Refund?: RefundUncheckedCreateNestedManyWithoutWalletInput
+    transfersFrom?: TransferUncheckedCreateNestedManyWithoutFromWalletInput
+    transfersTo?: TransferUncheckedCreateNestedManyWithoutToWalletInput
+    withdrawals?: WithdrawalUncheckedCreateNestedManyWithoutWalletInput
+  }
+
+  export type WalletCreateOrConnectWithoutUserInput = {
+    where: WalletWhereUniqueInput
+    create: XOR<WalletCreateWithoutUserInput, WalletUncheckedCreateWithoutUserInput>
+  }
+
+  export type WalletCreateManyUserInputEnvelope = {
+    data: WalletCreateManyUserInput | WalletCreateManyUserInput[]
+    skipDuplicates?: boolean
+  }
+
   export type WithdrawalCreateWithoutUserInput = {
     id?: string
     amount: Decimal | DecimalJsLike | number | string
@@ -24288,8 +26397,11 @@ export namespace Prisma {
     createdAt?: Date | string
     completedAt?: Date | string | null
     failedAt?: Date | string | null
+    bridgeTransferId?: string | null
+    receiverAddress: string
+    addressOwnerName: string
+    BridgeTransfer?: BridgeTransferCreateNestedOneWithoutWithdrawalInput
     paymentChannel: PaymentChannelCreateNestedOneWithoutWithdrawalInput
-    bridgeTransfer?: BridgeTransferCreateNestedOneWithoutWithdrawalInput
     wallet: WalletCreateNestedOneWithoutWithdrawalsInput
   }
 
@@ -24304,7 +26416,10 @@ export namespace Prisma {
     completedAt?: Date | string | null
     failedAt?: Date | string | null
     paymentChannelId: string
-    bridgeTransferid?: string | null
+    bridgeTransferId?: string | null
+    receiverAddress: string
+    addressOwnerName: string
+    BridgeTransfer?: BridgeTransferUncheckedCreateNestedOneWithoutWithdrawalInput
   }
 
   export type WithdrawalCreateOrConnectWithoutUserInput = {
@@ -24348,135 +26463,35 @@ export namespace Prisma {
     create: XOR<TransferCreateWithoutUserInput, TransferUncheckedCreateWithoutUserInput>
   }
 
-  export type RefundCreateWithoutUserInput = {
-    id?: string
-    amount: Decimal | DecimalJsLike | number | string
-    reason?: string | null
-    status?: $Enums.RefundStatus
-    createdAt?: Date | string
-    completedAt?: Date | string | null
-    failedAt?: Date | string | null
-    wallet: WalletCreateNestedOneWithoutRefundInput
-  }
-
-  export type RefundUncheckedCreateWithoutUserInput = {
-    id?: string
-    walletId: string
-    amount: Decimal | DecimalJsLike | number | string
-    reason?: string | null
-    status?: $Enums.RefundStatus
-    createdAt?: Date | string
-    completedAt?: Date | string | null
-    failedAt?: Date | string | null
-  }
-
-  export type RefundCreateOrConnectWithoutUserInput = {
-    where: RefundWhereUniqueInput
-    create: XOR<RefundCreateWithoutUserInput, RefundUncheckedCreateWithoutUserInput>
-  }
-
-  export type RefundCreateManyUserInputEnvelope = {
-    data: RefundCreateManyUserInput | RefundCreateManyUserInput[]
-    skipDuplicates?: boolean
-  }
-
-  export type ExchangeCreateWithoutInitiatorInput = {
-    id?: string
-    fromAmount: Decimal | DecimalJsLike | number | string
-    toAmount: Decimal | DecimalJsLike | number | string
-    exchangeRate: Decimal | DecimalJsLike | number | string
-    feePercentage?: Decimal | DecimalJsLike | number | string
-    status?: $Enums.ExchangeStatus
-    createdAt?: Date | string
-    completedAt?: Date | string | null
-    failedAt?: Date | string | null
-    fromCurrency: CurrencyCreateNestedOneWithoutExchangesFromInput
-    toCurrency: CurrencyCreateNestedOneWithoutExchangesToInput
-  }
-
-  export type ExchangeUncheckedCreateWithoutInitiatorInput = {
-    id?: string
-    fromCurrencyId: string
-    toCurrencyId: string
-    fromAmount: Decimal | DecimalJsLike | number | string
-    toAmount: Decimal | DecimalJsLike | number | string
-    exchangeRate: Decimal | DecimalJsLike | number | string
-    feePercentage?: Decimal | DecimalJsLike | number | string
-    status?: $Enums.ExchangeStatus
-    createdAt?: Date | string
-    completedAt?: Date | string | null
-    failedAt?: Date | string | null
-  }
-
-  export type ExchangeCreateOrConnectWithoutInitiatorInput = {
-    where: ExchangeWhereUniqueInput
-    create: XOR<ExchangeCreateWithoutInitiatorInput, ExchangeUncheckedCreateWithoutInitiatorInput>
-  }
-
-  export type ExchangeCreateManyInitiatorInputEnvelope = {
-    data: ExchangeCreateManyInitiatorInput | ExchangeCreateManyInitiatorInput[]
-    skipDuplicates?: boolean
-  }
-
-  export type ActivityLogCreateWithoutUserInput = {
-    id?: string
-    action: string
-    referenceId?: string | null
-    metadata?: NullableJsonNullValueInput | InputJsonValue
-    role?: $Enums.UserRole | null
-    ipAddress?: string | null
-    userAgent?: string | null
-    createdAt?: Date | string
-  }
-
-  export type ActivityLogUncheckedCreateWithoutUserInput = {
-    id?: string
-    action: string
-    referenceId?: string | null
-    metadata?: NullableJsonNullValueInput | InputJsonValue
-    role?: $Enums.UserRole | null
-    ipAddress?: string | null
-    userAgent?: string | null
-    createdAt?: Date | string
-  }
-
-  export type ActivityLogCreateOrConnectWithoutUserInput = {
+  export type ActivityLogUpsertWithWhereUniqueWithoutUserInput = {
     where: ActivityLogWhereUniqueInput
+    update: XOR<ActivityLogUpdateWithoutUserInput, ActivityLogUncheckedUpdateWithoutUserInput>
     create: XOR<ActivityLogCreateWithoutUserInput, ActivityLogUncheckedCreateWithoutUserInput>
   }
 
-  export type ActivityLogCreateManyUserInputEnvelope = {
-    data: ActivityLogCreateManyUserInput | ActivityLogCreateManyUserInput[]
-    skipDuplicates?: boolean
+  export type ActivityLogUpdateWithWhereUniqueWithoutUserInput = {
+    where: ActivityLogWhereUniqueInput
+    data: XOR<ActivityLogUpdateWithoutUserInput, ActivityLogUncheckedUpdateWithoutUserInput>
   }
 
-  export type WalletUpsertWithWhereUniqueWithoutUserInput = {
-    where: WalletWhereUniqueInput
-    update: XOR<WalletUpdateWithoutUserInput, WalletUncheckedUpdateWithoutUserInput>
-    create: XOR<WalletCreateWithoutUserInput, WalletUncheckedCreateWithoutUserInput>
+  export type ActivityLogUpdateManyWithWhereWithoutUserInput = {
+    where: ActivityLogScalarWhereInput
+    data: XOR<ActivityLogUpdateManyMutationInput, ActivityLogUncheckedUpdateManyWithoutUserInput>
   }
 
-  export type WalletUpdateWithWhereUniqueWithoutUserInput = {
-    where: WalletWhereUniqueInput
-    data: XOR<WalletUpdateWithoutUserInput, WalletUncheckedUpdateWithoutUserInput>
-  }
-
-  export type WalletUpdateManyWithWhereWithoutUserInput = {
-    where: WalletScalarWhereInput
-    data: XOR<WalletUpdateManyMutationInput, WalletUncheckedUpdateManyWithoutUserInput>
-  }
-
-  export type WalletScalarWhereInput = {
-    AND?: WalletScalarWhereInput | WalletScalarWhereInput[]
-    OR?: WalletScalarWhereInput[]
-    NOT?: WalletScalarWhereInput | WalletScalarWhereInput[]
-    id?: StringFilter<"Wallet"> | string
-    userId?: StringFilter<"Wallet"> | string
-    currencyId?: StringFilter<"Wallet"> | string
-    balance?: DecimalFilter<"Wallet"> | Decimal | DecimalJsLike | number | string
-    frozen?: DecimalFilter<"Wallet"> | Decimal | DecimalJsLike | number | string
-    createdAt?: DateTimeFilter<"Wallet"> | Date | string
-    updatedAt?: DateTimeFilter<"Wallet"> | Date | string
+  export type ActivityLogScalarWhereInput = {
+    AND?: ActivityLogScalarWhereInput | ActivityLogScalarWhereInput[]
+    OR?: ActivityLogScalarWhereInput[]
+    NOT?: ActivityLogScalarWhereInput | ActivityLogScalarWhereInput[]
+    id?: StringFilter<"ActivityLog"> | string
+    userId?: StringNullableFilter<"ActivityLog"> | string | null
+    action?: StringFilter<"ActivityLog"> | string
+    referenceId?: StringNullableFilter<"ActivityLog"> | string | null
+    metadata?: JsonNullableFilter<"ActivityLog">
+    role?: EnumUserRoleNullableFilter<"ActivityLog"> | $Enums.UserRole | null
+    ipAddress?: StringNullableFilter<"ActivityLog"> | string | null
+    userAgent?: StringNullableFilter<"ActivityLog"> | string | null
+    createdAt?: DateTimeFilter<"ActivityLog"> | Date | string
   }
 
   export type DepositUpsertWithWhereUniqueWithoutUserInput = {
@@ -24510,104 +26525,7 @@ export namespace Prisma {
     completedAt?: DateTimeNullableFilter<"Deposit"> | Date | string | null
     failedAt?: DateTimeNullableFilter<"Deposit"> | Date | string | null
     paymentChannelId?: StringFilter<"Deposit"> | string
-    bridgeTransferid?: StringNullableFilter<"Deposit"> | string | null
-  }
-
-  export type WithdrawalUpsertWithWhereUniqueWithoutUserInput = {
-    where: WithdrawalWhereUniqueInput
-    update: XOR<WithdrawalUpdateWithoutUserInput, WithdrawalUncheckedUpdateWithoutUserInput>
-    create: XOR<WithdrawalCreateWithoutUserInput, WithdrawalUncheckedCreateWithoutUserInput>
-  }
-
-  export type WithdrawalUpdateWithWhereUniqueWithoutUserInput = {
-    where: WithdrawalWhereUniqueInput
-    data: XOR<WithdrawalUpdateWithoutUserInput, WithdrawalUncheckedUpdateWithoutUserInput>
-  }
-
-  export type WithdrawalUpdateManyWithWhereWithoutUserInput = {
-    where: WithdrawalScalarWhereInput
-    data: XOR<WithdrawalUpdateManyMutationInput, WithdrawalUncheckedUpdateManyWithoutUserInput>
-  }
-
-  export type WithdrawalScalarWhereInput = {
-    AND?: WithdrawalScalarWhereInput | WithdrawalScalarWhereInput[]
-    OR?: WithdrawalScalarWhereInput[]
-    NOT?: WithdrawalScalarWhereInput | WithdrawalScalarWhereInput[]
-    id?: StringFilter<"Withdrawal"> | string
-    userId?: StringFilter<"Withdrawal"> | string
-    walletId?: StringFilter<"Withdrawal"> | string
-    amount?: DecimalFilter<"Withdrawal"> | Decimal | DecimalJsLike | number | string
-    fee?: DecimalFilter<"Withdrawal"> | Decimal | DecimalJsLike | number | string
-    status?: EnumWithdrawalStatusFilter<"Withdrawal"> | $Enums.WithdrawalStatus
-    reference?: StringNullableFilter<"Withdrawal"> | string | null
-    createdAt?: DateTimeFilter<"Withdrawal"> | Date | string
-    completedAt?: DateTimeNullableFilter<"Withdrawal"> | Date | string | null
-    failedAt?: DateTimeNullableFilter<"Withdrawal"> | Date | string | null
-    paymentChannelId?: StringFilter<"Withdrawal"> | string
-    bridgeTransferid?: StringNullableFilter<"Withdrawal"> | string | null
-  }
-
-  export type TransferUpsertWithWhereUniqueWithoutUserInput = {
-    where: TransferWhereUniqueInput
-    update: XOR<TransferUpdateWithoutUserInput, TransferUncheckedUpdateWithoutUserInput>
-    create: XOR<TransferCreateWithoutUserInput, TransferUncheckedCreateWithoutUserInput>
-  }
-
-  export type TransferUpdateWithWhereUniqueWithoutUserInput = {
-    where: TransferWhereUniqueInput
-    data: XOR<TransferUpdateWithoutUserInput, TransferUncheckedUpdateWithoutUserInput>
-  }
-
-  export type TransferUpdateManyWithWhereWithoutUserInput = {
-    where: TransferScalarWhereInput
-    data: XOR<TransferUpdateManyMutationInput, TransferUncheckedUpdateManyWithoutUserInput>
-  }
-
-  export type TransferScalarWhereInput = {
-    AND?: TransferScalarWhereInput | TransferScalarWhereInput[]
-    OR?: TransferScalarWhereInput[]
-    NOT?: TransferScalarWhereInput | TransferScalarWhereInput[]
-    id?: StringFilter<"Transfer"> | string
-    fromWalletId?: StringFilter<"Transfer"> | string
-    toWalletId?: StringFilter<"Transfer"> | string
-    amount?: DecimalFilter<"Transfer"> | Decimal | DecimalJsLike | number | string
-    fee?: DecimalFilter<"Transfer"> | Decimal | DecimalJsLike | number | string
-    status?: EnumTransferStatusFilter<"Transfer"> | $Enums.TransferStatus
-    note?: StringNullableFilter<"Transfer"> | string | null
-    createdAt?: DateTimeFilter<"Transfer"> | Date | string
-    completedAt?: DateTimeNullableFilter<"Transfer"> | Date | string | null
-    failedAt?: DateTimeNullableFilter<"Transfer"> | Date | string | null
-  }
-
-  export type RefundUpsertWithWhereUniqueWithoutUserInput = {
-    where: RefundWhereUniqueInput
-    update: XOR<RefundUpdateWithoutUserInput, RefundUncheckedUpdateWithoutUserInput>
-    create: XOR<RefundCreateWithoutUserInput, RefundUncheckedCreateWithoutUserInput>
-  }
-
-  export type RefundUpdateWithWhereUniqueWithoutUserInput = {
-    where: RefundWhereUniqueInput
-    data: XOR<RefundUpdateWithoutUserInput, RefundUncheckedUpdateWithoutUserInput>
-  }
-
-  export type RefundUpdateManyWithWhereWithoutUserInput = {
-    where: RefundScalarWhereInput
-    data: XOR<RefundUpdateManyMutationInput, RefundUncheckedUpdateManyWithoutUserInput>
-  }
-
-  export type RefundScalarWhereInput = {
-    AND?: RefundScalarWhereInput | RefundScalarWhereInput[]
-    OR?: RefundScalarWhereInput[]
-    NOT?: RefundScalarWhereInput | RefundScalarWhereInput[]
-    id?: StringFilter<"Refund"> | string
-    userId?: StringFilter<"Refund"> | string
-    walletId?: StringFilter<"Refund"> | string
-    amount?: DecimalFilter<"Refund"> | Decimal | DecimalJsLike | number | string
-    reason?: StringNullableFilter<"Refund"> | string | null
-    status?: EnumRefundStatusFilter<"Refund"> | $Enums.RefundStatus
-    createdAt?: DateTimeFilter<"Refund"> | Date | string
-    completedAt?: DateTimeNullableFilter<"Refund"> | Date | string | null
-    failedAt?: DateTimeNullableFilter<"Refund"> | Date | string | null
+    documentUrl?: StringNullableFilter<"Deposit"> | string | null
   }
 
   export type ExchangeUpsertWithWhereUniqueWithoutInitiatorInput = {
@@ -24644,97 +26562,162 @@ export namespace Prisma {
     failedAt?: DateTimeNullableFilter<"Exchange"> | Date | string | null
   }
 
-  export type ActivityLogUpsertWithWhereUniqueWithoutUserInput = {
-    where: ActivityLogWhereUniqueInput
-    update: XOR<ActivityLogUpdateWithoutUserInput, ActivityLogUncheckedUpdateWithoutUserInput>
-    create: XOR<ActivityLogCreateWithoutUserInput, ActivityLogUncheckedCreateWithoutUserInput>
+  export type LiquidityPoolUpsertWithWhereUniqueWithoutUserInput = {
+    where: LiquidityPoolWhereUniqueInput
+    update: XOR<LiquidityPoolUpdateWithoutUserInput, LiquidityPoolUncheckedUpdateWithoutUserInput>
+    create: XOR<LiquidityPoolCreateWithoutUserInput, LiquidityPoolUncheckedCreateWithoutUserInput>
   }
 
-  export type ActivityLogUpdateWithWhereUniqueWithoutUserInput = {
-    where: ActivityLogWhereUniqueInput
-    data: XOR<ActivityLogUpdateWithoutUserInput, ActivityLogUncheckedUpdateWithoutUserInput>
+  export type LiquidityPoolUpdateWithWhereUniqueWithoutUserInput = {
+    where: LiquidityPoolWhereUniqueInput
+    data: XOR<LiquidityPoolUpdateWithoutUserInput, LiquidityPoolUncheckedUpdateWithoutUserInput>
   }
 
-  export type ActivityLogUpdateManyWithWhereWithoutUserInput = {
-    where: ActivityLogScalarWhereInput
-    data: XOR<ActivityLogUpdateManyMutationInput, ActivityLogUncheckedUpdateManyWithoutUserInput>
+  export type LiquidityPoolUpdateManyWithWhereWithoutUserInput = {
+    where: LiquidityPoolScalarWhereInput
+    data: XOR<LiquidityPoolUpdateManyMutationInput, LiquidityPoolUncheckedUpdateManyWithoutUserInput>
   }
 
-  export type ActivityLogScalarWhereInput = {
-    AND?: ActivityLogScalarWhereInput | ActivityLogScalarWhereInput[]
-    OR?: ActivityLogScalarWhereInput[]
-    NOT?: ActivityLogScalarWhereInput | ActivityLogScalarWhereInput[]
-    id?: StringFilter<"ActivityLog"> | string
-    userId?: StringNullableFilter<"ActivityLog"> | string | null
-    action?: StringFilter<"ActivityLog"> | string
-    referenceId?: StringNullableFilter<"ActivityLog"> | string | null
-    metadata?: JsonNullableFilter<"ActivityLog">
-    role?: EnumUserRoleNullableFilter<"ActivityLog"> | $Enums.UserRole | null
-    ipAddress?: StringNullableFilter<"ActivityLog"> | string | null
-    userAgent?: StringNullableFilter<"ActivityLog"> | string | null
-    createdAt?: DateTimeFilter<"ActivityLog"> | Date | string
+  export type LiquidityPoolScalarWhereInput = {
+    AND?: LiquidityPoolScalarWhereInput | LiquidityPoolScalarWhereInput[]
+    OR?: LiquidityPoolScalarWhereInput[]
+    NOT?: LiquidityPoolScalarWhereInput | LiquidityPoolScalarWhereInput[]
+    id?: StringFilter<"LiquidityPool"> | string
+    paymentChannelId?: StringFilter<"LiquidityPool"> | string
+    currencyId?: StringFilter<"LiquidityPool"> | string
+    address?: StringFilter<"LiquidityPool"> | string
+    balance?: DecimalFilter<"LiquidityPool"> | Decimal | DecimalJsLike | number | string
+    frozen?: DecimalFilter<"LiquidityPool"> | Decimal | DecimalJsLike | number | string
+    updatedAt?: DateTimeFilter<"LiquidityPool"> | Date | string
+    userId?: StringFilter<"LiquidityPool"> | string
   }
 
-  export type BridgeTransferCreateWithoutPaymentChannelInput = {
-    id?: string
-    depositId: string
-    withdrawalId: string
-    status?: $Enums.BridgeStatus
-    createdAt?: Date | string
-    completedAt?: Date | string | null
-    failedAt?: Date | string | null
-    Deposit?: DepositCreateNestedManyWithoutBridgeTransferInput
-    Withdrawal?: WithdrawalCreateNestedManyWithoutBridgeTransferInput
+  export type RefundUpsertWithWhereUniqueWithoutUserInput = {
+    where: RefundWhereUniqueInput
+    update: XOR<RefundUpdateWithoutUserInput, RefundUncheckedUpdateWithoutUserInput>
+    create: XOR<RefundCreateWithoutUserInput, RefundUncheckedCreateWithoutUserInput>
   }
 
-  export type BridgeTransferUncheckedCreateWithoutPaymentChannelInput = {
-    id?: string
-    depositId: string
-    withdrawalId: string
-    status?: $Enums.BridgeStatus
-    createdAt?: Date | string
-    completedAt?: Date | string | null
-    failedAt?: Date | string | null
-    Deposit?: DepositUncheckedCreateNestedManyWithoutBridgeTransferInput
-    Withdrawal?: WithdrawalUncheckedCreateNestedManyWithoutBridgeTransferInput
+  export type RefundUpdateWithWhereUniqueWithoutUserInput = {
+    where: RefundWhereUniqueInput
+    data: XOR<RefundUpdateWithoutUserInput, RefundUncheckedUpdateWithoutUserInput>
   }
 
-  export type BridgeTransferCreateOrConnectWithoutPaymentChannelInput = {
-    where: BridgeTransferWhereUniqueInput
-    create: XOR<BridgeTransferCreateWithoutPaymentChannelInput, BridgeTransferUncheckedCreateWithoutPaymentChannelInput>
+  export type RefundUpdateManyWithWhereWithoutUserInput = {
+    where: RefundScalarWhereInput
+    data: XOR<RefundUpdateManyMutationInput, RefundUncheckedUpdateManyWithoutUserInput>
   }
 
-  export type CurrencyCreateWithoutPaymentChannelsInput = {
-    id?: string
-    code: string
-    name: string
-    symbol: string
-    decimals?: number
-    createdAt?: Date | string
-    wallets?: WalletCreateNestedManyWithoutCurrencyInput
-    exchangesFrom?: ExchangeCreateNestedManyWithoutFromCurrencyInput
-    exchangesTo?: ExchangeCreateNestedManyWithoutToCurrencyInput
-    FeeSetting?: FeeSettingCreateNestedManyWithoutCurrencyInput
-    LiquidityPool?: LiquidityPoolCreateNestedManyWithoutCurrencyInput
+  export type RefundScalarWhereInput = {
+    AND?: RefundScalarWhereInput | RefundScalarWhereInput[]
+    OR?: RefundScalarWhereInput[]
+    NOT?: RefundScalarWhereInput | RefundScalarWhereInput[]
+    id?: StringFilter<"Refund"> | string
+    userId?: StringFilter<"Refund"> | string
+    walletId?: StringFilter<"Refund"> | string
+    amount?: DecimalFilter<"Refund"> | Decimal | DecimalJsLike | number | string
+    reason?: StringNullableFilter<"Refund"> | string | null
+    status?: EnumRefundStatusFilter<"Refund"> | $Enums.RefundStatus
+    createdAt?: DateTimeFilter<"Refund"> | Date | string
+    completedAt?: DateTimeNullableFilter<"Refund"> | Date | string | null
+    failedAt?: DateTimeNullableFilter<"Refund"> | Date | string | null
   }
 
-  export type CurrencyUncheckedCreateWithoutPaymentChannelsInput = {
-    id?: string
-    code: string
-    name: string
-    symbol: string
-    decimals?: number
-    createdAt?: Date | string
-    wallets?: WalletUncheckedCreateNestedManyWithoutCurrencyInput
-    exchangesFrom?: ExchangeUncheckedCreateNestedManyWithoutFromCurrencyInput
-    exchangesTo?: ExchangeUncheckedCreateNestedManyWithoutToCurrencyInput
-    FeeSetting?: FeeSettingUncheckedCreateNestedManyWithoutCurrencyInput
-    LiquidityPool?: LiquidityPoolUncheckedCreateNestedManyWithoutCurrencyInput
+  export type WalletUpsertWithWhereUniqueWithoutUserInput = {
+    where: WalletWhereUniqueInput
+    update: XOR<WalletUpdateWithoutUserInput, WalletUncheckedUpdateWithoutUserInput>
+    create: XOR<WalletCreateWithoutUserInput, WalletUncheckedCreateWithoutUserInput>
   }
 
-  export type CurrencyCreateOrConnectWithoutPaymentChannelsInput = {
-    where: CurrencyWhereUniqueInput
-    create: XOR<CurrencyCreateWithoutPaymentChannelsInput, CurrencyUncheckedCreateWithoutPaymentChannelsInput>
+  export type WalletUpdateWithWhereUniqueWithoutUserInput = {
+    where: WalletWhereUniqueInput
+    data: XOR<WalletUpdateWithoutUserInput, WalletUncheckedUpdateWithoutUserInput>
+  }
+
+  export type WalletUpdateManyWithWhereWithoutUserInput = {
+    where: WalletScalarWhereInput
+    data: XOR<WalletUpdateManyMutationInput, WalletUncheckedUpdateManyWithoutUserInput>
+  }
+
+  export type WalletScalarWhereInput = {
+    AND?: WalletScalarWhereInput | WalletScalarWhereInput[]
+    OR?: WalletScalarWhereInput[]
+    NOT?: WalletScalarWhereInput | WalletScalarWhereInput[]
+    id?: StringFilter<"Wallet"> | string
+    userId?: StringFilter<"Wallet"> | string
+    currencyId?: StringFilter<"Wallet"> | string
+    balance?: DecimalFilter<"Wallet"> | Decimal | DecimalJsLike | number | string
+    frozen?: DecimalFilter<"Wallet"> | Decimal | DecimalJsLike | number | string
+    createdAt?: DateTimeFilter<"Wallet"> | Date | string
+    updatedAt?: DateTimeFilter<"Wallet"> | Date | string
+  }
+
+  export type WithdrawalUpsertWithWhereUniqueWithoutUserInput = {
+    where: WithdrawalWhereUniqueInput
+    update: XOR<WithdrawalUpdateWithoutUserInput, WithdrawalUncheckedUpdateWithoutUserInput>
+    create: XOR<WithdrawalCreateWithoutUserInput, WithdrawalUncheckedCreateWithoutUserInput>
+  }
+
+  export type WithdrawalUpdateWithWhereUniqueWithoutUserInput = {
+    where: WithdrawalWhereUniqueInput
+    data: XOR<WithdrawalUpdateWithoutUserInput, WithdrawalUncheckedUpdateWithoutUserInput>
+  }
+
+  export type WithdrawalUpdateManyWithWhereWithoutUserInput = {
+    where: WithdrawalScalarWhereInput
+    data: XOR<WithdrawalUpdateManyMutationInput, WithdrawalUncheckedUpdateManyWithoutUserInput>
+  }
+
+  export type WithdrawalScalarWhereInput = {
+    AND?: WithdrawalScalarWhereInput | WithdrawalScalarWhereInput[]
+    OR?: WithdrawalScalarWhereInput[]
+    NOT?: WithdrawalScalarWhereInput | WithdrawalScalarWhereInput[]
+    id?: StringFilter<"Withdrawal"> | string
+    userId?: StringFilter<"Withdrawal"> | string
+    walletId?: StringFilter<"Withdrawal"> | string
+    amount?: DecimalFilter<"Withdrawal"> | Decimal | DecimalJsLike | number | string
+    fee?: DecimalFilter<"Withdrawal"> | Decimal | DecimalJsLike | number | string
+    status?: EnumWithdrawalStatusFilter<"Withdrawal"> | $Enums.WithdrawalStatus
+    reference?: StringNullableFilter<"Withdrawal"> | string | null
+    createdAt?: DateTimeFilter<"Withdrawal"> | Date | string
+    completedAt?: DateTimeNullableFilter<"Withdrawal"> | Date | string | null
+    failedAt?: DateTimeNullableFilter<"Withdrawal"> | Date | string | null
+    paymentChannelId?: StringFilter<"Withdrawal"> | string
+    bridgeTransferId?: StringNullableFilter<"Withdrawal"> | string | null
+    receiverAddress?: StringFilter<"Withdrawal"> | string
+    addressOwnerName?: StringFilter<"Withdrawal"> | string
+  }
+
+  export type TransferUpsertWithWhereUniqueWithoutUserInput = {
+    where: TransferWhereUniqueInput
+    update: XOR<TransferUpdateWithoutUserInput, TransferUncheckedUpdateWithoutUserInput>
+    create: XOR<TransferCreateWithoutUserInput, TransferUncheckedCreateWithoutUserInput>
+  }
+
+  export type TransferUpdateWithWhereUniqueWithoutUserInput = {
+    where: TransferWhereUniqueInput
+    data: XOR<TransferUpdateWithoutUserInput, TransferUncheckedUpdateWithoutUserInput>
+  }
+
+  export type TransferUpdateManyWithWhereWithoutUserInput = {
+    where: TransferScalarWhereInput
+    data: XOR<TransferUpdateManyMutationInput, TransferUncheckedUpdateManyWithoutUserInput>
+  }
+
+  export type TransferScalarWhereInput = {
+    AND?: TransferScalarWhereInput | TransferScalarWhereInput[]
+    OR?: TransferScalarWhereInput[]
+    NOT?: TransferScalarWhereInput | TransferScalarWhereInput[]
+    id?: StringFilter<"Transfer"> | string
+    fromWalletId?: StringFilter<"Transfer"> | string
+    toWalletId?: StringFilter<"Transfer"> | string
+    amount?: DecimalFilter<"Transfer"> | Decimal | DecimalJsLike | number | string
+    fee?: DecimalFilter<"Transfer"> | Decimal | DecimalJsLike | number | string
+    status?: EnumTransferStatusFilter<"Transfer"> | $Enums.TransferStatus
+    note?: StringNullableFilter<"Transfer"> | string | null
+    createdAt?: DateTimeFilter<"Transfer"> | Date | string
+    completedAt?: DateTimeNullableFilter<"Transfer"> | Date | string | null
+    failedAt?: DateTimeNullableFilter<"Transfer"> | Date | string | null
   }
 
   export type DepositCreateWithoutPaymentChannelInput = {
@@ -24746,7 +26729,8 @@ export namespace Prisma {
     createdAt?: Date | string
     completedAt?: Date | string | null
     failedAt?: Date | string | null
-    bridgeTransfer?: BridgeTransferCreateNestedOneWithoutDepositInput
+    documentUrl?: string | null
+    BridgeTransfer?: BridgeTransferCreateNestedOneWithoutDepositInput
     user: UserCreateNestedOneWithoutDepositsInput
     wallet: WalletCreateNestedOneWithoutDepositsInput
   }
@@ -24762,7 +26746,8 @@ export namespace Prisma {
     createdAt?: Date | string
     completedAt?: Date | string | null
     failedAt?: Date | string | null
-    bridgeTransferid?: string | null
+    documentUrl?: string | null
+    BridgeTransfer?: BridgeTransferUncheckedCreateNestedOneWithoutDepositInput
   }
 
   export type DepositCreateOrConnectWithoutPaymentChannelInput = {
@@ -24775,6 +26760,38 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
+  export type LiquidityPoolCreateWithoutPaymentChannelInput = {
+    id?: string
+    address: string
+    balance?: Decimal | DecimalJsLike | number | string
+    frozen?: Decimal | DecimalJsLike | number | string
+    updatedAt?: Date | string
+    BridgeTransfer?: BridgeTransferCreateNestedManyWithoutLiquidityPoolInput
+    currency: CurrencyCreateNestedOneWithoutLiquidityPoolInput
+    user: UserCreateNestedOneWithoutLiquidityPoolInput
+  }
+
+  export type LiquidityPoolUncheckedCreateWithoutPaymentChannelInput = {
+    id?: string
+    currencyId: string
+    address: string
+    balance?: Decimal | DecimalJsLike | number | string
+    frozen?: Decimal | DecimalJsLike | number | string
+    updatedAt?: Date | string
+    userId: string
+    BridgeTransfer?: BridgeTransferUncheckedCreateNestedManyWithoutLiquidityPoolInput
+  }
+
+  export type LiquidityPoolCreateOrConnectWithoutPaymentChannelInput = {
+    where: LiquidityPoolWhereUniqueInput
+    create: XOR<LiquidityPoolCreateWithoutPaymentChannelInput, LiquidityPoolUncheckedCreateWithoutPaymentChannelInput>
+  }
+
+  export type LiquidityPoolCreateManyPaymentChannelInputEnvelope = {
+    data: LiquidityPoolCreateManyPaymentChannelInput | LiquidityPoolCreateManyPaymentChannelInput[]
+    skipDuplicates?: boolean
+  }
+
   export type WithdrawalCreateWithoutPaymentChannelInput = {
     id?: string
     amount: Decimal | DecimalJsLike | number | string
@@ -24784,7 +26801,10 @@ export namespace Prisma {
     createdAt?: Date | string
     completedAt?: Date | string | null
     failedAt?: Date | string | null
-    bridgeTransfer?: BridgeTransferCreateNestedOneWithoutWithdrawalInput
+    bridgeTransferId?: string | null
+    receiverAddress: string
+    addressOwnerName: string
+    BridgeTransfer?: BridgeTransferCreateNestedOneWithoutWithdrawalInput
     user: UserCreateNestedOneWithoutWithdrawalsInput
     wallet: WalletCreateNestedOneWithoutWithdrawalsInput
   }
@@ -24800,7 +26820,10 @@ export namespace Prisma {
     createdAt?: Date | string
     completedAt?: Date | string | null
     failedAt?: Date | string | null
-    bridgeTransferid?: string | null
+    bridgeTransferId?: string | null
+    receiverAddress: string
+    addressOwnerName: string
+    BridgeTransfer?: BridgeTransferUncheckedCreateNestedOneWithoutWithdrawalInput
   }
 
   export type WithdrawalCreateOrConnectWithoutPaymentChannelInput = {
@@ -24813,67 +26836,89 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
-  export type LiquidityPoolCreateWithoutPaymentChannelInput = {
+  export type CurrencyCreateWithoutPaymentChannelsInput = {
     id?: string
-    address: string
-    balance?: Decimal | DecimalJsLike | number | string
-    frozen?: Decimal | DecimalJsLike | number | string
-    updatedAt?: Date | string
-    currency: CurrencyCreateNestedOneWithoutLiquidityPoolInput
+    code: string
+    name: string
+    symbol: string
+    decimals?: number
+    createdAt?: Date | string
+    FromCurrencyPair?: CurrencyPairCreateNestedManyWithoutFromCurrencyInput
+    ToCurrencyPair?: CurrencyPairCreateNestedManyWithoutToCurrencyInput
+    exchangesFrom?: ExchangeCreateNestedManyWithoutFromCurrencyInput
+    exchangesTo?: ExchangeCreateNestedManyWithoutToCurrencyInput
+    FeeSetting?: FeeSettingCreateNestedManyWithoutCurrencyInput
+    LiquidityPool?: LiquidityPoolCreateNestedManyWithoutCurrencyInput
+    wallets?: WalletCreateNestedManyWithoutCurrencyInput
   }
 
-  export type LiquidityPoolUncheckedCreateWithoutPaymentChannelInput = {
+  export type CurrencyUncheckedCreateWithoutPaymentChannelsInput = {
     id?: string
-    currencyId: string
-    address: string
-    balance?: Decimal | DecimalJsLike | number | string
-    frozen?: Decimal | DecimalJsLike | number | string
-    updatedAt?: Date | string
+    code: string
+    name: string
+    symbol: string
+    decimals?: number
+    createdAt?: Date | string
+    FromCurrencyPair?: CurrencyPairUncheckedCreateNestedManyWithoutFromCurrencyInput
+    ToCurrencyPair?: CurrencyPairUncheckedCreateNestedManyWithoutToCurrencyInput
+    exchangesFrom?: ExchangeUncheckedCreateNestedManyWithoutFromCurrencyInput
+    exchangesTo?: ExchangeUncheckedCreateNestedManyWithoutToCurrencyInput
+    FeeSetting?: FeeSettingUncheckedCreateNestedManyWithoutCurrencyInput
+    LiquidityPool?: LiquidityPoolUncheckedCreateNestedManyWithoutCurrencyInput
+    wallets?: WalletUncheckedCreateNestedManyWithoutCurrencyInput
   }
 
-  export type LiquidityPoolCreateOrConnectWithoutPaymentChannelInput = {
+  export type CurrencyCreateOrConnectWithoutPaymentChannelsInput = {
+    where: CurrencyWhereUniqueInput
+    create: XOR<CurrencyCreateWithoutPaymentChannelsInput, CurrencyUncheckedCreateWithoutPaymentChannelsInput>
+  }
+
+  export type DepositUpsertWithWhereUniqueWithoutPaymentChannelInput = {
+    where: DepositWhereUniqueInput
+    update: XOR<DepositUpdateWithoutPaymentChannelInput, DepositUncheckedUpdateWithoutPaymentChannelInput>
+    create: XOR<DepositCreateWithoutPaymentChannelInput, DepositUncheckedCreateWithoutPaymentChannelInput>
+  }
+
+  export type DepositUpdateWithWhereUniqueWithoutPaymentChannelInput = {
+    where: DepositWhereUniqueInput
+    data: XOR<DepositUpdateWithoutPaymentChannelInput, DepositUncheckedUpdateWithoutPaymentChannelInput>
+  }
+
+  export type DepositUpdateManyWithWhereWithoutPaymentChannelInput = {
+    where: DepositScalarWhereInput
+    data: XOR<DepositUpdateManyMutationInput, DepositUncheckedUpdateManyWithoutPaymentChannelInput>
+  }
+
+  export type LiquidityPoolUpsertWithWhereUniqueWithoutPaymentChannelInput = {
     where: LiquidityPoolWhereUniqueInput
+    update: XOR<LiquidityPoolUpdateWithoutPaymentChannelInput, LiquidityPoolUncheckedUpdateWithoutPaymentChannelInput>
     create: XOR<LiquidityPoolCreateWithoutPaymentChannelInput, LiquidityPoolUncheckedCreateWithoutPaymentChannelInput>
   }
 
-  export type LiquidityPoolCreateManyPaymentChannelInputEnvelope = {
-    data: LiquidityPoolCreateManyPaymentChannelInput | LiquidityPoolCreateManyPaymentChannelInput[]
-    skipDuplicates?: boolean
+  export type LiquidityPoolUpdateWithWhereUniqueWithoutPaymentChannelInput = {
+    where: LiquidityPoolWhereUniqueInput
+    data: XOR<LiquidityPoolUpdateWithoutPaymentChannelInput, LiquidityPoolUncheckedUpdateWithoutPaymentChannelInput>
   }
 
-  export type BridgeTransferUpsertWithoutPaymentChannelInput = {
-    update: XOR<BridgeTransferUpdateWithoutPaymentChannelInput, BridgeTransferUncheckedUpdateWithoutPaymentChannelInput>
-    create: XOR<BridgeTransferCreateWithoutPaymentChannelInput, BridgeTransferUncheckedCreateWithoutPaymentChannelInput>
-    where?: BridgeTransferWhereInput
+  export type LiquidityPoolUpdateManyWithWhereWithoutPaymentChannelInput = {
+    where: LiquidityPoolScalarWhereInput
+    data: XOR<LiquidityPoolUpdateManyMutationInput, LiquidityPoolUncheckedUpdateManyWithoutPaymentChannelInput>
   }
 
-  export type BridgeTransferUpdateToOneWithWhereWithoutPaymentChannelInput = {
-    where?: BridgeTransferWhereInput
-    data: XOR<BridgeTransferUpdateWithoutPaymentChannelInput, BridgeTransferUncheckedUpdateWithoutPaymentChannelInput>
+  export type WithdrawalUpsertWithWhereUniqueWithoutPaymentChannelInput = {
+    where: WithdrawalWhereUniqueInput
+    update: XOR<WithdrawalUpdateWithoutPaymentChannelInput, WithdrawalUncheckedUpdateWithoutPaymentChannelInput>
+    create: XOR<WithdrawalCreateWithoutPaymentChannelInput, WithdrawalUncheckedCreateWithoutPaymentChannelInput>
   }
 
-  export type BridgeTransferUpdateWithoutPaymentChannelInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    depositId?: StringFieldUpdateOperationsInput | string
-    withdrawalId?: StringFieldUpdateOperationsInput | string
-    status?: EnumBridgeStatusFieldUpdateOperationsInput | $Enums.BridgeStatus
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    failedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    Deposit?: DepositUpdateManyWithoutBridgeTransferNestedInput
-    Withdrawal?: WithdrawalUpdateManyWithoutBridgeTransferNestedInput
+  export type WithdrawalUpdateWithWhereUniqueWithoutPaymentChannelInput = {
+    where: WithdrawalWhereUniqueInput
+    data: XOR<WithdrawalUpdateWithoutPaymentChannelInput, WithdrawalUncheckedUpdateWithoutPaymentChannelInput>
   }
 
-  export type BridgeTransferUncheckedUpdateWithoutPaymentChannelInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    depositId?: StringFieldUpdateOperationsInput | string
-    withdrawalId?: StringFieldUpdateOperationsInput | string
-    status?: EnumBridgeStatusFieldUpdateOperationsInput | $Enums.BridgeStatus
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    failedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    Deposit?: DepositUncheckedUpdateManyWithoutBridgeTransferNestedInput
-    Withdrawal?: WithdrawalUncheckedUpdateManyWithoutBridgeTransferNestedInput
+  export type WithdrawalUpdateManyWithWhereWithoutPaymentChannelInput = {
+    where: WithdrawalScalarWhereInput
+    data: XOR<WithdrawalUpdateManyMutationInput, WithdrawalUncheckedUpdateManyWithoutPaymentChannelInput>
   }
 
   export type CurrencyUpsertWithWhereUniqueWithoutPaymentChannelsInput = {
@@ -24904,102 +26949,63 @@ export namespace Prisma {
     createdAt?: DateTimeFilter<"Currency"> | Date | string
   }
 
-  export type DepositUpsertWithWhereUniqueWithoutPaymentChannelInput = {
-    where: DepositWhereUniqueInput
-    update: XOR<DepositUpdateWithoutPaymentChannelInput, DepositUncheckedUpdateWithoutPaymentChannelInput>
-    create: XOR<DepositCreateWithoutPaymentChannelInput, DepositUncheckedCreateWithoutPaymentChannelInput>
-  }
-
-  export type DepositUpdateWithWhereUniqueWithoutPaymentChannelInput = {
-    where: DepositWhereUniqueInput
-    data: XOR<DepositUpdateWithoutPaymentChannelInput, DepositUncheckedUpdateWithoutPaymentChannelInput>
-  }
-
-  export type DepositUpdateManyWithWhereWithoutPaymentChannelInput = {
-    where: DepositScalarWhereInput
-    data: XOR<DepositUpdateManyMutationInput, DepositUncheckedUpdateManyWithoutPaymentChannelInput>
-  }
-
-  export type WithdrawalUpsertWithWhereUniqueWithoutPaymentChannelInput = {
-    where: WithdrawalWhereUniqueInput
-    update: XOR<WithdrawalUpdateWithoutPaymentChannelInput, WithdrawalUncheckedUpdateWithoutPaymentChannelInput>
-    create: XOR<WithdrawalCreateWithoutPaymentChannelInput, WithdrawalUncheckedCreateWithoutPaymentChannelInput>
-  }
-
-  export type WithdrawalUpdateWithWhereUniqueWithoutPaymentChannelInput = {
-    where: WithdrawalWhereUniqueInput
-    data: XOR<WithdrawalUpdateWithoutPaymentChannelInput, WithdrawalUncheckedUpdateWithoutPaymentChannelInput>
-  }
-
-  export type WithdrawalUpdateManyWithWhereWithoutPaymentChannelInput = {
-    where: WithdrawalScalarWhereInput
-    data: XOR<WithdrawalUpdateManyMutationInput, WithdrawalUncheckedUpdateManyWithoutPaymentChannelInput>
-  }
-
-  export type LiquidityPoolUpsertWithWhereUniqueWithoutPaymentChannelInput = {
-    where: LiquidityPoolWhereUniqueInput
-    update: XOR<LiquidityPoolUpdateWithoutPaymentChannelInput, LiquidityPoolUncheckedUpdateWithoutPaymentChannelInput>
-    create: XOR<LiquidityPoolCreateWithoutPaymentChannelInput, LiquidityPoolUncheckedCreateWithoutPaymentChannelInput>
-  }
-
-  export type LiquidityPoolUpdateWithWhereUniqueWithoutPaymentChannelInput = {
-    where: LiquidityPoolWhereUniqueInput
-    data: XOR<LiquidityPoolUpdateWithoutPaymentChannelInput, LiquidityPoolUncheckedUpdateWithoutPaymentChannelInput>
-  }
-
-  export type LiquidityPoolUpdateManyWithWhereWithoutPaymentChannelInput = {
-    where: LiquidityPoolScalarWhereInput
-    data: XOR<LiquidityPoolUpdateManyMutationInput, LiquidityPoolUncheckedUpdateManyWithoutPaymentChannelInput>
-  }
-
-  export type LiquidityPoolScalarWhereInput = {
-    AND?: LiquidityPoolScalarWhereInput | LiquidityPoolScalarWhereInput[]
-    OR?: LiquidityPoolScalarWhereInput[]
-    NOT?: LiquidityPoolScalarWhereInput | LiquidityPoolScalarWhereInput[]
-    id?: StringFilter<"LiquidityPool"> | string
-    paymentChannelId?: StringFilter<"LiquidityPool"> | string
-    currencyId?: StringFilter<"LiquidityPool"> | string
-    address?: StringFilter<"LiquidityPool"> | string
-    balance?: DecimalFilter<"LiquidityPool"> | Decimal | DecimalJsLike | number | string
-    frozen?: DecimalFilter<"LiquidityPool"> | Decimal | DecimalJsLike | number | string
-    updatedAt?: DateTimeFilter<"LiquidityPool"> | Date | string
-  }
-
-  export type WalletCreateWithoutCurrencyInput = {
+  export type CurrencyPairCreateWithoutFromCurrencyInput = {
     id?: string
-    balance?: Decimal | DecimalJsLike | number | string
-    frozen?: Decimal | DecimalJsLike | number | string
+    rate: Decimal | DecimalJsLike | number | string
+    isInverseRate?: boolean
+    isActive?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
-    user: UserCreateNestedOneWithoutWalletInput
-    deposits?: DepositCreateNestedManyWithoutWalletInput
-    withdrawals?: WithdrawalCreateNestedManyWithoutWalletInput
-    Refund?: RefundCreateNestedManyWithoutWalletInput
-    transfersFrom?: TransferCreateNestedManyWithoutFromWalletInput
-    transfersTo?: TransferCreateNestedManyWithoutToWalletInput
+    toCurrency: CurrencyCreateNestedOneWithoutToCurrencyPairInput
   }
 
-  export type WalletUncheckedCreateWithoutCurrencyInput = {
+  export type CurrencyPairUncheckedCreateWithoutFromCurrencyInput = {
     id?: string
-    userId: string
-    balance?: Decimal | DecimalJsLike | number | string
-    frozen?: Decimal | DecimalJsLike | number | string
+    toCurrencyId: string
+    rate: Decimal | DecimalJsLike | number | string
+    isInverseRate?: boolean
+    isActive?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
-    deposits?: DepositUncheckedCreateNestedManyWithoutWalletInput
-    withdrawals?: WithdrawalUncheckedCreateNestedManyWithoutWalletInput
-    Refund?: RefundUncheckedCreateNestedManyWithoutWalletInput
-    transfersFrom?: TransferUncheckedCreateNestedManyWithoutFromWalletInput
-    transfersTo?: TransferUncheckedCreateNestedManyWithoutToWalletInput
   }
 
-  export type WalletCreateOrConnectWithoutCurrencyInput = {
-    where: WalletWhereUniqueInput
-    create: XOR<WalletCreateWithoutCurrencyInput, WalletUncheckedCreateWithoutCurrencyInput>
+  export type CurrencyPairCreateOrConnectWithoutFromCurrencyInput = {
+    where: CurrencyPairWhereUniqueInput
+    create: XOR<CurrencyPairCreateWithoutFromCurrencyInput, CurrencyPairUncheckedCreateWithoutFromCurrencyInput>
   }
 
-  export type WalletCreateManyCurrencyInputEnvelope = {
-    data: WalletCreateManyCurrencyInput | WalletCreateManyCurrencyInput[]
+  export type CurrencyPairCreateManyFromCurrencyInputEnvelope = {
+    data: CurrencyPairCreateManyFromCurrencyInput | CurrencyPairCreateManyFromCurrencyInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type CurrencyPairCreateWithoutToCurrencyInput = {
+    id?: string
+    rate: Decimal | DecimalJsLike | number | string
+    isInverseRate?: boolean
+    isActive?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    fromCurrency: CurrencyCreateNestedOneWithoutFromCurrencyPairInput
+  }
+
+  export type CurrencyPairUncheckedCreateWithoutToCurrencyInput = {
+    id?: string
+    fromCurrencyId: string
+    rate: Decimal | DecimalJsLike | number | string
+    isInverseRate?: boolean
+    isActive?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type CurrencyPairCreateOrConnectWithoutToCurrencyInput = {
+    where: CurrencyPairWhereUniqueInput
+    create: XOR<CurrencyPairCreateWithoutToCurrencyInput, CurrencyPairUncheckedCreateWithoutToCurrencyInput>
+  }
+
+  export type CurrencyPairCreateManyToCurrencyInputEnvelope = {
+    data: CurrencyPairCreateManyToCurrencyInput | CurrencyPairCreateManyToCurrencyInput[]
     skipDuplicates?: boolean
   }
 
@@ -25105,40 +27111,15 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
-  export type PaymentChannelCreateWithoutCurrenciesInput = {
-    id?: string
-    name: string
-    description?: string | null
-    createdAt?: Date | string
-    bridgeTransfers?: BridgeTransferCreateNestedOneWithoutPaymentChannelInput
-    Deposit?: DepositCreateNestedManyWithoutPaymentChannelInput
-    Withdrawal?: WithdrawalCreateNestedManyWithoutPaymentChannelInput
-    LiquidityPool?: LiquidityPoolCreateNestedManyWithoutPaymentChannelInput
-  }
-
-  export type PaymentChannelUncheckedCreateWithoutCurrenciesInput = {
-    id?: string
-    name: string
-    description?: string | null
-    createdAt?: Date | string
-    bridgeTransfers?: BridgeTransferUncheckedCreateNestedOneWithoutPaymentChannelInput
-    Deposit?: DepositUncheckedCreateNestedManyWithoutPaymentChannelInput
-    Withdrawal?: WithdrawalUncheckedCreateNestedManyWithoutPaymentChannelInput
-    LiquidityPool?: LiquidityPoolUncheckedCreateNestedManyWithoutPaymentChannelInput
-  }
-
-  export type PaymentChannelCreateOrConnectWithoutCurrenciesInput = {
-    where: PaymentChannelWhereUniqueInput
-    create: XOR<PaymentChannelCreateWithoutCurrenciesInput, PaymentChannelUncheckedCreateWithoutCurrenciesInput>
-  }
-
   export type LiquidityPoolCreateWithoutCurrencyInput = {
     id?: string
     address: string
     balance?: Decimal | DecimalJsLike | number | string
     frozen?: Decimal | DecimalJsLike | number | string
     updatedAt?: Date | string
+    BridgeTransfer?: BridgeTransferCreateNestedManyWithoutLiquidityPoolInput
     paymentChannel: PaymentChannelCreateNestedOneWithoutLiquidityPoolInput
+    user: UserCreateNestedOneWithoutLiquidityPoolInput
   }
 
   export type LiquidityPoolUncheckedCreateWithoutCurrencyInput = {
@@ -25148,6 +27129,8 @@ export namespace Prisma {
     balance?: Decimal | DecimalJsLike | number | string
     frozen?: Decimal | DecimalJsLike | number | string
     updatedAt?: Date | string
+    userId: string
+    BridgeTransfer?: BridgeTransferUncheckedCreateNestedManyWithoutLiquidityPoolInput
   }
 
   export type LiquidityPoolCreateOrConnectWithoutCurrencyInput = {
@@ -25160,20 +27143,113 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
-  export type WalletUpsertWithWhereUniqueWithoutCurrencyInput = {
+  export type WalletCreateWithoutCurrencyInput = {
+    id?: string
+    balance?: Decimal | DecimalJsLike | number | string
+    frozen?: Decimal | DecimalJsLike | number | string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    deposits?: DepositCreateNestedManyWithoutWalletInput
+    Refund?: RefundCreateNestedManyWithoutWalletInput
+    transfersFrom?: TransferCreateNestedManyWithoutFromWalletInput
+    transfersTo?: TransferCreateNestedManyWithoutToWalletInput
+    user: UserCreateNestedOneWithoutWalletInput
+    withdrawals?: WithdrawalCreateNestedManyWithoutWalletInput
+  }
+
+  export type WalletUncheckedCreateWithoutCurrencyInput = {
+    id?: string
+    userId: string
+    balance?: Decimal | DecimalJsLike | number | string
+    frozen?: Decimal | DecimalJsLike | number | string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    deposits?: DepositUncheckedCreateNestedManyWithoutWalletInput
+    Refund?: RefundUncheckedCreateNestedManyWithoutWalletInput
+    transfersFrom?: TransferUncheckedCreateNestedManyWithoutFromWalletInput
+    transfersTo?: TransferUncheckedCreateNestedManyWithoutToWalletInput
+    withdrawals?: WithdrawalUncheckedCreateNestedManyWithoutWalletInput
+  }
+
+  export type WalletCreateOrConnectWithoutCurrencyInput = {
     where: WalletWhereUniqueInput
-    update: XOR<WalletUpdateWithoutCurrencyInput, WalletUncheckedUpdateWithoutCurrencyInput>
     create: XOR<WalletCreateWithoutCurrencyInput, WalletUncheckedCreateWithoutCurrencyInput>
   }
 
-  export type WalletUpdateWithWhereUniqueWithoutCurrencyInput = {
-    where: WalletWhereUniqueInput
-    data: XOR<WalletUpdateWithoutCurrencyInput, WalletUncheckedUpdateWithoutCurrencyInput>
+  export type WalletCreateManyCurrencyInputEnvelope = {
+    data: WalletCreateManyCurrencyInput | WalletCreateManyCurrencyInput[]
+    skipDuplicates?: boolean
   }
 
-  export type WalletUpdateManyWithWhereWithoutCurrencyInput = {
-    where: WalletScalarWhereInput
-    data: XOR<WalletUpdateManyMutationInput, WalletUncheckedUpdateManyWithoutCurrencyInput>
+  export type PaymentChannelCreateWithoutCurrenciesInput = {
+    id?: string
+    name: string
+    description?: string | null
+    createdAt?: Date | string
+    Deposit?: DepositCreateNestedManyWithoutPaymentChannelInput
+    LiquidityPool?: LiquidityPoolCreateNestedManyWithoutPaymentChannelInput
+    Withdrawal?: WithdrawalCreateNestedManyWithoutPaymentChannelInput
+  }
+
+  export type PaymentChannelUncheckedCreateWithoutCurrenciesInput = {
+    id?: string
+    name: string
+    description?: string | null
+    createdAt?: Date | string
+    Deposit?: DepositUncheckedCreateNestedManyWithoutPaymentChannelInput
+    LiquidityPool?: LiquidityPoolUncheckedCreateNestedManyWithoutPaymentChannelInput
+    Withdrawal?: WithdrawalUncheckedCreateNestedManyWithoutPaymentChannelInput
+  }
+
+  export type PaymentChannelCreateOrConnectWithoutCurrenciesInput = {
+    where: PaymentChannelWhereUniqueInput
+    create: XOR<PaymentChannelCreateWithoutCurrenciesInput, PaymentChannelUncheckedCreateWithoutCurrenciesInput>
+  }
+
+  export type CurrencyPairUpsertWithWhereUniqueWithoutFromCurrencyInput = {
+    where: CurrencyPairWhereUniqueInput
+    update: XOR<CurrencyPairUpdateWithoutFromCurrencyInput, CurrencyPairUncheckedUpdateWithoutFromCurrencyInput>
+    create: XOR<CurrencyPairCreateWithoutFromCurrencyInput, CurrencyPairUncheckedCreateWithoutFromCurrencyInput>
+  }
+
+  export type CurrencyPairUpdateWithWhereUniqueWithoutFromCurrencyInput = {
+    where: CurrencyPairWhereUniqueInput
+    data: XOR<CurrencyPairUpdateWithoutFromCurrencyInput, CurrencyPairUncheckedUpdateWithoutFromCurrencyInput>
+  }
+
+  export type CurrencyPairUpdateManyWithWhereWithoutFromCurrencyInput = {
+    where: CurrencyPairScalarWhereInput
+    data: XOR<CurrencyPairUpdateManyMutationInput, CurrencyPairUncheckedUpdateManyWithoutFromCurrencyInput>
+  }
+
+  export type CurrencyPairScalarWhereInput = {
+    AND?: CurrencyPairScalarWhereInput | CurrencyPairScalarWhereInput[]
+    OR?: CurrencyPairScalarWhereInput[]
+    NOT?: CurrencyPairScalarWhereInput | CurrencyPairScalarWhereInput[]
+    id?: StringFilter<"CurrencyPair"> | string
+    fromCurrencyId?: StringFilter<"CurrencyPair"> | string
+    toCurrencyId?: StringFilter<"CurrencyPair"> | string
+    rate?: DecimalFilter<"CurrencyPair"> | Decimal | DecimalJsLike | number | string
+    isInverseRate?: BoolFilter<"CurrencyPair"> | boolean
+    isActive?: BoolFilter<"CurrencyPair"> | boolean
+    createdAt?: DateTimeFilter<"CurrencyPair"> | Date | string
+    updatedAt?: DateTimeFilter<"CurrencyPair"> | Date | string
+  }
+
+  export type CurrencyPairUpsertWithWhereUniqueWithoutToCurrencyInput = {
+    where: CurrencyPairWhereUniqueInput
+    update: XOR<CurrencyPairUpdateWithoutToCurrencyInput, CurrencyPairUncheckedUpdateWithoutToCurrencyInput>
+    create: XOR<CurrencyPairCreateWithoutToCurrencyInput, CurrencyPairUncheckedCreateWithoutToCurrencyInput>
+  }
+
+  export type CurrencyPairUpdateWithWhereUniqueWithoutToCurrencyInput = {
+    where: CurrencyPairWhereUniqueInput
+    data: XOR<CurrencyPairUpdateWithoutToCurrencyInput, CurrencyPairUncheckedUpdateWithoutToCurrencyInput>
+  }
+
+  export type CurrencyPairUpdateManyWithWhereWithoutToCurrencyInput = {
+    where: CurrencyPairScalarWhereInput
+    data: XOR<CurrencyPairUpdateManyMutationInput, CurrencyPairUncheckedUpdateManyWithoutToCurrencyInput>
   }
 
   export type ExchangeUpsertWithWhereUniqueWithoutFromCurrencyInput = {
@@ -25236,6 +27312,38 @@ export namespace Prisma {
     createdAt?: DateTimeFilter<"FeeSetting"> | Date | string
   }
 
+  export type LiquidityPoolUpsertWithWhereUniqueWithoutCurrencyInput = {
+    where: LiquidityPoolWhereUniqueInput
+    update: XOR<LiquidityPoolUpdateWithoutCurrencyInput, LiquidityPoolUncheckedUpdateWithoutCurrencyInput>
+    create: XOR<LiquidityPoolCreateWithoutCurrencyInput, LiquidityPoolUncheckedCreateWithoutCurrencyInput>
+  }
+
+  export type LiquidityPoolUpdateWithWhereUniqueWithoutCurrencyInput = {
+    where: LiquidityPoolWhereUniqueInput
+    data: XOR<LiquidityPoolUpdateWithoutCurrencyInput, LiquidityPoolUncheckedUpdateWithoutCurrencyInput>
+  }
+
+  export type LiquidityPoolUpdateManyWithWhereWithoutCurrencyInput = {
+    where: LiquidityPoolScalarWhereInput
+    data: XOR<LiquidityPoolUpdateManyMutationInput, LiquidityPoolUncheckedUpdateManyWithoutCurrencyInput>
+  }
+
+  export type WalletUpsertWithWhereUniqueWithoutCurrencyInput = {
+    where: WalletWhereUniqueInput
+    update: XOR<WalletUpdateWithoutCurrencyInput, WalletUncheckedUpdateWithoutCurrencyInput>
+    create: XOR<WalletCreateWithoutCurrencyInput, WalletUncheckedCreateWithoutCurrencyInput>
+  }
+
+  export type WalletUpdateWithWhereUniqueWithoutCurrencyInput = {
+    where: WalletWhereUniqueInput
+    data: XOR<WalletUpdateWithoutCurrencyInput, WalletUncheckedUpdateWithoutCurrencyInput>
+  }
+
+  export type WalletUpdateManyWithWhereWithoutCurrencyInput = {
+    where: WalletScalarWhereInput
+    data: XOR<WalletUpdateManyMutationInput, WalletUncheckedUpdateManyWithoutCurrencyInput>
+  }
+
   export type PaymentChannelUpsertWithWhereUniqueWithoutCurrenciesInput = {
     where: PaymentChannelWhereUniqueInput
     update: XOR<PaymentChannelUpdateWithoutCurrenciesInput, PaymentChannelUncheckedUpdateWithoutCurrenciesInput>
@@ -25262,47 +27370,196 @@ export namespace Prisma {
     createdAt?: DateTimeFilter<"PaymentChannel"> | Date | string
   }
 
-  export type LiquidityPoolUpsertWithWhereUniqueWithoutCurrencyInput = {
-    where: LiquidityPoolWhereUniqueInput
-    update: XOR<LiquidityPoolUpdateWithoutCurrencyInput, LiquidityPoolUncheckedUpdateWithoutCurrencyInput>
-    create: XOR<LiquidityPoolCreateWithoutCurrencyInput, LiquidityPoolUncheckedCreateWithoutCurrencyInput>
-  }
-
-  export type LiquidityPoolUpdateWithWhereUniqueWithoutCurrencyInput = {
-    where: LiquidityPoolWhereUniqueInput
-    data: XOR<LiquidityPoolUpdateWithoutCurrencyInput, LiquidityPoolUncheckedUpdateWithoutCurrencyInput>
-  }
-
-  export type LiquidityPoolUpdateManyWithWhereWithoutCurrencyInput = {
-    where: LiquidityPoolScalarWhereInput
-    data: XOR<LiquidityPoolUpdateManyMutationInput, LiquidityPoolUncheckedUpdateManyWithoutCurrencyInput>
-  }
-
-  export type PaymentChannelCreateWithoutLiquidityPoolInput = {
+  export type CurrencyCreateWithoutFromCurrencyPairInput = {
     id?: string
+    code: string
     name: string
-    description?: string | null
+    symbol: string
+    decimals?: number
     createdAt?: Date | string
-    bridgeTransfers?: BridgeTransferCreateNestedOneWithoutPaymentChannelInput
-    currencies?: CurrencyCreateNestedManyWithoutPaymentChannelsInput
-    Deposit?: DepositCreateNestedManyWithoutPaymentChannelInput
-    Withdrawal?: WithdrawalCreateNestedManyWithoutPaymentChannelInput
+    ToCurrencyPair?: CurrencyPairCreateNestedManyWithoutToCurrencyInput
+    exchangesFrom?: ExchangeCreateNestedManyWithoutFromCurrencyInput
+    exchangesTo?: ExchangeCreateNestedManyWithoutToCurrencyInput
+    FeeSetting?: FeeSettingCreateNestedManyWithoutCurrencyInput
+    LiquidityPool?: LiquidityPoolCreateNestedManyWithoutCurrencyInput
+    wallets?: WalletCreateNestedManyWithoutCurrencyInput
+    paymentChannels?: PaymentChannelCreateNestedManyWithoutCurrenciesInput
   }
 
-  export type PaymentChannelUncheckedCreateWithoutLiquidityPoolInput = {
+  export type CurrencyUncheckedCreateWithoutFromCurrencyPairInput = {
     id?: string
+    code: string
     name: string
-    description?: string | null
+    symbol: string
+    decimals?: number
     createdAt?: Date | string
-    bridgeTransfers?: BridgeTransferUncheckedCreateNestedOneWithoutPaymentChannelInput
-    currencies?: CurrencyUncheckedCreateNestedManyWithoutPaymentChannelsInput
-    Deposit?: DepositUncheckedCreateNestedManyWithoutPaymentChannelInput
-    Withdrawal?: WithdrawalUncheckedCreateNestedManyWithoutPaymentChannelInput
+    ToCurrencyPair?: CurrencyPairUncheckedCreateNestedManyWithoutToCurrencyInput
+    exchangesFrom?: ExchangeUncheckedCreateNestedManyWithoutFromCurrencyInput
+    exchangesTo?: ExchangeUncheckedCreateNestedManyWithoutToCurrencyInput
+    FeeSetting?: FeeSettingUncheckedCreateNestedManyWithoutCurrencyInput
+    LiquidityPool?: LiquidityPoolUncheckedCreateNestedManyWithoutCurrencyInput
+    wallets?: WalletUncheckedCreateNestedManyWithoutCurrencyInput
+    paymentChannels?: PaymentChannelUncheckedCreateNestedManyWithoutCurrenciesInput
   }
 
-  export type PaymentChannelCreateOrConnectWithoutLiquidityPoolInput = {
-    where: PaymentChannelWhereUniqueInput
-    create: XOR<PaymentChannelCreateWithoutLiquidityPoolInput, PaymentChannelUncheckedCreateWithoutLiquidityPoolInput>
+  export type CurrencyCreateOrConnectWithoutFromCurrencyPairInput = {
+    where: CurrencyWhereUniqueInput
+    create: XOR<CurrencyCreateWithoutFromCurrencyPairInput, CurrencyUncheckedCreateWithoutFromCurrencyPairInput>
+  }
+
+  export type CurrencyCreateWithoutToCurrencyPairInput = {
+    id?: string
+    code: string
+    name: string
+    symbol: string
+    decimals?: number
+    createdAt?: Date | string
+    FromCurrencyPair?: CurrencyPairCreateNestedManyWithoutFromCurrencyInput
+    exchangesFrom?: ExchangeCreateNestedManyWithoutFromCurrencyInput
+    exchangesTo?: ExchangeCreateNestedManyWithoutToCurrencyInput
+    FeeSetting?: FeeSettingCreateNestedManyWithoutCurrencyInput
+    LiquidityPool?: LiquidityPoolCreateNestedManyWithoutCurrencyInput
+    wallets?: WalletCreateNestedManyWithoutCurrencyInput
+    paymentChannels?: PaymentChannelCreateNestedManyWithoutCurrenciesInput
+  }
+
+  export type CurrencyUncheckedCreateWithoutToCurrencyPairInput = {
+    id?: string
+    code: string
+    name: string
+    symbol: string
+    decimals?: number
+    createdAt?: Date | string
+    FromCurrencyPair?: CurrencyPairUncheckedCreateNestedManyWithoutFromCurrencyInput
+    exchangesFrom?: ExchangeUncheckedCreateNestedManyWithoutFromCurrencyInput
+    exchangesTo?: ExchangeUncheckedCreateNestedManyWithoutToCurrencyInput
+    FeeSetting?: FeeSettingUncheckedCreateNestedManyWithoutCurrencyInput
+    LiquidityPool?: LiquidityPoolUncheckedCreateNestedManyWithoutCurrencyInput
+    wallets?: WalletUncheckedCreateNestedManyWithoutCurrencyInput
+    paymentChannels?: PaymentChannelUncheckedCreateNestedManyWithoutCurrenciesInput
+  }
+
+  export type CurrencyCreateOrConnectWithoutToCurrencyPairInput = {
+    where: CurrencyWhereUniqueInput
+    create: XOR<CurrencyCreateWithoutToCurrencyPairInput, CurrencyUncheckedCreateWithoutToCurrencyPairInput>
+  }
+
+  export type CurrencyUpsertWithoutFromCurrencyPairInput = {
+    update: XOR<CurrencyUpdateWithoutFromCurrencyPairInput, CurrencyUncheckedUpdateWithoutFromCurrencyPairInput>
+    create: XOR<CurrencyCreateWithoutFromCurrencyPairInput, CurrencyUncheckedCreateWithoutFromCurrencyPairInput>
+    where?: CurrencyWhereInput
+  }
+
+  export type CurrencyUpdateToOneWithWhereWithoutFromCurrencyPairInput = {
+    where?: CurrencyWhereInput
+    data: XOR<CurrencyUpdateWithoutFromCurrencyPairInput, CurrencyUncheckedUpdateWithoutFromCurrencyPairInput>
+  }
+
+  export type CurrencyUpdateWithoutFromCurrencyPairInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    code?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    symbol?: StringFieldUpdateOperationsInput | string
+    decimals?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    ToCurrencyPair?: CurrencyPairUpdateManyWithoutToCurrencyNestedInput
+    exchangesFrom?: ExchangeUpdateManyWithoutFromCurrencyNestedInput
+    exchangesTo?: ExchangeUpdateManyWithoutToCurrencyNestedInput
+    FeeSetting?: FeeSettingUpdateManyWithoutCurrencyNestedInput
+    LiquidityPool?: LiquidityPoolUpdateManyWithoutCurrencyNestedInput
+    wallets?: WalletUpdateManyWithoutCurrencyNestedInput
+    paymentChannels?: PaymentChannelUpdateManyWithoutCurrenciesNestedInput
+  }
+
+  export type CurrencyUncheckedUpdateWithoutFromCurrencyPairInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    code?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    symbol?: StringFieldUpdateOperationsInput | string
+    decimals?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    ToCurrencyPair?: CurrencyPairUncheckedUpdateManyWithoutToCurrencyNestedInput
+    exchangesFrom?: ExchangeUncheckedUpdateManyWithoutFromCurrencyNestedInput
+    exchangesTo?: ExchangeUncheckedUpdateManyWithoutToCurrencyNestedInput
+    FeeSetting?: FeeSettingUncheckedUpdateManyWithoutCurrencyNestedInput
+    LiquidityPool?: LiquidityPoolUncheckedUpdateManyWithoutCurrencyNestedInput
+    wallets?: WalletUncheckedUpdateManyWithoutCurrencyNestedInput
+    paymentChannels?: PaymentChannelUncheckedUpdateManyWithoutCurrenciesNestedInput
+  }
+
+  export type CurrencyUpsertWithoutToCurrencyPairInput = {
+    update: XOR<CurrencyUpdateWithoutToCurrencyPairInput, CurrencyUncheckedUpdateWithoutToCurrencyPairInput>
+    create: XOR<CurrencyCreateWithoutToCurrencyPairInput, CurrencyUncheckedCreateWithoutToCurrencyPairInput>
+    where?: CurrencyWhereInput
+  }
+
+  export type CurrencyUpdateToOneWithWhereWithoutToCurrencyPairInput = {
+    where?: CurrencyWhereInput
+    data: XOR<CurrencyUpdateWithoutToCurrencyPairInput, CurrencyUncheckedUpdateWithoutToCurrencyPairInput>
+  }
+
+  export type CurrencyUpdateWithoutToCurrencyPairInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    code?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    symbol?: StringFieldUpdateOperationsInput | string
+    decimals?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    FromCurrencyPair?: CurrencyPairUpdateManyWithoutFromCurrencyNestedInput
+    exchangesFrom?: ExchangeUpdateManyWithoutFromCurrencyNestedInput
+    exchangesTo?: ExchangeUpdateManyWithoutToCurrencyNestedInput
+    FeeSetting?: FeeSettingUpdateManyWithoutCurrencyNestedInput
+    LiquidityPool?: LiquidityPoolUpdateManyWithoutCurrencyNestedInput
+    wallets?: WalletUpdateManyWithoutCurrencyNestedInput
+    paymentChannels?: PaymentChannelUpdateManyWithoutCurrenciesNestedInput
+  }
+
+  export type CurrencyUncheckedUpdateWithoutToCurrencyPairInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    code?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    symbol?: StringFieldUpdateOperationsInput | string
+    decimals?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    FromCurrencyPair?: CurrencyPairUncheckedUpdateManyWithoutFromCurrencyNestedInput
+    exchangesFrom?: ExchangeUncheckedUpdateManyWithoutFromCurrencyNestedInput
+    exchangesTo?: ExchangeUncheckedUpdateManyWithoutToCurrencyNestedInput
+    FeeSetting?: FeeSettingUncheckedUpdateManyWithoutCurrencyNestedInput
+    LiquidityPool?: LiquidityPoolUncheckedUpdateManyWithoutCurrencyNestedInput
+    wallets?: WalletUncheckedUpdateManyWithoutCurrencyNestedInput
+    paymentChannels?: PaymentChannelUncheckedUpdateManyWithoutCurrenciesNestedInput
+  }
+
+  export type BridgeTransferCreateWithoutLiquidityPoolInput = {
+    id?: string
+    status?: $Enums.BridgeStatus
+    createdAt?: Date | string
+    completedAt?: Date | string | null
+    failedAt?: Date | string | null
+    amount?: Decimal | DecimalJsLike | number | string
+    deposit?: DepositCreateNestedOneWithoutBridgeTransferInput
+    withdrawal?: WithdrawalCreateNestedOneWithoutBridgeTransferInput
+  }
+
+  export type BridgeTransferUncheckedCreateWithoutLiquidityPoolInput = {
+    id?: string
+    status?: $Enums.BridgeStatus
+    createdAt?: Date | string
+    completedAt?: Date | string | null
+    failedAt?: Date | string | null
+    depositId?: string | null
+    withdrawalId?: string | null
+    amount?: Decimal | DecimalJsLike | number | string
+  }
+
+  export type BridgeTransferCreateOrConnectWithoutLiquidityPoolInput = {
+    where: BridgeTransferWhereUniqueInput
+    create: XOR<BridgeTransferCreateWithoutLiquidityPoolInput, BridgeTransferUncheckedCreateWithoutLiquidityPoolInput>
+  }
+
+  export type BridgeTransferCreateManyLiquidityPoolInputEnvelope = {
+    data: BridgeTransferCreateManyLiquidityPoolInput | BridgeTransferCreateManyLiquidityPoolInput[]
+    skipDuplicates?: boolean
   }
 
   export type CurrencyCreateWithoutLiquidityPoolInput = {
@@ -25312,10 +27569,12 @@ export namespace Prisma {
     symbol: string
     decimals?: number
     createdAt?: Date | string
-    wallets?: WalletCreateNestedManyWithoutCurrencyInput
+    FromCurrencyPair?: CurrencyPairCreateNestedManyWithoutFromCurrencyInput
+    ToCurrencyPair?: CurrencyPairCreateNestedManyWithoutToCurrencyInput
     exchangesFrom?: ExchangeCreateNestedManyWithoutFromCurrencyInput
     exchangesTo?: ExchangeCreateNestedManyWithoutToCurrencyInput
     FeeSetting?: FeeSettingCreateNestedManyWithoutCurrencyInput
+    wallets?: WalletCreateNestedManyWithoutCurrencyInput
     paymentChannels?: PaymentChannelCreateNestedManyWithoutCurrenciesInput
   }
 
@@ -25326,10 +27585,12 @@ export namespace Prisma {
     symbol: string
     decimals?: number
     createdAt?: Date | string
-    wallets?: WalletUncheckedCreateNestedManyWithoutCurrencyInput
+    FromCurrencyPair?: CurrencyPairUncheckedCreateNestedManyWithoutFromCurrencyInput
+    ToCurrencyPair?: CurrencyPairUncheckedCreateNestedManyWithoutToCurrencyInput
     exchangesFrom?: ExchangeUncheckedCreateNestedManyWithoutFromCurrencyInput
     exchangesTo?: ExchangeUncheckedCreateNestedManyWithoutToCurrencyInput
     FeeSetting?: FeeSettingUncheckedCreateNestedManyWithoutCurrencyInput
+    wallets?: WalletUncheckedCreateNestedManyWithoutCurrencyInput
     paymentChannels?: PaymentChannelUncheckedCreateNestedManyWithoutCurrenciesInput
   }
 
@@ -25338,37 +27599,135 @@ export namespace Prisma {
     create: XOR<CurrencyCreateWithoutLiquidityPoolInput, CurrencyUncheckedCreateWithoutLiquidityPoolInput>
   }
 
-  export type PaymentChannelUpsertWithoutLiquidityPoolInput = {
-    update: XOR<PaymentChannelUpdateWithoutLiquidityPoolInput, PaymentChannelUncheckedUpdateWithoutLiquidityPoolInput>
+  export type PaymentChannelCreateWithoutLiquidityPoolInput = {
+    id?: string
+    name: string
+    description?: string | null
+    createdAt?: Date | string
+    Deposit?: DepositCreateNestedManyWithoutPaymentChannelInput
+    Withdrawal?: WithdrawalCreateNestedManyWithoutPaymentChannelInput
+    currencies?: CurrencyCreateNestedManyWithoutPaymentChannelsInput
+  }
+
+  export type PaymentChannelUncheckedCreateWithoutLiquidityPoolInput = {
+    id?: string
+    name: string
+    description?: string | null
+    createdAt?: Date | string
+    Deposit?: DepositUncheckedCreateNestedManyWithoutPaymentChannelInput
+    Withdrawal?: WithdrawalUncheckedCreateNestedManyWithoutPaymentChannelInput
+    currencies?: CurrencyUncheckedCreateNestedManyWithoutPaymentChannelsInput
+  }
+
+  export type PaymentChannelCreateOrConnectWithoutLiquidityPoolInput = {
+    where: PaymentChannelWhereUniqueInput
     create: XOR<PaymentChannelCreateWithoutLiquidityPoolInput, PaymentChannelUncheckedCreateWithoutLiquidityPoolInput>
-    where?: PaymentChannelWhereInput
   }
 
-  export type PaymentChannelUpdateToOneWithWhereWithoutLiquidityPoolInput = {
-    where?: PaymentChannelWhereInput
-    data: XOR<PaymentChannelUpdateWithoutLiquidityPoolInput, PaymentChannelUncheckedUpdateWithoutLiquidityPoolInput>
+  export type UserCreateWithoutLiquidityPoolInput = {
+    id?: string
+    email: string
+    phoneNumber: string
+    fullName: string
+    avatarUrl?: string | null
+    passwordHash: string
+    countryCode: string
+    nationality?: string | null
+    language?: string | null
+    kycStatus?: $Enums.KycStatus
+    documentType?: $Enums.DocumentType | null
+    documentNumber?: string | null
+    documentPhotoUrl?: string | null
+    dateOfBirth?: Date | string | null
+    address?: string | null
+    postalCode?: string | null
+    city?: string | null
+    state?: string | null
+    isPhoneVerified?: boolean
+    isEmailVerified?: boolean
+    role?: $Enums.UserRole
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    deletedAt?: Date | string | null
+    isDeleted?: boolean
+    ActivityLog?: ActivityLogCreateNestedManyWithoutUserInput
+    deposits?: DepositCreateNestedManyWithoutUserInput
+    initiatedExchanges?: ExchangeCreateNestedManyWithoutInitiatorInput
+    refunds?: RefundCreateNestedManyWithoutUserInput
+    wallet?: WalletCreateNestedManyWithoutUserInput
+    withdrawals?: WithdrawalCreateNestedManyWithoutUserInput
+    transfers?: TransferCreateNestedManyWithoutUserInput
   }
 
-  export type PaymentChannelUpdateWithoutLiquidityPoolInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    name?: StringFieldUpdateOperationsInput | string
-    description?: NullableStringFieldUpdateOperationsInput | string | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    bridgeTransfers?: BridgeTransferUpdateOneWithoutPaymentChannelNestedInput
-    currencies?: CurrencyUpdateManyWithoutPaymentChannelsNestedInput
-    Deposit?: DepositUpdateManyWithoutPaymentChannelNestedInput
-    Withdrawal?: WithdrawalUpdateManyWithoutPaymentChannelNestedInput
+  export type UserUncheckedCreateWithoutLiquidityPoolInput = {
+    id?: string
+    email: string
+    phoneNumber: string
+    fullName: string
+    avatarUrl?: string | null
+    passwordHash: string
+    countryCode: string
+    nationality?: string | null
+    language?: string | null
+    kycStatus?: $Enums.KycStatus
+    documentType?: $Enums.DocumentType | null
+    documentNumber?: string | null
+    documentPhotoUrl?: string | null
+    dateOfBirth?: Date | string | null
+    address?: string | null
+    postalCode?: string | null
+    city?: string | null
+    state?: string | null
+    isPhoneVerified?: boolean
+    isEmailVerified?: boolean
+    role?: $Enums.UserRole
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    deletedAt?: Date | string | null
+    isDeleted?: boolean
+    ActivityLog?: ActivityLogUncheckedCreateNestedManyWithoutUserInput
+    deposits?: DepositUncheckedCreateNestedManyWithoutUserInput
+    initiatedExchanges?: ExchangeUncheckedCreateNestedManyWithoutInitiatorInput
+    refunds?: RefundUncheckedCreateNestedManyWithoutUserInput
+    wallet?: WalletUncheckedCreateNestedManyWithoutUserInput
+    withdrawals?: WithdrawalUncheckedCreateNestedManyWithoutUserInput
+    transfers?: TransferUncheckedCreateNestedManyWithoutUserInput
   }
 
-  export type PaymentChannelUncheckedUpdateWithoutLiquidityPoolInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    name?: StringFieldUpdateOperationsInput | string
-    description?: NullableStringFieldUpdateOperationsInput | string | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    bridgeTransfers?: BridgeTransferUncheckedUpdateOneWithoutPaymentChannelNestedInput
-    currencies?: CurrencyUncheckedUpdateManyWithoutPaymentChannelsNestedInput
-    Deposit?: DepositUncheckedUpdateManyWithoutPaymentChannelNestedInput
-    Withdrawal?: WithdrawalUncheckedUpdateManyWithoutPaymentChannelNestedInput
+  export type UserCreateOrConnectWithoutLiquidityPoolInput = {
+    where: UserWhereUniqueInput
+    create: XOR<UserCreateWithoutLiquidityPoolInput, UserUncheckedCreateWithoutLiquidityPoolInput>
+  }
+
+  export type BridgeTransferUpsertWithWhereUniqueWithoutLiquidityPoolInput = {
+    where: BridgeTransferWhereUniqueInput
+    update: XOR<BridgeTransferUpdateWithoutLiquidityPoolInput, BridgeTransferUncheckedUpdateWithoutLiquidityPoolInput>
+    create: XOR<BridgeTransferCreateWithoutLiquidityPoolInput, BridgeTransferUncheckedCreateWithoutLiquidityPoolInput>
+  }
+
+  export type BridgeTransferUpdateWithWhereUniqueWithoutLiquidityPoolInput = {
+    where: BridgeTransferWhereUniqueInput
+    data: XOR<BridgeTransferUpdateWithoutLiquidityPoolInput, BridgeTransferUncheckedUpdateWithoutLiquidityPoolInput>
+  }
+
+  export type BridgeTransferUpdateManyWithWhereWithoutLiquidityPoolInput = {
+    where: BridgeTransferScalarWhereInput
+    data: XOR<BridgeTransferUpdateManyMutationInput, BridgeTransferUncheckedUpdateManyWithoutLiquidityPoolInput>
+  }
+
+  export type BridgeTransferScalarWhereInput = {
+    AND?: BridgeTransferScalarWhereInput | BridgeTransferScalarWhereInput[]
+    OR?: BridgeTransferScalarWhereInput[]
+    NOT?: BridgeTransferScalarWhereInput | BridgeTransferScalarWhereInput[]
+    id?: StringFilter<"BridgeTransfer"> | string
+    status?: EnumBridgeStatusFilter<"BridgeTransfer"> | $Enums.BridgeStatus
+    createdAt?: DateTimeFilter<"BridgeTransfer"> | Date | string
+    completedAt?: DateTimeNullableFilter<"BridgeTransfer"> | Date | string | null
+    failedAt?: DateTimeNullableFilter<"BridgeTransfer"> | Date | string | null
+    depositId?: StringNullableFilter<"BridgeTransfer"> | string | null
+    withdrawalId?: StringNullableFilter<"BridgeTransfer"> | string | null
+    liquidityPoolId?: StringNullableFilter<"BridgeTransfer"> | string | null
+    amount?: DecimalFilter<"BridgeTransfer"> | Decimal | DecimalJsLike | number | string
   }
 
   export type CurrencyUpsertWithoutLiquidityPoolInput = {
@@ -25389,10 +27748,12 @@ export namespace Prisma {
     symbol?: StringFieldUpdateOperationsInput | string
     decimals?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    wallets?: WalletUpdateManyWithoutCurrencyNestedInput
+    FromCurrencyPair?: CurrencyPairUpdateManyWithoutFromCurrencyNestedInput
+    ToCurrencyPair?: CurrencyPairUpdateManyWithoutToCurrencyNestedInput
     exchangesFrom?: ExchangeUpdateManyWithoutFromCurrencyNestedInput
     exchangesTo?: ExchangeUpdateManyWithoutToCurrencyNestedInput
     FeeSetting?: FeeSettingUpdateManyWithoutCurrencyNestedInput
+    wallets?: WalletUpdateManyWithoutCurrencyNestedInput
     paymentChannels?: PaymentChannelUpdateManyWithoutCurrenciesNestedInput
   }
 
@@ -25403,115 +27764,125 @@ export namespace Prisma {
     symbol?: StringFieldUpdateOperationsInput | string
     decimals?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    wallets?: WalletUncheckedUpdateManyWithoutCurrencyNestedInput
+    FromCurrencyPair?: CurrencyPairUncheckedUpdateManyWithoutFromCurrencyNestedInput
+    ToCurrencyPair?: CurrencyPairUncheckedUpdateManyWithoutToCurrencyNestedInput
     exchangesFrom?: ExchangeUncheckedUpdateManyWithoutFromCurrencyNestedInput
     exchangesTo?: ExchangeUncheckedUpdateManyWithoutToCurrencyNestedInput
     FeeSetting?: FeeSettingUncheckedUpdateManyWithoutCurrencyNestedInput
+    wallets?: WalletUncheckedUpdateManyWithoutCurrencyNestedInput
     paymentChannels?: PaymentChannelUncheckedUpdateManyWithoutCurrenciesNestedInput
   }
 
-  export type UserCreateWithoutWalletInput = {
-    id?: string
-    email: string
-    phoneNumber: string
-    fullName: string
-    avatarUrl?: string | null
-    passwordHash: string
-    countryCode: string
-    nationality?: string | null
-    language?: string | null
-    kycStatus?: $Enums.KycStatus
-    documentType?: $Enums.DocumentType | null
-    documentNumber?: string | null
-    documentPhotoUrl?: string | null
-    dateOfBirth?: Date | string | null
-    address?: string | null
-    postalCode?: string | null
-    city?: string | null
-    state?: string | null
-    isPhoneVerified?: boolean
-    isEmailVerified?: boolean
-    role?: $Enums.UserRole
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    deletedAt?: Date | string | null
-    deposits?: DepositCreateNestedManyWithoutUserInput
-    withdrawals?: WithdrawalCreateNestedManyWithoutUserInput
-    transfers?: TransferCreateNestedManyWithoutUserInput
-    refunds?: RefundCreateNestedManyWithoutUserInput
-    initiatedExchanges?: ExchangeCreateNestedManyWithoutInitiatorInput
-    ActivityLog?: ActivityLogCreateNestedManyWithoutUserInput
+  export type PaymentChannelUpsertWithoutLiquidityPoolInput = {
+    update: XOR<PaymentChannelUpdateWithoutLiquidityPoolInput, PaymentChannelUncheckedUpdateWithoutLiquidityPoolInput>
+    create: XOR<PaymentChannelCreateWithoutLiquidityPoolInput, PaymentChannelUncheckedCreateWithoutLiquidityPoolInput>
+    where?: PaymentChannelWhereInput
   }
 
-  export type UserUncheckedCreateWithoutWalletInput = {
-    id?: string
-    email: string
-    phoneNumber: string
-    fullName: string
-    avatarUrl?: string | null
-    passwordHash: string
-    countryCode: string
-    nationality?: string | null
-    language?: string | null
-    kycStatus?: $Enums.KycStatus
-    documentType?: $Enums.DocumentType | null
-    documentNumber?: string | null
-    documentPhotoUrl?: string | null
-    dateOfBirth?: Date | string | null
-    address?: string | null
-    postalCode?: string | null
-    city?: string | null
-    state?: string | null
-    isPhoneVerified?: boolean
-    isEmailVerified?: boolean
-    role?: $Enums.UserRole
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    deletedAt?: Date | string | null
-    deposits?: DepositUncheckedCreateNestedManyWithoutUserInput
-    withdrawals?: WithdrawalUncheckedCreateNestedManyWithoutUserInput
-    transfers?: TransferUncheckedCreateNestedManyWithoutUserInput
-    refunds?: RefundUncheckedCreateNestedManyWithoutUserInput
-    initiatedExchanges?: ExchangeUncheckedCreateNestedManyWithoutInitiatorInput
-    ActivityLog?: ActivityLogUncheckedCreateNestedManyWithoutUserInput
+  export type PaymentChannelUpdateToOneWithWhereWithoutLiquidityPoolInput = {
+    where?: PaymentChannelWhereInput
+    data: XOR<PaymentChannelUpdateWithoutLiquidityPoolInput, PaymentChannelUncheckedUpdateWithoutLiquidityPoolInput>
   }
 
-  export type UserCreateOrConnectWithoutWalletInput = {
-    where: UserWhereUniqueInput
-    create: XOR<UserCreateWithoutWalletInput, UserUncheckedCreateWithoutWalletInput>
+  export type PaymentChannelUpdateWithoutLiquidityPoolInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    Deposit?: DepositUpdateManyWithoutPaymentChannelNestedInput
+    Withdrawal?: WithdrawalUpdateManyWithoutPaymentChannelNestedInput
+    currencies?: CurrencyUpdateManyWithoutPaymentChannelsNestedInput
   }
 
-  export type CurrencyCreateWithoutWalletsInput = {
-    id?: string
-    code: string
-    name: string
-    symbol: string
-    decimals?: number
-    createdAt?: Date | string
-    exchangesFrom?: ExchangeCreateNestedManyWithoutFromCurrencyInput
-    exchangesTo?: ExchangeCreateNestedManyWithoutToCurrencyInput
-    FeeSetting?: FeeSettingCreateNestedManyWithoutCurrencyInput
-    paymentChannels?: PaymentChannelCreateNestedManyWithoutCurrenciesInput
-    LiquidityPool?: LiquidityPoolCreateNestedManyWithoutCurrencyInput
+  export type PaymentChannelUncheckedUpdateWithoutLiquidityPoolInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    Deposit?: DepositUncheckedUpdateManyWithoutPaymentChannelNestedInput
+    Withdrawal?: WithdrawalUncheckedUpdateManyWithoutPaymentChannelNestedInput
+    currencies?: CurrencyUncheckedUpdateManyWithoutPaymentChannelsNestedInput
   }
 
-  export type CurrencyUncheckedCreateWithoutWalletsInput = {
-    id?: string
-    code: string
-    name: string
-    symbol: string
-    decimals?: number
-    createdAt?: Date | string
-    exchangesFrom?: ExchangeUncheckedCreateNestedManyWithoutFromCurrencyInput
-    exchangesTo?: ExchangeUncheckedCreateNestedManyWithoutToCurrencyInput
-    FeeSetting?: FeeSettingUncheckedCreateNestedManyWithoutCurrencyInput
-    paymentChannels?: PaymentChannelUncheckedCreateNestedManyWithoutCurrenciesInput
-    LiquidityPool?: LiquidityPoolUncheckedCreateNestedManyWithoutCurrencyInput
+  export type UserUpsertWithoutLiquidityPoolInput = {
+    update: XOR<UserUpdateWithoutLiquidityPoolInput, UserUncheckedUpdateWithoutLiquidityPoolInput>
+    create: XOR<UserCreateWithoutLiquidityPoolInput, UserUncheckedCreateWithoutLiquidityPoolInput>
+    where?: UserWhereInput
   }
 
-  export type CurrencyCreateOrConnectWithoutWalletsInput = {
-    where: CurrencyWhereUniqueInput
-    create: XOR<CurrencyCreateWithoutWalletsInput, CurrencyUncheckedCreateWithoutWalletsInput>
+  export type UserUpdateToOneWithWhereWithoutLiquidityPoolInput = {
+    where?: UserWhereInput
+    data: XOR<UserUpdateWithoutLiquidityPoolInput, UserUncheckedUpdateWithoutLiquidityPoolInput>
+  }
+
+  export type UserUpdateWithoutLiquidityPoolInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    phoneNumber?: StringFieldUpdateOperationsInput | string
+    fullName?: StringFieldUpdateOperationsInput | string
+    avatarUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    passwordHash?: StringFieldUpdateOperationsInput | string
+    countryCode?: StringFieldUpdateOperationsInput | string
+    nationality?: NullableStringFieldUpdateOperationsInput | string | null
+    language?: NullableStringFieldUpdateOperationsInput | string | null
+    kycStatus?: EnumKycStatusFieldUpdateOperationsInput | $Enums.KycStatus
+    documentType?: NullableEnumDocumentTypeFieldUpdateOperationsInput | $Enums.DocumentType | null
+    documentNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    documentPhotoUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    dateOfBirth?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    address?: NullableStringFieldUpdateOperationsInput | string | null
+    postalCode?: NullableStringFieldUpdateOperationsInput | string | null
+    city?: NullableStringFieldUpdateOperationsInput | string | null
+    state?: NullableStringFieldUpdateOperationsInput | string | null
+    isPhoneVerified?: BoolFieldUpdateOperationsInput | boolean
+    isEmailVerified?: BoolFieldUpdateOperationsInput | boolean
+    role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
+    ActivityLog?: ActivityLogUpdateManyWithoutUserNestedInput
+    deposits?: DepositUpdateManyWithoutUserNestedInput
+    initiatedExchanges?: ExchangeUpdateManyWithoutInitiatorNestedInput
+    refunds?: RefundUpdateManyWithoutUserNestedInput
+    wallet?: WalletUpdateManyWithoutUserNestedInput
+    withdrawals?: WithdrawalUpdateManyWithoutUserNestedInput
+    transfers?: TransferUpdateManyWithoutUserNestedInput
+  }
+
+  export type UserUncheckedUpdateWithoutLiquidityPoolInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    phoneNumber?: StringFieldUpdateOperationsInput | string
+    fullName?: StringFieldUpdateOperationsInput | string
+    avatarUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    passwordHash?: StringFieldUpdateOperationsInput | string
+    countryCode?: StringFieldUpdateOperationsInput | string
+    nationality?: NullableStringFieldUpdateOperationsInput | string | null
+    language?: NullableStringFieldUpdateOperationsInput | string | null
+    kycStatus?: EnumKycStatusFieldUpdateOperationsInput | $Enums.KycStatus
+    documentType?: NullableEnumDocumentTypeFieldUpdateOperationsInput | $Enums.DocumentType | null
+    documentNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    documentPhotoUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    dateOfBirth?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    address?: NullableStringFieldUpdateOperationsInput | string | null
+    postalCode?: NullableStringFieldUpdateOperationsInput | string | null
+    city?: NullableStringFieldUpdateOperationsInput | string | null
+    state?: NullableStringFieldUpdateOperationsInput | string | null
+    isPhoneVerified?: BoolFieldUpdateOperationsInput | boolean
+    isEmailVerified?: BoolFieldUpdateOperationsInput | boolean
+    role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
+    ActivityLog?: ActivityLogUncheckedUpdateManyWithoutUserNestedInput
+    deposits?: DepositUncheckedUpdateManyWithoutUserNestedInput
+    initiatedExchanges?: ExchangeUncheckedUpdateManyWithoutInitiatorNestedInput
+    refunds?: RefundUncheckedUpdateManyWithoutUserNestedInput
+    wallet?: WalletUncheckedUpdateManyWithoutUserNestedInput
+    withdrawals?: WithdrawalUncheckedUpdateManyWithoutUserNestedInput
+    transfers?: TransferUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type DepositCreateWithoutWalletInput = {
@@ -25523,8 +27894,9 @@ export namespace Prisma {
     createdAt?: Date | string
     completedAt?: Date | string | null
     failedAt?: Date | string | null
+    documentUrl?: string | null
+    BridgeTransfer?: BridgeTransferCreateNestedOneWithoutDepositInput
     paymentChannel: PaymentChannelCreateNestedOneWithoutDepositInput
-    bridgeTransfer?: BridgeTransferCreateNestedOneWithoutDepositInput
     user: UserCreateNestedOneWithoutDepositsInput
   }
 
@@ -25539,7 +27911,8 @@ export namespace Prisma {
     completedAt?: Date | string | null
     failedAt?: Date | string | null
     paymentChannelId: string
-    bridgeTransferid?: string | null
+    documentUrl?: string | null
+    BridgeTransfer?: BridgeTransferUncheckedCreateNestedOneWithoutDepositInput
   }
 
   export type DepositCreateOrConnectWithoutWalletInput = {
@@ -25549,44 +27922,6 @@ export namespace Prisma {
 
   export type DepositCreateManyWalletInputEnvelope = {
     data: DepositCreateManyWalletInput | DepositCreateManyWalletInput[]
-    skipDuplicates?: boolean
-  }
-
-  export type WithdrawalCreateWithoutWalletInput = {
-    id?: string
-    amount: Decimal | DecimalJsLike | number | string
-    fee?: Decimal | DecimalJsLike | number | string
-    status?: $Enums.WithdrawalStatus
-    reference?: string | null
-    createdAt?: Date | string
-    completedAt?: Date | string | null
-    failedAt?: Date | string | null
-    paymentChannel: PaymentChannelCreateNestedOneWithoutWithdrawalInput
-    bridgeTransfer?: BridgeTransferCreateNestedOneWithoutWithdrawalInput
-    user: UserCreateNestedOneWithoutWithdrawalsInput
-  }
-
-  export type WithdrawalUncheckedCreateWithoutWalletInput = {
-    id?: string
-    userId: string
-    amount: Decimal | DecimalJsLike | number | string
-    fee?: Decimal | DecimalJsLike | number | string
-    status?: $Enums.WithdrawalStatus
-    reference?: string | null
-    createdAt?: Date | string
-    completedAt?: Date | string | null
-    failedAt?: Date | string | null
-    paymentChannelId: string
-    bridgeTransferid?: string | null
-  }
-
-  export type WithdrawalCreateOrConnectWithoutWalletInput = {
-    where: WithdrawalWhereUniqueInput
-    create: XOR<WithdrawalCreateWithoutWalletInput, WithdrawalUncheckedCreateWithoutWalletInput>
-  }
-
-  export type WithdrawalCreateManyWalletInputEnvelope = {
-    data: WithdrawalCreateManyWalletInput | WithdrawalCreateManyWalletInput[]
     skipDuplicates?: boolean
   }
 
@@ -25631,8 +27966,8 @@ export namespace Prisma {
     createdAt?: Date | string
     completedAt?: Date | string | null
     failedAt?: Date | string | null
-    User?: UserCreateNestedManyWithoutTransfersInput
     toWallet: WalletCreateNestedOneWithoutTransfersToInput
+    User?: UserCreateNestedManyWithoutTransfersInput
   }
 
   export type TransferUncheckedCreateWithoutFromWalletInput = {
@@ -25667,8 +28002,8 @@ export namespace Prisma {
     createdAt?: Date | string
     completedAt?: Date | string | null
     failedAt?: Date | string | null
-    User?: UserCreateNestedManyWithoutTransfersInput
     fromWallet: WalletCreateNestedOneWithoutTransfersFromInput
+    User?: UserCreateNestedManyWithoutTransfersInput
   }
 
   export type TransferUncheckedCreateWithoutToWalletInput = {
@@ -25694,120 +28029,160 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
-  export type UserUpsertWithoutWalletInput = {
-    update: XOR<UserUpdateWithoutWalletInput, UserUncheckedUpdateWithoutWalletInput>
-    create: XOR<UserCreateWithoutWalletInput, UserUncheckedCreateWithoutWalletInput>
-    where?: UserWhereInput
+  export type CurrencyCreateWithoutWalletsInput = {
+    id?: string
+    code: string
+    name: string
+    symbol: string
+    decimals?: number
+    createdAt?: Date | string
+    FromCurrencyPair?: CurrencyPairCreateNestedManyWithoutFromCurrencyInput
+    ToCurrencyPair?: CurrencyPairCreateNestedManyWithoutToCurrencyInput
+    exchangesFrom?: ExchangeCreateNestedManyWithoutFromCurrencyInput
+    exchangesTo?: ExchangeCreateNestedManyWithoutToCurrencyInput
+    FeeSetting?: FeeSettingCreateNestedManyWithoutCurrencyInput
+    LiquidityPool?: LiquidityPoolCreateNestedManyWithoutCurrencyInput
+    paymentChannels?: PaymentChannelCreateNestedManyWithoutCurrenciesInput
   }
 
-  export type UserUpdateToOneWithWhereWithoutWalletInput = {
-    where?: UserWhereInput
-    data: XOR<UserUpdateWithoutWalletInput, UserUncheckedUpdateWithoutWalletInput>
+  export type CurrencyUncheckedCreateWithoutWalletsInput = {
+    id?: string
+    code: string
+    name: string
+    symbol: string
+    decimals?: number
+    createdAt?: Date | string
+    FromCurrencyPair?: CurrencyPairUncheckedCreateNestedManyWithoutFromCurrencyInput
+    ToCurrencyPair?: CurrencyPairUncheckedCreateNestedManyWithoutToCurrencyInput
+    exchangesFrom?: ExchangeUncheckedCreateNestedManyWithoutFromCurrencyInput
+    exchangesTo?: ExchangeUncheckedCreateNestedManyWithoutToCurrencyInput
+    FeeSetting?: FeeSettingUncheckedCreateNestedManyWithoutCurrencyInput
+    LiquidityPool?: LiquidityPoolUncheckedCreateNestedManyWithoutCurrencyInput
+    paymentChannels?: PaymentChannelUncheckedCreateNestedManyWithoutCurrenciesInput
   }
 
-  export type UserUpdateWithoutWalletInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    email?: StringFieldUpdateOperationsInput | string
-    phoneNumber?: StringFieldUpdateOperationsInput | string
-    fullName?: StringFieldUpdateOperationsInput | string
-    avatarUrl?: NullableStringFieldUpdateOperationsInput | string | null
-    passwordHash?: StringFieldUpdateOperationsInput | string
-    countryCode?: StringFieldUpdateOperationsInput | string
-    nationality?: NullableStringFieldUpdateOperationsInput | string | null
-    language?: NullableStringFieldUpdateOperationsInput | string | null
-    kycStatus?: EnumKycStatusFieldUpdateOperationsInput | $Enums.KycStatus
-    documentType?: NullableEnumDocumentTypeFieldUpdateOperationsInput | $Enums.DocumentType | null
-    documentNumber?: NullableStringFieldUpdateOperationsInput | string | null
-    documentPhotoUrl?: NullableStringFieldUpdateOperationsInput | string | null
-    dateOfBirth?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    address?: NullableStringFieldUpdateOperationsInput | string | null
-    postalCode?: NullableStringFieldUpdateOperationsInput | string | null
-    city?: NullableStringFieldUpdateOperationsInput | string | null
-    state?: NullableStringFieldUpdateOperationsInput | string | null
-    isPhoneVerified?: BoolFieldUpdateOperationsInput | boolean
-    isEmailVerified?: BoolFieldUpdateOperationsInput | boolean
-    role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    deposits?: DepositUpdateManyWithoutUserNestedInput
-    withdrawals?: WithdrawalUpdateManyWithoutUserNestedInput
-    transfers?: TransferUpdateManyWithoutUserNestedInput
-    refunds?: RefundUpdateManyWithoutUserNestedInput
-    initiatedExchanges?: ExchangeUpdateManyWithoutInitiatorNestedInput
-    ActivityLog?: ActivityLogUpdateManyWithoutUserNestedInput
-  }
-
-  export type UserUncheckedUpdateWithoutWalletInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    email?: StringFieldUpdateOperationsInput | string
-    phoneNumber?: StringFieldUpdateOperationsInput | string
-    fullName?: StringFieldUpdateOperationsInput | string
-    avatarUrl?: NullableStringFieldUpdateOperationsInput | string | null
-    passwordHash?: StringFieldUpdateOperationsInput | string
-    countryCode?: StringFieldUpdateOperationsInput | string
-    nationality?: NullableStringFieldUpdateOperationsInput | string | null
-    language?: NullableStringFieldUpdateOperationsInput | string | null
-    kycStatus?: EnumKycStatusFieldUpdateOperationsInput | $Enums.KycStatus
-    documentType?: NullableEnumDocumentTypeFieldUpdateOperationsInput | $Enums.DocumentType | null
-    documentNumber?: NullableStringFieldUpdateOperationsInput | string | null
-    documentPhotoUrl?: NullableStringFieldUpdateOperationsInput | string | null
-    dateOfBirth?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    address?: NullableStringFieldUpdateOperationsInput | string | null
-    postalCode?: NullableStringFieldUpdateOperationsInput | string | null
-    city?: NullableStringFieldUpdateOperationsInput | string | null
-    state?: NullableStringFieldUpdateOperationsInput | string | null
-    isPhoneVerified?: BoolFieldUpdateOperationsInput | boolean
-    isEmailVerified?: BoolFieldUpdateOperationsInput | boolean
-    role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    deposits?: DepositUncheckedUpdateManyWithoutUserNestedInput
-    withdrawals?: WithdrawalUncheckedUpdateManyWithoutUserNestedInput
-    transfers?: TransferUncheckedUpdateManyWithoutUserNestedInput
-    refunds?: RefundUncheckedUpdateManyWithoutUserNestedInput
-    initiatedExchanges?: ExchangeUncheckedUpdateManyWithoutInitiatorNestedInput
-    ActivityLog?: ActivityLogUncheckedUpdateManyWithoutUserNestedInput
-  }
-
-  export type CurrencyUpsertWithoutWalletsInput = {
-    update: XOR<CurrencyUpdateWithoutWalletsInput, CurrencyUncheckedUpdateWithoutWalletsInput>
+  export type CurrencyCreateOrConnectWithoutWalletsInput = {
+    where: CurrencyWhereUniqueInput
     create: XOR<CurrencyCreateWithoutWalletsInput, CurrencyUncheckedCreateWithoutWalletsInput>
-    where?: CurrencyWhereInput
   }
 
-  export type CurrencyUpdateToOneWithWhereWithoutWalletsInput = {
-    where?: CurrencyWhereInput
-    data: XOR<CurrencyUpdateWithoutWalletsInput, CurrencyUncheckedUpdateWithoutWalletsInput>
+  export type UserCreateWithoutWalletInput = {
+    id?: string
+    email: string
+    phoneNumber: string
+    fullName: string
+    avatarUrl?: string | null
+    passwordHash: string
+    countryCode: string
+    nationality?: string | null
+    language?: string | null
+    kycStatus?: $Enums.KycStatus
+    documentType?: $Enums.DocumentType | null
+    documentNumber?: string | null
+    documentPhotoUrl?: string | null
+    dateOfBirth?: Date | string | null
+    address?: string | null
+    postalCode?: string | null
+    city?: string | null
+    state?: string | null
+    isPhoneVerified?: boolean
+    isEmailVerified?: boolean
+    role?: $Enums.UserRole
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    deletedAt?: Date | string | null
+    isDeleted?: boolean
+    ActivityLog?: ActivityLogCreateNestedManyWithoutUserInput
+    deposits?: DepositCreateNestedManyWithoutUserInput
+    initiatedExchanges?: ExchangeCreateNestedManyWithoutInitiatorInput
+    LiquidityPool?: LiquidityPoolCreateNestedManyWithoutUserInput
+    refunds?: RefundCreateNestedManyWithoutUserInput
+    withdrawals?: WithdrawalCreateNestedManyWithoutUserInput
+    transfers?: TransferCreateNestedManyWithoutUserInput
   }
 
-  export type CurrencyUpdateWithoutWalletsInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    code?: StringFieldUpdateOperationsInput | string
-    name?: StringFieldUpdateOperationsInput | string
-    symbol?: StringFieldUpdateOperationsInput | string
-    decimals?: IntFieldUpdateOperationsInput | number
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    exchangesFrom?: ExchangeUpdateManyWithoutFromCurrencyNestedInput
-    exchangesTo?: ExchangeUpdateManyWithoutToCurrencyNestedInput
-    FeeSetting?: FeeSettingUpdateManyWithoutCurrencyNestedInput
-    paymentChannels?: PaymentChannelUpdateManyWithoutCurrenciesNestedInput
-    LiquidityPool?: LiquidityPoolUpdateManyWithoutCurrencyNestedInput
+  export type UserUncheckedCreateWithoutWalletInput = {
+    id?: string
+    email: string
+    phoneNumber: string
+    fullName: string
+    avatarUrl?: string | null
+    passwordHash: string
+    countryCode: string
+    nationality?: string | null
+    language?: string | null
+    kycStatus?: $Enums.KycStatus
+    documentType?: $Enums.DocumentType | null
+    documentNumber?: string | null
+    documentPhotoUrl?: string | null
+    dateOfBirth?: Date | string | null
+    address?: string | null
+    postalCode?: string | null
+    city?: string | null
+    state?: string | null
+    isPhoneVerified?: boolean
+    isEmailVerified?: boolean
+    role?: $Enums.UserRole
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    deletedAt?: Date | string | null
+    isDeleted?: boolean
+    ActivityLog?: ActivityLogUncheckedCreateNestedManyWithoutUserInput
+    deposits?: DepositUncheckedCreateNestedManyWithoutUserInput
+    initiatedExchanges?: ExchangeUncheckedCreateNestedManyWithoutInitiatorInput
+    LiquidityPool?: LiquidityPoolUncheckedCreateNestedManyWithoutUserInput
+    refunds?: RefundUncheckedCreateNestedManyWithoutUserInput
+    withdrawals?: WithdrawalUncheckedCreateNestedManyWithoutUserInput
+    transfers?: TransferUncheckedCreateNestedManyWithoutUserInput
   }
 
-  export type CurrencyUncheckedUpdateWithoutWalletsInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    code?: StringFieldUpdateOperationsInput | string
-    name?: StringFieldUpdateOperationsInput | string
-    symbol?: StringFieldUpdateOperationsInput | string
-    decimals?: IntFieldUpdateOperationsInput | number
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    exchangesFrom?: ExchangeUncheckedUpdateManyWithoutFromCurrencyNestedInput
-    exchangesTo?: ExchangeUncheckedUpdateManyWithoutToCurrencyNestedInput
-    FeeSetting?: FeeSettingUncheckedUpdateManyWithoutCurrencyNestedInput
-    paymentChannels?: PaymentChannelUncheckedUpdateManyWithoutCurrenciesNestedInput
-    LiquidityPool?: LiquidityPoolUncheckedUpdateManyWithoutCurrencyNestedInput
+  export type UserCreateOrConnectWithoutWalletInput = {
+    where: UserWhereUniqueInput
+    create: XOR<UserCreateWithoutWalletInput, UserUncheckedCreateWithoutWalletInput>
+  }
+
+  export type WithdrawalCreateWithoutWalletInput = {
+    id?: string
+    amount: Decimal | DecimalJsLike | number | string
+    fee?: Decimal | DecimalJsLike | number | string
+    status?: $Enums.WithdrawalStatus
+    reference?: string | null
+    createdAt?: Date | string
+    completedAt?: Date | string | null
+    failedAt?: Date | string | null
+    bridgeTransferId?: string | null
+    receiverAddress: string
+    addressOwnerName: string
+    BridgeTransfer?: BridgeTransferCreateNestedOneWithoutWithdrawalInput
+    paymentChannel: PaymentChannelCreateNestedOneWithoutWithdrawalInput
+    user: UserCreateNestedOneWithoutWithdrawalsInput
+  }
+
+  export type WithdrawalUncheckedCreateWithoutWalletInput = {
+    id?: string
+    userId: string
+    amount: Decimal | DecimalJsLike | number | string
+    fee?: Decimal | DecimalJsLike | number | string
+    status?: $Enums.WithdrawalStatus
+    reference?: string | null
+    createdAt?: Date | string
+    completedAt?: Date | string | null
+    failedAt?: Date | string | null
+    paymentChannelId: string
+    bridgeTransferId?: string | null
+    receiverAddress: string
+    addressOwnerName: string
+    BridgeTransfer?: BridgeTransferUncheckedCreateNestedOneWithoutWithdrawalInput
+  }
+
+  export type WithdrawalCreateOrConnectWithoutWalletInput = {
+    where: WithdrawalWhereUniqueInput
+    create: XOR<WithdrawalCreateWithoutWalletInput, WithdrawalUncheckedCreateWithoutWalletInput>
+  }
+
+  export type WithdrawalCreateManyWalletInputEnvelope = {
+    data: WithdrawalCreateManyWalletInput | WithdrawalCreateManyWalletInput[]
+    skipDuplicates?: boolean
   }
 
   export type DepositUpsertWithWhereUniqueWithoutWalletInput = {
@@ -25824,22 +28199,6 @@ export namespace Prisma {
   export type DepositUpdateManyWithWhereWithoutWalletInput = {
     where: DepositScalarWhereInput
     data: XOR<DepositUpdateManyMutationInput, DepositUncheckedUpdateManyWithoutWalletInput>
-  }
-
-  export type WithdrawalUpsertWithWhereUniqueWithoutWalletInput = {
-    where: WithdrawalWhereUniqueInput
-    update: XOR<WithdrawalUpdateWithoutWalletInput, WithdrawalUncheckedUpdateWithoutWalletInput>
-    create: XOR<WithdrawalCreateWithoutWalletInput, WithdrawalUncheckedCreateWithoutWalletInput>
-  }
-
-  export type WithdrawalUpdateWithWhereUniqueWithoutWalletInput = {
-    where: WithdrawalWhereUniqueInput
-    data: XOR<WithdrawalUpdateWithoutWalletInput, WithdrawalUncheckedUpdateWithoutWalletInput>
-  }
-
-  export type WithdrawalUpdateManyWithWhereWithoutWalletInput = {
-    where: WithdrawalScalarWhereInput
-    data: XOR<WithdrawalUpdateManyMutationInput, WithdrawalUncheckedUpdateManyWithoutWalletInput>
   }
 
   export type RefundUpsertWithWhereUniqueWithoutWalletInput = {
@@ -25890,15 +28249,181 @@ export namespace Prisma {
     data: XOR<TransferUpdateManyMutationInput, TransferUncheckedUpdateManyWithoutToWalletInput>
   }
 
+  export type CurrencyUpsertWithoutWalletsInput = {
+    update: XOR<CurrencyUpdateWithoutWalletsInput, CurrencyUncheckedUpdateWithoutWalletsInput>
+    create: XOR<CurrencyCreateWithoutWalletsInput, CurrencyUncheckedCreateWithoutWalletsInput>
+    where?: CurrencyWhereInput
+  }
+
+  export type CurrencyUpdateToOneWithWhereWithoutWalletsInput = {
+    where?: CurrencyWhereInput
+    data: XOR<CurrencyUpdateWithoutWalletsInput, CurrencyUncheckedUpdateWithoutWalletsInput>
+  }
+
+  export type CurrencyUpdateWithoutWalletsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    code?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    symbol?: StringFieldUpdateOperationsInput | string
+    decimals?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    FromCurrencyPair?: CurrencyPairUpdateManyWithoutFromCurrencyNestedInput
+    ToCurrencyPair?: CurrencyPairUpdateManyWithoutToCurrencyNestedInput
+    exchangesFrom?: ExchangeUpdateManyWithoutFromCurrencyNestedInput
+    exchangesTo?: ExchangeUpdateManyWithoutToCurrencyNestedInput
+    FeeSetting?: FeeSettingUpdateManyWithoutCurrencyNestedInput
+    LiquidityPool?: LiquidityPoolUpdateManyWithoutCurrencyNestedInput
+    paymentChannels?: PaymentChannelUpdateManyWithoutCurrenciesNestedInput
+  }
+
+  export type CurrencyUncheckedUpdateWithoutWalletsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    code?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    symbol?: StringFieldUpdateOperationsInput | string
+    decimals?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    FromCurrencyPair?: CurrencyPairUncheckedUpdateManyWithoutFromCurrencyNestedInput
+    ToCurrencyPair?: CurrencyPairUncheckedUpdateManyWithoutToCurrencyNestedInput
+    exchangesFrom?: ExchangeUncheckedUpdateManyWithoutFromCurrencyNestedInput
+    exchangesTo?: ExchangeUncheckedUpdateManyWithoutToCurrencyNestedInput
+    FeeSetting?: FeeSettingUncheckedUpdateManyWithoutCurrencyNestedInput
+    LiquidityPool?: LiquidityPoolUncheckedUpdateManyWithoutCurrencyNestedInput
+    paymentChannels?: PaymentChannelUncheckedUpdateManyWithoutCurrenciesNestedInput
+  }
+
+  export type UserUpsertWithoutWalletInput = {
+    update: XOR<UserUpdateWithoutWalletInput, UserUncheckedUpdateWithoutWalletInput>
+    create: XOR<UserCreateWithoutWalletInput, UserUncheckedCreateWithoutWalletInput>
+    where?: UserWhereInput
+  }
+
+  export type UserUpdateToOneWithWhereWithoutWalletInput = {
+    where?: UserWhereInput
+    data: XOR<UserUpdateWithoutWalletInput, UserUncheckedUpdateWithoutWalletInput>
+  }
+
+  export type UserUpdateWithoutWalletInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    phoneNumber?: StringFieldUpdateOperationsInput | string
+    fullName?: StringFieldUpdateOperationsInput | string
+    avatarUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    passwordHash?: StringFieldUpdateOperationsInput | string
+    countryCode?: StringFieldUpdateOperationsInput | string
+    nationality?: NullableStringFieldUpdateOperationsInput | string | null
+    language?: NullableStringFieldUpdateOperationsInput | string | null
+    kycStatus?: EnumKycStatusFieldUpdateOperationsInput | $Enums.KycStatus
+    documentType?: NullableEnumDocumentTypeFieldUpdateOperationsInput | $Enums.DocumentType | null
+    documentNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    documentPhotoUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    dateOfBirth?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    address?: NullableStringFieldUpdateOperationsInput | string | null
+    postalCode?: NullableStringFieldUpdateOperationsInput | string | null
+    city?: NullableStringFieldUpdateOperationsInput | string | null
+    state?: NullableStringFieldUpdateOperationsInput | string | null
+    isPhoneVerified?: BoolFieldUpdateOperationsInput | boolean
+    isEmailVerified?: BoolFieldUpdateOperationsInput | boolean
+    role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
+    ActivityLog?: ActivityLogUpdateManyWithoutUserNestedInput
+    deposits?: DepositUpdateManyWithoutUserNestedInput
+    initiatedExchanges?: ExchangeUpdateManyWithoutInitiatorNestedInput
+    LiquidityPool?: LiquidityPoolUpdateManyWithoutUserNestedInput
+    refunds?: RefundUpdateManyWithoutUserNestedInput
+    withdrawals?: WithdrawalUpdateManyWithoutUserNestedInput
+    transfers?: TransferUpdateManyWithoutUserNestedInput
+  }
+
+  export type UserUncheckedUpdateWithoutWalletInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    phoneNumber?: StringFieldUpdateOperationsInput | string
+    fullName?: StringFieldUpdateOperationsInput | string
+    avatarUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    passwordHash?: StringFieldUpdateOperationsInput | string
+    countryCode?: StringFieldUpdateOperationsInput | string
+    nationality?: NullableStringFieldUpdateOperationsInput | string | null
+    language?: NullableStringFieldUpdateOperationsInput | string | null
+    kycStatus?: EnumKycStatusFieldUpdateOperationsInput | $Enums.KycStatus
+    documentType?: NullableEnumDocumentTypeFieldUpdateOperationsInput | $Enums.DocumentType | null
+    documentNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    documentPhotoUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    dateOfBirth?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    address?: NullableStringFieldUpdateOperationsInput | string | null
+    postalCode?: NullableStringFieldUpdateOperationsInput | string | null
+    city?: NullableStringFieldUpdateOperationsInput | string | null
+    state?: NullableStringFieldUpdateOperationsInput | string | null
+    isPhoneVerified?: BoolFieldUpdateOperationsInput | boolean
+    isEmailVerified?: BoolFieldUpdateOperationsInput | boolean
+    role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
+    ActivityLog?: ActivityLogUncheckedUpdateManyWithoutUserNestedInput
+    deposits?: DepositUncheckedUpdateManyWithoutUserNestedInput
+    initiatedExchanges?: ExchangeUncheckedUpdateManyWithoutInitiatorNestedInput
+    LiquidityPool?: LiquidityPoolUncheckedUpdateManyWithoutUserNestedInput
+    refunds?: RefundUncheckedUpdateManyWithoutUserNestedInput
+    withdrawals?: WithdrawalUncheckedUpdateManyWithoutUserNestedInput
+    transfers?: TransferUncheckedUpdateManyWithoutUserNestedInput
+  }
+
+  export type WithdrawalUpsertWithWhereUniqueWithoutWalletInput = {
+    where: WithdrawalWhereUniqueInput
+    update: XOR<WithdrawalUpdateWithoutWalletInput, WithdrawalUncheckedUpdateWithoutWalletInput>
+    create: XOR<WithdrawalCreateWithoutWalletInput, WithdrawalUncheckedCreateWithoutWalletInput>
+  }
+
+  export type WithdrawalUpdateWithWhereUniqueWithoutWalletInput = {
+    where: WithdrawalWhereUniqueInput
+    data: XOR<WithdrawalUpdateWithoutWalletInput, WithdrawalUncheckedUpdateWithoutWalletInput>
+  }
+
+  export type WithdrawalUpdateManyWithWhereWithoutWalletInput = {
+    where: WithdrawalScalarWhereInput
+    data: XOR<WithdrawalUpdateManyMutationInput, WithdrawalUncheckedUpdateManyWithoutWalletInput>
+  }
+
+  export type BridgeTransferCreateWithoutDepositInput = {
+    id?: string
+    status?: $Enums.BridgeStatus
+    createdAt?: Date | string
+    completedAt?: Date | string | null
+    failedAt?: Date | string | null
+    amount?: Decimal | DecimalJsLike | number | string
+    liquidityPool?: LiquidityPoolCreateNestedOneWithoutBridgeTransferInput
+    withdrawal?: WithdrawalCreateNestedOneWithoutBridgeTransferInput
+  }
+
+  export type BridgeTransferUncheckedCreateWithoutDepositInput = {
+    id?: string
+    status?: $Enums.BridgeStatus
+    createdAt?: Date | string
+    completedAt?: Date | string | null
+    failedAt?: Date | string | null
+    withdrawalId?: string | null
+    liquidityPoolId?: string | null
+    amount?: Decimal | DecimalJsLike | number | string
+  }
+
+  export type BridgeTransferCreateOrConnectWithoutDepositInput = {
+    where: BridgeTransferWhereUniqueInput
+    create: XOR<BridgeTransferCreateWithoutDepositInput, BridgeTransferUncheckedCreateWithoutDepositInput>
+  }
+
   export type PaymentChannelCreateWithoutDepositInput = {
     id?: string
     name: string
     description?: string | null
     createdAt?: Date | string
-    bridgeTransfers?: BridgeTransferCreateNestedOneWithoutPaymentChannelInput
-    currencies?: CurrencyCreateNestedManyWithoutPaymentChannelsInput
-    Withdrawal?: WithdrawalCreateNestedManyWithoutPaymentChannelInput
     LiquidityPool?: LiquidityPoolCreateNestedManyWithoutPaymentChannelInput
+    Withdrawal?: WithdrawalCreateNestedManyWithoutPaymentChannelInput
+    currencies?: CurrencyCreateNestedManyWithoutPaymentChannelsInput
   }
 
   export type PaymentChannelUncheckedCreateWithoutDepositInput = {
@@ -25906,44 +28431,14 @@ export namespace Prisma {
     name: string
     description?: string | null
     createdAt?: Date | string
-    bridgeTransfers?: BridgeTransferUncheckedCreateNestedOneWithoutPaymentChannelInput
-    currencies?: CurrencyUncheckedCreateNestedManyWithoutPaymentChannelsInput
-    Withdrawal?: WithdrawalUncheckedCreateNestedManyWithoutPaymentChannelInput
     LiquidityPool?: LiquidityPoolUncheckedCreateNestedManyWithoutPaymentChannelInput
+    Withdrawal?: WithdrawalUncheckedCreateNestedManyWithoutPaymentChannelInput
+    currencies?: CurrencyUncheckedCreateNestedManyWithoutPaymentChannelsInput
   }
 
   export type PaymentChannelCreateOrConnectWithoutDepositInput = {
     where: PaymentChannelWhereUniqueInput
     create: XOR<PaymentChannelCreateWithoutDepositInput, PaymentChannelUncheckedCreateWithoutDepositInput>
-  }
-
-  export type BridgeTransferCreateWithoutDepositInput = {
-    id?: string
-    depositId: string
-    withdrawalId: string
-    status?: $Enums.BridgeStatus
-    createdAt?: Date | string
-    completedAt?: Date | string | null
-    failedAt?: Date | string | null
-    paymentChannel: PaymentChannelCreateNestedOneWithoutBridgeTransfersInput
-    Withdrawal?: WithdrawalCreateNestedManyWithoutBridgeTransferInput
-  }
-
-  export type BridgeTransferUncheckedCreateWithoutDepositInput = {
-    id?: string
-    depositId: string
-    withdrawalId: string
-    channelId: string
-    status?: $Enums.BridgeStatus
-    createdAt?: Date | string
-    completedAt?: Date | string | null
-    failedAt?: Date | string | null
-    Withdrawal?: WithdrawalUncheckedCreateNestedManyWithoutBridgeTransferInput
-  }
-
-  export type BridgeTransferCreateOrConnectWithoutDepositInput = {
-    where: BridgeTransferWhereUniqueInput
-    create: XOR<BridgeTransferCreateWithoutDepositInput, BridgeTransferUncheckedCreateWithoutDepositInput>
   }
 
   export type UserCreateWithoutDepositsInput = {
@@ -25971,12 +28466,14 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     deletedAt?: Date | string | null
+    isDeleted?: boolean
+    ActivityLog?: ActivityLogCreateNestedManyWithoutUserInput
+    initiatedExchanges?: ExchangeCreateNestedManyWithoutInitiatorInput
+    LiquidityPool?: LiquidityPoolCreateNestedManyWithoutUserInput
+    refunds?: RefundCreateNestedManyWithoutUserInput
     wallet?: WalletCreateNestedManyWithoutUserInput
     withdrawals?: WithdrawalCreateNestedManyWithoutUserInput
     transfers?: TransferCreateNestedManyWithoutUserInput
-    refunds?: RefundCreateNestedManyWithoutUserInput
-    initiatedExchanges?: ExchangeCreateNestedManyWithoutInitiatorInput
-    ActivityLog?: ActivityLogCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutDepositsInput = {
@@ -26004,12 +28501,14 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     deletedAt?: Date | string | null
+    isDeleted?: boolean
+    ActivityLog?: ActivityLogUncheckedCreateNestedManyWithoutUserInput
+    initiatedExchanges?: ExchangeUncheckedCreateNestedManyWithoutInitiatorInput
+    LiquidityPool?: LiquidityPoolUncheckedCreateNestedManyWithoutUserInput
+    refunds?: RefundUncheckedCreateNestedManyWithoutUserInput
     wallet?: WalletUncheckedCreateNestedManyWithoutUserInput
     withdrawals?: WithdrawalUncheckedCreateNestedManyWithoutUserInput
     transfers?: TransferUncheckedCreateNestedManyWithoutUserInput
-    refunds?: RefundUncheckedCreateNestedManyWithoutUserInput
-    initiatedExchanges?: ExchangeUncheckedCreateNestedManyWithoutInitiatorInput
-    ActivityLog?: ActivityLogUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutDepositsInput = {
@@ -26023,12 +28522,12 @@ export namespace Prisma {
     frozen?: Decimal | DecimalJsLike | number | string
     createdAt?: Date | string
     updatedAt?: Date | string
-    user: UserCreateNestedOneWithoutWalletInput
-    currency: CurrencyCreateNestedOneWithoutWalletsInput
-    withdrawals?: WithdrawalCreateNestedManyWithoutWalletInput
     Refund?: RefundCreateNestedManyWithoutWalletInput
     transfersFrom?: TransferCreateNestedManyWithoutFromWalletInput
     transfersTo?: TransferCreateNestedManyWithoutToWalletInput
+    currency: CurrencyCreateNestedOneWithoutWalletsInput
+    user: UserCreateNestedOneWithoutWalletInput
+    withdrawals?: WithdrawalCreateNestedManyWithoutWalletInput
   }
 
   export type WalletUncheckedCreateWithoutDepositsInput = {
@@ -26039,15 +28538,48 @@ export namespace Prisma {
     frozen?: Decimal | DecimalJsLike | number | string
     createdAt?: Date | string
     updatedAt?: Date | string
-    withdrawals?: WithdrawalUncheckedCreateNestedManyWithoutWalletInput
     Refund?: RefundUncheckedCreateNestedManyWithoutWalletInput
     transfersFrom?: TransferUncheckedCreateNestedManyWithoutFromWalletInput
     transfersTo?: TransferUncheckedCreateNestedManyWithoutToWalletInput
+    withdrawals?: WithdrawalUncheckedCreateNestedManyWithoutWalletInput
   }
 
   export type WalletCreateOrConnectWithoutDepositsInput = {
     where: WalletWhereUniqueInput
     create: XOR<WalletCreateWithoutDepositsInput, WalletUncheckedCreateWithoutDepositsInput>
+  }
+
+  export type BridgeTransferUpsertWithoutDepositInput = {
+    update: XOR<BridgeTransferUpdateWithoutDepositInput, BridgeTransferUncheckedUpdateWithoutDepositInput>
+    create: XOR<BridgeTransferCreateWithoutDepositInput, BridgeTransferUncheckedCreateWithoutDepositInput>
+    where?: BridgeTransferWhereInput
+  }
+
+  export type BridgeTransferUpdateToOneWithWhereWithoutDepositInput = {
+    where?: BridgeTransferWhereInput
+    data: XOR<BridgeTransferUpdateWithoutDepositInput, BridgeTransferUncheckedUpdateWithoutDepositInput>
+  }
+
+  export type BridgeTransferUpdateWithoutDepositInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    status?: EnumBridgeStatusFieldUpdateOperationsInput | $Enums.BridgeStatus
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    failedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    amount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    liquidityPool?: LiquidityPoolUpdateOneWithoutBridgeTransferNestedInput
+    withdrawal?: WithdrawalUpdateOneWithoutBridgeTransferNestedInput
+  }
+
+  export type BridgeTransferUncheckedUpdateWithoutDepositInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    status?: EnumBridgeStatusFieldUpdateOperationsInput | $Enums.BridgeStatus
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    failedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    withdrawalId?: NullableStringFieldUpdateOperationsInput | string | null
+    liquidityPoolId?: NullableStringFieldUpdateOperationsInput | string | null
+    amount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
   }
 
   export type PaymentChannelUpsertWithoutDepositInput = {
@@ -26066,10 +28598,9 @@ export namespace Prisma {
     name?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    bridgeTransfers?: BridgeTransferUpdateOneWithoutPaymentChannelNestedInput
-    currencies?: CurrencyUpdateManyWithoutPaymentChannelsNestedInput
-    Withdrawal?: WithdrawalUpdateManyWithoutPaymentChannelNestedInput
     LiquidityPool?: LiquidityPoolUpdateManyWithoutPaymentChannelNestedInput
+    Withdrawal?: WithdrawalUpdateManyWithoutPaymentChannelNestedInput
+    currencies?: CurrencyUpdateManyWithoutPaymentChannelsNestedInput
   }
 
   export type PaymentChannelUncheckedUpdateWithoutDepositInput = {
@@ -26077,45 +28608,9 @@ export namespace Prisma {
     name?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    bridgeTransfers?: BridgeTransferUncheckedUpdateOneWithoutPaymentChannelNestedInput
-    currencies?: CurrencyUncheckedUpdateManyWithoutPaymentChannelsNestedInput
-    Withdrawal?: WithdrawalUncheckedUpdateManyWithoutPaymentChannelNestedInput
     LiquidityPool?: LiquidityPoolUncheckedUpdateManyWithoutPaymentChannelNestedInput
-  }
-
-  export type BridgeTransferUpsertWithoutDepositInput = {
-    update: XOR<BridgeTransferUpdateWithoutDepositInput, BridgeTransferUncheckedUpdateWithoutDepositInput>
-    create: XOR<BridgeTransferCreateWithoutDepositInput, BridgeTransferUncheckedCreateWithoutDepositInput>
-    where?: BridgeTransferWhereInput
-  }
-
-  export type BridgeTransferUpdateToOneWithWhereWithoutDepositInput = {
-    where?: BridgeTransferWhereInput
-    data: XOR<BridgeTransferUpdateWithoutDepositInput, BridgeTransferUncheckedUpdateWithoutDepositInput>
-  }
-
-  export type BridgeTransferUpdateWithoutDepositInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    depositId?: StringFieldUpdateOperationsInput | string
-    withdrawalId?: StringFieldUpdateOperationsInput | string
-    status?: EnumBridgeStatusFieldUpdateOperationsInput | $Enums.BridgeStatus
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    failedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    paymentChannel?: PaymentChannelUpdateOneRequiredWithoutBridgeTransfersNestedInput
-    Withdrawal?: WithdrawalUpdateManyWithoutBridgeTransferNestedInput
-  }
-
-  export type BridgeTransferUncheckedUpdateWithoutDepositInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    depositId?: StringFieldUpdateOperationsInput | string
-    withdrawalId?: StringFieldUpdateOperationsInput | string
-    channelId?: StringFieldUpdateOperationsInput | string
-    status?: EnumBridgeStatusFieldUpdateOperationsInput | $Enums.BridgeStatus
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    failedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    Withdrawal?: WithdrawalUncheckedUpdateManyWithoutBridgeTransferNestedInput
+    Withdrawal?: WithdrawalUncheckedUpdateManyWithoutPaymentChannelNestedInput
+    currencies?: CurrencyUncheckedUpdateManyWithoutPaymentChannelsNestedInput
   }
 
   export type UserUpsertWithoutDepositsInput = {
@@ -26154,12 +28649,14 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
+    ActivityLog?: ActivityLogUpdateManyWithoutUserNestedInput
+    initiatedExchanges?: ExchangeUpdateManyWithoutInitiatorNestedInput
+    LiquidityPool?: LiquidityPoolUpdateManyWithoutUserNestedInput
+    refunds?: RefundUpdateManyWithoutUserNestedInput
     wallet?: WalletUpdateManyWithoutUserNestedInput
     withdrawals?: WithdrawalUpdateManyWithoutUserNestedInput
     transfers?: TransferUpdateManyWithoutUserNestedInput
-    refunds?: RefundUpdateManyWithoutUserNestedInput
-    initiatedExchanges?: ExchangeUpdateManyWithoutInitiatorNestedInput
-    ActivityLog?: ActivityLogUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutDepositsInput = {
@@ -26187,12 +28684,14 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
+    ActivityLog?: ActivityLogUncheckedUpdateManyWithoutUserNestedInput
+    initiatedExchanges?: ExchangeUncheckedUpdateManyWithoutInitiatorNestedInput
+    LiquidityPool?: LiquidityPoolUncheckedUpdateManyWithoutUserNestedInput
+    refunds?: RefundUncheckedUpdateManyWithoutUserNestedInput
     wallet?: WalletUncheckedUpdateManyWithoutUserNestedInput
     withdrawals?: WithdrawalUncheckedUpdateManyWithoutUserNestedInput
     transfers?: TransferUncheckedUpdateManyWithoutUserNestedInput
-    refunds?: RefundUncheckedUpdateManyWithoutUserNestedInput
-    initiatedExchanges?: ExchangeUncheckedUpdateManyWithoutInitiatorNestedInput
-    ActivityLog?: ActivityLogUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type WalletUpsertWithoutDepositsInput = {
@@ -26212,12 +28711,12 @@ export namespace Prisma {
     frozen?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    user?: UserUpdateOneRequiredWithoutWalletNestedInput
-    currency?: CurrencyUpdateOneRequiredWithoutWalletsNestedInput
-    withdrawals?: WithdrawalUpdateManyWithoutWalletNestedInput
     Refund?: RefundUpdateManyWithoutWalletNestedInput
     transfersFrom?: TransferUpdateManyWithoutFromWalletNestedInput
     transfersTo?: TransferUpdateManyWithoutToWalletNestedInput
+    currency?: CurrencyUpdateOneRequiredWithoutWalletsNestedInput
+    user?: UserUpdateOneRequiredWithoutWalletNestedInput
+    withdrawals?: WithdrawalUpdateManyWithoutWalletNestedInput
   }
 
   export type WalletUncheckedUpdateWithoutDepositsInput = {
@@ -26228,10 +28727,37 @@ export namespace Prisma {
     frozen?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    withdrawals?: WithdrawalUncheckedUpdateManyWithoutWalletNestedInput
     Refund?: RefundUncheckedUpdateManyWithoutWalletNestedInput
     transfersFrom?: TransferUncheckedUpdateManyWithoutFromWalletNestedInput
     transfersTo?: TransferUncheckedUpdateManyWithoutToWalletNestedInput
+    withdrawals?: WithdrawalUncheckedUpdateManyWithoutWalletNestedInput
+  }
+
+  export type BridgeTransferCreateWithoutWithdrawalInput = {
+    id?: string
+    status?: $Enums.BridgeStatus
+    createdAt?: Date | string
+    completedAt?: Date | string | null
+    failedAt?: Date | string | null
+    amount?: Decimal | DecimalJsLike | number | string
+    deposit?: DepositCreateNestedOneWithoutBridgeTransferInput
+    liquidityPool?: LiquidityPoolCreateNestedOneWithoutBridgeTransferInput
+  }
+
+  export type BridgeTransferUncheckedCreateWithoutWithdrawalInput = {
+    id?: string
+    status?: $Enums.BridgeStatus
+    createdAt?: Date | string
+    completedAt?: Date | string | null
+    failedAt?: Date | string | null
+    depositId?: string | null
+    liquidityPoolId?: string | null
+    amount?: Decimal | DecimalJsLike | number | string
+  }
+
+  export type BridgeTransferCreateOrConnectWithoutWithdrawalInput = {
+    where: BridgeTransferWhereUniqueInput
+    create: XOR<BridgeTransferCreateWithoutWithdrawalInput, BridgeTransferUncheckedCreateWithoutWithdrawalInput>
   }
 
   export type PaymentChannelCreateWithoutWithdrawalInput = {
@@ -26239,10 +28765,9 @@ export namespace Prisma {
     name: string
     description?: string | null
     createdAt?: Date | string
-    bridgeTransfers?: BridgeTransferCreateNestedOneWithoutPaymentChannelInput
-    currencies?: CurrencyCreateNestedManyWithoutPaymentChannelsInput
     Deposit?: DepositCreateNestedManyWithoutPaymentChannelInput
     LiquidityPool?: LiquidityPoolCreateNestedManyWithoutPaymentChannelInput
+    currencies?: CurrencyCreateNestedManyWithoutPaymentChannelsInput
   }
 
   export type PaymentChannelUncheckedCreateWithoutWithdrawalInput = {
@@ -26250,44 +28775,14 @@ export namespace Prisma {
     name: string
     description?: string | null
     createdAt?: Date | string
-    bridgeTransfers?: BridgeTransferUncheckedCreateNestedOneWithoutPaymentChannelInput
-    currencies?: CurrencyUncheckedCreateNestedManyWithoutPaymentChannelsInput
     Deposit?: DepositUncheckedCreateNestedManyWithoutPaymentChannelInput
     LiquidityPool?: LiquidityPoolUncheckedCreateNestedManyWithoutPaymentChannelInput
+    currencies?: CurrencyUncheckedCreateNestedManyWithoutPaymentChannelsInput
   }
 
   export type PaymentChannelCreateOrConnectWithoutWithdrawalInput = {
     where: PaymentChannelWhereUniqueInput
     create: XOR<PaymentChannelCreateWithoutWithdrawalInput, PaymentChannelUncheckedCreateWithoutWithdrawalInput>
-  }
-
-  export type BridgeTransferCreateWithoutWithdrawalInput = {
-    id?: string
-    depositId: string
-    withdrawalId: string
-    status?: $Enums.BridgeStatus
-    createdAt?: Date | string
-    completedAt?: Date | string | null
-    failedAt?: Date | string | null
-    paymentChannel: PaymentChannelCreateNestedOneWithoutBridgeTransfersInput
-    Deposit?: DepositCreateNestedManyWithoutBridgeTransferInput
-  }
-
-  export type BridgeTransferUncheckedCreateWithoutWithdrawalInput = {
-    id?: string
-    depositId: string
-    withdrawalId: string
-    channelId: string
-    status?: $Enums.BridgeStatus
-    createdAt?: Date | string
-    completedAt?: Date | string | null
-    failedAt?: Date | string | null
-    Deposit?: DepositUncheckedCreateNestedManyWithoutBridgeTransferInput
-  }
-
-  export type BridgeTransferCreateOrConnectWithoutWithdrawalInput = {
-    where: BridgeTransferWhereUniqueInput
-    create: XOR<BridgeTransferCreateWithoutWithdrawalInput, BridgeTransferUncheckedCreateWithoutWithdrawalInput>
   }
 
   export type UserCreateWithoutWithdrawalsInput = {
@@ -26315,12 +28810,14 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     deletedAt?: Date | string | null
-    wallet?: WalletCreateNestedManyWithoutUserInput
-    deposits?: DepositCreateNestedManyWithoutUserInput
-    transfers?: TransferCreateNestedManyWithoutUserInput
-    refunds?: RefundCreateNestedManyWithoutUserInput
-    initiatedExchanges?: ExchangeCreateNestedManyWithoutInitiatorInput
+    isDeleted?: boolean
     ActivityLog?: ActivityLogCreateNestedManyWithoutUserInput
+    deposits?: DepositCreateNestedManyWithoutUserInput
+    initiatedExchanges?: ExchangeCreateNestedManyWithoutInitiatorInput
+    LiquidityPool?: LiquidityPoolCreateNestedManyWithoutUserInput
+    refunds?: RefundCreateNestedManyWithoutUserInput
+    wallet?: WalletCreateNestedManyWithoutUserInput
+    transfers?: TransferCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutWithdrawalsInput = {
@@ -26348,12 +28845,14 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     deletedAt?: Date | string | null
-    wallet?: WalletUncheckedCreateNestedManyWithoutUserInput
-    deposits?: DepositUncheckedCreateNestedManyWithoutUserInput
-    transfers?: TransferUncheckedCreateNestedManyWithoutUserInput
-    refunds?: RefundUncheckedCreateNestedManyWithoutUserInput
-    initiatedExchanges?: ExchangeUncheckedCreateNestedManyWithoutInitiatorInput
+    isDeleted?: boolean
     ActivityLog?: ActivityLogUncheckedCreateNestedManyWithoutUserInput
+    deposits?: DepositUncheckedCreateNestedManyWithoutUserInput
+    initiatedExchanges?: ExchangeUncheckedCreateNestedManyWithoutInitiatorInput
+    LiquidityPool?: LiquidityPoolUncheckedCreateNestedManyWithoutUserInput
+    refunds?: RefundUncheckedCreateNestedManyWithoutUserInput
+    wallet?: WalletUncheckedCreateNestedManyWithoutUserInput
+    transfers?: TransferUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutWithdrawalsInput = {
@@ -26367,12 +28866,12 @@ export namespace Prisma {
     frozen?: Decimal | DecimalJsLike | number | string
     createdAt?: Date | string
     updatedAt?: Date | string
-    user: UserCreateNestedOneWithoutWalletInput
-    currency: CurrencyCreateNestedOneWithoutWalletsInput
     deposits?: DepositCreateNestedManyWithoutWalletInput
     Refund?: RefundCreateNestedManyWithoutWalletInput
     transfersFrom?: TransferCreateNestedManyWithoutFromWalletInput
     transfersTo?: TransferCreateNestedManyWithoutToWalletInput
+    currency: CurrencyCreateNestedOneWithoutWalletsInput
+    user: UserCreateNestedOneWithoutWalletInput
   }
 
   export type WalletUncheckedCreateWithoutWithdrawalsInput = {
@@ -26394,6 +28893,39 @@ export namespace Prisma {
     create: XOR<WalletCreateWithoutWithdrawalsInput, WalletUncheckedCreateWithoutWithdrawalsInput>
   }
 
+  export type BridgeTransferUpsertWithoutWithdrawalInput = {
+    update: XOR<BridgeTransferUpdateWithoutWithdrawalInput, BridgeTransferUncheckedUpdateWithoutWithdrawalInput>
+    create: XOR<BridgeTransferCreateWithoutWithdrawalInput, BridgeTransferUncheckedCreateWithoutWithdrawalInput>
+    where?: BridgeTransferWhereInput
+  }
+
+  export type BridgeTransferUpdateToOneWithWhereWithoutWithdrawalInput = {
+    where?: BridgeTransferWhereInput
+    data: XOR<BridgeTransferUpdateWithoutWithdrawalInput, BridgeTransferUncheckedUpdateWithoutWithdrawalInput>
+  }
+
+  export type BridgeTransferUpdateWithoutWithdrawalInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    status?: EnumBridgeStatusFieldUpdateOperationsInput | $Enums.BridgeStatus
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    failedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    amount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    deposit?: DepositUpdateOneWithoutBridgeTransferNestedInput
+    liquidityPool?: LiquidityPoolUpdateOneWithoutBridgeTransferNestedInput
+  }
+
+  export type BridgeTransferUncheckedUpdateWithoutWithdrawalInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    status?: EnumBridgeStatusFieldUpdateOperationsInput | $Enums.BridgeStatus
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    failedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    depositId?: NullableStringFieldUpdateOperationsInput | string | null
+    liquidityPoolId?: NullableStringFieldUpdateOperationsInput | string | null
+    amount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+  }
+
   export type PaymentChannelUpsertWithoutWithdrawalInput = {
     update: XOR<PaymentChannelUpdateWithoutWithdrawalInput, PaymentChannelUncheckedUpdateWithoutWithdrawalInput>
     create: XOR<PaymentChannelCreateWithoutWithdrawalInput, PaymentChannelUncheckedCreateWithoutWithdrawalInput>
@@ -26410,10 +28942,9 @@ export namespace Prisma {
     name?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    bridgeTransfers?: BridgeTransferUpdateOneWithoutPaymentChannelNestedInput
-    currencies?: CurrencyUpdateManyWithoutPaymentChannelsNestedInput
     Deposit?: DepositUpdateManyWithoutPaymentChannelNestedInput
     LiquidityPool?: LiquidityPoolUpdateManyWithoutPaymentChannelNestedInput
+    currencies?: CurrencyUpdateManyWithoutPaymentChannelsNestedInput
   }
 
   export type PaymentChannelUncheckedUpdateWithoutWithdrawalInput = {
@@ -26421,45 +28952,9 @@ export namespace Prisma {
     name?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    bridgeTransfers?: BridgeTransferUncheckedUpdateOneWithoutPaymentChannelNestedInput
-    currencies?: CurrencyUncheckedUpdateManyWithoutPaymentChannelsNestedInput
     Deposit?: DepositUncheckedUpdateManyWithoutPaymentChannelNestedInput
     LiquidityPool?: LiquidityPoolUncheckedUpdateManyWithoutPaymentChannelNestedInput
-  }
-
-  export type BridgeTransferUpsertWithoutWithdrawalInput = {
-    update: XOR<BridgeTransferUpdateWithoutWithdrawalInput, BridgeTransferUncheckedUpdateWithoutWithdrawalInput>
-    create: XOR<BridgeTransferCreateWithoutWithdrawalInput, BridgeTransferUncheckedCreateWithoutWithdrawalInput>
-    where?: BridgeTransferWhereInput
-  }
-
-  export type BridgeTransferUpdateToOneWithWhereWithoutWithdrawalInput = {
-    where?: BridgeTransferWhereInput
-    data: XOR<BridgeTransferUpdateWithoutWithdrawalInput, BridgeTransferUncheckedUpdateWithoutWithdrawalInput>
-  }
-
-  export type BridgeTransferUpdateWithoutWithdrawalInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    depositId?: StringFieldUpdateOperationsInput | string
-    withdrawalId?: StringFieldUpdateOperationsInput | string
-    status?: EnumBridgeStatusFieldUpdateOperationsInput | $Enums.BridgeStatus
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    failedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    paymentChannel?: PaymentChannelUpdateOneRequiredWithoutBridgeTransfersNestedInput
-    Deposit?: DepositUpdateManyWithoutBridgeTransferNestedInput
-  }
-
-  export type BridgeTransferUncheckedUpdateWithoutWithdrawalInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    depositId?: StringFieldUpdateOperationsInput | string
-    withdrawalId?: StringFieldUpdateOperationsInput | string
-    channelId?: StringFieldUpdateOperationsInput | string
-    status?: EnumBridgeStatusFieldUpdateOperationsInput | $Enums.BridgeStatus
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    failedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    Deposit?: DepositUncheckedUpdateManyWithoutBridgeTransferNestedInput
+    currencies?: CurrencyUncheckedUpdateManyWithoutPaymentChannelsNestedInput
   }
 
   export type UserUpsertWithoutWithdrawalsInput = {
@@ -26498,12 +28993,14 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    wallet?: WalletUpdateManyWithoutUserNestedInput
-    deposits?: DepositUpdateManyWithoutUserNestedInput
-    transfers?: TransferUpdateManyWithoutUserNestedInput
-    refunds?: RefundUpdateManyWithoutUserNestedInput
-    initiatedExchanges?: ExchangeUpdateManyWithoutInitiatorNestedInput
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
     ActivityLog?: ActivityLogUpdateManyWithoutUserNestedInput
+    deposits?: DepositUpdateManyWithoutUserNestedInput
+    initiatedExchanges?: ExchangeUpdateManyWithoutInitiatorNestedInput
+    LiquidityPool?: LiquidityPoolUpdateManyWithoutUserNestedInput
+    refunds?: RefundUpdateManyWithoutUserNestedInput
+    wallet?: WalletUpdateManyWithoutUserNestedInput
+    transfers?: TransferUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutWithdrawalsInput = {
@@ -26531,12 +29028,14 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    wallet?: WalletUncheckedUpdateManyWithoutUserNestedInput
-    deposits?: DepositUncheckedUpdateManyWithoutUserNestedInput
-    transfers?: TransferUncheckedUpdateManyWithoutUserNestedInput
-    refunds?: RefundUncheckedUpdateManyWithoutUserNestedInput
-    initiatedExchanges?: ExchangeUncheckedUpdateManyWithoutInitiatorNestedInput
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
     ActivityLog?: ActivityLogUncheckedUpdateManyWithoutUserNestedInput
+    deposits?: DepositUncheckedUpdateManyWithoutUserNestedInput
+    initiatedExchanges?: ExchangeUncheckedUpdateManyWithoutInitiatorNestedInput
+    LiquidityPool?: LiquidityPoolUncheckedUpdateManyWithoutUserNestedInput
+    refunds?: RefundUncheckedUpdateManyWithoutUserNestedInput
+    wallet?: WalletUncheckedUpdateManyWithoutUserNestedInput
+    transfers?: TransferUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type WalletUpsertWithoutWithdrawalsInput = {
@@ -26556,12 +29055,12 @@ export namespace Prisma {
     frozen?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    user?: UserUpdateOneRequiredWithoutWalletNestedInput
-    currency?: CurrencyUpdateOneRequiredWithoutWalletsNestedInput
     deposits?: DepositUpdateManyWithoutWalletNestedInput
     Refund?: RefundUpdateManyWithoutWalletNestedInput
     transfersFrom?: TransferUpdateManyWithoutFromWalletNestedInput
     transfersTo?: TransferUpdateManyWithoutToWalletNestedInput
+    currency?: CurrencyUpdateOneRequiredWithoutWalletsNestedInput
+    user?: UserUpdateOneRequiredWithoutWalletNestedInput
   }
 
   export type WalletUncheckedUpdateWithoutWithdrawalsInput = {
@@ -26578,33 +29077,6 @@ export namespace Prisma {
     transfersTo?: TransferUncheckedUpdateManyWithoutToWalletNestedInput
   }
 
-  export type PaymentChannelCreateWithoutBridgeTransfersInput = {
-    id?: string
-    name: string
-    description?: string | null
-    createdAt?: Date | string
-    currencies?: CurrencyCreateNestedManyWithoutPaymentChannelsInput
-    Deposit?: DepositCreateNestedManyWithoutPaymentChannelInput
-    Withdrawal?: WithdrawalCreateNestedManyWithoutPaymentChannelInput
-    LiquidityPool?: LiquidityPoolCreateNestedManyWithoutPaymentChannelInput
-  }
-
-  export type PaymentChannelUncheckedCreateWithoutBridgeTransfersInput = {
-    id?: string
-    name: string
-    description?: string | null
-    createdAt?: Date | string
-    currencies?: CurrencyUncheckedCreateNestedManyWithoutPaymentChannelsInput
-    Deposit?: DepositUncheckedCreateNestedManyWithoutPaymentChannelInput
-    Withdrawal?: WithdrawalUncheckedCreateNestedManyWithoutPaymentChannelInput
-    LiquidityPool?: LiquidityPoolUncheckedCreateNestedManyWithoutPaymentChannelInput
-  }
-
-  export type PaymentChannelCreateOrConnectWithoutBridgeTransfersInput = {
-    where: PaymentChannelWhereUniqueInput
-    create: XOR<PaymentChannelCreateWithoutBridgeTransfersInput, PaymentChannelUncheckedCreateWithoutBridgeTransfersInput>
-  }
-
   export type DepositCreateWithoutBridgeTransferInput = {
     id?: string
     amount: Decimal | DecimalJsLike | number | string
@@ -26614,6 +29086,7 @@ export namespace Prisma {
     createdAt?: Date | string
     completedAt?: Date | string | null
     failedAt?: Date | string | null
+    documentUrl?: string | null
     paymentChannel: PaymentChannelCreateNestedOneWithoutDepositInput
     user: UserCreateNestedOneWithoutDepositsInput
     wallet: WalletCreateNestedOneWithoutDepositsInput
@@ -26631,6 +29104,7 @@ export namespace Prisma {
     completedAt?: Date | string | null
     failedAt?: Date | string | null
     paymentChannelId: string
+    documentUrl?: string | null
   }
 
   export type DepositCreateOrConnectWithoutBridgeTransferInput = {
@@ -26638,9 +29112,31 @@ export namespace Prisma {
     create: XOR<DepositCreateWithoutBridgeTransferInput, DepositUncheckedCreateWithoutBridgeTransferInput>
   }
 
-  export type DepositCreateManyBridgeTransferInputEnvelope = {
-    data: DepositCreateManyBridgeTransferInput | DepositCreateManyBridgeTransferInput[]
-    skipDuplicates?: boolean
+  export type LiquidityPoolCreateWithoutBridgeTransferInput = {
+    id?: string
+    address: string
+    balance?: Decimal | DecimalJsLike | number | string
+    frozen?: Decimal | DecimalJsLike | number | string
+    updatedAt?: Date | string
+    currency: CurrencyCreateNestedOneWithoutLiquidityPoolInput
+    paymentChannel: PaymentChannelCreateNestedOneWithoutLiquidityPoolInput
+    user: UserCreateNestedOneWithoutLiquidityPoolInput
+  }
+
+  export type LiquidityPoolUncheckedCreateWithoutBridgeTransferInput = {
+    id?: string
+    paymentChannelId: string
+    currencyId: string
+    address: string
+    balance?: Decimal | DecimalJsLike | number | string
+    frozen?: Decimal | DecimalJsLike | number | string
+    updatedAt?: Date | string
+    userId: string
+  }
+
+  export type LiquidityPoolCreateOrConnectWithoutBridgeTransferInput = {
+    where: LiquidityPoolWhereUniqueInput
+    create: XOR<LiquidityPoolCreateWithoutBridgeTransferInput, LiquidityPoolUncheckedCreateWithoutBridgeTransferInput>
   }
 
   export type WithdrawalCreateWithoutBridgeTransferInput = {
@@ -26652,6 +29148,9 @@ export namespace Prisma {
     createdAt?: Date | string
     completedAt?: Date | string | null
     failedAt?: Date | string | null
+    bridgeTransferId?: string | null
+    receiverAddress: string
+    addressOwnerName: string
     paymentChannel: PaymentChannelCreateNestedOneWithoutWithdrawalInput
     user: UserCreateNestedOneWithoutWithdrawalsInput
     wallet: WalletCreateNestedOneWithoutWithdrawalsInput
@@ -26669,6 +29168,9 @@ export namespace Prisma {
     completedAt?: Date | string | null
     failedAt?: Date | string | null
     paymentChannelId: string
+    bridgeTransferId?: string | null
+    receiverAddress: string
+    addressOwnerName: string
   }
 
   export type WithdrawalCreateOrConnectWithoutBridgeTransferInput = {
@@ -26676,74 +29178,189 @@ export namespace Prisma {
     create: XOR<WithdrawalCreateWithoutBridgeTransferInput, WithdrawalUncheckedCreateWithoutBridgeTransferInput>
   }
 
-  export type WithdrawalCreateManyBridgeTransferInputEnvelope = {
-    data: WithdrawalCreateManyBridgeTransferInput | WithdrawalCreateManyBridgeTransferInput[]
-    skipDuplicates?: boolean
-  }
-
-  export type PaymentChannelUpsertWithoutBridgeTransfersInput = {
-    update: XOR<PaymentChannelUpdateWithoutBridgeTransfersInput, PaymentChannelUncheckedUpdateWithoutBridgeTransfersInput>
-    create: XOR<PaymentChannelCreateWithoutBridgeTransfersInput, PaymentChannelUncheckedCreateWithoutBridgeTransfersInput>
-    where?: PaymentChannelWhereInput
-  }
-
-  export type PaymentChannelUpdateToOneWithWhereWithoutBridgeTransfersInput = {
-    where?: PaymentChannelWhereInput
-    data: XOR<PaymentChannelUpdateWithoutBridgeTransfersInput, PaymentChannelUncheckedUpdateWithoutBridgeTransfersInput>
-  }
-
-  export type PaymentChannelUpdateWithoutBridgeTransfersInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    name?: StringFieldUpdateOperationsInput | string
-    description?: NullableStringFieldUpdateOperationsInput | string | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    currencies?: CurrencyUpdateManyWithoutPaymentChannelsNestedInput
-    Deposit?: DepositUpdateManyWithoutPaymentChannelNestedInput
-    Withdrawal?: WithdrawalUpdateManyWithoutPaymentChannelNestedInput
-    LiquidityPool?: LiquidityPoolUpdateManyWithoutPaymentChannelNestedInput
-  }
-
-  export type PaymentChannelUncheckedUpdateWithoutBridgeTransfersInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    name?: StringFieldUpdateOperationsInput | string
-    description?: NullableStringFieldUpdateOperationsInput | string | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    currencies?: CurrencyUncheckedUpdateManyWithoutPaymentChannelsNestedInput
-    Deposit?: DepositUncheckedUpdateManyWithoutPaymentChannelNestedInput
-    Withdrawal?: WithdrawalUncheckedUpdateManyWithoutPaymentChannelNestedInput
-    LiquidityPool?: LiquidityPoolUncheckedUpdateManyWithoutPaymentChannelNestedInput
-  }
-
-  export type DepositUpsertWithWhereUniqueWithoutBridgeTransferInput = {
-    where: DepositWhereUniqueInput
+  export type DepositUpsertWithoutBridgeTransferInput = {
     update: XOR<DepositUpdateWithoutBridgeTransferInput, DepositUncheckedUpdateWithoutBridgeTransferInput>
     create: XOR<DepositCreateWithoutBridgeTransferInput, DepositUncheckedCreateWithoutBridgeTransferInput>
+    where?: DepositWhereInput
   }
 
-  export type DepositUpdateWithWhereUniqueWithoutBridgeTransferInput = {
-    where: DepositWhereUniqueInput
+  export type DepositUpdateToOneWithWhereWithoutBridgeTransferInput = {
+    where?: DepositWhereInput
     data: XOR<DepositUpdateWithoutBridgeTransferInput, DepositUncheckedUpdateWithoutBridgeTransferInput>
   }
 
-  export type DepositUpdateManyWithWhereWithoutBridgeTransferInput = {
-    where: DepositScalarWhereInput
-    data: XOR<DepositUpdateManyMutationInput, DepositUncheckedUpdateManyWithoutBridgeTransferInput>
+  export type DepositUpdateWithoutBridgeTransferInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    amount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    fee?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    status?: EnumDepositStatusFieldUpdateOperationsInput | $Enums.DepositStatus
+    reference?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    failedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    documentUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    paymentChannel?: PaymentChannelUpdateOneRequiredWithoutDepositNestedInput
+    user?: UserUpdateOneRequiredWithoutDepositsNestedInput
+    wallet?: WalletUpdateOneRequiredWithoutDepositsNestedInput
   }
 
-  export type WithdrawalUpsertWithWhereUniqueWithoutBridgeTransferInput = {
-    where: WithdrawalWhereUniqueInput
+  export type DepositUncheckedUpdateWithoutBridgeTransferInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    walletId?: StringFieldUpdateOperationsInput | string
+    amount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    fee?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    status?: EnumDepositStatusFieldUpdateOperationsInput | $Enums.DepositStatus
+    reference?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    failedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    paymentChannelId?: StringFieldUpdateOperationsInput | string
+    documentUrl?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
+  export type LiquidityPoolUpsertWithoutBridgeTransferInput = {
+    update: XOR<LiquidityPoolUpdateWithoutBridgeTransferInput, LiquidityPoolUncheckedUpdateWithoutBridgeTransferInput>
+    create: XOR<LiquidityPoolCreateWithoutBridgeTransferInput, LiquidityPoolUncheckedCreateWithoutBridgeTransferInput>
+    where?: LiquidityPoolWhereInput
+  }
+
+  export type LiquidityPoolUpdateToOneWithWhereWithoutBridgeTransferInput = {
+    where?: LiquidityPoolWhereInput
+    data: XOR<LiquidityPoolUpdateWithoutBridgeTransferInput, LiquidityPoolUncheckedUpdateWithoutBridgeTransferInput>
+  }
+
+  export type LiquidityPoolUpdateWithoutBridgeTransferInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    address?: StringFieldUpdateOperationsInput | string
+    balance?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    frozen?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    currency?: CurrencyUpdateOneRequiredWithoutLiquidityPoolNestedInput
+    paymentChannel?: PaymentChannelUpdateOneRequiredWithoutLiquidityPoolNestedInput
+    user?: UserUpdateOneRequiredWithoutLiquidityPoolNestedInput
+  }
+
+  export type LiquidityPoolUncheckedUpdateWithoutBridgeTransferInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    paymentChannelId?: StringFieldUpdateOperationsInput | string
+    currencyId?: StringFieldUpdateOperationsInput | string
+    address?: StringFieldUpdateOperationsInput | string
+    balance?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    frozen?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    userId?: StringFieldUpdateOperationsInput | string
+  }
+
+  export type WithdrawalUpsertWithoutBridgeTransferInput = {
     update: XOR<WithdrawalUpdateWithoutBridgeTransferInput, WithdrawalUncheckedUpdateWithoutBridgeTransferInput>
     create: XOR<WithdrawalCreateWithoutBridgeTransferInput, WithdrawalUncheckedCreateWithoutBridgeTransferInput>
+    where?: WithdrawalWhereInput
   }
 
-  export type WithdrawalUpdateWithWhereUniqueWithoutBridgeTransferInput = {
-    where: WithdrawalWhereUniqueInput
+  export type WithdrawalUpdateToOneWithWhereWithoutBridgeTransferInput = {
+    where?: WithdrawalWhereInput
     data: XOR<WithdrawalUpdateWithoutBridgeTransferInput, WithdrawalUncheckedUpdateWithoutBridgeTransferInput>
   }
 
-  export type WithdrawalUpdateManyWithWhereWithoutBridgeTransferInput = {
-    where: WithdrawalScalarWhereInput
-    data: XOR<WithdrawalUpdateManyMutationInput, WithdrawalUncheckedUpdateManyWithoutBridgeTransferInput>
+  export type WithdrawalUpdateWithoutBridgeTransferInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    amount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    fee?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    status?: EnumWithdrawalStatusFieldUpdateOperationsInput | $Enums.WithdrawalStatus
+    reference?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    failedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    bridgeTransferId?: NullableStringFieldUpdateOperationsInput | string | null
+    receiverAddress?: StringFieldUpdateOperationsInput | string
+    addressOwnerName?: StringFieldUpdateOperationsInput | string
+    paymentChannel?: PaymentChannelUpdateOneRequiredWithoutWithdrawalNestedInput
+    user?: UserUpdateOneRequiredWithoutWithdrawalsNestedInput
+    wallet?: WalletUpdateOneRequiredWithoutWithdrawalsNestedInput
+  }
+
+  export type WithdrawalUncheckedUpdateWithoutBridgeTransferInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    walletId?: StringFieldUpdateOperationsInput | string
+    amount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    fee?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    status?: EnumWithdrawalStatusFieldUpdateOperationsInput | $Enums.WithdrawalStatus
+    reference?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    failedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    paymentChannelId?: StringFieldUpdateOperationsInput | string
+    bridgeTransferId?: NullableStringFieldUpdateOperationsInput | string | null
+    receiverAddress?: StringFieldUpdateOperationsInput | string
+    addressOwnerName?: StringFieldUpdateOperationsInput | string
+  }
+
+  export type WalletCreateWithoutTransfersFromInput = {
+    id?: string
+    balance?: Decimal | DecimalJsLike | number | string
+    frozen?: Decimal | DecimalJsLike | number | string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    deposits?: DepositCreateNestedManyWithoutWalletInput
+    Refund?: RefundCreateNestedManyWithoutWalletInput
+    transfersTo?: TransferCreateNestedManyWithoutToWalletInput
+    currency: CurrencyCreateNestedOneWithoutWalletsInput
+    user: UserCreateNestedOneWithoutWalletInput
+    withdrawals?: WithdrawalCreateNestedManyWithoutWalletInput
+  }
+
+  export type WalletUncheckedCreateWithoutTransfersFromInput = {
+    id?: string
+    userId: string
+    currencyId: string
+    balance?: Decimal | DecimalJsLike | number | string
+    frozen?: Decimal | DecimalJsLike | number | string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    deposits?: DepositUncheckedCreateNestedManyWithoutWalletInput
+    Refund?: RefundUncheckedCreateNestedManyWithoutWalletInput
+    transfersTo?: TransferUncheckedCreateNestedManyWithoutToWalletInput
+    withdrawals?: WithdrawalUncheckedCreateNestedManyWithoutWalletInput
+  }
+
+  export type WalletCreateOrConnectWithoutTransfersFromInput = {
+    where: WalletWhereUniqueInput
+    create: XOR<WalletCreateWithoutTransfersFromInput, WalletUncheckedCreateWithoutTransfersFromInput>
+  }
+
+  export type WalletCreateWithoutTransfersToInput = {
+    id?: string
+    balance?: Decimal | DecimalJsLike | number | string
+    frozen?: Decimal | DecimalJsLike | number | string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    deposits?: DepositCreateNestedManyWithoutWalletInput
+    Refund?: RefundCreateNestedManyWithoutWalletInput
+    transfersFrom?: TransferCreateNestedManyWithoutFromWalletInput
+    currency: CurrencyCreateNestedOneWithoutWalletsInput
+    user: UserCreateNestedOneWithoutWalletInput
+    withdrawals?: WithdrawalCreateNestedManyWithoutWalletInput
+  }
+
+  export type WalletUncheckedCreateWithoutTransfersToInput = {
+    id?: string
+    userId: string
+    currencyId: string
+    balance?: Decimal | DecimalJsLike | number | string
+    frozen?: Decimal | DecimalJsLike | number | string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    deposits?: DepositUncheckedCreateNestedManyWithoutWalletInput
+    Refund?: RefundUncheckedCreateNestedManyWithoutWalletInput
+    transfersFrom?: TransferUncheckedCreateNestedManyWithoutFromWalletInput
+    withdrawals?: WithdrawalUncheckedCreateNestedManyWithoutWalletInput
+  }
+
+  export type WalletCreateOrConnectWithoutTransfersToInput = {
+    where: WalletWhereUniqueInput
+    create: XOR<WalletCreateWithoutTransfersToInput, WalletUncheckedCreateWithoutTransfersToInput>
   }
 
   export type UserCreateWithoutTransfersInput = {
@@ -26771,12 +29388,14 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     deletedAt?: Date | string | null
-    wallet?: WalletCreateNestedManyWithoutUserInput
-    deposits?: DepositCreateNestedManyWithoutUserInput
-    withdrawals?: WithdrawalCreateNestedManyWithoutUserInput
-    refunds?: RefundCreateNestedManyWithoutUserInput
-    initiatedExchanges?: ExchangeCreateNestedManyWithoutInitiatorInput
+    isDeleted?: boolean
     ActivityLog?: ActivityLogCreateNestedManyWithoutUserInput
+    deposits?: DepositCreateNestedManyWithoutUserInput
+    initiatedExchanges?: ExchangeCreateNestedManyWithoutInitiatorInput
+    LiquidityPool?: LiquidityPoolCreateNestedManyWithoutUserInput
+    refunds?: RefundCreateNestedManyWithoutUserInput
+    wallet?: WalletCreateNestedManyWithoutUserInput
+    withdrawals?: WithdrawalCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutTransfersInput = {
@@ -26804,12 +29423,14 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     deletedAt?: Date | string | null
-    wallet?: WalletUncheckedCreateNestedManyWithoutUserInput
-    deposits?: DepositUncheckedCreateNestedManyWithoutUserInput
-    withdrawals?: WithdrawalUncheckedCreateNestedManyWithoutUserInput
-    refunds?: RefundUncheckedCreateNestedManyWithoutUserInput
-    initiatedExchanges?: ExchangeUncheckedCreateNestedManyWithoutInitiatorInput
+    isDeleted?: boolean
     ActivityLog?: ActivityLogUncheckedCreateNestedManyWithoutUserInput
+    deposits?: DepositUncheckedCreateNestedManyWithoutUserInput
+    initiatedExchanges?: ExchangeUncheckedCreateNestedManyWithoutInitiatorInput
+    LiquidityPool?: LiquidityPoolUncheckedCreateNestedManyWithoutUserInput
+    refunds?: RefundUncheckedCreateNestedManyWithoutUserInput
+    wallet?: WalletUncheckedCreateNestedManyWithoutUserInput
+    withdrawals?: WithdrawalUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutTransfersInput = {
@@ -26817,70 +29438,82 @@ export namespace Prisma {
     create: XOR<UserCreateWithoutTransfersInput, UserUncheckedCreateWithoutTransfersInput>
   }
 
-  export type WalletCreateWithoutTransfersFromInput = {
-    id?: string
-    balance?: Decimal | DecimalJsLike | number | string
-    frozen?: Decimal | DecimalJsLike | number | string
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    user: UserCreateNestedOneWithoutWalletInput
-    currency: CurrencyCreateNestedOneWithoutWalletsInput
-    deposits?: DepositCreateNestedManyWithoutWalletInput
-    withdrawals?: WithdrawalCreateNestedManyWithoutWalletInput
-    Refund?: RefundCreateNestedManyWithoutWalletInput
-    transfersTo?: TransferCreateNestedManyWithoutToWalletInput
-  }
-
-  export type WalletUncheckedCreateWithoutTransfersFromInput = {
-    id?: string
-    userId: string
-    currencyId: string
-    balance?: Decimal | DecimalJsLike | number | string
-    frozen?: Decimal | DecimalJsLike | number | string
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    deposits?: DepositUncheckedCreateNestedManyWithoutWalletInput
-    withdrawals?: WithdrawalUncheckedCreateNestedManyWithoutWalletInput
-    Refund?: RefundUncheckedCreateNestedManyWithoutWalletInput
-    transfersTo?: TransferUncheckedCreateNestedManyWithoutToWalletInput
-  }
-
-  export type WalletCreateOrConnectWithoutTransfersFromInput = {
-    where: WalletWhereUniqueInput
+  export type WalletUpsertWithoutTransfersFromInput = {
+    update: XOR<WalletUpdateWithoutTransfersFromInput, WalletUncheckedUpdateWithoutTransfersFromInput>
     create: XOR<WalletCreateWithoutTransfersFromInput, WalletUncheckedCreateWithoutTransfersFromInput>
+    where?: WalletWhereInput
   }
 
-  export type WalletCreateWithoutTransfersToInput = {
-    id?: string
-    balance?: Decimal | DecimalJsLike | number | string
-    frozen?: Decimal | DecimalJsLike | number | string
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    user: UserCreateNestedOneWithoutWalletInput
-    currency: CurrencyCreateNestedOneWithoutWalletsInput
-    deposits?: DepositCreateNestedManyWithoutWalletInput
-    withdrawals?: WithdrawalCreateNestedManyWithoutWalletInput
-    Refund?: RefundCreateNestedManyWithoutWalletInput
-    transfersFrom?: TransferCreateNestedManyWithoutFromWalletInput
+  export type WalletUpdateToOneWithWhereWithoutTransfersFromInput = {
+    where?: WalletWhereInput
+    data: XOR<WalletUpdateWithoutTransfersFromInput, WalletUncheckedUpdateWithoutTransfersFromInput>
   }
 
-  export type WalletUncheckedCreateWithoutTransfersToInput = {
-    id?: string
-    userId: string
-    currencyId: string
-    balance?: Decimal | DecimalJsLike | number | string
-    frozen?: Decimal | DecimalJsLike | number | string
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    deposits?: DepositUncheckedCreateNestedManyWithoutWalletInput
-    withdrawals?: WithdrawalUncheckedCreateNestedManyWithoutWalletInput
-    Refund?: RefundUncheckedCreateNestedManyWithoutWalletInput
-    transfersFrom?: TransferUncheckedCreateNestedManyWithoutFromWalletInput
+  export type WalletUpdateWithoutTransfersFromInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    balance?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    frozen?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    deposits?: DepositUpdateManyWithoutWalletNestedInput
+    Refund?: RefundUpdateManyWithoutWalletNestedInput
+    transfersTo?: TransferUpdateManyWithoutToWalletNestedInput
+    currency?: CurrencyUpdateOneRequiredWithoutWalletsNestedInput
+    user?: UserUpdateOneRequiredWithoutWalletNestedInput
+    withdrawals?: WithdrawalUpdateManyWithoutWalletNestedInput
   }
 
-  export type WalletCreateOrConnectWithoutTransfersToInput = {
-    where: WalletWhereUniqueInput
+  export type WalletUncheckedUpdateWithoutTransfersFromInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    currencyId?: StringFieldUpdateOperationsInput | string
+    balance?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    frozen?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    deposits?: DepositUncheckedUpdateManyWithoutWalletNestedInput
+    Refund?: RefundUncheckedUpdateManyWithoutWalletNestedInput
+    transfersTo?: TransferUncheckedUpdateManyWithoutToWalletNestedInput
+    withdrawals?: WithdrawalUncheckedUpdateManyWithoutWalletNestedInput
+  }
+
+  export type WalletUpsertWithoutTransfersToInput = {
+    update: XOR<WalletUpdateWithoutTransfersToInput, WalletUncheckedUpdateWithoutTransfersToInput>
     create: XOR<WalletCreateWithoutTransfersToInput, WalletUncheckedCreateWithoutTransfersToInput>
+    where?: WalletWhereInput
+  }
+
+  export type WalletUpdateToOneWithWhereWithoutTransfersToInput = {
+    where?: WalletWhereInput
+    data: XOR<WalletUpdateWithoutTransfersToInput, WalletUncheckedUpdateWithoutTransfersToInput>
+  }
+
+  export type WalletUpdateWithoutTransfersToInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    balance?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    frozen?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    deposits?: DepositUpdateManyWithoutWalletNestedInput
+    Refund?: RefundUpdateManyWithoutWalletNestedInput
+    transfersFrom?: TransferUpdateManyWithoutFromWalletNestedInput
+    currency?: CurrencyUpdateOneRequiredWithoutWalletsNestedInput
+    user?: UserUpdateOneRequiredWithoutWalletNestedInput
+    withdrawals?: WithdrawalUpdateManyWithoutWalletNestedInput
+  }
+
+  export type WalletUncheckedUpdateWithoutTransfersToInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    currencyId?: StringFieldUpdateOperationsInput | string
+    balance?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    frozen?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    deposits?: DepositUncheckedUpdateManyWithoutWalletNestedInput
+    Refund?: RefundUncheckedUpdateManyWithoutWalletNestedInput
+    transfersFrom?: TransferUncheckedUpdateManyWithoutFromWalletNestedInput
+    withdrawals?: WithdrawalUncheckedUpdateManyWithoutWalletNestedInput
   }
 
   export type UserUpsertWithWhereUniqueWithoutTransfersInput = {
@@ -26927,84 +29560,7 @@ export namespace Prisma {
     createdAt?: DateTimeFilter<"User"> | Date | string
     updatedAt?: DateTimeFilter<"User"> | Date | string
     deletedAt?: DateTimeNullableFilter<"User"> | Date | string | null
-  }
-
-  export type WalletUpsertWithoutTransfersFromInput = {
-    update: XOR<WalletUpdateWithoutTransfersFromInput, WalletUncheckedUpdateWithoutTransfersFromInput>
-    create: XOR<WalletCreateWithoutTransfersFromInput, WalletUncheckedCreateWithoutTransfersFromInput>
-    where?: WalletWhereInput
-  }
-
-  export type WalletUpdateToOneWithWhereWithoutTransfersFromInput = {
-    where?: WalletWhereInput
-    data: XOR<WalletUpdateWithoutTransfersFromInput, WalletUncheckedUpdateWithoutTransfersFromInput>
-  }
-
-  export type WalletUpdateWithoutTransfersFromInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    balance?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
-    frozen?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    user?: UserUpdateOneRequiredWithoutWalletNestedInput
-    currency?: CurrencyUpdateOneRequiredWithoutWalletsNestedInput
-    deposits?: DepositUpdateManyWithoutWalletNestedInput
-    withdrawals?: WithdrawalUpdateManyWithoutWalletNestedInput
-    Refund?: RefundUpdateManyWithoutWalletNestedInput
-    transfersTo?: TransferUpdateManyWithoutToWalletNestedInput
-  }
-
-  export type WalletUncheckedUpdateWithoutTransfersFromInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    userId?: StringFieldUpdateOperationsInput | string
-    currencyId?: StringFieldUpdateOperationsInput | string
-    balance?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
-    frozen?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    deposits?: DepositUncheckedUpdateManyWithoutWalletNestedInput
-    withdrawals?: WithdrawalUncheckedUpdateManyWithoutWalletNestedInput
-    Refund?: RefundUncheckedUpdateManyWithoutWalletNestedInput
-    transfersTo?: TransferUncheckedUpdateManyWithoutToWalletNestedInput
-  }
-
-  export type WalletUpsertWithoutTransfersToInput = {
-    update: XOR<WalletUpdateWithoutTransfersToInput, WalletUncheckedUpdateWithoutTransfersToInput>
-    create: XOR<WalletCreateWithoutTransfersToInput, WalletUncheckedCreateWithoutTransfersToInput>
-    where?: WalletWhereInput
-  }
-
-  export type WalletUpdateToOneWithWhereWithoutTransfersToInput = {
-    where?: WalletWhereInput
-    data: XOR<WalletUpdateWithoutTransfersToInput, WalletUncheckedUpdateWithoutTransfersToInput>
-  }
-
-  export type WalletUpdateWithoutTransfersToInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    balance?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
-    frozen?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    user?: UserUpdateOneRequiredWithoutWalletNestedInput
-    currency?: CurrencyUpdateOneRequiredWithoutWalletsNestedInput
-    deposits?: DepositUpdateManyWithoutWalletNestedInput
-    withdrawals?: WithdrawalUpdateManyWithoutWalletNestedInput
-    Refund?: RefundUpdateManyWithoutWalletNestedInput
-    transfersFrom?: TransferUpdateManyWithoutFromWalletNestedInput
-  }
-
-  export type WalletUncheckedUpdateWithoutTransfersToInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    userId?: StringFieldUpdateOperationsInput | string
-    currencyId?: StringFieldUpdateOperationsInput | string
-    balance?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
-    frozen?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    deposits?: DepositUncheckedUpdateManyWithoutWalletNestedInput
-    withdrawals?: WithdrawalUncheckedUpdateManyWithoutWalletNestedInput
-    Refund?: RefundUncheckedUpdateManyWithoutWalletNestedInput
-    transfersFrom?: TransferUncheckedUpdateManyWithoutFromWalletNestedInput
+    isDeleted?: BoolFilter<"User"> | boolean
   }
 
   export type UserCreateWithoutRefundsInput = {
@@ -27032,12 +29588,14 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     deletedAt?: Date | string | null
-    wallet?: WalletCreateNestedManyWithoutUserInput
+    isDeleted?: boolean
+    ActivityLog?: ActivityLogCreateNestedManyWithoutUserInput
     deposits?: DepositCreateNestedManyWithoutUserInput
+    initiatedExchanges?: ExchangeCreateNestedManyWithoutInitiatorInput
+    LiquidityPool?: LiquidityPoolCreateNestedManyWithoutUserInput
+    wallet?: WalletCreateNestedManyWithoutUserInput
     withdrawals?: WithdrawalCreateNestedManyWithoutUserInput
     transfers?: TransferCreateNestedManyWithoutUserInput
-    initiatedExchanges?: ExchangeCreateNestedManyWithoutInitiatorInput
-    ActivityLog?: ActivityLogCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutRefundsInput = {
@@ -27065,12 +29623,14 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     deletedAt?: Date | string | null
-    wallet?: WalletUncheckedCreateNestedManyWithoutUserInput
+    isDeleted?: boolean
+    ActivityLog?: ActivityLogUncheckedCreateNestedManyWithoutUserInput
     deposits?: DepositUncheckedCreateNestedManyWithoutUserInput
+    initiatedExchanges?: ExchangeUncheckedCreateNestedManyWithoutInitiatorInput
+    LiquidityPool?: LiquidityPoolUncheckedCreateNestedManyWithoutUserInput
+    wallet?: WalletUncheckedCreateNestedManyWithoutUserInput
     withdrawals?: WithdrawalUncheckedCreateNestedManyWithoutUserInput
     transfers?: TransferUncheckedCreateNestedManyWithoutUserInput
-    initiatedExchanges?: ExchangeUncheckedCreateNestedManyWithoutInitiatorInput
-    ActivityLog?: ActivityLogUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutRefundsInput = {
@@ -27084,12 +29644,12 @@ export namespace Prisma {
     frozen?: Decimal | DecimalJsLike | number | string
     createdAt?: Date | string
     updatedAt?: Date | string
-    user: UserCreateNestedOneWithoutWalletInput
-    currency: CurrencyCreateNestedOneWithoutWalletsInput
     deposits?: DepositCreateNestedManyWithoutWalletInput
-    withdrawals?: WithdrawalCreateNestedManyWithoutWalletInput
     transfersFrom?: TransferCreateNestedManyWithoutFromWalletInput
     transfersTo?: TransferCreateNestedManyWithoutToWalletInput
+    currency: CurrencyCreateNestedOneWithoutWalletsInput
+    user: UserCreateNestedOneWithoutWalletInput
+    withdrawals?: WithdrawalCreateNestedManyWithoutWalletInput
   }
 
   export type WalletUncheckedCreateWithoutRefundInput = {
@@ -27101,9 +29661,9 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     deposits?: DepositUncheckedCreateNestedManyWithoutWalletInput
-    withdrawals?: WithdrawalUncheckedCreateNestedManyWithoutWalletInput
     transfersFrom?: TransferUncheckedCreateNestedManyWithoutFromWalletInput
     transfersTo?: TransferUncheckedCreateNestedManyWithoutToWalletInput
+    withdrawals?: WithdrawalUncheckedCreateNestedManyWithoutWalletInput
   }
 
   export type WalletCreateOrConnectWithoutRefundInput = {
@@ -27147,12 +29707,14 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    wallet?: WalletUpdateManyWithoutUserNestedInput
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
+    ActivityLog?: ActivityLogUpdateManyWithoutUserNestedInput
     deposits?: DepositUpdateManyWithoutUserNestedInput
+    initiatedExchanges?: ExchangeUpdateManyWithoutInitiatorNestedInput
+    LiquidityPool?: LiquidityPoolUpdateManyWithoutUserNestedInput
+    wallet?: WalletUpdateManyWithoutUserNestedInput
     withdrawals?: WithdrawalUpdateManyWithoutUserNestedInput
     transfers?: TransferUpdateManyWithoutUserNestedInput
-    initiatedExchanges?: ExchangeUpdateManyWithoutInitiatorNestedInput
-    ActivityLog?: ActivityLogUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutRefundsInput = {
@@ -27180,12 +29742,14 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    wallet?: WalletUncheckedUpdateManyWithoutUserNestedInput
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
+    ActivityLog?: ActivityLogUncheckedUpdateManyWithoutUserNestedInput
     deposits?: DepositUncheckedUpdateManyWithoutUserNestedInput
+    initiatedExchanges?: ExchangeUncheckedUpdateManyWithoutInitiatorNestedInput
+    LiquidityPool?: LiquidityPoolUncheckedUpdateManyWithoutUserNestedInput
+    wallet?: WalletUncheckedUpdateManyWithoutUserNestedInput
     withdrawals?: WithdrawalUncheckedUpdateManyWithoutUserNestedInput
     transfers?: TransferUncheckedUpdateManyWithoutUserNestedInput
-    initiatedExchanges?: ExchangeUncheckedUpdateManyWithoutInitiatorNestedInput
-    ActivityLog?: ActivityLogUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type WalletUpsertWithoutRefundInput = {
@@ -27205,12 +29769,12 @@ export namespace Prisma {
     frozen?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    user?: UserUpdateOneRequiredWithoutWalletNestedInput
-    currency?: CurrencyUpdateOneRequiredWithoutWalletsNestedInput
     deposits?: DepositUpdateManyWithoutWalletNestedInput
-    withdrawals?: WithdrawalUpdateManyWithoutWalletNestedInput
     transfersFrom?: TransferUpdateManyWithoutFromWalletNestedInput
     transfersTo?: TransferUpdateManyWithoutToWalletNestedInput
+    currency?: CurrencyUpdateOneRequiredWithoutWalletsNestedInput
+    user?: UserUpdateOneRequiredWithoutWalletNestedInput
+    withdrawals?: WithdrawalUpdateManyWithoutWalletNestedInput
   }
 
   export type WalletUncheckedUpdateWithoutRefundInput = {
@@ -27222,9 +29786,9 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     deposits?: DepositUncheckedUpdateManyWithoutWalletNestedInput
-    withdrawals?: WithdrawalUncheckedUpdateManyWithoutWalletNestedInput
     transfersFrom?: TransferUncheckedUpdateManyWithoutFromWalletNestedInput
     transfersTo?: TransferUncheckedUpdateManyWithoutToWalletNestedInput
+    withdrawals?: WithdrawalUncheckedUpdateManyWithoutWalletNestedInput
   }
 
   export type CurrencyCreateWithoutExchangesFromInput = {
@@ -27234,11 +29798,13 @@ export namespace Prisma {
     symbol: string
     decimals?: number
     createdAt?: Date | string
-    wallets?: WalletCreateNestedManyWithoutCurrencyInput
+    FromCurrencyPair?: CurrencyPairCreateNestedManyWithoutFromCurrencyInput
+    ToCurrencyPair?: CurrencyPairCreateNestedManyWithoutToCurrencyInput
     exchangesTo?: ExchangeCreateNestedManyWithoutToCurrencyInput
     FeeSetting?: FeeSettingCreateNestedManyWithoutCurrencyInput
-    paymentChannels?: PaymentChannelCreateNestedManyWithoutCurrenciesInput
     LiquidityPool?: LiquidityPoolCreateNestedManyWithoutCurrencyInput
+    wallets?: WalletCreateNestedManyWithoutCurrencyInput
+    paymentChannels?: PaymentChannelCreateNestedManyWithoutCurrenciesInput
   }
 
   export type CurrencyUncheckedCreateWithoutExchangesFromInput = {
@@ -27248,11 +29814,13 @@ export namespace Prisma {
     symbol: string
     decimals?: number
     createdAt?: Date | string
-    wallets?: WalletUncheckedCreateNestedManyWithoutCurrencyInput
+    FromCurrencyPair?: CurrencyPairUncheckedCreateNestedManyWithoutFromCurrencyInput
+    ToCurrencyPair?: CurrencyPairUncheckedCreateNestedManyWithoutToCurrencyInput
     exchangesTo?: ExchangeUncheckedCreateNestedManyWithoutToCurrencyInput
     FeeSetting?: FeeSettingUncheckedCreateNestedManyWithoutCurrencyInput
-    paymentChannels?: PaymentChannelUncheckedCreateNestedManyWithoutCurrenciesInput
     LiquidityPool?: LiquidityPoolUncheckedCreateNestedManyWithoutCurrencyInput
+    wallets?: WalletUncheckedCreateNestedManyWithoutCurrencyInput
+    paymentChannels?: PaymentChannelUncheckedCreateNestedManyWithoutCurrenciesInput
   }
 
   export type CurrencyCreateOrConnectWithoutExchangesFromInput = {
@@ -27267,11 +29835,13 @@ export namespace Prisma {
     symbol: string
     decimals?: number
     createdAt?: Date | string
-    wallets?: WalletCreateNestedManyWithoutCurrencyInput
+    FromCurrencyPair?: CurrencyPairCreateNestedManyWithoutFromCurrencyInput
+    ToCurrencyPair?: CurrencyPairCreateNestedManyWithoutToCurrencyInput
     exchangesFrom?: ExchangeCreateNestedManyWithoutFromCurrencyInput
     FeeSetting?: FeeSettingCreateNestedManyWithoutCurrencyInput
-    paymentChannels?: PaymentChannelCreateNestedManyWithoutCurrenciesInput
     LiquidityPool?: LiquidityPoolCreateNestedManyWithoutCurrencyInput
+    wallets?: WalletCreateNestedManyWithoutCurrencyInput
+    paymentChannels?: PaymentChannelCreateNestedManyWithoutCurrenciesInput
   }
 
   export type CurrencyUncheckedCreateWithoutExchangesToInput = {
@@ -27281,11 +29851,13 @@ export namespace Prisma {
     symbol: string
     decimals?: number
     createdAt?: Date | string
-    wallets?: WalletUncheckedCreateNestedManyWithoutCurrencyInput
+    FromCurrencyPair?: CurrencyPairUncheckedCreateNestedManyWithoutFromCurrencyInput
+    ToCurrencyPair?: CurrencyPairUncheckedCreateNestedManyWithoutToCurrencyInput
     exchangesFrom?: ExchangeUncheckedCreateNestedManyWithoutFromCurrencyInput
     FeeSetting?: FeeSettingUncheckedCreateNestedManyWithoutCurrencyInput
-    paymentChannels?: PaymentChannelUncheckedCreateNestedManyWithoutCurrenciesInput
     LiquidityPool?: LiquidityPoolUncheckedCreateNestedManyWithoutCurrencyInput
+    wallets?: WalletUncheckedCreateNestedManyWithoutCurrencyInput
+    paymentChannels?: PaymentChannelUncheckedCreateNestedManyWithoutCurrenciesInput
   }
 
   export type CurrencyCreateOrConnectWithoutExchangesToInput = {
@@ -27318,12 +29890,14 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     deletedAt?: Date | string | null
-    wallet?: WalletCreateNestedManyWithoutUserInput
+    isDeleted?: boolean
+    ActivityLog?: ActivityLogCreateNestedManyWithoutUserInput
     deposits?: DepositCreateNestedManyWithoutUserInput
+    LiquidityPool?: LiquidityPoolCreateNestedManyWithoutUserInput
+    refunds?: RefundCreateNestedManyWithoutUserInput
+    wallet?: WalletCreateNestedManyWithoutUserInput
     withdrawals?: WithdrawalCreateNestedManyWithoutUserInput
     transfers?: TransferCreateNestedManyWithoutUserInput
-    refunds?: RefundCreateNestedManyWithoutUserInput
-    ActivityLog?: ActivityLogCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutInitiatedExchangesInput = {
@@ -27351,12 +29925,14 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     deletedAt?: Date | string | null
-    wallet?: WalletUncheckedCreateNestedManyWithoutUserInput
+    isDeleted?: boolean
+    ActivityLog?: ActivityLogUncheckedCreateNestedManyWithoutUserInput
     deposits?: DepositUncheckedCreateNestedManyWithoutUserInput
+    LiquidityPool?: LiquidityPoolUncheckedCreateNestedManyWithoutUserInput
+    refunds?: RefundUncheckedCreateNestedManyWithoutUserInput
+    wallet?: WalletUncheckedCreateNestedManyWithoutUserInput
     withdrawals?: WithdrawalUncheckedCreateNestedManyWithoutUserInput
     transfers?: TransferUncheckedCreateNestedManyWithoutUserInput
-    refunds?: RefundUncheckedCreateNestedManyWithoutUserInput
-    ActivityLog?: ActivityLogUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutInitiatedExchangesInput = {
@@ -27382,11 +29958,13 @@ export namespace Prisma {
     symbol?: StringFieldUpdateOperationsInput | string
     decimals?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    wallets?: WalletUpdateManyWithoutCurrencyNestedInput
+    FromCurrencyPair?: CurrencyPairUpdateManyWithoutFromCurrencyNestedInput
+    ToCurrencyPair?: CurrencyPairUpdateManyWithoutToCurrencyNestedInput
     exchangesTo?: ExchangeUpdateManyWithoutToCurrencyNestedInput
     FeeSetting?: FeeSettingUpdateManyWithoutCurrencyNestedInput
-    paymentChannels?: PaymentChannelUpdateManyWithoutCurrenciesNestedInput
     LiquidityPool?: LiquidityPoolUpdateManyWithoutCurrencyNestedInput
+    wallets?: WalletUpdateManyWithoutCurrencyNestedInput
+    paymentChannels?: PaymentChannelUpdateManyWithoutCurrenciesNestedInput
   }
 
   export type CurrencyUncheckedUpdateWithoutExchangesFromInput = {
@@ -27396,11 +29974,13 @@ export namespace Prisma {
     symbol?: StringFieldUpdateOperationsInput | string
     decimals?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    wallets?: WalletUncheckedUpdateManyWithoutCurrencyNestedInput
+    FromCurrencyPair?: CurrencyPairUncheckedUpdateManyWithoutFromCurrencyNestedInput
+    ToCurrencyPair?: CurrencyPairUncheckedUpdateManyWithoutToCurrencyNestedInput
     exchangesTo?: ExchangeUncheckedUpdateManyWithoutToCurrencyNestedInput
     FeeSetting?: FeeSettingUncheckedUpdateManyWithoutCurrencyNestedInput
-    paymentChannels?: PaymentChannelUncheckedUpdateManyWithoutCurrenciesNestedInput
     LiquidityPool?: LiquidityPoolUncheckedUpdateManyWithoutCurrencyNestedInput
+    wallets?: WalletUncheckedUpdateManyWithoutCurrencyNestedInput
+    paymentChannels?: PaymentChannelUncheckedUpdateManyWithoutCurrenciesNestedInput
   }
 
   export type CurrencyUpsertWithoutExchangesToInput = {
@@ -27421,11 +30001,13 @@ export namespace Prisma {
     symbol?: StringFieldUpdateOperationsInput | string
     decimals?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    wallets?: WalletUpdateManyWithoutCurrencyNestedInput
+    FromCurrencyPair?: CurrencyPairUpdateManyWithoutFromCurrencyNestedInput
+    ToCurrencyPair?: CurrencyPairUpdateManyWithoutToCurrencyNestedInput
     exchangesFrom?: ExchangeUpdateManyWithoutFromCurrencyNestedInput
     FeeSetting?: FeeSettingUpdateManyWithoutCurrencyNestedInput
-    paymentChannels?: PaymentChannelUpdateManyWithoutCurrenciesNestedInput
     LiquidityPool?: LiquidityPoolUpdateManyWithoutCurrencyNestedInput
+    wallets?: WalletUpdateManyWithoutCurrencyNestedInput
+    paymentChannels?: PaymentChannelUpdateManyWithoutCurrenciesNestedInput
   }
 
   export type CurrencyUncheckedUpdateWithoutExchangesToInput = {
@@ -27435,11 +30017,13 @@ export namespace Prisma {
     symbol?: StringFieldUpdateOperationsInput | string
     decimals?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    wallets?: WalletUncheckedUpdateManyWithoutCurrencyNestedInput
+    FromCurrencyPair?: CurrencyPairUncheckedUpdateManyWithoutFromCurrencyNestedInput
+    ToCurrencyPair?: CurrencyPairUncheckedUpdateManyWithoutToCurrencyNestedInput
     exchangesFrom?: ExchangeUncheckedUpdateManyWithoutFromCurrencyNestedInput
     FeeSetting?: FeeSettingUncheckedUpdateManyWithoutCurrencyNestedInput
-    paymentChannels?: PaymentChannelUncheckedUpdateManyWithoutCurrenciesNestedInput
     LiquidityPool?: LiquidityPoolUncheckedUpdateManyWithoutCurrencyNestedInput
+    wallets?: WalletUncheckedUpdateManyWithoutCurrencyNestedInput
+    paymentChannels?: PaymentChannelUncheckedUpdateManyWithoutCurrenciesNestedInput
   }
 
   export type UserUpsertWithoutInitiatedExchangesInput = {
@@ -27478,12 +30062,14 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    wallet?: WalletUpdateManyWithoutUserNestedInput
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
+    ActivityLog?: ActivityLogUpdateManyWithoutUserNestedInput
     deposits?: DepositUpdateManyWithoutUserNestedInput
+    LiquidityPool?: LiquidityPoolUpdateManyWithoutUserNestedInput
+    refunds?: RefundUpdateManyWithoutUserNestedInput
+    wallet?: WalletUpdateManyWithoutUserNestedInput
     withdrawals?: WithdrawalUpdateManyWithoutUserNestedInput
     transfers?: TransferUpdateManyWithoutUserNestedInput
-    refunds?: RefundUpdateManyWithoutUserNestedInput
-    ActivityLog?: ActivityLogUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutInitiatedExchangesInput = {
@@ -27511,12 +30097,14 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    wallet?: WalletUncheckedUpdateManyWithoutUserNestedInput
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
+    ActivityLog?: ActivityLogUncheckedUpdateManyWithoutUserNestedInput
     deposits?: DepositUncheckedUpdateManyWithoutUserNestedInput
+    LiquidityPool?: LiquidityPoolUncheckedUpdateManyWithoutUserNestedInput
+    refunds?: RefundUncheckedUpdateManyWithoutUserNestedInput
+    wallet?: WalletUncheckedUpdateManyWithoutUserNestedInput
     withdrawals?: WithdrawalUncheckedUpdateManyWithoutUserNestedInput
     transfers?: TransferUncheckedUpdateManyWithoutUserNestedInput
-    refunds?: RefundUncheckedUpdateManyWithoutUserNestedInput
-    ActivityLog?: ActivityLogUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserCreateWithoutActivityLogInput = {
@@ -27544,12 +30132,14 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     deletedAt?: Date | string | null
-    wallet?: WalletCreateNestedManyWithoutUserInput
+    isDeleted?: boolean
     deposits?: DepositCreateNestedManyWithoutUserInput
+    initiatedExchanges?: ExchangeCreateNestedManyWithoutInitiatorInput
+    LiquidityPool?: LiquidityPoolCreateNestedManyWithoutUserInput
+    refunds?: RefundCreateNestedManyWithoutUserInput
+    wallet?: WalletCreateNestedManyWithoutUserInput
     withdrawals?: WithdrawalCreateNestedManyWithoutUserInput
     transfers?: TransferCreateNestedManyWithoutUserInput
-    refunds?: RefundCreateNestedManyWithoutUserInput
-    initiatedExchanges?: ExchangeCreateNestedManyWithoutInitiatorInput
   }
 
   export type UserUncheckedCreateWithoutActivityLogInput = {
@@ -27577,12 +30167,14 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     deletedAt?: Date | string | null
-    wallet?: WalletUncheckedCreateNestedManyWithoutUserInput
+    isDeleted?: boolean
     deposits?: DepositUncheckedCreateNestedManyWithoutUserInput
+    initiatedExchanges?: ExchangeUncheckedCreateNestedManyWithoutInitiatorInput
+    LiquidityPool?: LiquidityPoolUncheckedCreateNestedManyWithoutUserInput
+    refunds?: RefundUncheckedCreateNestedManyWithoutUserInput
+    wallet?: WalletUncheckedCreateNestedManyWithoutUserInput
     withdrawals?: WithdrawalUncheckedCreateNestedManyWithoutUserInput
     transfers?: TransferUncheckedCreateNestedManyWithoutUserInput
-    refunds?: RefundUncheckedCreateNestedManyWithoutUserInput
-    initiatedExchanges?: ExchangeUncheckedCreateNestedManyWithoutInitiatorInput
   }
 
   export type UserCreateOrConnectWithoutActivityLogInput = {
@@ -27626,12 +30218,14 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    wallet?: WalletUpdateManyWithoutUserNestedInput
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
     deposits?: DepositUpdateManyWithoutUserNestedInput
+    initiatedExchanges?: ExchangeUpdateManyWithoutInitiatorNestedInput
+    LiquidityPool?: LiquidityPoolUpdateManyWithoutUserNestedInput
+    refunds?: RefundUpdateManyWithoutUserNestedInput
+    wallet?: WalletUpdateManyWithoutUserNestedInput
     withdrawals?: WithdrawalUpdateManyWithoutUserNestedInput
     transfers?: TransferUpdateManyWithoutUserNestedInput
-    refunds?: RefundUpdateManyWithoutUserNestedInput
-    initiatedExchanges?: ExchangeUpdateManyWithoutInitiatorNestedInput
   }
 
   export type UserUncheckedUpdateWithoutActivityLogInput = {
@@ -27659,12 +30253,14 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    wallet?: WalletUncheckedUpdateManyWithoutUserNestedInput
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
     deposits?: DepositUncheckedUpdateManyWithoutUserNestedInput
+    initiatedExchanges?: ExchangeUncheckedUpdateManyWithoutInitiatorNestedInput
+    LiquidityPool?: LiquidityPoolUncheckedUpdateManyWithoutUserNestedInput
+    refunds?: RefundUncheckedUpdateManyWithoutUserNestedInput
+    wallet?: WalletUncheckedUpdateManyWithoutUserNestedInput
     withdrawals?: WithdrawalUncheckedUpdateManyWithoutUserNestedInput
     transfers?: TransferUncheckedUpdateManyWithoutUserNestedInput
-    refunds?: RefundUncheckedUpdateManyWithoutUserNestedInput
-    initiatedExchanges?: ExchangeUncheckedUpdateManyWithoutInitiatorNestedInput
   }
 
   export type CurrencyCreateWithoutFeeSettingInput = {
@@ -27674,11 +30270,13 @@ export namespace Prisma {
     symbol: string
     decimals?: number
     createdAt?: Date | string
-    wallets?: WalletCreateNestedManyWithoutCurrencyInput
+    FromCurrencyPair?: CurrencyPairCreateNestedManyWithoutFromCurrencyInput
+    ToCurrencyPair?: CurrencyPairCreateNestedManyWithoutToCurrencyInput
     exchangesFrom?: ExchangeCreateNestedManyWithoutFromCurrencyInput
     exchangesTo?: ExchangeCreateNestedManyWithoutToCurrencyInput
-    paymentChannels?: PaymentChannelCreateNestedManyWithoutCurrenciesInput
     LiquidityPool?: LiquidityPoolCreateNestedManyWithoutCurrencyInput
+    wallets?: WalletCreateNestedManyWithoutCurrencyInput
+    paymentChannels?: PaymentChannelCreateNestedManyWithoutCurrenciesInput
   }
 
   export type CurrencyUncheckedCreateWithoutFeeSettingInput = {
@@ -27688,11 +30286,13 @@ export namespace Prisma {
     symbol: string
     decimals?: number
     createdAt?: Date | string
-    wallets?: WalletUncheckedCreateNestedManyWithoutCurrencyInput
+    FromCurrencyPair?: CurrencyPairUncheckedCreateNestedManyWithoutFromCurrencyInput
+    ToCurrencyPair?: CurrencyPairUncheckedCreateNestedManyWithoutToCurrencyInput
     exchangesFrom?: ExchangeUncheckedCreateNestedManyWithoutFromCurrencyInput
     exchangesTo?: ExchangeUncheckedCreateNestedManyWithoutToCurrencyInput
-    paymentChannels?: PaymentChannelUncheckedCreateNestedManyWithoutCurrenciesInput
     LiquidityPool?: LiquidityPoolUncheckedCreateNestedManyWithoutCurrencyInput
+    wallets?: WalletUncheckedCreateNestedManyWithoutCurrencyInput
+    paymentChannels?: PaymentChannelUncheckedCreateNestedManyWithoutCurrenciesInput
   }
 
   export type CurrencyCreateOrConnectWithoutFeeSettingInput = {
@@ -27718,11 +30318,13 @@ export namespace Prisma {
     symbol?: StringFieldUpdateOperationsInput | string
     decimals?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    wallets?: WalletUpdateManyWithoutCurrencyNestedInput
+    FromCurrencyPair?: CurrencyPairUpdateManyWithoutFromCurrencyNestedInput
+    ToCurrencyPair?: CurrencyPairUpdateManyWithoutToCurrencyNestedInput
     exchangesFrom?: ExchangeUpdateManyWithoutFromCurrencyNestedInput
     exchangesTo?: ExchangeUpdateManyWithoutToCurrencyNestedInput
-    paymentChannels?: PaymentChannelUpdateManyWithoutCurrenciesNestedInput
     LiquidityPool?: LiquidityPoolUpdateManyWithoutCurrencyNestedInput
+    wallets?: WalletUpdateManyWithoutCurrencyNestedInput
+    paymentChannels?: PaymentChannelUpdateManyWithoutCurrenciesNestedInput
   }
 
   export type CurrencyUncheckedUpdateWithoutFeeSettingInput = {
@@ -27732,20 +30334,24 @@ export namespace Prisma {
     symbol?: StringFieldUpdateOperationsInput | string
     decimals?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    wallets?: WalletUncheckedUpdateManyWithoutCurrencyNestedInput
+    FromCurrencyPair?: CurrencyPairUncheckedUpdateManyWithoutFromCurrencyNestedInput
+    ToCurrencyPair?: CurrencyPairUncheckedUpdateManyWithoutToCurrencyNestedInput
     exchangesFrom?: ExchangeUncheckedUpdateManyWithoutFromCurrencyNestedInput
     exchangesTo?: ExchangeUncheckedUpdateManyWithoutToCurrencyNestedInput
-    paymentChannels?: PaymentChannelUncheckedUpdateManyWithoutCurrenciesNestedInput
     LiquidityPool?: LiquidityPoolUncheckedUpdateManyWithoutCurrencyNestedInput
+    wallets?: WalletUncheckedUpdateManyWithoutCurrencyNestedInput
+    paymentChannels?: PaymentChannelUncheckedUpdateManyWithoutCurrenciesNestedInput
   }
 
-  export type WalletCreateManyUserInput = {
+  export type ActivityLogCreateManyUserInput = {
     id?: string
-    currencyId: string
-    balance?: Decimal | DecimalJsLike | number | string
-    frozen?: Decimal | DecimalJsLike | number | string
+    action: string
+    referenceId?: string | null
+    metadata?: NullableJsonNullValueInput | InputJsonValue
+    role?: $Enums.UserRole | null
+    ipAddress?: string | null
+    userAgent?: string | null
     createdAt?: Date | string
-    updatedAt?: Date | string
   }
 
   export type DepositCreateManyUserInput = {
@@ -27759,32 +30365,7 @@ export namespace Prisma {
     completedAt?: Date | string | null
     failedAt?: Date | string | null
     paymentChannelId: string
-    bridgeTransferid?: string | null
-  }
-
-  export type WithdrawalCreateManyUserInput = {
-    id?: string
-    walletId: string
-    amount: Decimal | DecimalJsLike | number | string
-    fee?: Decimal | DecimalJsLike | number | string
-    status?: $Enums.WithdrawalStatus
-    reference?: string | null
-    createdAt?: Date | string
-    completedAt?: Date | string | null
-    failedAt?: Date | string | null
-    paymentChannelId: string
-    bridgeTransferid?: string | null
-  }
-
-  export type RefundCreateManyUserInput = {
-    id?: string
-    walletId: string
-    amount: Decimal | DecimalJsLike | number | string
-    reason?: string | null
-    status?: $Enums.RefundStatus
-    createdAt?: Date | string
-    completedAt?: Date | string | null
-    failedAt?: Date | string | null
+    documentUrl?: string | null
   }
 
   export type ExchangeCreateManyInitiatorInput = {
@@ -27801,52 +30382,83 @@ export namespace Prisma {
     failedAt?: Date | string | null
   }
 
-  export type ActivityLogCreateManyUserInput = {
+  export type LiquidityPoolCreateManyUserInput = {
     id?: string
-    action: string
-    referenceId?: string | null
-    metadata?: NullableJsonNullValueInput | InputJsonValue
-    role?: $Enums.UserRole | null
-    ipAddress?: string | null
-    userAgent?: string | null
+    paymentChannelId: string
+    currencyId: string
+    address: string
+    balance?: Decimal | DecimalJsLike | number | string
+    frozen?: Decimal | DecimalJsLike | number | string
+    updatedAt?: Date | string
+  }
+
+  export type RefundCreateManyUserInput = {
+    id?: string
+    walletId: string
+    amount: Decimal | DecimalJsLike | number | string
+    reason?: string | null
+    status?: $Enums.RefundStatus
     createdAt?: Date | string
+    completedAt?: Date | string | null
+    failedAt?: Date | string | null
   }
 
-  export type WalletUpdateWithoutUserInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    balance?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
-    frozen?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    currency?: CurrencyUpdateOneRequiredWithoutWalletsNestedInput
-    deposits?: DepositUpdateManyWithoutWalletNestedInput
-    withdrawals?: WithdrawalUpdateManyWithoutWalletNestedInput
-    Refund?: RefundUpdateManyWithoutWalletNestedInput
-    transfersFrom?: TransferUpdateManyWithoutFromWalletNestedInput
-    transfersTo?: TransferUpdateManyWithoutToWalletNestedInput
+  export type WalletCreateManyUserInput = {
+    id?: string
+    currencyId: string
+    balance?: Decimal | DecimalJsLike | number | string
+    frozen?: Decimal | DecimalJsLike | number | string
+    createdAt?: Date | string
+    updatedAt?: Date | string
   }
 
-  export type WalletUncheckedUpdateWithoutUserInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    currencyId?: StringFieldUpdateOperationsInput | string
-    balance?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
-    frozen?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    deposits?: DepositUncheckedUpdateManyWithoutWalletNestedInput
-    withdrawals?: WithdrawalUncheckedUpdateManyWithoutWalletNestedInput
-    Refund?: RefundUncheckedUpdateManyWithoutWalletNestedInput
-    transfersFrom?: TransferUncheckedUpdateManyWithoutFromWalletNestedInput
-    transfersTo?: TransferUncheckedUpdateManyWithoutToWalletNestedInput
+  export type WithdrawalCreateManyUserInput = {
+    id?: string
+    walletId: string
+    amount: Decimal | DecimalJsLike | number | string
+    fee?: Decimal | DecimalJsLike | number | string
+    status?: $Enums.WithdrawalStatus
+    reference?: string | null
+    createdAt?: Date | string
+    completedAt?: Date | string | null
+    failedAt?: Date | string | null
+    paymentChannelId: string
+    bridgeTransferId?: string | null
+    receiverAddress: string
+    addressOwnerName: string
   }
 
-  export type WalletUncheckedUpdateManyWithoutUserInput = {
+  export type ActivityLogUpdateWithoutUserInput = {
     id?: StringFieldUpdateOperationsInput | string
-    currencyId?: StringFieldUpdateOperationsInput | string
-    balance?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
-    frozen?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    action?: StringFieldUpdateOperationsInput | string
+    referenceId?: NullableStringFieldUpdateOperationsInput | string | null
+    metadata?: NullableJsonNullValueInput | InputJsonValue
+    role?: NullableEnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole | null
+    ipAddress?: NullableStringFieldUpdateOperationsInput | string | null
+    userAgent?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type ActivityLogUncheckedUpdateWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    action?: StringFieldUpdateOperationsInput | string
+    referenceId?: NullableStringFieldUpdateOperationsInput | string | null
+    metadata?: NullableJsonNullValueInput | InputJsonValue
+    role?: NullableEnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole | null
+    ipAddress?: NullableStringFieldUpdateOperationsInput | string | null
+    userAgent?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type ActivityLogUncheckedUpdateManyWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    action?: StringFieldUpdateOperationsInput | string
+    referenceId?: NullableStringFieldUpdateOperationsInput | string | null
+    metadata?: NullableJsonNullValueInput | InputJsonValue
+    role?: NullableEnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole | null
+    ipAddress?: NullableStringFieldUpdateOperationsInput | string | null
+    userAgent?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type DepositUpdateWithoutUserInput = {
@@ -27858,8 +30470,9 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     failedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    documentUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    BridgeTransfer?: BridgeTransferUpdateOneWithoutDepositNestedInput
     paymentChannel?: PaymentChannelUpdateOneRequiredWithoutDepositNestedInput
-    bridgeTransfer?: BridgeTransferUpdateOneWithoutDepositNestedInput
     wallet?: WalletUpdateOneRequiredWithoutDepositsNestedInput
   }
 
@@ -27874,7 +30487,8 @@ export namespace Prisma {
     completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     failedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     paymentChannelId?: StringFieldUpdateOperationsInput | string
-    bridgeTransferid?: NullableStringFieldUpdateOperationsInput | string | null
+    documentUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    BridgeTransfer?: BridgeTransferUncheckedUpdateOneWithoutDepositNestedInput
   }
 
   export type DepositUncheckedUpdateManyWithoutUserInput = {
@@ -27888,121 +30502,7 @@ export namespace Prisma {
     completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     failedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     paymentChannelId?: StringFieldUpdateOperationsInput | string
-    bridgeTransferid?: NullableStringFieldUpdateOperationsInput | string | null
-  }
-
-  export type WithdrawalUpdateWithoutUserInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    amount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
-    fee?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
-    status?: EnumWithdrawalStatusFieldUpdateOperationsInput | $Enums.WithdrawalStatus
-    reference?: NullableStringFieldUpdateOperationsInput | string | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    failedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    paymentChannel?: PaymentChannelUpdateOneRequiredWithoutWithdrawalNestedInput
-    bridgeTransfer?: BridgeTransferUpdateOneWithoutWithdrawalNestedInput
-    wallet?: WalletUpdateOneRequiredWithoutWithdrawalsNestedInput
-  }
-
-  export type WithdrawalUncheckedUpdateWithoutUserInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    walletId?: StringFieldUpdateOperationsInput | string
-    amount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
-    fee?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
-    status?: EnumWithdrawalStatusFieldUpdateOperationsInput | $Enums.WithdrawalStatus
-    reference?: NullableStringFieldUpdateOperationsInput | string | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    failedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    paymentChannelId?: StringFieldUpdateOperationsInput | string
-    bridgeTransferid?: NullableStringFieldUpdateOperationsInput | string | null
-  }
-
-  export type WithdrawalUncheckedUpdateManyWithoutUserInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    walletId?: StringFieldUpdateOperationsInput | string
-    amount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
-    fee?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
-    status?: EnumWithdrawalStatusFieldUpdateOperationsInput | $Enums.WithdrawalStatus
-    reference?: NullableStringFieldUpdateOperationsInput | string | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    failedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    paymentChannelId?: StringFieldUpdateOperationsInput | string
-    bridgeTransferid?: NullableStringFieldUpdateOperationsInput | string | null
-  }
-
-  export type TransferUpdateWithoutUserInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    amount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
-    fee?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
-    status?: EnumTransferStatusFieldUpdateOperationsInput | $Enums.TransferStatus
-    note?: NullableStringFieldUpdateOperationsInput | string | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    failedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    fromWallet?: WalletUpdateOneRequiredWithoutTransfersFromNestedInput
-    toWallet?: WalletUpdateOneRequiredWithoutTransfersToNestedInput
-  }
-
-  export type TransferUncheckedUpdateWithoutUserInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    fromWalletId?: StringFieldUpdateOperationsInput | string
-    toWalletId?: StringFieldUpdateOperationsInput | string
-    amount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
-    fee?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
-    status?: EnumTransferStatusFieldUpdateOperationsInput | $Enums.TransferStatus
-    note?: NullableStringFieldUpdateOperationsInput | string | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    failedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  }
-
-  export type TransferUncheckedUpdateManyWithoutUserInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    fromWalletId?: StringFieldUpdateOperationsInput | string
-    toWalletId?: StringFieldUpdateOperationsInput | string
-    amount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
-    fee?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
-    status?: EnumTransferStatusFieldUpdateOperationsInput | $Enums.TransferStatus
-    note?: NullableStringFieldUpdateOperationsInput | string | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    failedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  }
-
-  export type RefundUpdateWithoutUserInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    amount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
-    reason?: NullableStringFieldUpdateOperationsInput | string | null
-    status?: EnumRefundStatusFieldUpdateOperationsInput | $Enums.RefundStatus
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    failedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    wallet?: WalletUpdateOneRequiredWithoutRefundNestedInput
-  }
-
-  export type RefundUncheckedUpdateWithoutUserInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    walletId?: StringFieldUpdateOperationsInput | string
-    amount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
-    reason?: NullableStringFieldUpdateOperationsInput | string | null
-    status?: EnumRefundStatusFieldUpdateOperationsInput | $Enums.RefundStatus
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    failedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  }
-
-  export type RefundUncheckedUpdateManyWithoutUserInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    walletId?: StringFieldUpdateOperationsInput | string
-    amount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
-    reason?: NullableStringFieldUpdateOperationsInput | string | null
-    status?: EnumRefundStatusFieldUpdateOperationsInput | $Enums.RefundStatus
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    failedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    documentUrl?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type ExchangeUpdateWithoutInitiatorInput = {
@@ -28047,37 +30547,195 @@ export namespace Prisma {
     failedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   }
 
-  export type ActivityLogUpdateWithoutUserInput = {
+  export type LiquidityPoolUpdateWithoutUserInput = {
     id?: StringFieldUpdateOperationsInput | string
-    action?: StringFieldUpdateOperationsInput | string
-    referenceId?: NullableStringFieldUpdateOperationsInput | string | null
-    metadata?: NullableJsonNullValueInput | InputJsonValue
-    role?: NullableEnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole | null
-    ipAddress?: NullableStringFieldUpdateOperationsInput | string | null
-    userAgent?: NullableStringFieldUpdateOperationsInput | string | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    address?: StringFieldUpdateOperationsInput | string
+    balance?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    frozen?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    BridgeTransfer?: BridgeTransferUpdateManyWithoutLiquidityPoolNestedInput
+    currency?: CurrencyUpdateOneRequiredWithoutLiquidityPoolNestedInput
+    paymentChannel?: PaymentChannelUpdateOneRequiredWithoutLiquidityPoolNestedInput
   }
 
-  export type ActivityLogUncheckedUpdateWithoutUserInput = {
+  export type LiquidityPoolUncheckedUpdateWithoutUserInput = {
     id?: StringFieldUpdateOperationsInput | string
-    action?: StringFieldUpdateOperationsInput | string
-    referenceId?: NullableStringFieldUpdateOperationsInput | string | null
-    metadata?: NullableJsonNullValueInput | InputJsonValue
-    role?: NullableEnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole | null
-    ipAddress?: NullableStringFieldUpdateOperationsInput | string | null
-    userAgent?: NullableStringFieldUpdateOperationsInput | string | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    paymentChannelId?: StringFieldUpdateOperationsInput | string
+    currencyId?: StringFieldUpdateOperationsInput | string
+    address?: StringFieldUpdateOperationsInput | string
+    balance?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    frozen?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    BridgeTransfer?: BridgeTransferUncheckedUpdateManyWithoutLiquidityPoolNestedInput
   }
 
-  export type ActivityLogUncheckedUpdateManyWithoutUserInput = {
+  export type LiquidityPoolUncheckedUpdateManyWithoutUserInput = {
     id?: StringFieldUpdateOperationsInput | string
-    action?: StringFieldUpdateOperationsInput | string
-    referenceId?: NullableStringFieldUpdateOperationsInput | string | null
-    metadata?: NullableJsonNullValueInput | InputJsonValue
-    role?: NullableEnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole | null
-    ipAddress?: NullableStringFieldUpdateOperationsInput | string | null
-    userAgent?: NullableStringFieldUpdateOperationsInput | string | null
+    paymentChannelId?: StringFieldUpdateOperationsInput | string
+    currencyId?: StringFieldUpdateOperationsInput | string
+    address?: StringFieldUpdateOperationsInput | string
+    balance?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    frozen?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type RefundUpdateWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    amount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    reason?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumRefundStatusFieldUpdateOperationsInput | $Enums.RefundStatus
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    failedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    wallet?: WalletUpdateOneRequiredWithoutRefundNestedInput
+  }
+
+  export type RefundUncheckedUpdateWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    walletId?: StringFieldUpdateOperationsInput | string
+    amount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    reason?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumRefundStatusFieldUpdateOperationsInput | $Enums.RefundStatus
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    failedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  }
+
+  export type RefundUncheckedUpdateManyWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    walletId?: StringFieldUpdateOperationsInput | string
+    amount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    reason?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumRefundStatusFieldUpdateOperationsInput | $Enums.RefundStatus
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    failedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  }
+
+  export type WalletUpdateWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    balance?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    frozen?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    deposits?: DepositUpdateManyWithoutWalletNestedInput
+    Refund?: RefundUpdateManyWithoutWalletNestedInput
+    transfersFrom?: TransferUpdateManyWithoutFromWalletNestedInput
+    transfersTo?: TransferUpdateManyWithoutToWalletNestedInput
+    currency?: CurrencyUpdateOneRequiredWithoutWalletsNestedInput
+    withdrawals?: WithdrawalUpdateManyWithoutWalletNestedInput
+  }
+
+  export type WalletUncheckedUpdateWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    currencyId?: StringFieldUpdateOperationsInput | string
+    balance?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    frozen?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    deposits?: DepositUncheckedUpdateManyWithoutWalletNestedInput
+    Refund?: RefundUncheckedUpdateManyWithoutWalletNestedInput
+    transfersFrom?: TransferUncheckedUpdateManyWithoutFromWalletNestedInput
+    transfersTo?: TransferUncheckedUpdateManyWithoutToWalletNestedInput
+    withdrawals?: WithdrawalUncheckedUpdateManyWithoutWalletNestedInput
+  }
+
+  export type WalletUncheckedUpdateManyWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    currencyId?: StringFieldUpdateOperationsInput | string
+    balance?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    frozen?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type WithdrawalUpdateWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    amount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    fee?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    status?: EnumWithdrawalStatusFieldUpdateOperationsInput | $Enums.WithdrawalStatus
+    reference?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    failedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    bridgeTransferId?: NullableStringFieldUpdateOperationsInput | string | null
+    receiverAddress?: StringFieldUpdateOperationsInput | string
+    addressOwnerName?: StringFieldUpdateOperationsInput | string
+    BridgeTransfer?: BridgeTransferUpdateOneWithoutWithdrawalNestedInput
+    paymentChannel?: PaymentChannelUpdateOneRequiredWithoutWithdrawalNestedInput
+    wallet?: WalletUpdateOneRequiredWithoutWithdrawalsNestedInput
+  }
+
+  export type WithdrawalUncheckedUpdateWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    walletId?: StringFieldUpdateOperationsInput | string
+    amount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    fee?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    status?: EnumWithdrawalStatusFieldUpdateOperationsInput | $Enums.WithdrawalStatus
+    reference?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    failedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    paymentChannelId?: StringFieldUpdateOperationsInput | string
+    bridgeTransferId?: NullableStringFieldUpdateOperationsInput | string | null
+    receiverAddress?: StringFieldUpdateOperationsInput | string
+    addressOwnerName?: StringFieldUpdateOperationsInput | string
+    BridgeTransfer?: BridgeTransferUncheckedUpdateOneWithoutWithdrawalNestedInput
+  }
+
+  export type WithdrawalUncheckedUpdateManyWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    walletId?: StringFieldUpdateOperationsInput | string
+    amount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    fee?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    status?: EnumWithdrawalStatusFieldUpdateOperationsInput | $Enums.WithdrawalStatus
+    reference?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    failedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    paymentChannelId?: StringFieldUpdateOperationsInput | string
+    bridgeTransferId?: NullableStringFieldUpdateOperationsInput | string | null
+    receiverAddress?: StringFieldUpdateOperationsInput | string
+    addressOwnerName?: StringFieldUpdateOperationsInput | string
+  }
+
+  export type TransferUpdateWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    amount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    fee?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    status?: EnumTransferStatusFieldUpdateOperationsInput | $Enums.TransferStatus
+    note?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    failedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    fromWallet?: WalletUpdateOneRequiredWithoutTransfersFromNestedInput
+    toWallet?: WalletUpdateOneRequiredWithoutTransfersToNestedInput
+  }
+
+  export type TransferUncheckedUpdateWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    fromWalletId?: StringFieldUpdateOperationsInput | string
+    toWalletId?: StringFieldUpdateOperationsInput | string
+    amount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    fee?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    status?: EnumTransferStatusFieldUpdateOperationsInput | $Enums.TransferStatus
+    note?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    failedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  }
+
+  export type TransferUncheckedUpdateManyWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    fromWalletId?: StringFieldUpdateOperationsInput | string
+    toWalletId?: StringFieldUpdateOperationsInput | string
+    amount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    fee?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    status?: EnumTransferStatusFieldUpdateOperationsInput | $Enums.TransferStatus
+    note?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    failedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   }
 
   export type DepositCreateManyPaymentChannelInput = {
@@ -28091,7 +30749,17 @@ export namespace Prisma {
     createdAt?: Date | string
     completedAt?: Date | string | null
     failedAt?: Date | string | null
-    bridgeTransferid?: string | null
+    documentUrl?: string | null
+  }
+
+  export type LiquidityPoolCreateManyPaymentChannelInput = {
+    id?: string
+    currencyId: string
+    address: string
+    balance?: Decimal | DecimalJsLike | number | string
+    frozen?: Decimal | DecimalJsLike | number | string
+    updatedAt?: Date | string
+    userId: string
   }
 
   export type WithdrawalCreateManyPaymentChannelInput = {
@@ -28105,53 +30773,9 @@ export namespace Prisma {
     createdAt?: Date | string
     completedAt?: Date | string | null
     failedAt?: Date | string | null
-    bridgeTransferid?: string | null
-  }
-
-  export type LiquidityPoolCreateManyPaymentChannelInput = {
-    id?: string
-    currencyId: string
-    address: string
-    balance?: Decimal | DecimalJsLike | number | string
-    frozen?: Decimal | DecimalJsLike | number | string
-    updatedAt?: Date | string
-  }
-
-  export type CurrencyUpdateWithoutPaymentChannelsInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    code?: StringFieldUpdateOperationsInput | string
-    name?: StringFieldUpdateOperationsInput | string
-    symbol?: StringFieldUpdateOperationsInput | string
-    decimals?: IntFieldUpdateOperationsInput | number
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    wallets?: WalletUpdateManyWithoutCurrencyNestedInput
-    exchangesFrom?: ExchangeUpdateManyWithoutFromCurrencyNestedInput
-    exchangesTo?: ExchangeUpdateManyWithoutToCurrencyNestedInput
-    FeeSetting?: FeeSettingUpdateManyWithoutCurrencyNestedInput
-    LiquidityPool?: LiquidityPoolUpdateManyWithoutCurrencyNestedInput
-  }
-
-  export type CurrencyUncheckedUpdateWithoutPaymentChannelsInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    code?: StringFieldUpdateOperationsInput | string
-    name?: StringFieldUpdateOperationsInput | string
-    symbol?: StringFieldUpdateOperationsInput | string
-    decimals?: IntFieldUpdateOperationsInput | number
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    wallets?: WalletUncheckedUpdateManyWithoutCurrencyNestedInput
-    exchangesFrom?: ExchangeUncheckedUpdateManyWithoutFromCurrencyNestedInput
-    exchangesTo?: ExchangeUncheckedUpdateManyWithoutToCurrencyNestedInput
-    FeeSetting?: FeeSettingUncheckedUpdateManyWithoutCurrencyNestedInput
-    LiquidityPool?: LiquidityPoolUncheckedUpdateManyWithoutCurrencyNestedInput
-  }
-
-  export type CurrencyUncheckedUpdateManyWithoutPaymentChannelsInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    code?: StringFieldUpdateOperationsInput | string
-    name?: StringFieldUpdateOperationsInput | string
-    symbol?: StringFieldUpdateOperationsInput | string
-    decimals?: IntFieldUpdateOperationsInput | number
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    bridgeTransferId?: string | null
+    receiverAddress: string
+    addressOwnerName: string
   }
 
   export type DepositUpdateWithoutPaymentChannelInput = {
@@ -28163,7 +30787,8 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     failedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    bridgeTransfer?: BridgeTransferUpdateOneWithoutDepositNestedInput
+    documentUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    BridgeTransfer?: BridgeTransferUpdateOneWithoutDepositNestedInput
     user?: UserUpdateOneRequiredWithoutDepositsNestedInput
     wallet?: WalletUpdateOneRequiredWithoutDepositsNestedInput
   }
@@ -28179,7 +30804,8 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     failedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    bridgeTransferid?: NullableStringFieldUpdateOperationsInput | string | null
+    documentUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    BridgeTransfer?: BridgeTransferUncheckedUpdateOneWithoutDepositNestedInput
   }
 
   export type DepositUncheckedUpdateManyWithoutPaymentChannelInput = {
@@ -28193,7 +30819,39 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     failedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    bridgeTransferid?: NullableStringFieldUpdateOperationsInput | string | null
+    documentUrl?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
+  export type LiquidityPoolUpdateWithoutPaymentChannelInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    address?: StringFieldUpdateOperationsInput | string
+    balance?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    frozen?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    BridgeTransfer?: BridgeTransferUpdateManyWithoutLiquidityPoolNestedInput
+    currency?: CurrencyUpdateOneRequiredWithoutLiquidityPoolNestedInput
+    user?: UserUpdateOneRequiredWithoutLiquidityPoolNestedInput
+  }
+
+  export type LiquidityPoolUncheckedUpdateWithoutPaymentChannelInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    currencyId?: StringFieldUpdateOperationsInput | string
+    address?: StringFieldUpdateOperationsInput | string
+    balance?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    frozen?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    userId?: StringFieldUpdateOperationsInput | string
+    BridgeTransfer?: BridgeTransferUncheckedUpdateManyWithoutLiquidityPoolNestedInput
+  }
+
+  export type LiquidityPoolUncheckedUpdateManyWithoutPaymentChannelInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    currencyId?: StringFieldUpdateOperationsInput | string
+    address?: StringFieldUpdateOperationsInput | string
+    balance?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    frozen?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    userId?: StringFieldUpdateOperationsInput | string
   }
 
   export type WithdrawalUpdateWithoutPaymentChannelInput = {
@@ -28205,7 +30863,10 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     failedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    bridgeTransfer?: BridgeTransferUpdateOneWithoutWithdrawalNestedInput
+    bridgeTransferId?: NullableStringFieldUpdateOperationsInput | string | null
+    receiverAddress?: StringFieldUpdateOperationsInput | string
+    addressOwnerName?: StringFieldUpdateOperationsInput | string
+    BridgeTransfer?: BridgeTransferUpdateOneWithoutWithdrawalNestedInput
     user?: UserUpdateOneRequiredWithoutWithdrawalsNestedInput
     wallet?: WalletUpdateOneRequiredWithoutWithdrawalsNestedInput
   }
@@ -28221,7 +30882,10 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     failedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    bridgeTransferid?: NullableStringFieldUpdateOperationsInput | string | null
+    bridgeTransferId?: NullableStringFieldUpdateOperationsInput | string | null
+    receiverAddress?: StringFieldUpdateOperationsInput | string
+    addressOwnerName?: StringFieldUpdateOperationsInput | string
+    BridgeTransfer?: BridgeTransferUncheckedUpdateOneWithoutWithdrawalNestedInput
   }
 
   export type WithdrawalUncheckedUpdateManyWithoutPaymentChannelInput = {
@@ -28235,41 +30899,68 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     failedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    bridgeTransferid?: NullableStringFieldUpdateOperationsInput | string | null
+    bridgeTransferId?: NullableStringFieldUpdateOperationsInput | string | null
+    receiverAddress?: StringFieldUpdateOperationsInput | string
+    addressOwnerName?: StringFieldUpdateOperationsInput | string
   }
 
-  export type LiquidityPoolUpdateWithoutPaymentChannelInput = {
+  export type CurrencyUpdateWithoutPaymentChannelsInput = {
     id?: StringFieldUpdateOperationsInput | string
-    address?: StringFieldUpdateOperationsInput | string
-    balance?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
-    frozen?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    currency?: CurrencyUpdateOneRequiredWithoutLiquidityPoolNestedInput
+    code?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    symbol?: StringFieldUpdateOperationsInput | string
+    decimals?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    FromCurrencyPair?: CurrencyPairUpdateManyWithoutFromCurrencyNestedInput
+    ToCurrencyPair?: CurrencyPairUpdateManyWithoutToCurrencyNestedInput
+    exchangesFrom?: ExchangeUpdateManyWithoutFromCurrencyNestedInput
+    exchangesTo?: ExchangeUpdateManyWithoutToCurrencyNestedInput
+    FeeSetting?: FeeSettingUpdateManyWithoutCurrencyNestedInput
+    LiquidityPool?: LiquidityPoolUpdateManyWithoutCurrencyNestedInput
+    wallets?: WalletUpdateManyWithoutCurrencyNestedInput
   }
 
-  export type LiquidityPoolUncheckedUpdateWithoutPaymentChannelInput = {
+  export type CurrencyUncheckedUpdateWithoutPaymentChannelsInput = {
     id?: StringFieldUpdateOperationsInput | string
-    currencyId?: StringFieldUpdateOperationsInput | string
-    address?: StringFieldUpdateOperationsInput | string
-    balance?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
-    frozen?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    code?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    symbol?: StringFieldUpdateOperationsInput | string
+    decimals?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    FromCurrencyPair?: CurrencyPairUncheckedUpdateManyWithoutFromCurrencyNestedInput
+    ToCurrencyPair?: CurrencyPairUncheckedUpdateManyWithoutToCurrencyNestedInput
+    exchangesFrom?: ExchangeUncheckedUpdateManyWithoutFromCurrencyNestedInput
+    exchangesTo?: ExchangeUncheckedUpdateManyWithoutToCurrencyNestedInput
+    FeeSetting?: FeeSettingUncheckedUpdateManyWithoutCurrencyNestedInput
+    LiquidityPool?: LiquidityPoolUncheckedUpdateManyWithoutCurrencyNestedInput
+    wallets?: WalletUncheckedUpdateManyWithoutCurrencyNestedInput
   }
 
-  export type LiquidityPoolUncheckedUpdateManyWithoutPaymentChannelInput = {
+  export type CurrencyUncheckedUpdateManyWithoutPaymentChannelsInput = {
     id?: StringFieldUpdateOperationsInput | string
-    currencyId?: StringFieldUpdateOperationsInput | string
-    address?: StringFieldUpdateOperationsInput | string
-    balance?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
-    frozen?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    code?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    symbol?: StringFieldUpdateOperationsInput | string
+    decimals?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
-  export type WalletCreateManyCurrencyInput = {
+  export type CurrencyPairCreateManyFromCurrencyInput = {
     id?: string
-    userId: string
-    balance?: Decimal | DecimalJsLike | number | string
-    frozen?: Decimal | DecimalJsLike | number | string
+    toCurrencyId: string
+    rate: Decimal | DecimalJsLike | number | string
+    isInverseRate?: boolean
+    isActive?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type CurrencyPairCreateManyToCurrencyInput = {
+    id?: string
+    fromCurrencyId: string
+    rate: Decimal | DecimalJsLike | number | string
+    isInverseRate?: boolean
+    isActive?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -28317,41 +31008,74 @@ export namespace Prisma {
     balance?: Decimal | DecimalJsLike | number | string
     frozen?: Decimal | DecimalJsLike | number | string
     updatedAt?: Date | string
+    userId: string
   }
 
-  export type WalletUpdateWithoutCurrencyInput = {
+  export type WalletCreateManyCurrencyInput = {
+    id?: string
+    userId: string
+    balance?: Decimal | DecimalJsLike | number | string
+    frozen?: Decimal | DecimalJsLike | number | string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type CurrencyPairUpdateWithoutFromCurrencyInput = {
     id?: StringFieldUpdateOperationsInput | string
-    balance?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
-    frozen?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    rate?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    isInverseRate?: BoolFieldUpdateOperationsInput | boolean
+    isActive?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    user?: UserUpdateOneRequiredWithoutWalletNestedInput
-    deposits?: DepositUpdateManyWithoutWalletNestedInput
-    withdrawals?: WithdrawalUpdateManyWithoutWalletNestedInput
-    Refund?: RefundUpdateManyWithoutWalletNestedInput
-    transfersFrom?: TransferUpdateManyWithoutFromWalletNestedInput
-    transfersTo?: TransferUpdateManyWithoutToWalletNestedInput
+    toCurrency?: CurrencyUpdateOneRequiredWithoutToCurrencyPairNestedInput
   }
 
-  export type WalletUncheckedUpdateWithoutCurrencyInput = {
+  export type CurrencyPairUncheckedUpdateWithoutFromCurrencyInput = {
     id?: StringFieldUpdateOperationsInput | string
-    userId?: StringFieldUpdateOperationsInput | string
-    balance?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
-    frozen?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    toCurrencyId?: StringFieldUpdateOperationsInput | string
+    rate?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    isInverseRate?: BoolFieldUpdateOperationsInput | boolean
+    isActive?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    deposits?: DepositUncheckedUpdateManyWithoutWalletNestedInput
-    withdrawals?: WithdrawalUncheckedUpdateManyWithoutWalletNestedInput
-    Refund?: RefundUncheckedUpdateManyWithoutWalletNestedInput
-    transfersFrom?: TransferUncheckedUpdateManyWithoutFromWalletNestedInput
-    transfersTo?: TransferUncheckedUpdateManyWithoutToWalletNestedInput
   }
 
-  export type WalletUncheckedUpdateManyWithoutCurrencyInput = {
+  export type CurrencyPairUncheckedUpdateManyWithoutFromCurrencyInput = {
     id?: StringFieldUpdateOperationsInput | string
-    userId?: StringFieldUpdateOperationsInput | string
-    balance?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
-    frozen?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    toCurrencyId?: StringFieldUpdateOperationsInput | string
+    rate?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    isInverseRate?: BoolFieldUpdateOperationsInput | boolean
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type CurrencyPairUpdateWithoutToCurrencyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    rate?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    isInverseRate?: BoolFieldUpdateOperationsInput | boolean
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    fromCurrency?: CurrencyUpdateOneRequiredWithoutFromCurrencyPairNestedInput
+  }
+
+  export type CurrencyPairUncheckedUpdateWithoutToCurrencyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    fromCurrencyId?: StringFieldUpdateOperationsInput | string
+    rate?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    isInverseRate?: BoolFieldUpdateOperationsInput | boolean
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type CurrencyPairUncheckedUpdateManyWithoutToCurrencyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    fromCurrencyId?: StringFieldUpdateOperationsInput | string
+    rate?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    isInverseRate?: BoolFieldUpdateOperationsInput | boolean
+    isActive?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -28464,42 +31188,15 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
-  export type PaymentChannelUpdateWithoutCurrenciesInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    name?: StringFieldUpdateOperationsInput | string
-    description?: NullableStringFieldUpdateOperationsInput | string | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    bridgeTransfers?: BridgeTransferUpdateOneWithoutPaymentChannelNestedInput
-    Deposit?: DepositUpdateManyWithoutPaymentChannelNestedInput
-    Withdrawal?: WithdrawalUpdateManyWithoutPaymentChannelNestedInput
-    LiquidityPool?: LiquidityPoolUpdateManyWithoutPaymentChannelNestedInput
-  }
-
-  export type PaymentChannelUncheckedUpdateWithoutCurrenciesInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    name?: StringFieldUpdateOperationsInput | string
-    description?: NullableStringFieldUpdateOperationsInput | string | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    bridgeTransfers?: BridgeTransferUncheckedUpdateOneWithoutPaymentChannelNestedInput
-    Deposit?: DepositUncheckedUpdateManyWithoutPaymentChannelNestedInput
-    Withdrawal?: WithdrawalUncheckedUpdateManyWithoutPaymentChannelNestedInput
-    LiquidityPool?: LiquidityPoolUncheckedUpdateManyWithoutPaymentChannelNestedInput
-  }
-
-  export type PaymentChannelUncheckedUpdateManyWithoutCurrenciesInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    name?: StringFieldUpdateOperationsInput | string
-    description?: NullableStringFieldUpdateOperationsInput | string | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
   export type LiquidityPoolUpdateWithoutCurrencyInput = {
     id?: StringFieldUpdateOperationsInput | string
     address?: StringFieldUpdateOperationsInput | string
     balance?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     frozen?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    BridgeTransfer?: BridgeTransferUpdateManyWithoutLiquidityPoolNestedInput
     paymentChannel?: PaymentChannelUpdateOneRequiredWithoutLiquidityPoolNestedInput
+    user?: UserUpdateOneRequiredWithoutLiquidityPoolNestedInput
   }
 
   export type LiquidityPoolUncheckedUpdateWithoutCurrencyInput = {
@@ -28509,6 +31206,8 @@ export namespace Prisma {
     balance?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     frozen?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    userId?: StringFieldUpdateOperationsInput | string
+    BridgeTransfer?: BridgeTransferUncheckedUpdateManyWithoutLiquidityPoolNestedInput
   }
 
   export type LiquidityPoolUncheckedUpdateManyWithoutCurrencyInput = {
@@ -28518,6 +31217,115 @@ export namespace Prisma {
     balance?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     frozen?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    userId?: StringFieldUpdateOperationsInput | string
+  }
+
+  export type WalletUpdateWithoutCurrencyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    balance?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    frozen?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    deposits?: DepositUpdateManyWithoutWalletNestedInput
+    Refund?: RefundUpdateManyWithoutWalletNestedInput
+    transfersFrom?: TransferUpdateManyWithoutFromWalletNestedInput
+    transfersTo?: TransferUpdateManyWithoutToWalletNestedInput
+    user?: UserUpdateOneRequiredWithoutWalletNestedInput
+    withdrawals?: WithdrawalUpdateManyWithoutWalletNestedInput
+  }
+
+  export type WalletUncheckedUpdateWithoutCurrencyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    balance?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    frozen?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    deposits?: DepositUncheckedUpdateManyWithoutWalletNestedInput
+    Refund?: RefundUncheckedUpdateManyWithoutWalletNestedInput
+    transfersFrom?: TransferUncheckedUpdateManyWithoutFromWalletNestedInput
+    transfersTo?: TransferUncheckedUpdateManyWithoutToWalletNestedInput
+    withdrawals?: WithdrawalUncheckedUpdateManyWithoutWalletNestedInput
+  }
+
+  export type WalletUncheckedUpdateManyWithoutCurrencyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    balance?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    frozen?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type PaymentChannelUpdateWithoutCurrenciesInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    Deposit?: DepositUpdateManyWithoutPaymentChannelNestedInput
+    LiquidityPool?: LiquidityPoolUpdateManyWithoutPaymentChannelNestedInput
+    Withdrawal?: WithdrawalUpdateManyWithoutPaymentChannelNestedInput
+  }
+
+  export type PaymentChannelUncheckedUpdateWithoutCurrenciesInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    Deposit?: DepositUncheckedUpdateManyWithoutPaymentChannelNestedInput
+    LiquidityPool?: LiquidityPoolUncheckedUpdateManyWithoutPaymentChannelNestedInput
+    Withdrawal?: WithdrawalUncheckedUpdateManyWithoutPaymentChannelNestedInput
+  }
+
+  export type PaymentChannelUncheckedUpdateManyWithoutCurrenciesInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type BridgeTransferCreateManyLiquidityPoolInput = {
+    id?: string
+    status?: $Enums.BridgeStatus
+    createdAt?: Date | string
+    completedAt?: Date | string | null
+    failedAt?: Date | string | null
+    depositId?: string | null
+    withdrawalId?: string | null
+    amount?: Decimal | DecimalJsLike | number | string
+  }
+
+  export type BridgeTransferUpdateWithoutLiquidityPoolInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    status?: EnumBridgeStatusFieldUpdateOperationsInput | $Enums.BridgeStatus
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    failedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    amount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    deposit?: DepositUpdateOneWithoutBridgeTransferNestedInput
+    withdrawal?: WithdrawalUpdateOneWithoutBridgeTransferNestedInput
+  }
+
+  export type BridgeTransferUncheckedUpdateWithoutLiquidityPoolInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    status?: EnumBridgeStatusFieldUpdateOperationsInput | $Enums.BridgeStatus
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    failedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    depositId?: NullableStringFieldUpdateOperationsInput | string | null
+    withdrawalId?: NullableStringFieldUpdateOperationsInput | string | null
+    amount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+  }
+
+  export type BridgeTransferUncheckedUpdateManyWithoutLiquidityPoolInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    status?: EnumBridgeStatusFieldUpdateOperationsInput | $Enums.BridgeStatus
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    failedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    depositId?: NullableStringFieldUpdateOperationsInput | string | null
+    withdrawalId?: NullableStringFieldUpdateOperationsInput | string | null
+    amount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
   }
 
   export type DepositCreateManyWalletInput = {
@@ -28531,21 +31339,7 @@ export namespace Prisma {
     completedAt?: Date | string | null
     failedAt?: Date | string | null
     paymentChannelId: string
-    bridgeTransferid?: string | null
-  }
-
-  export type WithdrawalCreateManyWalletInput = {
-    id?: string
-    userId: string
-    amount: Decimal | DecimalJsLike | number | string
-    fee?: Decimal | DecimalJsLike | number | string
-    status?: $Enums.WithdrawalStatus
-    reference?: string | null
-    createdAt?: Date | string
-    completedAt?: Date | string | null
-    failedAt?: Date | string | null
-    paymentChannelId: string
-    bridgeTransferid?: string | null
+    documentUrl?: string | null
   }
 
   export type RefundCreateManyWalletInput = {
@@ -28583,6 +31377,22 @@ export namespace Prisma {
     failedAt?: Date | string | null
   }
 
+  export type WithdrawalCreateManyWalletInput = {
+    id?: string
+    userId: string
+    amount: Decimal | DecimalJsLike | number | string
+    fee?: Decimal | DecimalJsLike | number | string
+    status?: $Enums.WithdrawalStatus
+    reference?: string | null
+    createdAt?: Date | string
+    completedAt?: Date | string | null
+    failedAt?: Date | string | null
+    paymentChannelId: string
+    bridgeTransferId?: string | null
+    receiverAddress: string
+    addressOwnerName: string
+  }
+
   export type DepositUpdateWithoutWalletInput = {
     id?: StringFieldUpdateOperationsInput | string
     amount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
@@ -28592,8 +31402,9 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     failedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    documentUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    BridgeTransfer?: BridgeTransferUpdateOneWithoutDepositNestedInput
     paymentChannel?: PaymentChannelUpdateOneRequiredWithoutDepositNestedInput
-    bridgeTransfer?: BridgeTransferUpdateOneWithoutDepositNestedInput
     user?: UserUpdateOneRequiredWithoutDepositsNestedInput
   }
 
@@ -28608,7 +31419,8 @@ export namespace Prisma {
     completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     failedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     paymentChannelId?: StringFieldUpdateOperationsInput | string
-    bridgeTransferid?: NullableStringFieldUpdateOperationsInput | string | null
+    documentUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    BridgeTransfer?: BridgeTransferUncheckedUpdateOneWithoutDepositNestedInput
   }
 
   export type DepositUncheckedUpdateManyWithoutWalletInput = {
@@ -28622,49 +31434,7 @@ export namespace Prisma {
     completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     failedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     paymentChannelId?: StringFieldUpdateOperationsInput | string
-    bridgeTransferid?: NullableStringFieldUpdateOperationsInput | string | null
-  }
-
-  export type WithdrawalUpdateWithoutWalletInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    amount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
-    fee?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
-    status?: EnumWithdrawalStatusFieldUpdateOperationsInput | $Enums.WithdrawalStatus
-    reference?: NullableStringFieldUpdateOperationsInput | string | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    failedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    paymentChannel?: PaymentChannelUpdateOneRequiredWithoutWithdrawalNestedInput
-    bridgeTransfer?: BridgeTransferUpdateOneWithoutWithdrawalNestedInput
-    user?: UserUpdateOneRequiredWithoutWithdrawalsNestedInput
-  }
-
-  export type WithdrawalUncheckedUpdateWithoutWalletInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    userId?: StringFieldUpdateOperationsInput | string
-    amount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
-    fee?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
-    status?: EnumWithdrawalStatusFieldUpdateOperationsInput | $Enums.WithdrawalStatus
-    reference?: NullableStringFieldUpdateOperationsInput | string | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    failedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    paymentChannelId?: StringFieldUpdateOperationsInput | string
-    bridgeTransferid?: NullableStringFieldUpdateOperationsInput | string | null
-  }
-
-  export type WithdrawalUncheckedUpdateManyWithoutWalletInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    userId?: StringFieldUpdateOperationsInput | string
-    amount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
-    fee?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
-    status?: EnumWithdrawalStatusFieldUpdateOperationsInput | $Enums.WithdrawalStatus
-    reference?: NullableStringFieldUpdateOperationsInput | string | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    failedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    paymentChannelId?: StringFieldUpdateOperationsInput | string
-    bridgeTransferid?: NullableStringFieldUpdateOperationsInput | string | null
+    documentUrl?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type RefundUpdateWithoutWalletInput = {
@@ -28709,8 +31479,8 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     failedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    User?: UserUpdateManyWithoutTransfersNestedInput
     toWallet?: WalletUpdateOneRequiredWithoutTransfersToNestedInput
+    User?: UserUpdateManyWithoutTransfersNestedInput
   }
 
   export type TransferUncheckedUpdateWithoutFromWalletInput = {
@@ -28747,8 +31517,8 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     failedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    User?: UserUpdateManyWithoutTransfersNestedInput
     fromWallet?: WalletUpdateOneRequiredWithoutTransfersFromNestedInput
+    User?: UserUpdateManyWithoutTransfersNestedInput
   }
 
   export type TransferUncheckedUpdateWithoutToWalletInput = {
@@ -28776,77 +31546,7 @@ export namespace Prisma {
     failedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   }
 
-  export type DepositCreateManyBridgeTransferInput = {
-    id?: string
-    userId: string
-    walletId: string
-    amount: Decimal | DecimalJsLike | number | string
-    fee?: Decimal | DecimalJsLike | number | string
-    status?: $Enums.DepositStatus
-    reference?: string | null
-    createdAt?: Date | string
-    completedAt?: Date | string | null
-    failedAt?: Date | string | null
-    paymentChannelId: string
-  }
-
-  export type WithdrawalCreateManyBridgeTransferInput = {
-    id?: string
-    userId: string
-    walletId: string
-    amount: Decimal | DecimalJsLike | number | string
-    fee?: Decimal | DecimalJsLike | number | string
-    status?: $Enums.WithdrawalStatus
-    reference?: string | null
-    createdAt?: Date | string
-    completedAt?: Date | string | null
-    failedAt?: Date | string | null
-    paymentChannelId: string
-  }
-
-  export type DepositUpdateWithoutBridgeTransferInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    amount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
-    fee?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
-    status?: EnumDepositStatusFieldUpdateOperationsInput | $Enums.DepositStatus
-    reference?: NullableStringFieldUpdateOperationsInput | string | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    failedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    paymentChannel?: PaymentChannelUpdateOneRequiredWithoutDepositNestedInput
-    user?: UserUpdateOneRequiredWithoutDepositsNestedInput
-    wallet?: WalletUpdateOneRequiredWithoutDepositsNestedInput
-  }
-
-  export type DepositUncheckedUpdateWithoutBridgeTransferInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    userId?: StringFieldUpdateOperationsInput | string
-    walletId?: StringFieldUpdateOperationsInput | string
-    amount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
-    fee?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
-    status?: EnumDepositStatusFieldUpdateOperationsInput | $Enums.DepositStatus
-    reference?: NullableStringFieldUpdateOperationsInput | string | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    failedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    paymentChannelId?: StringFieldUpdateOperationsInput | string
-  }
-
-  export type DepositUncheckedUpdateManyWithoutBridgeTransferInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    userId?: StringFieldUpdateOperationsInput | string
-    walletId?: StringFieldUpdateOperationsInput | string
-    amount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
-    fee?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
-    status?: EnumDepositStatusFieldUpdateOperationsInput | $Enums.DepositStatus
-    reference?: NullableStringFieldUpdateOperationsInput | string | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    failedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    paymentChannelId?: StringFieldUpdateOperationsInput | string
-  }
-
-  export type WithdrawalUpdateWithoutBridgeTransferInput = {
+  export type WithdrawalUpdateWithoutWalletInput = {
     id?: StringFieldUpdateOperationsInput | string
     amount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     fee?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
@@ -28855,15 +31555,17 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     failedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    bridgeTransferId?: NullableStringFieldUpdateOperationsInput | string | null
+    receiverAddress?: StringFieldUpdateOperationsInput | string
+    addressOwnerName?: StringFieldUpdateOperationsInput | string
+    BridgeTransfer?: BridgeTransferUpdateOneWithoutWithdrawalNestedInput
     paymentChannel?: PaymentChannelUpdateOneRequiredWithoutWithdrawalNestedInput
     user?: UserUpdateOneRequiredWithoutWithdrawalsNestedInput
-    wallet?: WalletUpdateOneRequiredWithoutWithdrawalsNestedInput
   }
 
-  export type WithdrawalUncheckedUpdateWithoutBridgeTransferInput = {
+  export type WithdrawalUncheckedUpdateWithoutWalletInput = {
     id?: StringFieldUpdateOperationsInput | string
     userId?: StringFieldUpdateOperationsInput | string
-    walletId?: StringFieldUpdateOperationsInput | string
     amount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     fee?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     status?: EnumWithdrawalStatusFieldUpdateOperationsInput | $Enums.WithdrawalStatus
@@ -28872,12 +31574,15 @@ export namespace Prisma {
     completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     failedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     paymentChannelId?: StringFieldUpdateOperationsInput | string
+    bridgeTransferId?: NullableStringFieldUpdateOperationsInput | string | null
+    receiverAddress?: StringFieldUpdateOperationsInput | string
+    addressOwnerName?: StringFieldUpdateOperationsInput | string
+    BridgeTransfer?: BridgeTransferUncheckedUpdateOneWithoutWithdrawalNestedInput
   }
 
-  export type WithdrawalUncheckedUpdateManyWithoutBridgeTransferInput = {
+  export type WithdrawalUncheckedUpdateManyWithoutWalletInput = {
     id?: StringFieldUpdateOperationsInput | string
     userId?: StringFieldUpdateOperationsInput | string
-    walletId?: StringFieldUpdateOperationsInput | string
     amount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     fee?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     status?: EnumWithdrawalStatusFieldUpdateOperationsInput | $Enums.WithdrawalStatus
@@ -28886,6 +31591,9 @@ export namespace Prisma {
     completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     failedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     paymentChannelId?: StringFieldUpdateOperationsInput | string
+    bridgeTransferId?: NullableStringFieldUpdateOperationsInput | string | null
+    receiverAddress?: StringFieldUpdateOperationsInput | string
+    addressOwnerName?: StringFieldUpdateOperationsInput | string
   }
 
   export type UserUpdateWithoutTransfersInput = {
@@ -28913,12 +31621,14 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    wallet?: WalletUpdateManyWithoutUserNestedInput
-    deposits?: DepositUpdateManyWithoutUserNestedInput
-    withdrawals?: WithdrawalUpdateManyWithoutUserNestedInput
-    refunds?: RefundUpdateManyWithoutUserNestedInput
-    initiatedExchanges?: ExchangeUpdateManyWithoutInitiatorNestedInput
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
     ActivityLog?: ActivityLogUpdateManyWithoutUserNestedInput
+    deposits?: DepositUpdateManyWithoutUserNestedInput
+    initiatedExchanges?: ExchangeUpdateManyWithoutInitiatorNestedInput
+    LiquidityPool?: LiquidityPoolUpdateManyWithoutUserNestedInput
+    refunds?: RefundUpdateManyWithoutUserNestedInput
+    wallet?: WalletUpdateManyWithoutUserNestedInput
+    withdrawals?: WithdrawalUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutTransfersInput = {
@@ -28946,12 +31656,14 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    wallet?: WalletUncheckedUpdateManyWithoutUserNestedInput
-    deposits?: DepositUncheckedUpdateManyWithoutUserNestedInput
-    withdrawals?: WithdrawalUncheckedUpdateManyWithoutUserNestedInput
-    refunds?: RefundUncheckedUpdateManyWithoutUserNestedInput
-    initiatedExchanges?: ExchangeUncheckedUpdateManyWithoutInitiatorNestedInput
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
     ActivityLog?: ActivityLogUncheckedUpdateManyWithoutUserNestedInput
+    deposits?: DepositUncheckedUpdateManyWithoutUserNestedInput
+    initiatedExchanges?: ExchangeUncheckedUpdateManyWithoutInitiatorNestedInput
+    LiquidityPool?: LiquidityPoolUncheckedUpdateManyWithoutUserNestedInput
+    refunds?: RefundUncheckedUpdateManyWithoutUserNestedInput
+    wallet?: WalletUncheckedUpdateManyWithoutUserNestedInput
+    withdrawals?: WithdrawalUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateManyWithoutTransfersInput = {
@@ -28979,6 +31691,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
   }
 
 

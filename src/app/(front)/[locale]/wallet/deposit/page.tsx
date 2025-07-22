@@ -1,7 +1,7 @@
 import { getDeposits } from "@/api/wallet/deposit/action";
 import AddDepositDialog from "@/components/dialog/wallet/deposit/add-deposit-dialog";
 import DepositTable from "@/components/wallet/deposit/deposit-table";
-import { Deposit } from "@/types/deposit";
+import { Deposit } from "@/types/wallet/deposit";
 
 export default async function page() {
   try {
@@ -20,6 +20,11 @@ export default async function page() {
       </div>
     );
   } catch (error) {
-    return <></>;
+    console.error("[DEPOSIT_PAGE]", error);
+    return (
+      <div className="w-full h-full flex justify-center items-center">
+        Internal server error
+      </div>
+    );
   }
 }
