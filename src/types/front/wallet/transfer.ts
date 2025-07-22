@@ -1,8 +1,8 @@
-import { Refund as DatabaseRefund } from "@/generated/prisma";
-import { Currency } from "../currency";
+import { Transfer as DatabaseTransfer } from "@/generated/prisma";
+import { Currency } from "../../currency";
 
-export type Refund = Omit<
-  DatabaseRefund,
+export type Transfer = Omit<
+  DatabaseTransfer,
   "createdAt" | "failedAt" | "completedAt"
 > & {
   createdAt: string;
@@ -14,13 +14,13 @@ export type Refund = Omit<
   };
 };
 
-export type CreateRefund = {
+export type CreateTransfer = {
   amount: number;
   walletId?: string;
   paymentChannelId: string;
 };
 
-export type UpdateRefund = {
+export type UpdateTransfer = {
   amount?: number;
   walletId?: string;
   paymentChannelId?: string;

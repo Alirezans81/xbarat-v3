@@ -4,7 +4,7 @@ import {
   CreateDeposit,
   GetDepositsFilters,
   UpdateDeposit,
-} from "@/types/wallet/deposit";
+} from "@/types/front/wallet/deposit";
 
 export const depositRepository = {
   create: async (data: CreateDeposit) => {

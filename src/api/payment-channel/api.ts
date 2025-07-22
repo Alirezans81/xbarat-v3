@@ -3,7 +3,7 @@ import routes from "@/api/routes";
 import {
   CreatePaymentChannel,
   UpdatePaymentChannel,
-} from "@/types/paymentChannel";
+} from "@/types/front/paymentChannel";
 
 const api = routes();
 

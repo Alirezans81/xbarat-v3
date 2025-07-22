@@ -8,7 +8,7 @@ import {
 } from "@/lib/back/utils/globalResponses.utils";
 import { jwtUtils } from "@/lib/back/utils/jwt.utils";
 import { NextRequest, NextResponse } from "next/server";
-import { GetWithdrawalsFilters } from "@/types/wallet/withdrawal";
+import { GetWithdrawalsFilters } from "@/types/front/wallet/withdrawal";
 
 export async function POST(request: NextRequest) {
   try {

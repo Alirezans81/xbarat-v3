@@ -1,6 +1,6 @@
 import axios from "axios";
 import routes from "@/api/routes";
-import { CreateUser, LoginUser } from "@/types/user";
+import { CreateUser, LoginUser } from "@/types/front/user";
 
 const api = routes();
 

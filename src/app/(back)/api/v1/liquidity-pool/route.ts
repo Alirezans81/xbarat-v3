@@ -6,7 +6,7 @@ import {
   UnauthorizedResponse,
 } from "@/lib/back/utils/globalResponses.utils";
 import { jwtUtils } from "@/lib/back/utils/jwt.utils";
-import { GetLiquidityPoolsFilters } from "@/types/liquidityPool";
+import { GetLiquidityPoolsFilters } from "@/types/front/liquidityPool";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function GET(request: NextRequest) {

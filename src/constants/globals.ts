@@ -8,7 +8,7 @@ import {
   Wallet,
   WavesLadder,
 } from "lucide-react";
-import { CountryCode } from "../types/globals";
+import { CountryCode } from "../types/front/globals";
 
 export const countryCodes: CountryCode[] = [
   { code: "US", name: "United States", phoneCode: "+1", symbol: "🇺🇸" },
@@ -76,7 +76,6 @@ export const adminLoggedInNavbarItems = [
     url: "/dashboard",
     icon: LayoutDashboard,
   },
-  
 ];
 export const providerLoggedInNavbarItems = [
   {

@@ -1,4 +1,4 @@
-import { FetchProps } from "@/types/globals";
+import { FetchProps } from "@/types/front/globals";
 import { toast } from "sonner";
 import { useTranslations } from "next-intl";
 import { useAuthStore } from "@/lib/front/stores/auth";
@@ -14,7 +14,7 @@ import {
   UpdateWithdrawal,
   GetWithdrawalsFilters,
   Withdrawal,
-} from "@/types/wallet/withdrawal";
+} from "@/types/front/wallet/withdrawal";
 
 type GetWithdrawalsProps = {
   setWithdrawals: (value: Withdrawal[]) => void;

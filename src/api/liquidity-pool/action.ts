@@ -1,8 +1,8 @@
 "use server";
 
 import routes from "@/api/routes";
-import { defaultToken, Token } from "@/types/globals";
-import { LiquidityPool } from "@/types/liquidityPool";
+import { defaultToken, Token } from "@/types/front/globals";
+import { LiquidityPool } from "@/types/front/liquidityPool";
 import axios from "axios";
 import { cookies } from "next/headers";
 

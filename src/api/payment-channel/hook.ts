@@ -1,4 +1,4 @@
-import { FetchProps } from "@/types/globals";
+import { FetchProps } from "@/types/front/globals";
 import { toast } from "sonner";
 import { useTranslations } from "next-intl";
 import { useAuthStore } from "@/lib/front/stores/auth";
@@ -14,7 +14,7 @@ import {
   UpdatePaymentChannel,
   GetPaymentChannelsFilters,
   PaymentChannel,
-} from "@/types/paymentChannel";
+} from "@/types/front/paymentChannel";
 
 type GetPaymentChannelsProps = {
   setPaymentChannels: (value: PaymentChannel[]) => void;

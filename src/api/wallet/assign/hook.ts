@@ -1,10 +1,10 @@
-import { FetchProps } from "@/types/globals";
+import { FetchProps } from "@/types/front/globals";
 import { toast } from "sonner";
 import { useTranslations } from "next-intl";
 import { useAuthStore } from "@/lib/front/stores/auth";
 import { assign } from "./api";
 import { useCheckTokenExpiration } from "@/hooks/use-auth";
-import { Assign } from "@/types/wallet/assign";
+import { Assign } from "@/types/front/wallet/assign";
 
 export const useAssign = () => {
   const t = useTranslations("ApiErrors");

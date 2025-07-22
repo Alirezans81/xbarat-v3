@@ -13,7 +13,7 @@ import { Input } from "../../ui/input";
 import { useRouter } from "@/i18n/navigation";
 import { Upload } from "lucide-react";
 import { useCreatePaymentChannel } from "@/api/payment-channel/hook";
-import { Currency } from "@/types/currency";
+import { Currency } from "@/types/front/currency";
 import { useGetCurrencies } from "@/api/currency/hook";
 import {
   Select,

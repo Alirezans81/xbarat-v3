@@ -3,7 +3,7 @@ import {
   CreateBridgeTransfer,
   GetBridgeTransfersFilters,
   UpdateBridgeTransfer,
-} from "@/types/bridgeTransfer";
+} from "@/types/front/bridgeTransfer";
 
 export const bridgeTransferRepository = {
   create: async (data: CreateBridgeTransfer) => {

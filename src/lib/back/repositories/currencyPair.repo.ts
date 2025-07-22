@@ -4,7 +4,7 @@ import {
   CreateCurrencyPair,
   GetCurrencyPairsFilters,
   UpdateCurrencyPair,
-} from "@/types/currencyPair";
+} from "@/types/front/currencyPair";
 
 export const currencyPairRepository = {
   create: async (data: CreateCurrencyPair) => {

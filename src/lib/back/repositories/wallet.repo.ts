@@ -1,4 +1,4 @@
-import { GetWalletsFilters } from "@/types/wallet";
+import { GetWalletsFilters } from "@/types/front/wallet";
 import { prisma } from "../prisma";
 
 export const walletRepository = {

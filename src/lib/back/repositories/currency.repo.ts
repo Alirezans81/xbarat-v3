@@ -4,7 +4,7 @@ import {
   CreateCurrency,
   GetCurrenciesFilters,
   UpdateCurrency,
-} from "@/types/currency";
+} from "@/types/front/currency";
 
 export const currencyRepository = {
   create: async (data: CreateCurrency) => {

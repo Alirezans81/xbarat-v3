@@ -12,9 +12,9 @@ import {
 import { Input } from "../../ui/input";
 import { useCreateCurrency, useUpdateCurrency } from "@/api/currency/hook";
 import { useRouter } from "@/i18n/navigation";
-import { Currency } from "@/types/currency";
+import { Currency } from "@/types/front/currency";
 import { useGetPaymentChannels } from "@/api/payment-channel/hook";
-import { PaymentChannel } from "@/types/paymentChannel";
+import { PaymentChannel } from "@/types/front/paymentChannel";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Label } from "@/components/ui/label";
 

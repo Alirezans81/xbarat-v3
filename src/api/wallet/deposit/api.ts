@@ -4,7 +4,7 @@ import {
   CreateDeposit,
   UpdateDeposit,
   UploadDepositDocument,
-} from "@/types/wallet/deposit";
+} from "@/types/front/wallet/deposit";
 
 const api = routes();
 

@@ -1,5 +1,5 @@
 import { Transfer as DatabaseTransfer } from "@/generated/prisma";
-import { Currency } from "../currency";
+import { Currency } from "../../currency";
 
 export type Transfer = Omit<
   DatabaseTransfer,

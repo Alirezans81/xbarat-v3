@@ -1,6 +1,9 @@
 import axios from "axios";
 import routes from "@/api/routes";
-import { CreateCurrencyPair, UpdateCurrencyPair } from "@/types/currencyPair";
+import {
+  CreateCurrencyPair,
+  UpdateCurrencyPair,
+} from "@/types/front/currencyPair";
 
 const api = routes();
 

@@ -1,7 +1,7 @@
 "use client";
 
 import { Checkbox } from "@/components/ui/checkbox";
-import { Deposit } from "@/types/wallet/deposit";
+import { Deposit } from "@/types/front/wallet/deposit";
 import { ColumnDef } from "@tanstack/react-table";
 
 export const depositColumns: ColumnDef<Deposit>[] = [

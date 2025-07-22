@@ -19,7 +19,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { useUpdateDeposit } from "@/api/wallet/deposit/hook";
-import { Deposit } from "@/types/wallet/deposit";
+import { Deposit } from "@/types/front/wallet/deposit";
 
 interface Props {
   data: Deposit;

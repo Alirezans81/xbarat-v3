@@ -1,6 +1,6 @@
 import axios from "axios";
 import routes from "@/api/routes";
-import { Assign } from "@/types/wallet/assign";
+import { Assign } from "@/types/front/wallet/assign";
 
 const api = routes();
 

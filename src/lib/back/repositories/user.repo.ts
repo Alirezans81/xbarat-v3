@@ -1,4 +1,4 @@
-import { GetUsersFilters } from "@/types/user";
+import { GetUsersFilters } from "@/types/front/user";
 import { prisma } from "../prisma";
 
 export const userRepository = {

@@ -13,7 +13,7 @@ import {
 import { Skeleton } from "@/components/ui/skeleton";
 import { useCurrentTime } from "@/hooks/use-time";
 import { Link } from "@/i18n/navigation";
-import { Currency } from "@/types/currency";
+import { Currency } from "@/types/front/currency";
 import { ArrowRightLeft } from "lucide-react";
 import { useEffect, useState } from "react";
 

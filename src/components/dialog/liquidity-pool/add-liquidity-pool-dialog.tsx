@@ -11,7 +11,7 @@ import {
 } from "../../ui/dialog";
 import { Input } from "../../ui/input";
 import { useRouter } from "@/i18n/navigation";
-import { Currency } from "@/types/currency";
+import { Currency } from "@/types/front/currency";
 import {
   Select,
   SelectContent,

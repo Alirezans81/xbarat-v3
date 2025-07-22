@@ -9,7 +9,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { BridgeTransfer } from "../../types/bridgeTransfer";
+import { BridgeTransfer } from "../../types/front/bridgeTransfer";
 import { useTranslations } from "next-intl";
 
 interface Props {

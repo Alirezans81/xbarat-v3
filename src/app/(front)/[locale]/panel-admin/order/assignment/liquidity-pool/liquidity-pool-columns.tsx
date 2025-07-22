@@ -1,7 +1,7 @@
 "use client";
 
 import { Checkbox } from "@/components/ui/checkbox";
-import { LiquidityPool } from "@/types/liquidityPool";
+import { LiquidityPool } from "@/types/front/liquidityPool";
 import { ColumnDef } from "@tanstack/react-table";
 
 export const liquidityPoolColumns: ColumnDef<LiquidityPool>[] = [

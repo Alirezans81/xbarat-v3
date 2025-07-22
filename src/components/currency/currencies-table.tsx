@@ -1,6 +1,6 @@
 "use client";
 
-import { Currency } from "@/types/currency";
+import { Currency } from "@/types/front/currency";
 import {
   Table,
   TableBody,

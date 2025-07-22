@@ -1,7 +1,7 @@
 "use client";
 
 import { Checkbox } from "@/components/ui/checkbox";
-import { Withdrawal } from "@/types/wallet/withdrawal";
+import { Withdrawal } from "@/types/front/wallet/withdrawal";
 import { ColumnDef } from "@tanstack/react-table";
 
 export const withdrawalColumns: ColumnDef<Withdrawal>[] = [

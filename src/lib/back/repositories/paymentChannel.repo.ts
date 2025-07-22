@@ -4,7 +4,7 @@ import {
   CreatePaymentChannel,
   GetPaymentChannelsFilters,
   UpdatePaymentChannel,
-} from "@/types/paymentChannel";
+} from "@/types/front/paymentChannel";
 
 export const paymentChannelRepository = {
   create: async (data: CreatePaymentChannel) => {

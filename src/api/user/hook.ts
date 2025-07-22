@@ -1,6 +1,6 @@
 import { createUser, loginUser } from "./api";
-import { FetchProps, Token } from "@/types/globals";
-import { CreateUser, LoginUser } from "@/types/user";
+import { FetchProps, Token } from "@/types/front/globals";
+import { CreateUser, LoginUser } from "@/types/front/user";
 import { toast } from "sonner";
 import { useTranslations } from "next-intl";
 import { useAuthStore } from "@/lib/front/stores/auth";

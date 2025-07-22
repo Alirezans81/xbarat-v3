@@ -1,13 +1,13 @@
 import {
-  Deposit as DatabaseDeposit,
-  DepositStatus,
+  Withdrawal as DatabaseWithdrawal,
   User,
+  WithdrawalStatus,
 } from "@/generated/prisma";
-import { Currency } from "../currency";
-import { PaymentChannel } from "../paymentChannel";
+import { Currency } from "../../currency";
+import { PaymentChannel } from "../../paymentChannel";
 
-export type Deposit = Omit<
-  DatabaseDeposit,
+export type Withdrawal = Omit<
+  DatabaseWithdrawal,
   "createdAt" | "failedAt" | "completedAt"
 > & {
   createdAt: string;
@@ -23,29 +23,23 @@ export type Deposit = Omit<
   paymentChannel: Pick<PaymentChannel, "name">;
 };
 
-export type GetDepositsFilters = {
+export type GetWithdrawalsFilters = {
   userId?: string;
   paymentChannelId?: string;
   currencyId?: string;
-  status?: DepositStatus;
+  status?: WithdrawalStatus;
 };
 
-export type CreateDeposit = {
-  walletId: string;
+export type CreateWithdrawal = {
   amount: number;
+  walletId: string;
   paymentChannelId: string;
-  status?: DepositStatus;
-  documentUrl?: string;
+  status: WithdrawalStatus;
 };
 
-export type UpdateDeposit = {
+export type UpdateWithdrawal = {
   amount?: number;
   walletId?: string;
   paymentChannelId?: string;
-  status?: DepositStatus;
-  documentUrl?: string;
-};
-
-export type UploadDepositDocument = {
-  document: File;
+  status?: WithdrawalStatus;
 };

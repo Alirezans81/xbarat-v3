@@ -1,10 +1,10 @@
-import { FetchProps } from "@/types/globals";
+import { FetchProps } from "@/types/front/globals";
 import { toast } from "sonner";
 import { useTranslations } from "next-intl";
 import { useAuthStore } from "@/lib/front/stores/auth";
 import { getWallets } from "./api";
 import { useCheckTokenExpiration } from "@/hooks/use-auth";
-import { Wallet } from "@/types/wallet";
+import { Wallet } from "@/types/front/wallet";
 
 type GetWalletsProps = {
   setWallets: (value: Wallet[]) => void;

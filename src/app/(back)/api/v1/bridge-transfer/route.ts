@@ -8,7 +8,7 @@ import {
   UnauthorizedResponse,
 } from "@/lib/back/utils/globalResponses.utils";
 import { jwtUtils } from "@/lib/back/utils/jwt.utils";
-import { GetBridgeTransfersFilters } from "@/types/bridgeTransfer";
+import { GetBridgeTransfersFilters } from "@/types/front/bridgeTransfer";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function GET(request: NextRequest) {

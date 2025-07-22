@@ -1,6 +1,6 @@
 import { useAuthStore } from "@/lib/front/stores/auth";
 import { useLoginSignupDialogStore } from "@/lib/front/stores/dialog";
-import { defaultToken } from "@/types/globals";
+import { defaultToken } from "@/types/front/globals";
 import { useTranslations } from "next-intl";
 import { toast } from "sonner";
 

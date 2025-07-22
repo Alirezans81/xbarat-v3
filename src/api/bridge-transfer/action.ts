@@ -1,8 +1,8 @@
 "use server";
 
 import routes from "@/api/routes";
-import { BridgeTransfer } from "@/types/bridgeTransfer";
-import { defaultToken, Token } from "@/types/globals";
+import { BridgeTransfer } from "@/types/front/bridgeTransfer";
+import { defaultToken, Token } from "@/types/front/globals";
 import axios from "axios";
 import { cookies } from "next/headers";
 

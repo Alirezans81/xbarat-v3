@@ -9,7 +9,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { Wallet } from "@/types/wallet";
+import { Wallet } from "@/types/front/wallet";
 import AddWalletDepositDialog from "../dialog/wallet/deposit/add-wallet-deposit-dialog";
 import AddWithdrawalDialog from "../dialog/wallet/withdrawal/add-withdrawal-dialog";
 import AddTransferDialog from "../dialog/wallet/transfer/add-transfer-dialog";
@@ -18,7 +18,6 @@ interface Props {
   data: Wallet[];
 }
 export default function WalletTable({ data }: Props) {
-
   return (
     <Table>
       <TableCaption>List of wallets.</TableCaption>

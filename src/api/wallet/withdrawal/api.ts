@@ -1,6 +1,9 @@
 import axios from "axios";
 import routes from "@/api/routes";
-import { CreateWithdrawal, UpdateWithdrawal } from "@/types/wallet/withdrawal";
+import {
+  CreateWithdrawal,
+  UpdateWithdrawal,
+} from "@/types/front/wallet/withdrawal";
 
 const api = routes();
 

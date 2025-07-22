@@ -9,7 +9,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { PaymentChannel } from "@/types/paymentChannel";
+import { PaymentChannel } from "@/types/front/paymentChannel";
 import EditPaymentChannelDialog from "../dialog/payment-channel/edit-payment-channel-dialog";
 import DeletePaymentChannelDialog from "../dialog/payment-channel/delete-payment-channel-dialog";
 

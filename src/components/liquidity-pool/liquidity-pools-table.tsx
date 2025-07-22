@@ -9,7 +9,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { LiquidityPool } from "@/types/liquidityPool";
+import { LiquidityPool } from "@/types/front/liquidityPool";
 import DeleteLiquidityPoolDialog from "../dialog/liquidity-pool/delete-liquidity-pool-dialog";
 import { Button } from "../ui/button";
 import { Link } from "@/i18n/navigation";

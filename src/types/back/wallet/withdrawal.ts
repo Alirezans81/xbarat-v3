@@ -3,8 +3,8 @@ import {
   User,
   WithdrawalStatus,
 } from "@/generated/prisma";
-import { Currency } from "../currency";
-import { PaymentChannel } from "../paymentChannel";
+import { Currency } from "../../currency";
+import { PaymentChannel } from "../../paymentChannel";
 
 export type Withdrawal = Omit<
   DatabaseWithdrawal,

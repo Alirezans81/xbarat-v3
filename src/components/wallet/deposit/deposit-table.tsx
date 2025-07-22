@@ -12,7 +12,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { Deposit } from "@/types/wallet/deposit";
+import { Deposit } from "@/types/front/wallet/deposit";
 
 interface Props {
   data: Deposit[];
@@ -66,9 +66,6 @@ export default function DepositTable({ data }: Props) {
               )}
               {deposit.status === "PAYMENT" && (
                 <UploadDepositDocument deposit_id={deposit.id} />
-              )}
-              {deposit.documentUrl && (
-                
               )}
             </TableCell>
           </TableRow>

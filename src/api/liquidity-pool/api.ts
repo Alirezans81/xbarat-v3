@@ -3,7 +3,7 @@ import routes from "@/api/routes";
 import {
   CreateLiquidityPool,
   UpdateLiquidityPool,
-} from "@/types/liquidityPool";
+} from "@/types/front/liquidityPool";
 
 const api = routes();
 

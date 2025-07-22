@@ -1,6 +1,6 @@
 import axios from "axios";
 import routes from "@/api/routes";
-import { CreateTransfer, UpdateTransfer } from "@/types/wallet/transfer";
+import { CreateTransfer, UpdateTransfer } from "@/types/front/wallet/transfer";
 
 const api = routes();
 

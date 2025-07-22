@@ -11,7 +11,7 @@ import {
 } from "../../ui/dialog";
 import { Input } from "../../ui/input";
 import { useRouter } from "@/i18n/navigation";
-import { PaymentChannel } from "@/types/paymentChannel";
+import { PaymentChannel } from "@/types/front/paymentChannel";
 import { useUpdatePaymentChannel } from "@/api/payment-channel/hook";
 import { Textarea } from "@/components/ui/textarea";
 import {
@@ -21,7 +21,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { Currency } from "@/types/currency";
+import { Currency } from "@/types/front/currency";
 import { useGetCurrencies } from "@/api/currency/hook";
 
 interface Props {

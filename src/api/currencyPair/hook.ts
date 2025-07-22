@@ -1,4 +1,4 @@
-import { FetchProps } from "@/types/globals";
+import { FetchProps } from "@/types/front/globals";
 import { toast } from "sonner";
 import { useTranslations } from "next-intl";
 import { useAuthStore } from "@/lib/front/stores/auth";
@@ -13,7 +13,7 @@ import {
   CreateCurrencyPair,
   CurrencyPair,
   UpdateCurrencyPair,
-} from "@/types/currencyPair";
+} from "@/types/front/currencyPair";
 
 type GetCurrenciesProps = {
   setCurrencyPairs: (value: CurrencyPair[]) => void;

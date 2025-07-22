@@ -4,7 +4,7 @@ import {
   CreateWithdrawal,
   GetWithdrawalsFilters,
   UpdateWithdrawal,
-} from "@/types/wallet/withdrawal";
+} from "@/types/front/wallet/withdrawal";
 
 export const withdrawalRepository = {
   create: async (data: CreateWithdrawal) => {

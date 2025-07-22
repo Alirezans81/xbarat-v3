@@ -1,8 +1,8 @@
 "use server";
 
 import routes from "@/api/routes";
-import { defaultToken, Token } from "@/types/globals";
-import { Wallet } from "@/types/wallet";
+import { defaultToken, Token } from "@/types/front/globals";
+import { Wallet } from "@/types/front/wallet";
 import axios from "axios";
 import { cookies } from "next/headers";
 
