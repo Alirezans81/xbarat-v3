@@ -1,0 +1,5 @@
+-- AlterTable
+ALTER TABLE "Exchange" ALTER COLUMN "matchedAmount" SET DEFAULT 0.00,
+ALTER COLUMN "matchedAmount" SET DATA TYPE DECIMAL(65,30),
+ALTER COLUMN "remainingAmount" SET DEFAULT 0.00,
+ALTER COLUMN "remainingAmount" SET DATA TYPE DECIMAL(65,30);

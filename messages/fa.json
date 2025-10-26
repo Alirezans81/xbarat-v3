@@ -2,6 +2,11 @@
   "Navbar": {
     "xbarat": "ایکس برات"
   },
+  "ThemeToggle": {
+    "light": "روز",
+    "dark": "شب",
+    "system": "سیستم"
+  },
   "LoginSignupDialog": {
     "logIn": "ورود",
     "signUp": "ثبت نام",
@@ -31,18 +36,68 @@
     "deposit": "واریز",
     "withdrawal": "برداشت",
     "report": "گزارشات",
+    "dashboard": "داشبورد",
+    "panelAdmin": "پنل مدیریت",
+    "liquidityPool": "استخر نقدینگی",
+    "logout": "خروج از حساب",
     "socialMedia": "شبکه های اجتماعی",
     "instagram": "اینستاگرام",
     "whatsApp": "واتساپ",
     "telegram": "تلگرام",
     "x": "ایکس"
   },
+  "Status": {
+    "PENDING": "در حال انتظار",
+    "PAYMENT": "پرداخت",
+    "FAILED": "ناموفق",
+    "REJECTED": "رد شده",
+    "COMPLETED": "تکمیل شده",
+    "APPROVED": "تأیید شده",
+    "CHECK": "بررسی"
+  },
   "HomePage": {
     "title": "سلام دنیا!",
     "about": "رفتن به صفحه درباره"
   },
+  "LiquidityPool": {
+    "currencies": "ارزها",
+    "loading": "در حال بارگذاری...",
+    "selectCurrency": "لطفاً ارزی که می‌خواهید ارائه دهید را انتخاب کنید.",
+    "currencyNotFound": "ارز پیدا نشد.",
+    "tableFooter": "لیست استخرهای نقدینگی.",
+    "address": "آدرس",
+    "balance": "موجودی",
+    "frozen": "مسدود شده",
+    "updatedAt": "آخرین بروزرسانی",
+    "payments": "پرداخت‌ها",
+    "paymentTableFooter": "لیست پرداخت‌ها.",
+    "type": "نوع",
+    "deposit": "واریز",
+    "withdrawal": "برداشت",
+    "amount": "مقدار",
+    "from": "از",
+    "to": "به",
+    "status": "وضعیت",
+    "liquidityPoolNotFound": "استخر نقدینگی پیدا نشد"
+  },
+  "WalletPage": {
+    "Wallet": "کیف پول"
+  },
   "ApiErrors": {
-    "serverError": "خطایی رخ داده است، لطفا بعدا دوباره تلاش کنید.",
-    "wrongEmailPassword": "ایمیل یا رمز عبور اشتباه است."
+    "serverError": "خطایی رخ داده است. لطفاً بعداً دوباره تلاش کنید.",
+    "wrongEmailPassword": "ایمیل یا رمز عبور اشتباه است.",
+    "unauthorized": "شما مجاز نیستید.",
+    "userNotFound": "کاربر پیدا نشد."
+  },
+  "Other": {
+    "mustLoginAgain": "نشست شما به پایان رسیده است. لطفاً دوباره وارد شوید."
+  },
+  "Footer": {
+    "xbarat": "ایکس برات",
+    "slogan": "وقتی خودت کافی هستی!",
+    "instagram": "اینستاگرام",
+    "whatsApp": "واتساپ",
+    "telegram": "تلگرام",
+    "x": "ایکس"
   }
 }

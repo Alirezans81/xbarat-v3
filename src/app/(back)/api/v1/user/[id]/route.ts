@@ -1,32 +1,28 @@
-import { prisma } from "@/lib/prisma";
+import { userService } from "@/lib/back/services/user.service";
+import {
+  NotFoundResponse,
+  ServerErrorResponse,
+  UnauthorizedResponse,
+} from "@/lib/back/utils/globalResponses.utils";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function GET(
-  _req: NextRequest,
-  { params }: { params: Promise<{ id: string }> }
+  request: NextRequest,
+  { params }: { params: { id: string } }
 ) {
   try {
-    const { id } = await params;
+    const token = request.headers.get("authorization")?.split(" ")[1];
+    if (!token) return UnauthorizedResponse;
 
-    const user = await prisma.user.findUnique({
-      where: {
-        id,
-      },
-    });
+    const requester = await userService.getUserByToken(token);
+    if (!requester) return UnauthorizedResponse;
 
-    if (!user) {
-      return NextResponse.json(
-        { error: { message: "userNotFound" } },
-        { status: 404 }
-      );
-    }
+    const user = await userService.getUserById(params.id);
+    if (!user) return NotFoundResponse;
 
     return NextResponse.json(user);
   } catch (error) {
     console.error("[GET_USER]", error);
-    return NextResponse.json(
-      { error: { message: "serverError" } },
-      { status: 500 }
-    );
+    return ServerErrorResponse;
   }
 }

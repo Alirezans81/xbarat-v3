@@ -1,12 +1,13 @@
-import { User } from "@/generated/prisma";
 import axios from "axios";
 import routes from "@/api/routes";
+import { CreateUser, LoginUser } from "@/types/front/user";
 
 const api = routes();
 
-export const createUser = (token: string, user: User) => {
-  const headers = {
-    Authorization: `Bearer ${token}`,
-  };
-  return axios.post(api["user"], user, { headers });
+export const createUser = (user: CreateUser) => {
+  return axios.post(api["user"], user);
+};
+
+export const loginUser = (params: LoginUser) => {
+  return axios.post(api["login"], params);
 };

@@ -12,11 +12,11 @@ export default async function Navbar() {
   const t = await getTranslations("Navbar");
 
   return (
-    <header className="w-full bg-card backdrop-blur-2xl">
+    <header className="w-full bg-card backdrop-blur-2xl shadow-lg shadow-muted-foreground/10 dark:shadow-secondary/10 transition-all duration-300 hover:shadow-none">
       <nav className="container mx-auto py-3 px-5 flex items-center justify-between">
         <div className="flex items-center gap-3">
           <div className="sm:hidden flex justify-center items-center">
-            <SidebarTrigger size="icon" className="cursor-pointer" />
+            <SidebarTrigger size="icon" className="" />
           </div>
           <Link href="/" className="flex items-center gap-1">
             <Image alt="" className="w-10 h-10" src={Logo} />

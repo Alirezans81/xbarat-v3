@@ -1,21 +1,97 @@
 "use client";
 
-import { useAuthStore } from "@/lib/store";
-import { UserRound } from "lucide-react";
+import { useAuthStore } from "@/lib/front/stores/auth";
 import { useTranslations } from "next-intl";
 import LoginSignupDialog from "../dialog/login-signup-dialog";
-import { Link } from "@/i18n/navigation";
+import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import { useResetApp } from "@/hooks/use-auth";
+import {
+  adminLoggedInNavbarItems,
+  loggedInNavabarItems,
+  notLoggedInNavbarItems,
+  providerLoggedInNavbarItems,
+} from "@/constants/globals";
+import { Link, usePathname, useRouter } from "@/i18n/navigation";
 
 export default function NavbarActionButton() {
-  const t = useTranslations("Navbar");
+  const t = useTranslations("Sidebar");
 
-  const isLoggedIn = useAuthStore((state) => state.isLoggedIn);
+  const resetApp = useResetApp();
+
+  const { isLoggedIn, user } = useAuthStore();
+  const router = useRouter();
+  const pathname = usePathname();
+
+  const items = isLoggedIn
+    ? user?.role === "ADMIN"
+      ? adminLoggedInNavbarItems
+      : user?.role === "PROVIDER"
+      ? providerLoggedInNavbarItems
+      : loggedInNavabarItems
+    : notLoggedInNavbarItems;
 
   if (isLoggedIn) {
     return (
-      <Link href="/dashboard" className="bg-gray-200 border rounded-full p-2">
-        <UserRound color="#333" className="w-5 h-5" />
-      </Link>
+      <>
+        <div className="sm:block hidden">
+          <DropdownMenu>
+            <DropdownMenuTrigger className="">
+              <Avatar className="w-10 h-10">
+                <AvatarImage src={user?.avatarUrl || ""} />
+                <AvatarFallback>
+                  {user?.fullName
+                    .split(" ")
+                    .map((e) => e[0])
+                    .join("")}
+                </AvatarFallback>
+              </Avatar>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent dir>
+              <DropdownMenuLabel className="text-muted-foreground">
+                {t("menu")}
+              </DropdownMenuLabel>
+              <DropdownMenuSeparator />
+              {items.map((item) => (
+                <DropdownMenuItem key={item.url} asChild className="w-40">
+                  <Link href={item.url} className="">
+                    <item.icon />
+                    <span>{t(item.title)}</span>
+                  </Link>
+                </DropdownMenuItem>
+              ))}
+              <DropdownMenuSeparator />
+              <DropdownMenuItem
+                onClick={() => {
+                  resetApp();
+                  router.replace("/");
+                }}
+                variant="destructive"
+              >
+                {t("logout")}
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
+        </div>
+        <Link href={"/dashboard"} className="sm:hidden">
+          <Avatar className="w-10 h-10">
+            <AvatarImage src={user?.avatarUrl || ""} />
+            <AvatarFallback>
+              {user?.fullName
+                .split(" ")
+                .map((e) => e[0])
+                .join("")}
+            </AvatarFallback>
+          </Avatar>
+        </Link>
+      </>
     );
   }
 

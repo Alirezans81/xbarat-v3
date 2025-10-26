@@ -2,6 +2,11 @@
   "Navbar": {
     "xbarat": "Xbarat"
   },
+  "ThemeToggle": {
+    "light": "Hell",
+    "dark": "Dunkel",
+    "system": "System"
+  },
   "LoginSignupDialog": {
     "logIn": "Einloggen",
     "signUp": "Melden Sie sich an",
@@ -31,18 +36,68 @@
     "deposit": "Einzahlung",
     "withdrawal": "Auszahlung",
     "report": "Bericht",
+    "dashboard": "Armaturenbrett",
+    "panelAdmin": "Admin-Panel",
+    "liquidityPool": "Liquiditätspool",
+    "logout": "Abmelden",
     "socialMedia": "Soziale Medien",
     "instagram": "Instagram",
     "whatsApp": "WhatsApp",
     "telegram": "Telegram",
     "x": "X"
   },
+  "Status": {
+    "PENDING": "AUSSTEHEND",
+    "PAYMENT": "ZAHLUNG",
+    "FAILED": "FEHLGESCHLAGEN",
+    "REJECTED": "ABGELEHNT",
+    "COMPLETED": "ABGESCHLOSSEN",
+    "APPROVED": "GENEHMIGT",
+    "CHECK": "PRÜFEN"
+  },
   "HomePage": {
     "title": "Hallo Welt!",
     "about": "Zur Infoseite"
   },
+  "LiquidityPool": {
+    "currencies": "Währungen",
+    "loading": "Wird geladen...",
+    "selectCurrency": "Bitte wählen Sie die Währung aus, die Sie bereitstellen möchten.",
+    "currencyNotFound": "Währung nicht gefunden!",
+    "tableFooter": "Liste der Liquiditätspools.",
+    "address": "Adresse",
+    "balance": "Guthaben",
+    "frozen": "Eingefroren",
+    "updatedAt": "Aktualisiert am",
+    "payments": "Zahlungen",
+    "paymentTableFooter": "Liste der Zahlungen.",
+    "type": "Typ",
+    "deposit": "Einzahlung",
+    "withdrawal": "Auszahlung",
+    "amount": "Betrag",
+    "from": "Von",
+    "to": "An",
+    "status": "Status",
+    "liquidityPoolNotFound": "Liquiditätspool nicht gefunden"
+  },
+  "WalletPage": {
+    "Wallet": "Wallet"
+  },
   "ApiErrors": {
-    "serverError": "Ein Fehler ist aufgetreten, bitte versuchen Sie es später noch einmal.",
-    "wrongEmailPassword": "Falsche E-Mail oder Passwort."
+    "serverError": "Ein Fehler ist aufgetreten. Bitte versuchen Sie es später erneut.",
+    "wrongEmailPassword": "Falsche E-Mail-Adresse oder falsches Passwort.",
+    "unauthorized": "Sie sind nicht autorisiert.",
+    "userNotFound": "Benutzer nicht gefunden."
+  },
+  "Other": {
+    "mustLoginAgain": "Ihre Sitzung ist abgelaufen. Bitte melden Sie sich erneut an."
+  },
+  "Footer": {
+    "xbarat": "Xbarat",
+    "slogan": "Wenn du genug bist!",
+    "instagram": "Instagram",
+    "whatsApp": "WhatsApp",
+    "telegram": "Telegram",
+    "x": "X"
   }
 }
