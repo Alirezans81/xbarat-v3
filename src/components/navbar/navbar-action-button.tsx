@@ -19,7 +19,7 @@ import {
   notLoggedInNavbarItems,
   providerLoggedInNavbarItems,
 } from "@/constants/globals";
-import { Link, useRouter } from "@/i18n/navigation";
+import { Link, usePathname, useRouter } from "@/i18n/navigation";
 
 export default function NavbarActionButton() {
   const t = useTranslations("Sidebar");
@@ -28,6 +28,7 @@ export default function NavbarActionButton() {
 
   const { isLoggedIn, user } = useAuthStore();
   const router = useRouter();
+  const pathname = usePathname();
 
   const items = isLoggedIn
     ? user?.role === "ADMIN"

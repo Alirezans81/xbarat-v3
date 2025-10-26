@@ -22,14 +22,22 @@ import { useCreateDeposit } from "@/api/wallet/deposit/hook";
 import { Wallet } from "@/types/front/wallet";
 import { useGetWallets } from "@/api/wallet/hook";
 
-interface Props {}
-export default function AddDepositDialog({}: Props) {
+interface Props {
+  new_deposit_wallet?: string;
+  new_deposit_amount?: number;
+}
+export default function AddDepositDialog({
+  new_deposit_wallet,
+  new_deposit_amount,
+}: Props) {
   const router = useRouter();
 
-  const [open, setOpen] = useState(false);
+  const [open, setOpen] = useState(
+    new_deposit_wallet && new_deposit_amount ? true : false
+  );
   const [loading, setLoading] = useState(false);
 
-  const [walletId, setWalletId] = useState("");
+  const [walletId, setWalletId] = useState(new_deposit_wallet + "" || "");
   const [wallets, setWallets] = useState<Wallet[]>([]);
   const getWallets = useGetWallets();
   useEffect(() => {
@@ -47,7 +55,7 @@ export default function AddDepositDialog({}: Props) {
     return true;
   };
 
-  const [amount, setAmount] = useState("");
+  const [amount, setAmount] = useState(new_deposit_amount + "" || "");
   const [AmountError, setAmountError] = useState("");
   const validateAmount = (value: string) => {
     if (!value) {
@@ -99,19 +107,12 @@ export default function AddDepositDialog({}: Props) {
     <Dialog open={open} onOpenChange={(value) => setOpen(value)}>
       <DialogTrigger asChild>
         <div>
-          <Button
-            variant="ghost"
-            className="text-foreground  bg-[#369635] hover:!bg-[#369635]"
-          >
-            + New
-          </Button>
+          <Button className="bg-[#369635] hover:!bg-[#369635]">+ New</Button>
         </div>
       </DialogTrigger>
       <DialogContent className="sm:max-w-[400px]">
         <DialogHeader>
-          <DialogTitle>
-            Deposit {findWallet() && "(" + findWallet()?.currency.code + ")"}
-          </DialogTitle>
+          <DialogTitle>Deposit</DialogTitle>
         </DialogHeader>
 
         <form onSubmit={handleSubmit} className="space-y-2">
@@ -181,10 +182,10 @@ export default function AddDepositDialog({}: Props) {
               </span>
             )}
           </div>
-          <div className="w-full flex items-center justify-between text-sm">
+          {/* <div className="w-full flex items-center justify-between text-sm">
             <span>Fee:</span>
             <span>{findWallet()?.currency.symbol + " 2.25"}</span>
-          </div>
+          </div> */}
           <div className="mt-4">
             <Button
               type="submit"

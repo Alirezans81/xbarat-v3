@@ -3,8 +3,8 @@ import {
   DepositStatus,
   User,
 } from "@/generated/prisma";
-import { Currency } from "../../currency";
-import { PaymentChannel } from "../../paymentChannel";
+import { Currency } from "../currency";
+import { PaymentChannel } from "../paymentChannel";
 
 export type Deposit = Omit<
   DatabaseDeposit,

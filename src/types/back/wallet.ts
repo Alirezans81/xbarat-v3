@@ -17,3 +17,8 @@ export type GetWalletsFilters = {
   currencyId?: string;
   paymentChannelId?: string;
 };
+
+export type UpdateWallet = {
+  balance?: number;
+  frozen?: number;
+};

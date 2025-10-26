@@ -13,6 +13,7 @@ import { Wallet } from "@/types/front/wallet";
 import AddWalletDepositDialog from "../dialog/wallet/deposit/add-wallet-deposit-dialog";
 import AddWithdrawalDialog from "../dialog/wallet/withdrawal/add-withdrawal-dialog";
 import AddTransferDialog from "../dialog/wallet/transfer/add-transfer-dialog";
+import AddWalletWithdrawalDialog from "../dialog/wallet/withdrawal/add-wallet-withdrawal-dialog";
 
 interface Props {
   data: Wallet[];
@@ -37,10 +38,12 @@ export default function WalletTable({ data }: Props) {
               {wallet.currency.code}
             </TableCell>
             <TableCell>
-              {wallet.currency.symbol + " " + wallet.balance}
+              {wallet.currency.symbol +
+                " " +
+                (+wallet.balance).toLocaleString()}
             </TableCell>
-            <TableCell>
-              {wallet.currency.symbol + " " + wallet.frozen}
+            <TableCell className="text-destructive">
+              {wallet.currency.symbol + " " + (+wallet.frozen).toLocaleString()}
             </TableCell>
             <TableCell>
               {new Date(wallet.createdAt).toDateString() +
@@ -52,8 +55,11 @@ export default function WalletTable({ data }: Props) {
                 currency={wallet.currency}
                 walletId={wallet.id}
               />
-              <AddWithdrawalDialog />
-              <AddTransferDialog />
+              <AddWalletWithdrawalDialog
+                currency={wallet.currency}
+                walletId={wallet.id}
+              />
+              {/* <AddTransferDialog /> */}
             </TableCell>
           </TableRow>
         ))}

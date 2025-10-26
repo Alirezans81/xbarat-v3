@@ -1,5 +1,6 @@
 import { GetWalletsFilters } from "@/types/front/wallet";
 import { prisma } from "../prisma";
+import { UpdateWallet } from "@/types/back/wallet";
 
 export const walletRepository = {
   getAll: async (filters?: GetWalletsFilters) => {
@@ -33,6 +34,22 @@ export const walletRepository = {
           },
         },
       },
+    });
+  },
+
+  updateByUserIdAndCurrencyId: async (
+    userId: string,
+    currencyId: string,
+    data: UpdateWallet
+  ) => {
+    return prisma.wallet.update({
+      where: {
+        userId_currencyId: {
+          userId,
+          currencyId,
+        },
+      },
+      data,
     });
   },
 };

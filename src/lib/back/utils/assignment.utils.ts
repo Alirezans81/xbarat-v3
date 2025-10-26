@@ -41,7 +41,7 @@ export const assignBridgeTransfers = (
         depositId: deposit.id,
         withdrawalId: withdrawal.id,
         liquidityPoolId: null,
-        status: "PENDING",
+        status: "AWAITING_PAYMENT",
         amount: transferAmount,
       });
 
@@ -60,7 +60,7 @@ export const assignBridgeTransfers = (
         depositId: null,
         withdrawalId: withdrawal.id,
         liquidityPoolId: pool.id,
-        status: "PENDING",
+        status: "AWAITING_PAYMENT",
         amount: transferAmount,
       });
 
@@ -83,7 +83,7 @@ export const assignBridgeTransfers = (
       depositId: deposit.id,
       withdrawalId: null,
       liquidityPoolId: bestPool.id,
-      status: "PENDING",
+      status: "AWAITING_PAYMENT",
       amount: deposit.amount,
     });
 

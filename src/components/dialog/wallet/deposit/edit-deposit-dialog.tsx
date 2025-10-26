@@ -85,9 +85,7 @@ export default function AddWalletDepositDialog({ data }: Props) {
       </DialogTrigger>
       <DialogContent className="sm:max-w-[400px]">
         <DialogHeader>
-          <DialogTitle>
-            Deposit {"(" + data.wallet.currency.code + ")"}
-          </DialogTitle>
+          <DialogTitle>Edit Deposit</DialogTitle>
         </DialogHeader>
 
         <form onSubmit={handleSubmit} className="space-y-2">

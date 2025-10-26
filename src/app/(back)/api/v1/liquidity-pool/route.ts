@@ -69,14 +69,8 @@ export async function POST(request: NextRequest) {
     if (!userIsProvider) return UnauthorizedResponse;
 
     const body = await request.json();
-    const { currencyId, paymentChannelId, address, balance, frozen } = body;
-    if (
-      !currencyId ||
-      !paymentChannelId ||
-      !address ||
-      balance === undefined ||
-      frozen === undefined
-    )
+    const { currencyId, paymentChannelId, address, balance } = body;
+    if (!currencyId || !paymentChannelId || !address || balance === undefined)
       return MissingFieldsResponse;
 
     const liquidityPool = await liquidityPoolService.create({
@@ -85,7 +79,7 @@ export async function POST(request: NextRequest) {
       paymentChannelId,
       address,
       balance,
-      frozen,
+      frozen: 0,
     });
 
     return NextResponse.json(liquidityPool, { status: 201 });

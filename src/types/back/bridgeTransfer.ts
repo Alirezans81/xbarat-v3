@@ -62,5 +62,6 @@ export type UpdateBridgeTransfer = {
   withdrawalId?: string;
   liquidityPoolId?: string;
   amount?: number;
+  documentUrl?: string;
   status?: BridgeStatus;
 };

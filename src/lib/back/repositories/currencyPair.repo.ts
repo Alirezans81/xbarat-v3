@@ -21,6 +21,20 @@ export const currencyPairRepository = {
 
   getAll: async (filter?: GetCurrencyPairsFilters) => {
     return prisma.currencyPair.findMany({
+      include: {
+        fromCurrency: {
+          select: {
+            code: true,
+            name: true,
+          },
+        },
+        toCurrency: {
+          select: {
+            code: true,
+            name: true,
+          },
+        },
+      },
       where: {
         ...(filter?.id && { id: filter.id }),
         ...(filter?.fromCurrencyId && {
@@ -34,9 +48,53 @@ export const currencyPairRepository = {
     });
   },
 
-  findById: async (id: string, includePaymentChannels: boolean = true) => {
+  findById: async (id: string) => {
     return prisma.currencyPair.findUnique({
       where: { id },
+      include: {
+        fromCurrency: {
+          select: {
+            code: true,
+            name: true,
+          },
+        },
+        toCurrency: {
+          select: {
+            code: true,
+            name: true,
+          },
+        },
+      },
+    });
+  },
+
+  findByFromCurrencyIdAndToCurrencyId: async (data: {
+    fromCurrencyId: string;
+    toCurrencyId: string;
+  }) => {
+    const { fromCurrencyId, toCurrencyId } = data;
+
+    return prisma.currencyPair.findUnique({
+      where: {
+        fromCurrencyId_toCurrencyId: {
+          fromCurrencyId,
+          toCurrencyId,
+        },
+      },
+      include: {
+        fromCurrency: {
+          select: {
+            code: true,
+            name: true,
+          },
+        },
+        toCurrency: {
+          select: {
+            code: true,
+            name: true,
+          },
+        },
+      },
     });
   },
 

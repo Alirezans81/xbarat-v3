@@ -144,10 +144,10 @@ export default function page() {
         setSelectedWithdrawals([]);
         setSelectedLiquidityPools([]);
 
-        toast("Successfully assigned!");
+        toast.success("Successfully assigned!");
       },
       onError(error) {
-        toast(error.message);
+        toast.error(error.message);
       },
     });
   };
@@ -223,10 +223,15 @@ export default function page() {
         </div>
         <div className="flex items-center gap-4">
           <div className="flex items-center gap-2">
-            <Switch />
-            <span className="text-sm">Auto Assign</span>
+            <Switch disabled />
+            <div className="flex flex-col">
+              <span className="text-sm">Auto Assign</span>
+              <span className="text-muted-foreground/50 text-xs">
+                {"(Coming Soon)"}
+              </span>
+            </div>
           </div>
-          <Button className="text-foreground" onClick={handleAssign}>
+          <Button onClick={handleAssign}>
             Assign
           </Button>
         </div>

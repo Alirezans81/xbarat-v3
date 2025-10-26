@@ -154,7 +154,7 @@ export default function AddPaymentChannelDialog({}: Props) {
               <Button
                 type="button"
                 variant="outline"
-                className="text-foreground  z-10 !bg-background"
+                className="z-10 !bg-background"
                 onClick={() => logoInputRef.current?.click()}
               >
                 <Upload />

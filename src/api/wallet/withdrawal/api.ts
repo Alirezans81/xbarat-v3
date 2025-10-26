@@ -43,3 +43,17 @@ export const deleteWithdrawal = (token: string, withdrawal_id: string) => {
   };
   return axios.delete(api["withdrawal"] + "/" + withdrawal_id, { headers });
 };
+
+export const approveWithdrawalDocument = (
+  token: string,
+  withdrawal_id: string
+) => {
+  const headers = {
+    Authorization: `Bearer ${token}`,
+  };
+  return axios.post(
+    api["withdrawal"] + "/" + withdrawal_id + "/approve-document",
+    {},
+    { headers }
+  );
+};

@@ -37,7 +37,7 @@ export default async function Footer() {
                 xbarat.team@gmail.com
               </span>
               <span className="text-muted-foreground transition-all duration-300 hover:text-foreground text-sm">
-                Copyright © 2022 Free For World People
+                Copyright © 2025 xbarat.com
               </span>
             </div>
             <div className="col-span-1 flex justify-center gap-[50%]">
@@ -168,7 +168,7 @@ export default async function Footer() {
           </div>
           <div className="w-full h-0.25 rounded-full bg-muted-foreground/30" />
           <span className="text-sm text-muted-foreground mx-auto">
-            ©2022 Copyright © 2022 Free For World People
+            Copyright © 2025 xbarat.com
           </span>
         </div>
       </div>

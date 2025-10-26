@@ -18,7 +18,7 @@ export default function layout({
           <Link href="/wallet">
             <Button
               variant={pathname !== "/wallet" ? "outline" : "default"}
-              className="w-full justify-start text-foreground"
+              className="w-full justify-start"
             >
               Overview
             </Button>
@@ -26,9 +26,17 @@ export default function layout({
           <Link href="/wallet/deposit">
             <Button
               variant={pathname !== "/wallet/deposit" ? "outline" : "default"}
-              className="w-full justify-start text-foreground"
+              className="w-full justify-start"
             >
               Deposit
+            </Button>
+          </Link>
+          <Link href="/wallet/exchange">
+            <Button
+              variant={pathname !== "/wallet/exchange" ? "outline" : "default"}
+              className="w-full justify-start"
+            >
+              Exchange
             </Button>
           </Link>
           <Link href="/wallet/withdrawal">
@@ -36,19 +44,19 @@ export default function layout({
               variant={
                 pathname !== "/wallet/withdrawal" ? "outline" : "default"
               }
-              className="w-full justify-start text-foreground"
+              className="w-full justify-start"
             >
               Withdrawal
             </Button>
           </Link>
-          <Link href="/wallet/transfer">
+          {/* <Link href="/wallet/transfer">
             <Button
               variant={pathname !== "/wallet/transfer" ? "outline" : "default"}
-              className="w-full justify-start text-foreground"
+              className="w-full justify-start"
             >
               Transfer
             </Button>
-          </Link>
+          </Link> */}
         </div>
         <div className="col-span-9">{children}</div>
       </div>

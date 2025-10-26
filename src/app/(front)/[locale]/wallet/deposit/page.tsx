@@ -2,8 +2,15 @@ import { getDeposits } from "@/api/wallet/deposit/action";
 import AddDepositDialog from "@/components/dialog/wallet/deposit/add-deposit-dialog";
 import DepositTable from "@/components/wallet/deposit/deposit-table";
 
-export default async function page() {
+export default async function page({
+  searchParams,
+}: {
+  searchParams: Promise<{ [key: string]: string | undefined }>;
+}) {
   try {
+    const new_deposit_wallet = (await searchParams).new_deposit_wallet;
+    const new_deposit_amount = (await searchParams).new_deposit_amount;
+
     const { data } = await getDeposits();
 
     return (
@@ -12,7 +19,14 @@ export default async function page() {
           <div className="flex gap-2 items-center">
             <span className="text-3xl">Deposit</span>
           </div>
-          <AddDepositDialog />
+          <AddDepositDialog
+            new_deposit_wallet={
+              new_deposit_wallet ? new_deposit_wallet : undefined
+            }
+            new_deposit_amount={
+              new_deposit_amount ? +new_deposit_amount : undefined
+            }
+          />
         </div>
 
         <DepositTable data={data} />

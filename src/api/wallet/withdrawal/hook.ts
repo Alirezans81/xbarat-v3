@@ -3,6 +3,7 @@ import { toast } from "sonner";
 import { useTranslations } from "next-intl";
 import { useAuthStore } from "@/lib/front/stores/auth";
 import {
+  approveWithdrawalDocument,
   createWithdrawal,
   deleteWithdrawal,
   getWithdrawals,
@@ -42,7 +43,7 @@ export const useGetWithdrawals = () => {
         .catch((err) => {
           process.env.NEXT_PUBLIC_APP_MODE === "development" &&
             console.error(err.response);
-          toast(t(err.response.data.error.message));
+          toast.error(t(err.response.data.error.message));
           onError?.(err);
         })
         .finally(() => {
@@ -77,7 +78,7 @@ export const useCreateWithdrawal = () => {
         .catch((err) => {
           process.env.NEXT_PUBLIC_APP_MODE === "development" &&
             console.error(err.response);
-          toast(t(err.response.data.error.message));
+          toast.error(t(err.response.data.error.message));
           onError?.(err);
         })
         .finally(() => {
@@ -114,7 +115,7 @@ export const useUpdateWithdrawal = () => {
         .catch((err) => {
           process.env.NEXT_PUBLIC_APP_MODE === "development" &&
             console.error(err.response);
-          toast(t(err.response.data.error.message));
+          toast.error(t(err.response.data.error.message));
           onError?.(err);
         })
         .finally(() => {
@@ -149,7 +150,42 @@ export const useDeleteWithdrawal = () => {
         .catch((err) => {
           process.env.NEXT_PUBLIC_APP_MODE === "development" &&
             console.error(err.response);
-          toast(t(err.response.data.error.message));
+          toast.error(t(err.response.data.error.message));
+          onError?.(err);
+        })
+        .finally(() => {
+          onFinally?.();
+        });
+    });
+  };
+
+  return fetch;
+};
+
+type ApproveWithdrawalDocumentProps = {
+  withdrawal_id: string;
+};
+export const useApproveWithdrawalDocument = () => {
+  const t = useTranslations("ApiErrors");
+
+  const checkTokenExpiration = useCheckTokenExpiration();
+  const { token } = useAuthStore();
+
+  const fetch = ({
+    withdrawal_id,
+    onError,
+    onSuccess,
+    onFinally,
+  }: ApproveWithdrawalDocumentProps & FetchProps) => {
+    checkTokenExpiration(async () => {
+      await approveWithdrawalDocument(token.value, withdrawal_id)
+        .then((res) => {
+          onSuccess?.(res);
+        })
+        .catch((err) => {
+          process.env.NEXT_PUBLIC_APP_MODE === "development" &&
+            console.error(err.response);
+          toast.error(t(err.response.data.error.message));
           onError?.(err);
         })
         .finally(() => {

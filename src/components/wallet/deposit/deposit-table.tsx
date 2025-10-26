@@ -50,6 +50,8 @@ export default function DepositTable({ data }: Props) {
             </TableCell>
             <TableCell
               className={`
+                ${deposit.status === "PENDING" && "text-secondary"}
+                ${deposit.status === "AWAITING_APPROVAL" && "text-secondary"}
                 ${deposit.status === "COMPLETED" && "text-chart-2"}
                 ${deposit.status === "PAYMENT" && "text-secondary"}
                 ${deposit.status === "FAILED" && "text-destructive"}
@@ -60,7 +62,7 @@ export default function DepositTable({ data }: Props) {
             <TableCell className="flex justify-end gap-2">
               {deposit.status === "PENDING" && (
                 <>
-                  <EditDepositDialog data={deposit} />
+                  {/* <EditDepositDialog data={deposit} /> */}
                   <DeleteDepositDialog deposit_id={deposit.id} />
                 </>
               )}

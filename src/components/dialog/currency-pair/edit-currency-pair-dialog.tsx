@@ -1,0 +1,233 @@
+"use client";
+
+import { useEffect, useState } from "react";
+import { Button } from "../../ui/button";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "../../ui/dialog";
+import { Input } from "../../ui/input";
+import { useCreateCurrency, useGetCurrencies } from "@/api/currency/hook";
+import { useRouter } from "@/i18n/navigation";
+import { PaymentChannel } from "@/types/front/paymentChannel";
+import { useGetPaymentChannels } from "@/api/payment-channel/hook";
+import { Checkbox } from "@/components/ui/checkbox";
+import { Label } from "@/components/ui/label";
+import { Currency } from "@/types/front/currency";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import {
+  useCreateCurrencyPair,
+  useUpdateCurrencyPair,
+} from "@/api/currency-pair/hook";
+import { CurrencyPair } from "@/types/front/currencyPair";
+
+interface Props {
+  data: CurrencyPair;
+}
+export default function EditCurrencyPairDialog({ data }: Props) {
+  const router = useRouter();
+
+  const [open, setOpen] = useState(false);
+  const [loading, setLoading] = useState(false);
+
+  const getCurrencies = useGetCurrencies();
+  const [currencies, setCurrencies] = useState<Currency[]>([]);
+  useEffect(() => {
+    getCurrencies({
+      setCurrencies,
+    });
+  }, []);
+
+  const [fromCurrencyId, setFromCurrencyId] = useState(data.fromCurrencyId);
+  const [fromCurrencyIdError, setFromCurrencyIdError] = useState("");
+  const validateFromCurrencyId = (value: string) => {
+    if (!value) {
+      setFromCurrencyIdError("From Currency required!");
+      return false;
+    }
+
+    return true;
+  };
+
+  const [toCurrencyId, setToCurrencyId] = useState(data.toCurrencyId);
+  const [toCurrencyIdError, setToCurrencyIdError] = useState("");
+  const validateToCurrencyId = (value: string) => {
+    if (!value) {
+      setToCurrencyIdError("To Currency required!");
+      return false;
+    }
+
+    return true;
+  };
+
+  const [rate, setRate] = useState(+data.rate);
+  const [rateError, setRateError] = useState("");
+  const validateRate = (value: number) => {
+    if (!value) {
+      setRateError("Rate required!");
+      return false;
+    }
+
+    return true;
+  };
+
+  const [isInverseRate, setIsInverseRate] = useState(data.isInverseRate);
+
+  const [isActive, setIsActive] = useState(data.isActive);
+
+  const updateCurrencyPair = useUpdateCurrencyPair();
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+
+    if (
+      validateFromCurrencyId(fromCurrencyId) &&
+      validateToCurrencyId(toCurrencyId) &&
+      validateRate(rate)
+    ) {
+      setLoading(true);
+      updateCurrencyPair({
+        currencyPair_id: data.id,
+        currencyPair: {
+          fromCurrencyId,
+          toCurrencyId,
+          rate,
+          isInverseRate,
+          isActive,
+        },
+        onSuccess() {
+          setOpen(false);
+          router.refresh();
+        },
+        onFinally() {
+          setLoading(false);
+        },
+      });
+    }
+  };
+
+  return (
+    <Dialog open={open} onOpenChange={(value) => setOpen(value)}>
+      <DialogTrigger asChild>
+        <div>
+          <Button className="text-foreground ">Edit</Button>
+        </div>
+      </DialogTrigger>
+      <DialogContent className="sm:max-w-[400px]">
+        <DialogHeader>
+          <DialogTitle className="">Add Currency Pair</DialogTitle>
+        </DialogHeader>
+
+        <form onSubmit={handleSubmit} className="space-y-2">
+          <div>
+            <Select
+              value={fromCurrencyId}
+              onValueChange={(value) => {
+                validateFromCurrencyId(value);
+                setFromCurrencyId(value);
+                setToCurrencyId("");
+              }}
+            >
+              <SelectTrigger className="w-full">
+                <SelectValue placeholder="Source" />
+              </SelectTrigger>
+              <SelectContent>
+                {currencies.map((currency) => (
+                  <SelectItem key={currency.id} value={currency.id}>
+                    {currency.code}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+            {fromCurrencyIdError && (
+              <span className="block text-sm mt-2 text-chart-5">
+                {fromCurrencyIdError}
+              </span>
+            )}
+          </div>
+          <div>
+            <Select
+              value={toCurrencyId}
+              onValueChange={(value) => {
+                validateToCurrencyId(value);
+                setToCurrencyId(value);
+              }}
+            >
+              <SelectTrigger className="w-full">
+                <SelectValue placeholder="Target" />
+              </SelectTrigger>
+              <SelectContent>
+                {currencies
+                  .filter((e) => e.id !== fromCurrencyId)
+                  .map((currency) => (
+                    <SelectItem key={currency.id} value={currency.id}>
+                      {currency.code}
+                    </SelectItem>
+                  ))}
+              </SelectContent>
+            </Select>
+            {toCurrencyIdError && (
+              <span className="block text-sm mt-2 text-chart-5">
+                {toCurrencyIdError}
+              </span>
+            )}
+          </div>
+          <div>
+            <Input
+              placeholder="Rate"
+              type="number"
+              inputMode="numeric"
+              value={rate}
+              onChange={(e) => setRate(+e.target.value)}
+              onBlur={(e) => validateRate(+e.target.value)}
+              required
+            />
+          </div>
+          <div>
+            <div className="flex flex-col gap-4 bg-card p-3 rounded-md">
+              <div className="flex flex-wrap gap-4">
+                <div className="flex items-center gap-2">
+                  <Checkbox
+                    checked={isInverseRate}
+                    onCheckedChange={() => {
+                      setIsInverseRate((prev) => !prev);
+                    }}
+                  />
+                  <Label>Invert Rate</Label>
+                </div>
+                <div className="flex items-center gap-2">
+                  <Checkbox
+                    checked={isActive}
+                    onCheckedChange={() => {
+                      setIsActive((prev) => !prev);
+                    }}
+                  />
+                  <Label>Active</Label>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div className="mt-4">
+            <Button
+              type="submit"
+              className="w-full text-foreground "
+              disabled={loading}
+            >
+              Submit
+            </Button>
+          </div>
+        </form>
+      </DialogContent>
+    </Dialog>
+  );
+}

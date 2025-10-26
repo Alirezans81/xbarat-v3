@@ -11,6 +11,7 @@ import { bridgeTransferService } from "@/lib/back/services/bridgeTransfer.servic
 import { depositService } from "@/lib/back/services/wallet/deposit.service";
 import { withdrawalService } from "@/lib/back/services/wallet/withdrawal.service";
 import { liquidityPoolService } from "@/lib/back/services/liquidityPool.service";
+import { userService } from "@/lib/back/services/user.service";
 
 export async function POST(request: NextRequest) {
   try {
@@ -19,6 +20,9 @@ export async function POST(request: NextRequest) {
 
     const payload = jwtUtils.verify(token);
     if (!payload) return UnauthorizedResponse;
+
+    const userIsAdmin = await userService.checkUserIsAdmin(payload.id);
+    if (!userIsAdmin) return UnauthorizedResponse;
 
     const body = await request.json();
     const {
@@ -59,10 +63,8 @@ export async function POST(request: NextRequest) {
 
         if (transfer.withdrawalId) {
           withdrawalService.updateById(transfer.withdrawalId, {
-            status: "APPROVED",
+            status: "AWAITING_PAYMENT",
           });
-
-          console.log(transfer);
 
           if (transfer.liquidityPoolId) {
             liquidityPoolService

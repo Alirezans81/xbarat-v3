@@ -11,9 +11,10 @@ import { SidebarProvider } from "@/components/ui/sidebar";
 import { AppSidebar } from "@/components/app-sidebar";
 import { Toaster } from "@/components/ui/sonner";
 import HandleCookies from "@/components/handle-cookies";
+import { rtlLocales } from "@/lib/front/constants";
 
 export const metadata: Metadata = {
-  title: "Xbarat",
+  title: "Xbarat | Exchange/Transfer Fiat Money",
   description: "Exchange/Transfer Fiat Money",
 };
 
@@ -29,7 +30,6 @@ export default async function RootLayout({
     notFound();
   }
 
-  const rtlLocales: (typeof locale)[] = ["fa"];
   const font = getFontByLocale(locale);
 
   return (

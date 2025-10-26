@@ -18,5 +18,10 @@ export const getWallets = async (): Promise<{ data: Wallet[] }> => {
   const headers = {
     Authorization: `Bearer ${token.value}`,
   };
-  return axios.get(api["wallet"], { headers });
+
+  try {
+    return await axios.get(api["wallet"], { headers });
+  } catch (error) {
+    return { data: [] };
+  }
 };

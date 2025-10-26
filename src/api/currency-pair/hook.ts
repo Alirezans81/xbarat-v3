@@ -35,7 +35,7 @@ export const useGetCurrencyPairs = () => {
       .catch((err) => {
         process.env.NEXT_PUBLIC_APP_MODE === "development" &&
           console.error(err.response);
-        toast(t(err.response.data.error.message));
+        toast.error(t(err.response.data.error.message));
         onError?.(err);
       })
       .finally(() => {
@@ -69,7 +69,7 @@ export const useCreateCurrencyPair = () => {
         .catch((err) => {
           process.env.NEXT_PUBLIC_APP_MODE === "development" &&
             console.error(err.response);
-          toast(t(err.response.data.error.message));
+          toast.error(t(err.response.data.error.message));
           onError?.(err);
         })
         .finally(() => {
@@ -106,7 +106,7 @@ export const useUpdateCurrencyPair = () => {
         .catch((err) => {
           process.env.NEXT_PUBLIC_APP_MODE === "development" &&
             console.error(err.response);
-          toast(t(err.response.data.error.message));
+          toast.error(t(err.response.data.error.message));
           onError?.(err);
         })
         .finally(() => {
@@ -141,7 +141,7 @@ export const useDeleteCurrencyPair = () => {
         .catch((err) => {
           process.env.NEXT_PUBLIC_APP_MODE === "development" &&
             console.error(err.response);
-          toast(t(err.response.data.error.message));
+          toast.error(t(err.response.data.error.message));
           onError?.(err);
         })
         .finally(() => {

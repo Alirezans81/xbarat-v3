@@ -4,7 +4,7 @@ import {
   CreateWithdrawal,
   GetWithdrawalsFilters,
   UpdateWithdrawal,
-} from "@/types/front/wallet/withdrawal";
+} from "@/types/back/wallet/withdrawal";
 
 export const withdrawalRepository = {
   create: async (data: CreateWithdrawal) => {
@@ -39,6 +39,12 @@ export const withdrawalRepository = {
               select: {
                 code: true,
                 symbol: true,
+                paymentChannels: {
+                  select: {
+                    id: true,
+                    name: true,
+                  },
+                },
               },
             },
           },

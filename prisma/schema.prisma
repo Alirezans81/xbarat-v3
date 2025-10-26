@@ -68,8 +68,6 @@ model Currency {
   createdAt        DateTime         @default(now())
   FromCurrencyPair CurrencyPair[]   @relation("FromCurrency")
   ToCurrencyPair   CurrencyPair[]   @relation("ToCurrency")
-  exchangesFrom    Exchange[]       @relation("FromCurrency")
-  exchangesTo      Exchange[]       @relation("ToCurrency")
   FeeSetting       FeeSetting[]
   LiquidityPool    LiquidityPool[]
   wallets          Wallet[]
@@ -87,7 +85,8 @@ model CurrencyPair {
   updatedAt      DateTime @updatedAt
   fromCurrency   Currency @relation("FromCurrency", fields: [fromCurrencyId], references: [id])
   toCurrency     Currency @relation("ToCurrency", fields: [toCurrencyId], references: [id])
-
+  Exchange       Exchange[]
+  
   @@unique([fromCurrencyId, toCurrencyId])
 }
 
@@ -160,6 +159,7 @@ model Withdrawal {
   bridgeTransferId String?
   receiverAddress  String
   addressOwnerName String
+  documentUrl      String?
   BridgeTransfer   BridgeTransfer?
   paymentChannel   PaymentChannel   @relation(fields: [paymentChannelId], references: [id])
   user             User             @relation(fields: [userId], references: [id])
@@ -168,7 +168,7 @@ model Withdrawal {
 
 model BridgeTransfer {
   id              String         @id @default(uuid())
-  status          BridgeStatus   @default(PENDING)
+  status          BridgeStatus   @default(AWAITING_PAYMENT)
   createdAt       DateTime       @default(now())
   completedAt     DateTime?
   failedAt        DateTime?
@@ -176,6 +176,7 @@ model BridgeTransfer {
   withdrawalId    String?        @unique
   liquidityPoolId String?
   amount          Decimal        @default(0.00)
+  documentUrl     String?
   deposit         Deposit?       @relation(fields: [depositId], references: [id])
   liquidityPool   LiquidityPool? @relation(fields: [liquidityPoolId], references: [id])
   withdrawal      Withdrawal?    @relation(fields: [withdrawalId], references: [id])
@@ -212,21 +213,37 @@ model Refund {
 }
 
 model Exchange {
-  id             String         @id @default(uuid())
-  fromCurrencyId String
-  toCurrencyId   String
-  userId         String?
-  fromAmount     Decimal
-  toAmount       Decimal
-  exchangeRate   Decimal
-  feePercentage  Decimal        @default(0.00)
-  status         ExchangeStatus @default(PENDING)
-  createdAt      DateTime       @default(now())
-  completedAt    DateTime?
-  failedAt       DateTime?
-  fromCurrency   Currency       @relation("FromCurrency", fields: [fromCurrencyId], references: [id])
-  toCurrency     Currency       @relation("ToCurrency", fields: [toCurrencyId], references: [id])
-  initiator      User?          @relation("Initiator", fields: [userId], references: [id])
+  id              String          @id @default(uuid())
+  currencyPairId  String 
+  userId          String 
+  fromAmount      Decimal         @db.Decimal(20, 8)
+  toAmount        Decimal         @db.Decimal(20, 8)
+  exchangeRate    Decimal         @db.Decimal(20, 8)
+  feePercentage   Decimal         @default(0.00)
+  status          ExchangeStatus  @default(PENDING)
+  matchedAmount   Decimal         @default(0.00)
+  remainingAmount Decimal         @default(0.00)
+  createdAt       DateTime        @default(now())
+  completedAt     DateTime? 
+  failedAt        DateTime? 
+  currencyPair    CurrencyPair    @relation(fields: [currencyPairId], references: [id])
+  user            User            @relation("Initiator", fields: [userId], references: [id])
+  matchesFrom     ExchangeMatch[] @relation("FromExchangeMatch")
+  matchesTo       ExchangeMatch[] @relation("ToExchangeMatch")
+}
+
+model ExchangeMatch {
+  id                String      @id @default(uuid())
+  fromExchangeId    String
+  toExchangeId      String
+  fromMatchedAmount Decimal     @db.Decimal(20, 8)
+  toMatchedAmount   Decimal     @db.Decimal(20, 8)
+  createdAt         DateTime    @default(now())
+  fromExchange      Exchange    @relation("FromExchangeMatch", fields: [fromExchangeId], references: [id])
+  toExchange        Exchange    @relation("ToExchangeMatch", fields: [toExchangeId], references: [id])
+
+  @@unique([fromExchangeId, toExchangeId])
+  @@index([createdAt])
 }
 
 model ActivityLog {
@@ -283,6 +300,7 @@ enum DocumentType {
 enum DepositStatus {
   PENDING
   PAYMENT
+  AWAITING_APPROVAL
   FAILED
   COMPLETED
   REJECTED
@@ -290,18 +308,19 @@ enum DepositStatus {
 
 enum WithdrawalStatus {
   PENDING
-  APPROVED
+  AWAITING_PAYMENT
+  APPROVAL
   FAILED
   COMPLETED
   REJECTED
 }
 
 enum BridgeStatus {
-  PENDING
+  AWAITING_PAYMENT
+  APPROVAL
   COMPLETED
   FAILED
-  CANCELED
-  CHECK
+  REJECTED
 }
 
 enum TransferStatus {
@@ -312,8 +331,10 @@ enum TransferStatus {
 
 enum ExchangeStatus {
   PENDING
+  PARTIAL
   COMPLETED
   FAILED
+  CANCELED
 }
 
 enum RefundStatus {

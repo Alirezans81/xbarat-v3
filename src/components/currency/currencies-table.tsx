@@ -27,7 +27,7 @@ export default function CurrenciesTable({ data }: Props) {
           <TableHead>Symbol</TableHead>
           <TableHead>Decimals</TableHead>
           <TableHead>Created At</TableHead>
-          <TableHead>Paymnet Channels</TableHead>
+          <TableHead>Payment Channels</TableHead>
           <TableHead className="text-right"></TableHead>
         </TableRow>
       </TableHeader>

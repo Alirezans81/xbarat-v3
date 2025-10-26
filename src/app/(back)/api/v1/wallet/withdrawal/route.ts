@@ -19,15 +19,30 @@ export async function POST(request: NextRequest) {
     if (!payload) return UnauthorizedResponse;
 
     const body = await request.json();
-    const { amount, walletId, paymentChannelId } = body;
+    const {
+      amount,
+      walletId,
+      paymentChannelId,
+      receiverAddress,
+      addressOwnerName,
+    } = body;
 
-    if (!amount || !walletId || !paymentChannelId) return MissingFieldsResponse;
+    if (
+      !amount ||
+      !walletId ||
+      !paymentChannelId ||
+      !receiverAddress ||
+      !addressOwnerName
+    )
+      return MissingFieldsResponse;
 
     const withdrawal = await withdrawalService.create({
       userId: payload.id,
       amount,
       walletId,
       paymentChannelId,
+      receiverAddress,
+      addressOwnerName,
     });
 
     return NextResponse.json(withdrawal, { status: 201 });

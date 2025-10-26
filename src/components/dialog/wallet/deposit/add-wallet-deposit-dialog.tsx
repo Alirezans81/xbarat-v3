@@ -133,10 +133,10 @@ export default function AddWalletDepositDialog({ currency, walletId }: Props) {
               </span>
             )}
           </div>
-          <div className="w-full flex items-center justify-between text-sm">
+          {/* <div className="w-full flex items-center justify-between text-sm">
             <span>Fee:</span>
             <span>{currency.symbol + " 2.25"}</span>
-          </div>
+          </div> */}
           <div className="mt-4">
             <Button
               type="submit"

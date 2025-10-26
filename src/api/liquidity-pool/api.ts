@@ -50,3 +50,34 @@ export const deleteLiquidityPool = (
     headers,
   });
 };
+
+export const approveLiquidityPoolDocument = (
+  token: string,
+  liquidityPool_id: string
+) => {
+  const headers = {
+    Authorization: `Bearer ${token}`,
+  };
+  return axios.post(
+    api["liquidity-pool"] + "/" + liquidityPool_id + "/approve",
+    {},
+    { headers }
+  );
+};
+
+export const uploadLiquidityPoolDocument = (
+  token: string,
+  liquidityPool_id: string,
+  data: { document: File }
+) => {
+  const headers = {
+    Authorization: `Bearer ${token}`,
+  };
+  const formData = new FormData();
+  formData.append("document", data.document);
+  return axios.post(
+    api["liquidity-pool"] + "/" + liquidityPool_id + "/upload",
+    formData,
+    { headers }
+  );
+};

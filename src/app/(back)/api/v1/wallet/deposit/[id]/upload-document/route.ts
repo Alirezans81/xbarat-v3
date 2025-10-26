@@ -7,6 +7,8 @@ import {
   UnauthorizedResponse,
 } from "@/lib/back/utils/globalResponses.utils";
 import { jwtUtils } from "@/lib/back/utils/jwt.utils";
+import { bridgeTransferService } from "@/lib/back/services/bridgeTransfer.service";
+import { withdrawalService } from "@/lib/back/services/wallet/withdrawal.service";
 
 export const runtime = "nodejs";
 
@@ -61,10 +63,28 @@ export async function POST(
 
     const fileUrl = `${baseUrl}/uploads/${fileName}`;
 
+    // Update bridge transfers
+    const bridgeTransfers = await bridgeTransferService.getAll({
+      depositId: id,
+    });
+    for (const bridgeTransfer of bridgeTransfers) {
+      await bridgeTransferService.updateById(bridgeTransfer.id, {
+        documentUrl: fileUrl,
+        status: "APPROVAL",
+      });
+
+      if (bridgeTransfer.withdrawalId) {
+        await withdrawalService.updateById(bridgeTransfer.withdrawalId, {
+          documentUrl: fileUrl,
+          status: "APPROVAL",
+        });
+      }
+    }
+
     // Update deposit with file URL
     const newDeposit = await depositService.updateById(id, {
       documentUrl: fileUrl,
-      status: "COMPLETED",
+      status: "AWAITING_APPROVAL",
     });
 
     return NextResponse.json(newDeposit, { status: 200 });

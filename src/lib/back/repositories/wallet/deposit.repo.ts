@@ -1,10 +1,9 @@
-import { Deposit } from "@/generated/prisma";
 import { prisma } from "../../prisma";
 import {
   CreateDeposit,
   GetDepositsFilters,
   UpdateDeposit,
-} from "@/types/front/wallet/deposit";
+} from "@/types/back/wallet/deposit";
 
 export const depositRepository = {
   create: async (data: CreateDeposit) => {

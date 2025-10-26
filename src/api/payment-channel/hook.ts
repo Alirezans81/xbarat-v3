@@ -43,7 +43,7 @@ export const useGetPaymentChannels = () => {
         .catch((err) => {
           process.env.NEXT_PUBLIC_APP_MODE === "development" &&
             console.error(err.response);
-          toast(t(err.response.data.error.message));
+          toast.error(t(err.response.data.error.message));
           onError?.(err);
         })
         .finally(() => {
@@ -78,7 +78,7 @@ export const useCreatePaymentChannel = () => {
         .catch((err) => {
           process.env.NEXT_PUBLIC_APP_MODE === "development" &&
             console.error(err.response);
-          toast(t(err.response.data.error.message));
+          toast.error(t(err.response.data.error.message));
           onError?.(err);
         })
         .finally(() => {
@@ -115,7 +115,7 @@ export const useUpdatePaymentChannel = () => {
         .catch((err) => {
           process.env.NEXT_PUBLIC_APP_MODE === "development" &&
             console.error(err.response);
-          toast(t(err.response.data.error.message));
+          toast.error(t(err.response.data.error.message));
           onError?.(err);
         })
         .finally(() => {
@@ -150,7 +150,7 @@ export const useDeletePaymentChannel = () => {
         .catch((err) => {
           process.env.NEXT_PUBLIC_APP_MODE === "development" &&
             console.error(err.response);
-          toast(t(err.response.data.error.message));
+          toast.error(t(err.response.data.error.message));
           onError?.(err);
         })
         .finally(() => {

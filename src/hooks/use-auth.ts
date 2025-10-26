@@ -28,7 +28,7 @@ export function useCheckTokenExpiration() {
     } else {
       resetApp();
 
-      toast(t("mustLoginAgain"));
+      toast.info(t("mustLoginAgain"));
       setMode("login");
       setOpen(true);
     }

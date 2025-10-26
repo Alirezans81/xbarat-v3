@@ -1,6 +1,8 @@
 import { ChevronLeft } from "lucide-react";
 import { Link } from "@/i18n/navigation";
-import { getCurrencyPairs } from "@/api/currencyPair/action";
+import { getCurrencyPairs } from "@/api/currency-pair/action";
+import CurrencyPairsTable from "@/components/currency-pair/currency-pairs-table";
+import AddCurrencyPairDialog from "@/components/dialog/currency-pair/add-currency-pair-dialog";
 
 export default async function page() {
   try {
@@ -16,9 +18,11 @@ export default async function page() {
               </Link>
               <span className="text-3xl">Currency Pairs</span>
             </div>
+
+            <AddCurrencyPairDialog />
           </div>
 
-          {/* <CurrenciesTable data={data} /> */}
+          <CurrencyPairsTable data={data} />
         </div>
       </div>
     );

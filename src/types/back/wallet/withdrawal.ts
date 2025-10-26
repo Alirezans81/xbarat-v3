@@ -3,8 +3,8 @@ import {
   User,
   WithdrawalStatus,
 } from "@/generated/prisma";
-import { Currency } from "../../currency";
-import { PaymentChannel } from "../../paymentChannel";
+import { Currency } from "../currency";
+import { PaymentChannel } from "../paymentChannel";
 
 export type Withdrawal = Omit<
   DatabaseWithdrawal,
@@ -32,14 +32,18 @@ export type GetWithdrawalsFilters = {
 
 export type CreateWithdrawal = {
   amount: number;
+  userId: string;
   walletId: string;
   paymentChannelId: string;
-  status: WithdrawalStatus;
+  receiverAddress: string;
+  addressOwnerName: string;
 };
 
 export type UpdateWithdrawal = {
   amount?: number;
-  walletId?: string;
   paymentChannelId?: string;
+  receiverAddress?: string;
+  addressOwnerName?: string;
+  documentUrl?: string;
   status?: WithdrawalStatus;
 };

@@ -12,31 +12,28 @@ type GetWalletsProps = {
 export const useGetWallets = () => {
   const t = useTranslations("ApiErrors");
 
-  const checkTokenExpiration = useCheckTokenExpiration();
   const { token } = useAuthStore();
 
-  const fetch = ({
+  const fetch = async ({
     setWallets,
     onError,
     onSuccess,
     onFinally,
   }: GetWalletsProps & FetchProps) => {
-    checkTokenExpiration(async () => {
-      await getWallets(token.value)
-        .then((res) => {
-          setWallets(res.data);
-          onSuccess?.(res);
-        })
-        .catch((err) => {
-          process.env.NEXT_PUBLIC_APP_MODE === "development" &&
-            console.error(err.response);
-          toast(t(err.response.data.error.message));
-          onError?.(err);
-        })
-        .finally(() => {
-          onFinally?.();
-        });
-    });
+    await getWallets(token.value)
+      .then((res) => {
+        setWallets(res.data);
+        onSuccess?.(res);
+      })
+      .catch((err) => {
+        process.env.NEXT_PUBLIC_APP_MODE === "development" &&
+          console.error(err.response);
+        toast.error(t(err.response.data.error.message));
+        onError?.(err);
+      })
+      .finally(() => {
+        onFinally?.();
+      });
   };
 
   return fetch;

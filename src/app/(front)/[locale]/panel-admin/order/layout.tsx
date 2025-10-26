@@ -17,16 +17,24 @@ export default function layout({
           <span className="text-sm text-muted-foreground">PAGES</span>
           <Link href="/panel-admin/order/assignment">
             <Button
-              variant={pathname !== "/panel-admin/order/assignment" ? "outline" : "default"}
-              className="w-full justify-start text-foreground"
+              variant={
+                pathname !== "/panel-admin/order/assignment"
+                  ? "outline"
+                  : "default"
+              }
+              className="w-full justify-start"
             >
               Assignment
             </Button>
           </Link>
           <Link href="/panel-admin/order/deposit">
             <Button
-              variant={pathname !== "/panel-admin/order/deposit" ? "outline" : "default"}
-              className="w-full justify-start text-foreground"
+              variant={
+                pathname !== "/panel-admin/order/deposit"
+                  ? "outline"
+                  : "default"
+              }
+              className="w-full justify-start"
             >
               Deposit
             </Button>
@@ -34,25 +42,33 @@ export default function layout({
           <Link href="/panel-admin/order/withdrawal">
             <Button
               variant={
-                pathname !== "/panel-admin/order/withdrawal" ? "outline" : "default"
+                pathname !== "/panel-admin/order/withdrawal"
+                  ? "outline"
+                  : "default"
               }
-              className="w-full justify-start text-foreground"
+              className="w-full justify-start"
             >
               Withdrawal
             </Button>
           </Link>
           <Link href="/panel-admin/order/transfer">
             <Button
-              variant={pathname !== "/panel-admin/order/transfer" ? "outline" : "default"}
-              className="w-full justify-start text-foreground"
+              variant={
+                pathname !== "/panel-admin/order/transfer"
+                  ? "outline"
+                  : "default"
+              }
+              className="w-full justify-start"
             >
               Transfer
             </Button>
           </Link>
           <Link href="/panel-admin/order/refund">
             <Button
-              variant={pathname !== "/panel-admin/order/refund" ? "outline" : "default"}
-              className="w-full justify-start text-foreground"
+              variant={
+                pathname !== "/panel-admin/order/refund" ? "outline" : "default"
+              }
+              className="w-full justify-start"
             >
               Refund
             </Button>

@@ -13,6 +13,7 @@ export default function getApiUrl() {
     "liquidity-pool": `${apiDomain}/liquidity-pool`,
     wallet: `${apiDomain}/wallet`,
     deposit: `${apiDomain}/wallet/deposit`,
+    exchange: `${apiDomain}/wallet/exchange`,
     withdrawal: `${apiDomain}/wallet/withdrawal`,
     transfer: `${apiDomain}/wallet/transfer`,
     refund: `${apiDomain}/wallet/refund`,

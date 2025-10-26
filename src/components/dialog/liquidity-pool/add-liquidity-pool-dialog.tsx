@@ -76,6 +76,7 @@ export default function AddLiquidityPoolDialog({ currency }: Props) {
     ) {
       createLiquidityPool({
         liquidityPool: {
+          frozen: 0,
           currencyId: currency.id,
           paymentChannelId,
           address,

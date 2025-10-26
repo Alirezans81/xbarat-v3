@@ -25,7 +25,7 @@ export default async function layout({
               >
                 <Button
                   variant="outline"
-                  className="w-full justify-start text-foreground"
+                  className="w-full justify-start"
                 >
                   {currency.code + " (" + currency.symbol + ")"}
                 </Button>

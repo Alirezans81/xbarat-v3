@@ -3,7 +3,7 @@ import {
   CreateBridgeTransfer,
   GetBridgeTransfersFilters,
   UpdateBridgeTransfer,
-} from "@/types/front/bridgeTransfer";
+} from "@/types/back/bridgeTransfer";
 
 export const bridgeTransferRepository = {
   create: async (data: CreateBridgeTransfer) => {
@@ -72,6 +72,8 @@ export const bridgeTransferRepository = {
         },
         liquidityPool: {
           select: {
+            id: true,
+            userId: true,
             address: true,
           },
         },
@@ -82,6 +84,54 @@ export const bridgeTransferRepository = {
   findById: async (id: string) => {
     return prisma.bridgeTransfer.findUnique({
       where: { id },
+      include: {
+        deposit: {
+          select: {
+            amount: true,
+            wallet: {
+              select: {
+                user: {
+                  select: {
+                    fullName: true,
+                  },
+                },
+                currency: {
+                  select: {
+                    code: true,
+                    name: true,
+                    symbol: true,
+                  },
+                },
+              },
+            },
+          },
+        },
+        withdrawal: {
+          select: {
+            amount: true,
+            receiverAddress: true,
+            addressOwnerName: true,
+            wallet: {
+              select: {
+                currency: {
+                  select: {
+                    code: true,
+                    name: true,
+                    symbol: true,
+                  },
+                },
+              },
+            },
+          },
+        },
+        liquidityPool: {
+          select: {
+            id: true,
+            userId: true,
+            address: true,
+          },
+        },
+      },
     });
   },
 

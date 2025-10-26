@@ -19,3 +19,8 @@ export const MissingFieldsResponse = NextResponse.json(
   { message: "missingFields" },
   { status: 400 }
 );
+
+export const BadRequestResponse = NextResponse.json(
+  { error: { message: "badRequest" } },
+  { status: 400 }
+);

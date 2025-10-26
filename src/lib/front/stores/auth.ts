@@ -2,7 +2,6 @@ import { create } from "zustand";
 import { User } from "@/generated/prisma";
 import { persist } from "zustand/middleware";
 import { Token } from "@/types/front/globals";
-import Cookies from "js-cookie";
 
 export type AuthStoreStates = {
   token: Token;

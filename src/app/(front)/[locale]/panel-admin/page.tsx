@@ -1,5 +1,5 @@
 import { getCurrencies } from "@/api/currency/action";
-import { getCurrencyPairs } from "@/api/currencyPair/action";
+import { getCurrencyPairs } from "@/api/currency-pair/action";
 import { getPaymentChannels } from "@/api/payment-channel/action";
 import {
   Card,

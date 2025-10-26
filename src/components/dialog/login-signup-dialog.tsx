@@ -22,8 +22,10 @@ import {
 import { countryCodes } from "@/constants/globals";
 import { CountryCode, parsePhoneNumberFromString } from "libphonenumber-js";
 import { useCreateUser, useLoginUser } from "@/api/user/hook";
+import { useRouter } from "@/i18n/navigation";
 
 export default function LoginSignupDialog() {
+  const router = useRouter();
   const { open, setOpen, mode, setMode } = useLoginSignupDialogStore();
 
   const [email, setEmail] = useState("");
@@ -170,6 +172,7 @@ export default function LoginSignupDialog() {
       },
       onSuccess() {
         setOpen(false);
+        router.refresh();
       },
       onFinally() {
         setLoading(false);
@@ -188,6 +191,7 @@ export default function LoginSignupDialog() {
       },
       onSuccess() {
         setOpen(false);
+        router.refresh();
       },
       onFinally() {
         setLoading(false);
@@ -269,7 +273,7 @@ export default function LoginSignupDialog() {
               <Button
                 type="button"
                 variant="outline"
-                className="w-full text-foreground"
+                className="w-full"
                 onClick={() => setMode("signup")}
               >
                 {t("signUp")}
@@ -411,7 +415,7 @@ export default function LoginSignupDialog() {
               <Button
                 type="button"
                 variant="outline"
-                className="w-full text-foreground"
+                className="w-full"
                 onClick={() => setMode("login")}
               >
                 {t("logIn")}

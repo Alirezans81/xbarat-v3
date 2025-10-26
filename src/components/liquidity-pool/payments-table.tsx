@@ -11,6 +11,8 @@ import {
 } from "@/components/ui/table";
 import { BridgeTransfer } from "../../types/front/bridgeTransfer";
 import { useTranslations } from "next-intl";
+import ApproveLiquidityPoolDocument from "../dialog/liquidity-pool/payments/approve-liquidity-pool-document-dialog";
+import UploadLiquidityPoolDocument from "../dialog/liquidity-pool/payments/upload-liquidity-pool-document-dialg";
 
 interface Props {
   data: BridgeTransfer[];
@@ -70,7 +72,21 @@ export default function PaymentsTable({ data }: Props) {
                 : "Error"}
             </TableCell>
             <TableCell>{bridgeTransfer.status}</TableCell>
-            <TableCell className="flex justify-end"></TableCell>
+            <TableCell className="flex justify-end">
+              {bridgeTransfer.status === "APPROVAL" &&
+                bridgeTransfer.depositId && (
+                  <ApproveLiquidityPoolDocument
+                    liquidityPool_id={bridgeTransfer.id}
+                    document_url={bridgeTransfer.documentUrl || ""}
+                  />
+                )}
+              {bridgeTransfer.status === "AWAITING_PAYMENT" &&
+                bridgeTransfer.withdrawalId && (
+                  <UploadLiquidityPoolDocument
+                    liquidityPool_id={bridgeTransfer.id}
+                  />
+                )}
+            </TableCell>
           </TableRow>
         ))}
       </TableBody>
