@@ -4,6 +4,7 @@ import {
   ServerErrorResponse,
   UnauthorizedResponse,
 } from "@/lib/back/utils/globalResponses.utils";
+import { jwtUtils } from "@/lib/back/utils/jwt.utils";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function GET(
@@ -14,8 +15,11 @@ export async function GET(
     const token = request.headers.get("authorization")?.split(" ")[1];
     if (!token) return UnauthorizedResponse;
 
-    const requester = await userService.getUserByToken(token);
-    if (!requester) return UnauthorizedResponse;
+    const payload = jwtUtils.verify(token);
+    if (!payload) return UnauthorizedResponse;
+
+    const requesterIsAdmin = await userService.checkUserIsAdmin(payload.id);
+    if (!requesterIsAdmin) return UnauthorizedResponse;
 
     const user = await userService.getById(params.id);
     if (!user) return NotFoundResponse;
