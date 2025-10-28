@@ -64,4 +64,5 @@ export type UpdateBridgeTransfer = {
   amount?: number;
   documentUrl?: string;
   status?: BridgeStatus;
+  paymentChannelId?: string;
 };

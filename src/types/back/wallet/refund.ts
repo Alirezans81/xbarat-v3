@@ -1,5 +1,5 @@
 import { Refund as DatabaseRefund } from "@/generated/prisma";
-import { Currency } from "../../currency";
+import { Currency } from "../currency";
 
 export type Refund = Omit<
   DatabaseRefund,

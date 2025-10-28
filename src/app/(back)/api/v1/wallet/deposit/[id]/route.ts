@@ -29,7 +29,6 @@ export async function PUT(
     const { amount, walletId, paymentChannelId } = body;
 
     const newDeposit = await depositService.updateById(id, {
-      userId: payload.id,
       amount,
       walletId,
       paymentChannelId,

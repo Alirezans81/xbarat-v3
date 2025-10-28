@@ -23,6 +23,7 @@ export type GetLiquidityPoolsFilters = {
 };
 
 export type CreateLiquidityPool = {
+  userId: string;
   currencyId: string;
   paymentChannelId: string;
   address: string;

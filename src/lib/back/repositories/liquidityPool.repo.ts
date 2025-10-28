@@ -3,7 +3,7 @@ import {
   CreateLiquidityPool,
   GetLiquidityPoolsFilters,
   UpdateLiquidityPool,
-} from "@/types/front/liquidityPool";
+} from "@/types/back/liquidityPool";
 
 export const liquidityPoolRepository = {
   create: async (data: CreateLiquidityPool) => {

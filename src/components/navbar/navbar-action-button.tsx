@@ -54,7 +54,7 @@ export default function NavbarActionButton() {
                 </AvatarFallback>
               </Avatar>
             </DropdownMenuTrigger>
-            <DropdownMenuContent dir>
+            <DropdownMenuContent>
               <DropdownMenuLabel className="text-muted-foreground">
                 {t("menu")}
               </DropdownMenuLabel>

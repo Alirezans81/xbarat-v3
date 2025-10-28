@@ -41,6 +41,7 @@ export type CreateWithdrawal = {
 
 export type UpdateWithdrawal = {
   amount?: number;
+  walletId?: string;
   paymentChannelId?: string;
   receiverAddress?: string;
   addressOwnerName?: string;

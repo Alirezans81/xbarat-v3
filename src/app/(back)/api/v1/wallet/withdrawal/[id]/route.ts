@@ -29,7 +29,6 @@ export async function PUT(
     const { amount, walletId, paymentChannelId } = body;
 
     const newWithdrawal = await withdrawalService.updateById(id, {
-      userId: payload.id,
       amount,
       walletId,
       paymentChannelId,

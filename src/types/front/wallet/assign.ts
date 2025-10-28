@@ -1,4 +1,4 @@
-import { LiquidityPool } from "../../liquidityPool";
+import { LiquidityPool } from "../liquidityPool";
 import { Deposit } from "./deposit";
 import { Withdrawal } from "./withdrawal";
 
