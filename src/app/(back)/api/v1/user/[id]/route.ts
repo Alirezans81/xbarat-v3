@@ -17,7 +17,7 @@ export async function GET(
     const requester = await userService.getUserByToken(token);
     if (!requester) return UnauthorizedResponse;
 
-    const user = await userService.getUserById(params.id);
+    const user = await userService.getById(params.id);
     if (!user) return NotFoundResponse;
 
     return NextResponse.json(user);
