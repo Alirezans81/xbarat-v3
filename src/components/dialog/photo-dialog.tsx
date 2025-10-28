@@ -42,7 +42,7 @@ export default function UploadDepositDocument({ deposit_id }: Props) {
           <DialogTitle>Upload Document</DialogTitle>
         </DialogHeader>
 
-        <Image />
+        <img />
       </DialogContent>
     </Dialog>
   );

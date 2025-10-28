@@ -43,12 +43,12 @@ export function AppSidebar({ side }: Props) {
   const t = useTranslations("Sidebar");
 
   const items = isLoggedIn
-      ? user?.role === "ADMIN"
-        ? adminLoggedInNavbarItems
-        : user?.role === "PROVIDER"
-        ? providerLoggedInNavbarItems
-        : loggedInNavabarItems
-      : notLoggedInNavbarItems;
+    ? user?.role === "ADMIN"
+      ? adminLoggedInNavbarItems
+      : user?.role === "PROVIDER"
+      ? providerLoggedInNavbarItems
+      : loggedInNavabarItems
+    : notLoggedInNavbarItems;
 
   return (
     <Sidebar side={side}>
@@ -77,7 +77,7 @@ export function AppSidebar({ side }: Props) {
               <TooltipProvider>
                 <Tooltip>
                   <TooltipTrigger onClick={() => {}}>
-                    <Image alt="" src={Instagram} className="size-5" />
+                    <img alt="" src={Instagram} className="size-5" />
                   </TooltipTrigger>
                   <TooltipContent>
                     <span className="text-foreground">{t("instagram")}</span>
@@ -87,7 +87,7 @@ export function AppSidebar({ side }: Props) {
               <TooltipProvider>
                 <Tooltip>
                   <TooltipTrigger onClick={() => {}}>
-                    <Image alt="" src={WhatsApp} className="size-5" />
+                    <img alt="" src={WhatsApp} className="size-5" />
                   </TooltipTrigger>
                   <TooltipContent>
                     <span className="text-foreground">{t("whatsApp")}</span>
@@ -97,7 +97,7 @@ export function AppSidebar({ side }: Props) {
               <TooltipProvider>
                 <Tooltip>
                   <TooltipTrigger onClick={() => {}}>
-                    <Image alt="" src={Telegram} className="size-5" />
+                    <img alt="" src={Telegram} className="size-5" />
                   </TooltipTrigger>
                   <TooltipContent>
                     <span className="text-foreground">{t("telegram")}</span>
@@ -108,7 +108,7 @@ export function AppSidebar({ side }: Props) {
                 <Tooltip>
                   <TooltipTrigger onClick={() => {}}>
                     <div className="p-1.5 rounded-full bg-black">
-                      <Image alt="" src={X} className="size-2.5" />
+                      <img alt="" src={X} className="size-2.5" />
                     </div>
                   </TooltipTrigger>
                   <TooltipContent>

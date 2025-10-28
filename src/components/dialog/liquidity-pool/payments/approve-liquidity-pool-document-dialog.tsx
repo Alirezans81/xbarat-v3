@@ -58,7 +58,7 @@ export default function ApproveLiquidityPoolDocument({
 
         <form onSubmit={handleSubmit} className="space-y-2">
           <div>
-            <Image
+            <img
               alt="Uploaded Document"
               src={document_url}
               className="w-full opacity-100 bg-accent rounded-2xl"
