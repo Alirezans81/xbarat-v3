@@ -3,7 +3,7 @@ import createNextIntlPlugin from "next-intl/plugin";
 
 const nextConfig: NextConfig = {
   images: {
-    disableStaticImages: true,
+    unoptimized: true,
     remotePatterns: [
       {
         protocol: "http",

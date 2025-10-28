@@ -89,7 +89,7 @@ export default function UploadLiquidityPoolDocument({
 
             <div className="w-full relative">
               {document ? (
-                <img
+                <Image
                   alt="Uploaded Document"
                   src={URL.createObjectURL(document)}
                   className="w-full opacity-100 bg-accent rounded-2xl"

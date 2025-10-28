@@ -77,7 +77,7 @@ export function AppSidebar({ side }: Props) {
               <TooltipProvider>
                 <Tooltip>
                   <TooltipTrigger onClick={() => {}}>
-                    <img alt="" src={Instagram} className="size-5" />
+                    <Image alt="" src={Instagram} className="size-5" />
                   </TooltipTrigger>
                   <TooltipContent>
                     <span className="text-foreground">{t("instagram")}</span>
@@ -87,7 +87,7 @@ export function AppSidebar({ side }: Props) {
               <TooltipProvider>
                 <Tooltip>
                   <TooltipTrigger onClick={() => {}}>
-                    <img alt="" src={WhatsApp} className="size-5" />
+                    <Image alt="" src={WhatsApp} className="size-5" />
                   </TooltipTrigger>
                   <TooltipContent>
                     <span className="text-foreground">{t("whatsApp")}</span>
@@ -97,7 +97,7 @@ export function AppSidebar({ side }: Props) {
               <TooltipProvider>
                 <Tooltip>
                   <TooltipTrigger onClick={() => {}}>
-                    <img alt="" src={Telegram} className="size-5" />
+                    <Image alt="" src={Telegram} className="size-5" />
                   </TooltipTrigger>
                   <TooltipContent>
                     <span className="text-foreground">{t("telegram")}</span>
@@ -108,7 +108,7 @@ export function AppSidebar({ side }: Props) {
                 <Tooltip>
                   <TooltipTrigger onClick={() => {}}>
                     <div className="p-1.5 rounded-full bg-black">
-                      <img alt="" src={X} className="size-2.5" />
+                      <Image alt="" src={X} className="size-2.5" />
                     </div>
                   </TooltipTrigger>
                   <TooltipContent>

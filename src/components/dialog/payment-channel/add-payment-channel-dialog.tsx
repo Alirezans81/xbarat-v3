@@ -145,7 +145,7 @@ export default function AddPaymentChannelDialog({}: Props) {
               required
             />
             <div className="w-full bg-card border border-input rounded-lg py-[30%] flex justify-center relative">
-              <img
+              <Image
                 className={`absolute w-full h-full top-0 left-0 rounded-lg opacity-60 z-0 object-contain p-5 ${
                   logoUrl ? "block" : "hidden"
                 }`}
