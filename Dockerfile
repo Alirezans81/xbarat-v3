@@ -35,7 +35,5 @@ COPY --from=builder /app/node_modules ./node_modules
 
 COPY .env .env
 
-RUN npx prisma migrate deploy
-
 EXPOSE 3000
 CMD ["pnpm", "start"]
