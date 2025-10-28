@@ -1,12 +1,9 @@
-import Image from "next/image";
 import { getTranslations } from "next-intl/server";
 import Link from "next/link";
 import { ThemeToggle } from "./theme-toggle";
 import LocaleToggle from "./locale-toggle";
 import NavbarButton from "./navbar/navbar-action-button";
 import { SidebarTrigger } from "./ui/sidebar";
-
-import Logo from "@/assets/logo.png";
 
 export default async function Navbar() {
   const t = await getTranslations("Navbar");
@@ -19,7 +16,7 @@ export default async function Navbar() {
             <SidebarTrigger size="icon" className="" />
           </div>
           <Link href="/" className="flex items-center gap-1">
-            <Image alt="" className="w-10 h-10" src={Logo} />
+            <img alt="" className="w-10 h-10" src="/logo.png" />
             <span className="text-2xl text-secondary">{t("xbarat")}</span>
           </Link>
         </div>

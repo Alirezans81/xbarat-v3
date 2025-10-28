@@ -15,7 +15,6 @@ import { useTranslations } from "next-intl";
 import { useAuthStore } from "@/lib/front/stores/auth";
 import LocaleToggle from "./locale-toggle";
 import { ThemeToggle } from "./theme-toggle";
-import Image from "next/image";
 import {
   Tooltip,
   TooltipContent,
@@ -28,11 +27,6 @@ import {
   notLoggedInNavbarItems,
   providerLoggedInNavbarItems,
 } from "@/constants/globals";
-
-import Instagram from "@/assets/SocialMedia/instagram.svg";
-import WhatsApp from "@/assets/SocialMedia/whatsapp.svg";
-import Telegram from "@/assets/SocialMedia/telegram.svg";
-import X from "@/assets/SocialMedia/x.svg";
 
 interface Props {
   side?: "right" | "left";
@@ -77,7 +71,11 @@ export function AppSidebar({ side }: Props) {
               <TooltipProvider>
                 <Tooltip>
                   <TooltipTrigger onClick={() => {}}>
-                    <Image alt="" src={Instagram} className="size-5" />
+                    <img
+                      alt=""
+                      src="/SocialMedia/instagram.svg"
+                      className="size-5"
+                    />
                   </TooltipTrigger>
                   <TooltipContent>
                     <span className="text-foreground">{t("instagram")}</span>
@@ -87,7 +85,11 @@ export function AppSidebar({ side }: Props) {
               <TooltipProvider>
                 <Tooltip>
                   <TooltipTrigger onClick={() => {}}>
-                    <Image alt="" src={WhatsApp} className="size-5" />
+                    <img
+                      alt=""
+                      src="/SocialMedia/whatsapp.svg"
+                      className="size-5"
+                    />
                   </TooltipTrigger>
                   <TooltipContent>
                     <span className="text-foreground">{t("whatsApp")}</span>
@@ -97,7 +99,11 @@ export function AppSidebar({ side }: Props) {
               <TooltipProvider>
                 <Tooltip>
                   <TooltipTrigger onClick={() => {}}>
-                    <Image alt="" src={Telegram} className="size-5" />
+                    <img
+                      alt=""
+                      src="/SocialMedia/telegram.svg"
+                      className="size-5"
+                    />
                   </TooltipTrigger>
                   <TooltipContent>
                     <span className="text-foreground">{t("telegram")}</span>
@@ -108,7 +114,11 @@ export function AppSidebar({ side }: Props) {
                 <Tooltip>
                   <TooltipTrigger onClick={() => {}}>
                     <div className="p-1.5 rounded-full bg-black">
-                      <Image alt="" src={X} className="size-2.5" />
+                      <img
+                        alt=""
+                        src="/SocialMedia/x.svg"
+                        className="size-2.5"
+                      />
                     </div>
                   </TooltipTrigger>
                   <TooltipContent>

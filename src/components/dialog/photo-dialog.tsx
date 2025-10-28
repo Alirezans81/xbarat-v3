@@ -1,14 +1,14 @@
 "use client";
 
 import { useRef, useState } from "react";
-import { Button } from "../../../ui/button";
+import { Button } from "@/components/ui/button";
 import {
   Dialog,
   DialogContent,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from "../../../ui/dialog";
+} from "@/components/ui/dialog";
 import Image from "next/image";
 
 interface Props {
@@ -42,7 +42,7 @@ export default function UploadDepositDocument({ deposit_id }: Props) {
           <DialogTitle>Upload Document</DialogTitle>
         </DialogHeader>
 
-        <Image />
+        <img />
       </DialogContent>
     </Dialog>
   );

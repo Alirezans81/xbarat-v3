@@ -1,5 +1,4 @@
 import { getTranslations } from "next-intl/server";
-import Image from "next/image";
 import { Link } from "@/i18n/navigation";
 import { Input } from "./ui/input";
 import { Button } from "./ui/button";
@@ -9,12 +8,6 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "./ui/tooltip";
-
-import Logo from "@/assets/logo.png";
-import Instagram from "@/assets/SocialMedia/instagram.svg";
-import WhatsApp from "@/assets/SocialMedia/whatsapp.svg";
-import Telegram from "@/assets/SocialMedia/telegram.svg";
-import X from "@/assets/SocialMedia/x.svg";
 
 export default async function Footer() {
   const t = await getTranslations("Footer");
@@ -26,7 +19,7 @@ export default async function Footer() {
           <div className="w-full grid grid-cols-3 gap-[10%] mb-8">
             <div className="col-span-1 flex flex-col gap-3 mb-8">
               <div className="flex items-center gap-1 mb-2">
-                <Image alt="" className="w-10 h-10" src={Logo} />
+                <img alt="" className="w-10 h-10" src="/logo.png" />
                 <span className="text-2xl text-secondary">{t("xbarat")}</span>
               </div>
               <span className="font-semibold">{t("slogan") + " 🤝"}</span>
@@ -117,7 +110,11 @@ export default async function Footer() {
                   <Tooltip>
                     <TooltipTrigger>
                       <Link href="/">
-                        <Image alt="" src={Instagram} className="size-5" />
+                        <img
+                          alt=""
+                          src="/SocialMedia/instagram.svg"
+                          className="size-5"
+                        />
                       </Link>
                     </TooltipTrigger>
                     <TooltipContent>
@@ -129,7 +126,11 @@ export default async function Footer() {
                   <Tooltip>
                     <TooltipTrigger>
                       <Link href="/">
-                        <Image alt="" src={WhatsApp} className="size-5" />
+                        <img
+                          alt=""
+                          src="/SocialMedia/whatsapp.svg"
+                          className="size-5"
+                        />
                       </Link>
                     </TooltipTrigger>
                     <TooltipContent>
@@ -141,7 +142,11 @@ export default async function Footer() {
                   <Tooltip>
                     <TooltipTrigger>
                       <Link href="/">
-                        <Image alt="" src={Telegram} className="size-5" />
+                        <img
+                          alt=""
+                          src="/SocialMedia/telegram.svg"
+                          className="size-5"
+                        />
                       </Link>
                     </TooltipTrigger>
                     <TooltipContent>
@@ -154,7 +159,11 @@ export default async function Footer() {
                     <TooltipTrigger>
                       <Link href="/">
                         <div className="p-1.5 rounded-full bg-black">
-                          <Image alt="" src={X} className="size-2.5" />
+                          <img
+                            alt=""
+                            src="/SocialMedia/x.svg"
+                            className="size-2.5"
+                          />
                         </div>
                       </Link>
                     </TooltipTrigger>
