@@ -3,6 +3,7 @@ import createNextIntlPlugin from "next-intl/plugin";
 
 const nextConfig: NextConfig = {
   images: {
+    disableStaticImages: true,
     remotePatterns: [
       {
         protocol: "http",
@@ -11,7 +12,6 @@ const nextConfig: NextConfig = {
         pathname: "/uploads/**",
       },
     ],
-    unoptimized: true,
   },
 };
 
