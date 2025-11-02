@@ -12,10 +12,11 @@ export async function getBridgeTransfersByLiquidityPoolId(
   liquidityPoolId: string
 ): Promise<BridgeTransfer[]> {
   const cookieStore = await cookies();
-  const cookie = cookieStore.get("token");
-  const token: Token = cookie
-    ? { value: cookie.value, expiration: defaultToken.expiration }
-    : defaultToken;
+  const tokenCookie = cookieStore.get("token");
+  const parsedToken = tokenCookie
+    ? (JSON.parse(tokenCookie.value) as Token)
+    : null;
+  const token: Token = parsedToken || defaultToken;
 
   return await apiFetch<BridgeTransfer[]>(api["bridge-transfer"], {
     params: { liquidityPoolId },

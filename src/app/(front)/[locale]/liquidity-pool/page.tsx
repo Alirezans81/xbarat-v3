@@ -16,16 +16,14 @@ export default async function page({
     if (!currencyId)
       return (
         <div className="w-full h-full flex justify-center items-center">
-          <span className="text-3xl capitalize">
-            {t("selectCurrency")}
-          </span>
+          <span className="text-3xl capitalize">{t("selectCurrency")}</span>
         </div>
       );
 
-    const { data: currency } = await getCurrencyById(currencyId);
+    const currency = await getCurrencyById(currencyId);
     if (!currency) return <div>{t("currencyNotFound")}</div>;
 
-    const { data } = await getLiquidityPoolsByCurrencyId(currencyId);
+    const data = await getLiquidityPoolsByCurrencyId(currencyId);
 
     return (
       <div className="w-full flex flex-col gap-4">

@@ -10,10 +10,11 @@ const api = routes();
 
 export const getExchanges = async (): Promise<Exchange[]> => {
   const cookieStore = await cookies();
-  const cookie = cookieStore.get("token");
-  const token: Token = cookie
-    ? { value: cookie.value, expiration: defaultToken.expiration }
-    : defaultToken;
+  const tokenCookie = cookieStore.get("token");
+  const parsedToken = tokenCookie
+    ? (JSON.parse(tokenCookie.value) as Token)
+    : null;
+  const token: Token = parsedToken || defaultToken;
 
   return apiFetch<Exchange[]>(api["exchange"], {
     method: "GET",

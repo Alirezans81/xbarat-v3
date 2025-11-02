@@ -11,10 +11,10 @@ export default async function page({
   const t = await getTranslations("LiquidityPool");
 
   const { liquidityPoolId: liquidityPoolId } = await params;
-  const { data: liquidityPool } = await getLiquidityPoolById(liquidityPoolId);
+  const liquidityPool = await getLiquidityPoolById(liquidityPoolId);
   if (!liquidityPool) return <div>{t("liquidityPoolNotFound")}</div>;
 
-  const { data } = await getBridgeTransfersByLiquidityPoolId(liquidityPoolId);
+  const data = await getBridgeTransfersByLiquidityPoolId(liquidityPoolId);
 
   return (
     <div className="w-full flex flex-col gap-4">

@@ -10,10 +10,11 @@ const api = routes();
 
 export const getWithdrawals = async (): Promise<Withdrawal[]> => {
   const cookieStore = await cookies();
-  const cookie = cookieStore.get("token");
-  const token: Token = cookie
-    ? { value: cookie.value, expiration: defaultToken.expiration }
-    : defaultToken;
+  const tokenCookie = cookieStore.get("token");
+  const parsedToken = tokenCookie
+    ? (JSON.parse(tokenCookie.value) as Token)
+    : null;
+  const token: Token = parsedToken || defaultToken;
 
   return apiFetch(api["withdrawal"], { method: "GET", token });
 };

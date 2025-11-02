@@ -11,22 +11,21 @@ export default async function layout({
   try {
     const t = await getTranslations("LiquidityPool");
 
-    const { data: currencies } = await getCurrencies();
+    const currencies = await getCurrencies();
 
     return (
       <div className="w-full">
         <div className="container mx-auto px-5 py-8 grid grid-cols-12 gap-6">
           <div className="col-span-3 bg-card rounded-xl flex flex-col gap-2 px-6 py-4">
-            <span className="text-sm text-muted-foreground">{t("currencies")}</span>
+            <span className="text-sm text-muted-foreground">
+              {t("currencies")}
+            </span>
             {currencies.map((currency) => (
               <Link
                 key={currency.id}
                 href={"/liquidity-pool?currencyId=" + currency.id}
               >
-                <Button
-                  variant="outline"
-                  className="w-full justify-start"
-                >
+                <Button variant="outline" className="w-full justify-start">
                   {currency.code + " (" + currency.symbol + ")"}
                 </Button>
               </Link>

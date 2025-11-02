@@ -11,9 +11,9 @@ import {
 import { Link } from "@/i18n/navigation";
 
 export default async function page() {
-  const { data: currencies } = await getCurrencies();
-  const { data: paymentChannels } = await getPaymentChannels();
-  const { data: currencyPairs } = await getCurrencyPairs();
+  const currencies = await getCurrencies();
+  const paymentChannels = await getPaymentChannels();
+  const currencyPairs = await getCurrencyPairs();
 
   return (
     <div className="w-full">

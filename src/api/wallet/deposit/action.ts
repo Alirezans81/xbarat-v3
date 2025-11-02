@@ -10,10 +10,11 @@ const api = routes();
 
 export const getDeposits = async (): Promise<Deposit[]> => {
   const cookieStore = await cookies();
-  const cookie = cookieStore.get("token");
-  const token: Token = cookie
-    ? { value: cookie.value, expiration: defaultToken.expiration }
-    : defaultToken;
+  const tokenCookie = cookieStore.get("token");
+  const parsedToken = tokenCookie
+    ? (JSON.parse(tokenCookie.value) as Token)
+    : null;
+  const token: Token = parsedToken || defaultToken;
 
   return apiFetch(api["deposit"], { method: "GET", token });
 };
