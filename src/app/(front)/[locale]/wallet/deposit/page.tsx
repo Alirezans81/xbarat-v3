@@ -11,7 +11,7 @@ export default async function page({
     const new_deposit_wallet = (await searchParams).new_deposit_wallet;
     const new_deposit_amount = (await searchParams).new_deposit_amount;
 
-    const { data } = await getDeposits();
+    const data = await getDeposits();
 
     return (
       <div className="w-full flex flex-col gap-3">

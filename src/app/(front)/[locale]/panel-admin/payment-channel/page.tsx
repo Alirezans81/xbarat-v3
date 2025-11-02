@@ -6,7 +6,7 @@ import PaymentChannelsTable from "@/components/payment-channel/payment-channel-t
 
 export default async function page() {
   try {
-    const { data } = await getPaymentChannels();
+    const data = await getPaymentChannels();
 
     return (
       <div className="w-full">

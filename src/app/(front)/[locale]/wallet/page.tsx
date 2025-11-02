@@ -3,7 +3,7 @@ import WalletTable from "@/components/wallet/wallet-table";
 
 export default async function Wallet() {
   try {
-    const { data } = await getWallets();
+    const data = await getWallets();
 
     return (
       <div className="w-full flex flex-col gap-3">

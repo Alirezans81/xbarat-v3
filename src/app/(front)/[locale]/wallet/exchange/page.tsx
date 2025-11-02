@@ -3,7 +3,7 @@ import ExchangeTable from "@/components/wallet/exchange/exchange-table";
 
 export default async function page() {
   try {
-    const { data } = await getExchanges();
+    const data = await getExchanges();
 
     return (
       <div className="w-full flex flex-col gap-3">

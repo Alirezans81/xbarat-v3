@@ -6,7 +6,7 @@ import AddCurrencyPairDialog from "@/components/dialog/currency-pair/add-currenc
 
 export default async function page() {
   try {
-    const { data } = await getCurrencyPairs();
+    const data = await getCurrencyPairs();
 
     return (
       <div className="w-full">

@@ -8,7 +8,7 @@ export default async function page({
   searchParams: Promise<{ [key: string]: string | undefined }>;
 }) {
   try {
-    const { data } = await getWithdrawals();
+    const data = await getWithdrawals();
 
     return (
       <div className="w-full flex flex-col gap-3">

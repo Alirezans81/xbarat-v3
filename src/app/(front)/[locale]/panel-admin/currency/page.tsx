@@ -6,7 +6,7 @@ import CurrenciesTable from "@/components/currency/currencies-table";
 
 export default async function page() {
   try {
-    const { data } = await getCurrencies();
+    const data = await getCurrencies();
 
     return (
       <div className="w-full">
@@ -27,6 +27,10 @@ export default async function page() {
     );
   } catch (error) {
     console.error("[CURRENCY_PAGE]", error);
-    return <div className="w-full h-full flex justify-center items-center">Internal server error</div>;
+    return (
+      <div className="w-full h-full flex justify-center items-center">
+        Internal server error
+      </div>
+    );
   }
 }
