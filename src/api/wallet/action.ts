@@ -1,27 +1,22 @@
 "use server";
 
 import routes from "@/api/routes";
-import { defaultToken, Token } from "@/types/front/globals";
+import { apiFetch } from "@/lib/front/utils/apiFetch";
+import { defaultToken, Token } from "@/types/back/globals";
 import { Wallet } from "@/types/front/wallet";
-import axios from "axios";
-import { cookies } from "next/headers";
+import { cookies } from "next/dist/server/request/cookies";
 
 const api = routes();
 
-export const getWallets = async (): Promise<{ data: Wallet[] }> => {
+export const getWallets = async (): Promise<Wallet[]> => {
   const cookieStore = await cookies();
-  const tokenCookie = cookieStore.get("token");
-  const token: Token = tokenCookie
-    ? JSON.parse(tokenCookie.value)
+  const cookie = cookieStore.get("token");
+  const token: Token = cookie
+    ? { value: cookie.value, expiration: defaultToken.expiration }
     : defaultToken;
 
-  const headers = {
-    Authorization: `Bearer ${token.value}`,
-  };
-
-  try {
-    return await axios.get(api["wallet"], { headers });
-  } catch (error) {
-    return { data: [] };
-  }
+  return apiFetch<Wallet[]>(api["wallet"], {
+    method: "GET",
+    token,
+  });
 };

@@ -1,59 +1,60 @@
-import axios from "axios";
 import routes from "@/api/routes";
+import { apiFetch } from "@/lib/front/utils/apiFetch";
+import { Token } from "@/types/front/globals";
 import {
   CreateWithdrawal,
   UpdateWithdrawal,
+  Withdrawal,
 } from "@/types/front/wallet/withdrawal";
 
 const api = routes();
 
-export const getWithdrawals = (token: string, filters?: any) => {
-  const headers = {
-    Authorization: `Bearer ${token}`,
-  };
-  return axios.get(api["withdrawal"], { headers, params: filters });
-};
-
-export const createWithdrawal = (
-  token: string,
-  withdrawal: CreateWithdrawal
-) => {
-  const headers = {
-    Authorization: `Bearer ${token}`,
-  };
-  return axios.post(api["withdrawal"], withdrawal, { headers });
-};
-
-export const updateWithdrawal = (
-  token: string,
-  withdrawal_id: string,
-  withdrawal: UpdateWithdrawal
-) => {
-  const headers = {
-    Authorization: `Bearer ${token}`,
-  };
-  return axios.put(api["withdrawal"] + "/" + withdrawal_id, withdrawal, {
-    headers,
+export const getWithdrawals = (token: Token, filters?: any) => {
+  return apiFetch<Withdrawal[]>(api["withdrawal"], {
+    method: "GET",
+    params: filters,
+    token,
   });
 };
 
-export const deleteWithdrawal = (token: string, withdrawal_id: string) => {
-  const headers = {
-    Authorization: `Bearer ${token}`,
-  };
-  return axios.delete(api["withdrawal"] + "/" + withdrawal_id, { headers });
+export const createWithdrawal = (
+  token: Token,
+  withdrawal: CreateWithdrawal
+) => {
+  return apiFetch(api["withdrawal"], {
+    method: "POST",
+    body: withdrawal,
+    token,
+  });
+};
+
+export const updateWithdrawal = (
+  token: Token,
+  withdrawal_id: string,
+  withdrawal: UpdateWithdrawal
+) => {
+  return apiFetch(api["withdrawal"] + "/" + withdrawal_id, {
+    method: "PUT",
+    body: withdrawal,
+    token,
+  });
+};
+
+export const deleteWithdrawal = (token: Token, withdrawal_id: string) => {
+  return apiFetch(api["withdrawal"] + "/" + withdrawal_id, {
+    method: "DELETE",
+    token,
+  });
 };
 
 export const approveWithdrawalDocument = (
-  token: string,
+  token: Token,
   withdrawal_id: string
 ) => {
-  const headers = {
-    Authorization: `Bearer ${token}`,
-  };
-  return axios.post(
+  return apiFetch(
     api["withdrawal"] + "/" + withdrawal_id + "/approve-document",
-    {},
-    { headers }
+    {
+      token,
+    }
   );
 };

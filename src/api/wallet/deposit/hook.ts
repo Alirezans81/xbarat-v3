@@ -36,9 +36,9 @@ export const useGetDeposits = () => {
     onFinally,
   }: GetDepositsProps & FetchProps) => {
     checkTokenExpiration(async () => {
-      await getDeposits(token.value, filters)
+      await getDeposits(token, filters)
         .then((res) => {
-          setDeposits(res.data);
+          setDeposits(res);
           onSuccess?.(res);
         })
         .catch((err) => {
@@ -72,7 +72,7 @@ export const useCreateDeposit = () => {
     onFinally,
   }: CreateDepositProps & FetchProps) => {
     checkTokenExpiration(async () => {
-      await createDeposit(token.value, deposit)
+      await createDeposit(token, deposit)
         .then((res) => {
           onSuccess?.(res);
         })
@@ -109,7 +109,7 @@ export const useUpdateDeposit = () => {
     onFinally,
   }: UpdateDepositProps & FetchProps) => {
     checkTokenExpiration(async () => {
-      await updateDeposit(token.value, deposit_id, deposit)
+      await updateDeposit(token, deposit_id, deposit)
         .then((res) => {
           onSuccess?.(res);
         })
@@ -144,7 +144,7 @@ export const useDeleteDeposit = () => {
     onFinally,
   }: DeleteDepositProps & FetchProps) => {
     checkTokenExpiration(async () => {
-      await deleteDeposit(token.value, deposit_id)
+      await deleteDeposit(token, deposit_id)
         .then((res) => {
           onSuccess?.(res);
         })
@@ -181,7 +181,7 @@ export const useUploadDepositDocument = () => {
     onFinally,
   }: UploadDepositDocumentProps & FetchProps) => {
     checkTokenExpiration(async () => {
-      await uploadDepositDocument(token.value, deposit_id, data)
+      await uploadDepositDocument(token, deposit_id, data)
         .then((res) => {
           onSuccess?.(res);
         })

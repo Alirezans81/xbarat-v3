@@ -19,7 +19,7 @@ export const useCreateExchange = () => {
     onSuccess,
     onFinally,
   }: CreateExchangeProps & FetchProps) => {
-    await createExchange(token.value, exchange)
+    await createExchange(token, exchange)
       .then((res) => {
         onSuccess?.(res);
       })

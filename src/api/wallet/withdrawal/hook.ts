@@ -35,9 +35,9 @@ export const useGetWithdrawals = () => {
     onFinally,
   }: GetWithdrawalsProps & FetchProps) => {
     checkTokenExpiration(async () => {
-      await getWithdrawals(token.value, filters)
+      await getWithdrawals(token, filters)
         .then((res) => {
-          setWithdrawals(res.data);
+          setWithdrawals(res);
           onSuccess?.(res);
         })
         .catch((err) => {
@@ -71,7 +71,7 @@ export const useCreateWithdrawal = () => {
     onFinally,
   }: CreateWithdrawalProps & FetchProps) => {
     checkTokenExpiration(async () => {
-      await createWithdrawal(token.value, withdrawal)
+      await createWithdrawal(token, withdrawal)
         .then((res) => {
           onSuccess?.(res);
         })
@@ -108,7 +108,7 @@ export const useUpdateWithdrawal = () => {
     onFinally,
   }: UpdateWithdrawalProps & FetchProps) => {
     checkTokenExpiration(async () => {
-      await updateWithdrawal(token.value, withdrawal_id, withdrawal)
+      await updateWithdrawal(token, withdrawal_id, withdrawal)
         .then((res) => {
           onSuccess?.(res);
         })
@@ -143,7 +143,7 @@ export const useDeleteWithdrawal = () => {
     onFinally,
   }: DeleteWithdrawalProps & FetchProps) => {
     checkTokenExpiration(async () => {
-      await deleteWithdrawal(token.value, withdrawal_id)
+      await deleteWithdrawal(token, withdrawal_id)
         .then((res) => {
           onSuccess?.(res);
         })
@@ -178,7 +178,7 @@ export const useApproveWithdrawalDocument = () => {
     onFinally,
   }: ApproveWithdrawalDocumentProps & FetchProps) => {
     checkTokenExpiration(async () => {
-      await approveWithdrawalDocument(token.value, withdrawal_id)
+      await approveWithdrawalDocument(token, withdrawal_id)
         .then((res) => {
           onSuccess?.(res);
         })

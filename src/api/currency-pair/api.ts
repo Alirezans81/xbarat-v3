@@ -1,44 +1,44 @@
-import axios from "axios";
 import routes from "@/api/routes";
+import { apiFetch } from "@/lib/front/utils/apiFetch";
 import {
   CreateCurrencyPair,
+  CurrencyPair,
   UpdateCurrencyPair,
 } from "@/types/front/currencyPair";
+import { Token } from "@/types/front/globals";
 
 const api = routes();
 
 export const getCurrencyPairs = () => {
-  return axios.get(api["currency-pair"]);
+  return apiFetch<CurrencyPair[]>(api["currency-pair"]);
 };
 
 export const createCurrencyPair = (
-  token: string,
+  token: Token,
   currencyPair: CreateCurrencyPair
 ) => {
-  const headers = {
-    Authorization: `Bearer ${token}`,
-  };
-  return axios.post(api["currency-pair"], currencyPair, { headers });
-};
-
-export const updateCurrencyPair = (
-  token: string,
-  currencyPair_id: string,
-  currencyPair: UpdateCurrencyPair
-) => {
-  const headers = {
-    Authorization: `Bearer ${token}`,
-  };
-  return axios.put(api["currency-pair"] + "/" + currencyPair_id, currencyPair, {
-    headers,
+  return apiFetch<CurrencyPair>(api["currency-pair"], {
+    method: "POST",
+    body: currencyPair,
+    token,
   });
 };
 
-export const deleteCurrencyPair = (token: string, currencyPair_id: string) => {
-  const headers = {
-    Authorization: `Bearer ${token}`,
-  };
-  return axios.delete(api["currency-pair"] + "/" + currencyPair_id, {
-    headers,
+export const updateCurrencyPair = (
+  token: Token,
+  currencyPair_id: string,
+  currencyPair: UpdateCurrencyPair
+) => {
+  return apiFetch<CurrencyPair>(api["currency-pair"] + "/" + currencyPair_id, {
+    method: "PUT",
+    body: currencyPair,
+    token,
+  });
+};
+
+export const deleteCurrencyPair = (token: Token, currencyPair_id: string) => {
+  return apiFetch<null>(api["currency-pair"] + "/" + currencyPair_id, {
+    method: "DELETE",
+    token,
   });
 };

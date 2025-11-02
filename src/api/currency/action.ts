@@ -2,18 +2,14 @@
 
 import routes from "@/api/routes";
 import { Currency } from "@/types/front/currency";
-import { defaultToken, Token } from "@/types/front/globals";
-import axios from "axios";
-import { cookies } from "next/headers";
+import { apiFetch } from "@/lib/front/utils/apiFetch";
 
 const api = routes();
 
-export const getCurrencies = async (): Promise<{ data: Currency[] }> => {
-  return axios.get(api["currency"]);
+export const getCurrencies = async () => {
+  return await apiFetch<Currency[]>(api["currency"]);
 };
 
-export const getCurrencyById = async (
-  id: string
-): Promise<{ data: Currency }> => {
-  return axios.get(api["currency"] + "/" + id);
+export const getCurrencyById = async (id: string): Promise<Currency> => {
+  return await apiFetch<Currency>(`${api["currency"]}/${id}`);
 };

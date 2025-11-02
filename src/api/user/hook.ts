@@ -20,9 +20,7 @@ export const useCreateUser = () => {
     onFinally,
   }: CreateUserProps & FetchProps) => {
     await createUser(user)
-      .then((res) => {
-        const { data } = res;
-
+      .then((data) => {
         const token: Token = {
           value: data.token,
           expiration: data.token_exp,
@@ -63,9 +61,7 @@ export const useLoginUser = () => {
     onFinally,
   }: LoginUserProps & FetchProps) => {
     await loginUser(user)
-      .then((res) => {
-        const { data } = res;
-
+      .then((data) => {
         const token: Token = {
           value: data.token,
           expiration: data.token_exp,

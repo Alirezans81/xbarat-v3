@@ -22,7 +22,7 @@ export const useAssign = () => {
     onFinally,
   }: Assign & FetchProps) => {
     checkTokenExpiration(async () => {
-      await assign(token.value, {
+      await assign(token, {
         paymentChannelId,
         deposits,
         withdrawals,

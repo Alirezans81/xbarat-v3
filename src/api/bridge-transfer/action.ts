@@ -1,27 +1,24 @@
 "use server";
 
 import routes from "@/api/routes";
+import { apiFetch } from "@/lib/front/utils/apiFetch";
 import { BridgeTransfer } from "@/types/front/bridgeTransfer";
 import { defaultToken, Token } from "@/types/front/globals";
-import axios from "axios";
 import { cookies } from "next/headers";
 
 const api = routes();
 
 export async function getBridgeTransfersByLiquidityPoolId(
   liquidityPoolId: string
-): Promise<{ data: BridgeTransfer[] }> {
+): Promise<BridgeTransfer[]> {
   const cookieStore = await cookies();
-  const tokenCookie = cookieStore.get("token");
-  const token: Token = tokenCookie
-    ? JSON.parse(tokenCookie.value)
+  const cookie = cookieStore.get("token");
+  const token: Token = cookie
+    ? { value: cookie.value, expiration: defaultToken.expiration }
     : defaultToken;
 
-  const headers = {
-    Authorization: `Bearer ${token.value}`,
-  };
-  return axios.get(api["bridge-transfer"], {
-    headers,
+  return await apiFetch<BridgeTransfer[]>(api["bridge-transfer"], {
     params: { liquidityPoolId },
+    token,
   });
 }

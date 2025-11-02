@@ -1,56 +1,50 @@
 "use server";
 
 import routes from "@/api/routes";
-import { defaultToken, Token } from "@/types/front/globals";
 import { LiquidityPool } from "@/types/front/liquidityPool";
-import axios from "axios";
+import { apiFetch } from "@/lib/front/utils/apiFetch";
+import { defaultToken, Token } from "@/types/front/globals";
 import { cookies } from "next/headers";
 
 const api = routes();
 
-export const getLiquidityPools = async (): Promise<{
-  data: LiquidityPool[];
-}> => {
+export const getLiquidityPools = async (): Promise<LiquidityPool[]> => {
   const cookieStore = await cookies();
-  const tokenCookie = cookieStore.get("token");
-  const token: Token = tokenCookie
-    ? JSON.parse(tokenCookie.value)
+  const cookie = cookieStore.get("token");
+  const token: Token = cookie
+    ? { value: cookie.value, expiration: defaultToken.expiration }
     : defaultToken;
 
-  const headers = {
-    Authorization: `Bearer ${token.value}`,
-  };
-  return axios.get(api["liquidity-pool"], { headers });
+  return apiFetch<LiquidityPool[]>(api["liquidity-pool"], {
+    token,
+  });
 };
 
 export const getLiquidityPoolById = async (
   id: string
-): Promise<{ data: LiquidityPool }> => {
+): Promise<LiquidityPool> => {
   const cookieStore = await cookies();
-  const tokenCookie = cookieStore.get("token");
-  const token: Token = tokenCookie
-    ? JSON.parse(tokenCookie.value)
+  const cookie = cookieStore.get("token");
+  const token: Token = cookie
+    ? { value: cookie.value, expiration: defaultToken.expiration }
     : defaultToken;
 
-  const headers = {
-    Authorization: `Bearer ${token.value}`,
-  };
-  return axios.get(api["liquidity-pool"] + "/" + id, { headers });
+  return apiFetch<LiquidityPool>(`${api["liquidity-pool"]}/${id}`, {
+    token,
+  });
 };
 
 export const getLiquidityPoolsByCurrencyId = async (
   currencyId: string
-): Promise<{
-  data: LiquidityPool[];
-}> => {
+): Promise<LiquidityPool[]> => {
   const cookieStore = await cookies();
-  const tokenCookie = cookieStore.get("token");
-  const token: Token = tokenCookie
-    ? JSON.parse(tokenCookie.value)
+  const cookie = cookieStore.get("token");
+  const token: Token = cookie
+    ? { value: cookie.value, expiration: defaultToken.expiration }
     : defaultToken;
 
-  const headers = {
-    Authorization: `Bearer ${token.value}`,
-  };
-  return axios.get(api["liquidity-pool"], { headers, params: { currencyId } });
+  return apiFetch<LiquidityPool[]>(api["liquidity-pool"], {
+    params: { currencyId },
+    token,
+  });
 };

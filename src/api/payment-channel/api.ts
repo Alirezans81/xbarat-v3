@@ -1,52 +1,49 @@
-import axios from "axios";
 import routes from "@/api/routes";
+import { apiFetch } from "@/lib/front/utils/apiFetch";
+import { Token } from "@/types/front/globals";
 import {
   CreatePaymentChannel,
+  PaymentChannel,
   UpdatePaymentChannel,
 } from "@/types/front/paymentChannel";
 
 const api = routes();
 
-export const getPaymentChannels = (token: string, filters?: any) => {
-  const headers = {
-    Authorization: `Bearer ${token}`,
-  };
-  return axios.get(api["payment-channel"], { headers, params: filters });
+export const getPaymentChannels = (token: Token, filters?: any) => {
+  return apiFetch<PaymentChannel[]>(api["payment-channel"], {
+    params: filters,
+    token,
+  });
 };
 
 export const createPaymentChannel = (
-  token: string,
+  token: Token,
   paymentChannel: CreatePaymentChannel
 ) => {
-  const headers = {
-    Authorization: `Bearer ${token}`,
-  };
-  return axios.post(api["payment-channel"], paymentChannel, { headers });
+  return apiFetch<PaymentChannel>(api["payment-channel"], {
+    method: "POST",
+    body: paymentChannel,
+    token,
+  });
 };
 
 export const updatePaymentChannel = (
-  token: string,
+  token: Token,
   paymentChannel_id: string,
   paymentChannel: UpdatePaymentChannel
 ) => {
-  const headers = {
-    Authorization: `Bearer ${token}`,
-  };
-  return axios.put(
+  return apiFetch<PaymentChannel>(
     api["payment-channel"] + "/" + paymentChannel_id,
-    paymentChannel,
-    { headers }
+    { method: "PUT", body: paymentChannel, token }
   );
 };
 
 export const deletePaymentChannel = (
-  token: string,
+  token: Token,
   paymentChannel_id: string
 ) => {
-  const headers = {
-    Authorization: `Bearer ${token}`,
-  };
-  return axios.delete(api["payment-channel"] + "/" + paymentChannel_id, {
-    headers,
-  });
+  return apiFetch<PaymentChannel>(
+    api["payment-channel"] + "/" + paymentChannel_id,
+    { method: "DELETE", token }
+  );
 };

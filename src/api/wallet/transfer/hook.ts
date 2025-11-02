@@ -35,9 +35,9 @@ export const useGetTransfers = () => {
     onFinally,
   }: GetTransfersProps & FetchProps) => {
     checkTokenExpiration(async () => {
-      await getTransfers(token.value, filters)
+      await getTransfers(token, filters)
         .then((res) => {
-          setTransfers(res.data);
+          setTransfers(res);
           onSuccess?.(res);
         })
         .catch((err) => {
@@ -71,7 +71,7 @@ export const useCreateTransfer = () => {
     onFinally,
   }: CreateTransferProps & FetchProps) => {
     checkTokenExpiration(async () => {
-      await createTransfer(token.value, transfer)
+      await createTransfer(token, transfer)
         .then((res) => {
           onSuccess?.(res);
         })
@@ -108,7 +108,7 @@ export const useUpdateTransfer = () => {
     onFinally,
   }: UpdateTransferProps & FetchProps) => {
     checkTokenExpiration(async () => {
-      await updateTransfer(token.value, transfer_id, transfer)
+      await updateTransfer(token, transfer_id, transfer)
         .then((res) => {
           onSuccess?.(res);
         })
@@ -143,7 +143,7 @@ export const useDeleteTransfer = () => {
     onFinally,
   }: DeleteTransferProps & FetchProps) => {
     checkTokenExpiration(async () => {
-      await deleteTransfer(token.value, transfer_id)
+      await deleteTransfer(token, transfer_id)
         .then((res) => {
           onSuccess?.(res);
         })

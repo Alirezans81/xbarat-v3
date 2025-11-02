@@ -20,9 +20,9 @@ export const useGetWallets = () => {
     onSuccess,
     onFinally,
   }: GetWalletsProps & FetchProps) => {
-    await getWallets(token.value)
+    await getWallets(token)
       .then((res) => {
-        setWallets(res.data);
+        setWallets(res);
         onSuccess?.(res);
       })
       .catch((err) => {

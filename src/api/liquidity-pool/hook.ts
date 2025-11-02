@@ -36,9 +36,9 @@ export const useGetLiquidityPools = () => {
     onFinally,
   }: GetLiquidityPoolsProps & FetchProps) => {
     checkTokenExpiration(async () => {
-      await getLiquidityPools(token.value, filters)
+      await getLiquidityPools(token, filters)
         .then((res) => {
-          setLiquidityPools(res.data);
+          setLiquidityPools(res);
           onSuccess?.(res);
         })
         .catch((err) => {
@@ -72,7 +72,7 @@ export const useCreateLiquidityPool = () => {
     onFinally,
   }: CreateLiquidityPoolProps & FetchProps) => {
     checkTokenExpiration(async () => {
-      await createLiquidityPool(token.value, liquidityPool)
+      await createLiquidityPool(token, liquidityPool)
         .then((res) => {
           onSuccess?.(res);
         })
@@ -109,7 +109,7 @@ export const useUpdateLiquidityPool = () => {
     onFinally,
   }: UpdateLiquidityPoolProps & FetchProps) => {
     checkTokenExpiration(async () => {
-      await updateLiquidityPool(token.value, liquidityPool_id, liquidityPool)
+      await updateLiquidityPool(token, liquidityPool_id, liquidityPool)
         .then((res) => {
           onSuccess?.(res);
         })
@@ -144,7 +144,7 @@ export const useDeleteLiquidityPool = () => {
     onFinally,
   }: DeleteLiquidityPoolProps & FetchProps) => {
     checkTokenExpiration(async () => {
-      await deleteLiquidityPool(token.value, liquidityPool_id)
+      await deleteLiquidityPool(token, liquidityPool_id)
         .then((res) => {
           onSuccess?.(res);
         })
@@ -179,7 +179,7 @@ export const useApproveLiquidityPoolDocument = () => {
     onFinally,
   }: ApproveLiquidityPoolDocumentProps & FetchProps) => {
     checkTokenExpiration(async () => {
-      await approveLiquidityPoolDocument(token.value, liquidityPool_id)
+      await approveLiquidityPoolDocument(token, liquidityPool_id)
         .then((res) => {
           onSuccess?.(res);
         })
@@ -216,7 +216,7 @@ export const useUploadLiquidityPoolDocument = () => {
     onFinally,
   }: UploadLiquidityPoolDocumentProps & FetchProps) => {
     checkTokenExpiration(async () => {
-      await uploadLiquidityPoolDocument(token.value, liquidityPool_id, {
+      await uploadLiquidityPoolDocument(token, liquidityPool_id, {
         document,
       })
         .then((res) => {

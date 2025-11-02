@@ -1,37 +1,41 @@
-import axios from "axios";
 import routes from "@/api/routes";
-import { CreateTransfer, UpdateTransfer } from "@/types/front/wallet/transfer";
+import { apiFetch } from "@/lib/front/utils/apiFetch";
+import { Token } from "@/types/front/globals";
+import {
+  CreateTransfer,
+  Transfer,
+  UpdateTransfer,
+} from "@/types/front/wallet/transfer";
 
 const api = routes();
 
-export const getTransfers = (token: string, filters?: any) => {
-  const headers = {
-    Authorization: `Bearer ${token}`,
-  };
-  return axios.get(api["transfer"], { headers, params: filters });
+export const getTransfers = (token: Token, filters?: any) => {
+  return apiFetch<Transfer[]>(api["transfer"], {
+    method: "GET",
+    params: filters,
+    token,
+  });
 };
 
-export const createTransfer = (token: string, transfer: CreateTransfer) => {
-  const headers = {
-    Authorization: `Bearer ${token}`,
-  };
-  return axios.post(api["transfer"], transfer, { headers });
+export const createTransfer = (token: Token, transfer: CreateTransfer) => {
+  return apiFetch(api["transfer"], { method: "POST", body: transfer, token });
 };
 
 export const updateTransfer = (
-  token: string,
+  token: Token,
   transfer_id: string,
   transfer: UpdateTransfer
 ) => {
-  const headers = {
-    Authorization: `Bearer ${token}`,
-  };
-  return axios.put(api["transfer"] + "/" + transfer_id, transfer, { headers });
+  return apiFetch(api["transfer"] + "/" + transfer_id, {
+    method: "PUT",
+    body: transfer,
+    token,
+  });
 };
 
-export const deleteTransfer = (token: string, transfer_id: string) => {
-  const headers = {
-    Authorization: `Bearer ${token}`,
-  };
-  return axios.delete(api["transfer"] + "/" + transfer_id, { headers });
+export const deleteTransfer = (token: Token, transfer_id: string) => {
+  return apiFetch(api["transfer"] + "/" + transfer_id, {
+    method: "DELETE",
+    token,
+  });
 };

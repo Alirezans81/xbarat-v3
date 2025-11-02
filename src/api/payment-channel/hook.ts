@@ -35,9 +35,9 @@ export const useGetPaymentChannels = () => {
     onFinally,
   }: GetPaymentChannelsProps & FetchProps) => {
     checkTokenExpiration(async () => {
-      await getPaymentChannels(token.value, filters)
+      await getPaymentChannels(token, filters)
         .then((res) => {
-          setPaymentChannels(res.data);
+          setPaymentChannels(res);
           onSuccess?.(res);
         })
         .catch((err) => {
@@ -71,7 +71,7 @@ export const useCreatePaymentChannel = () => {
     onFinally,
   }: CreatePaymentChannelProps & FetchProps) => {
     checkTokenExpiration(async () => {
-      await createPaymentChannel(token.value, paymentChannel)
+      await createPaymentChannel(token, paymentChannel)
         .then((res) => {
           onSuccess?.(res);
         })
@@ -108,7 +108,7 @@ export const useUpdatePaymentChannel = () => {
     onFinally,
   }: UpdatePaymentChannelProps & FetchProps) => {
     checkTokenExpiration(async () => {
-      await updatePaymentChannel(token.value, paymentChannel_id, paymentChannel)
+      await updatePaymentChannel(token, paymentChannel_id, paymentChannel)
         .then((res) => {
           onSuccess?.(res);
         })
@@ -143,7 +143,7 @@ export const useDeletePaymentChannel = () => {
     onFinally,
   }: DeletePaymentChannelProps & FetchProps) => {
     checkTokenExpiration(async () => {
-      await deletePaymentChannel(token.value, paymentChannel_id)
+      await deletePaymentChannel(token, paymentChannel_id)
         .then((res) => {
           onSuccess?.(res);
         })

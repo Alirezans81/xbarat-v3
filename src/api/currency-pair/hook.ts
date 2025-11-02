@@ -29,7 +29,7 @@ export const useGetCurrencyPairs = () => {
   }: GetCurrenciesProps & FetchProps) => {
     await getCurrencyPairs()
       .then((res) => {
-        setCurrencyPairs(res.data);
+        setCurrencyPairs(res);
         onSuccess?.(res);
       })
       .catch((err) => {
@@ -62,7 +62,7 @@ export const useCreateCurrencyPair = () => {
     onFinally,
   }: CreateCurrencyPairProps & FetchProps) => {
     checkTokenExpiration(async () => {
-      await createCurrencyPair(token.value, currencyPair)
+      await createCurrencyPair(token, currencyPair)
         .then((res) => {
           onSuccess?.(res);
         })
@@ -99,7 +99,7 @@ export const useUpdateCurrencyPair = () => {
     onFinally,
   }: UpdateCurrencyPairProps & FetchProps) => {
     checkTokenExpiration(async () => {
-      await updateCurrencyPair(token.value, currencyPair_id, currencyPair)
+      await updateCurrencyPair(token, currencyPair_id, currencyPair)
         .then((res) => {
           onSuccess?.(res);
         })
@@ -134,7 +134,7 @@ export const useDeleteCurrencyPair = () => {
     onFinally,
   }: DeleteCurrencyPairProps & FetchProps) => {
     checkTokenExpiration(async () => {
-      await deleteCurrencyPair(token.value, currencyPair_id)
+      await deleteCurrencyPair(token, currencyPair_id)
         .then((res) => {
           onSuccess?.(res);
         })
