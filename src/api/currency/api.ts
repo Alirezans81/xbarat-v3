@@ -14,7 +14,7 @@ export const getCurrencies = () => apiFetch<Currency[]>(api["currency"]);
 export const createCurrency = (token: Token, currency: CreateCurrency) =>
   apiFetch<Currency>(api["currency"], {
     method: "POST",
-    body: JSON.stringify(currency),
+    body: currency,
     token,
   });
 
@@ -25,7 +25,7 @@ export const updateCurrency = (
 ) =>
   apiFetch<Currency>(`${api["currency"]}/${currency_id}`, {
     method: "PUT",
-    body: JSON.stringify(currency),
+    body: currency,
     token,
   });
 

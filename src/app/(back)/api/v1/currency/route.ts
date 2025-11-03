@@ -39,7 +39,7 @@ export async function POST(request: NextRequest) {
       code,
       name,
       symbol,
-      decimals: decimals ?? 2,
+      decimals: decimals ?? 0,
       paymentChannelIds,
     });
 
