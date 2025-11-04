@@ -44,7 +44,11 @@ export async function apiFetch<T>(
   const res = await fetch(url.toString(), {
     method,
     headers: allHeaders,
-    body: body ? JSON.stringify(body) : undefined,
+    body: body
+      ? allHeaders["Content-Type"] === "multipart/form-data"
+        ? body
+        : JSON.stringify(body)
+      : undefined,
     cache,
   });
 

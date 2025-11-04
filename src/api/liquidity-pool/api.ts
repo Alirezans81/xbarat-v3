@@ -72,8 +72,15 @@ export const uploadLiquidityPoolDocument = (
 ) => {
   const formData = new FormData();
   formData.append("document", data.document);
+
   return apiFetch<LiquidityPool>(
     api["liquidity-pool"] + "/" + liquidityPool_id + "/upload",
-    { body: formData, token }
+    {
+      body: formData,
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+      token,
+    }
   );
 };
