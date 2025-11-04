@@ -40,7 +40,7 @@ export async function POST(
     const buffer = Buffer.from(bytes);
 
     // Create target folder
-    const uploadDir = path.join(process.cwd(), "public/uploads");
+    const uploadDir = path.join(process.cwd(), "uploads");
     fs.mkdirSync(uploadDir, { recursive: true });
 
     // Generate a unique name
@@ -59,7 +59,7 @@ export async function POST(
       process.env.NEXT_PUBLIC_APP_MODE === "production" ? "https" : "http";
     const baseUrl = `${protocol}://${host}`;
 
-    const fileUrl = `${baseUrl}/uploads/${fileName}`;
+    const fileUrl = `${baseUrl}/api/v1/files/${fileName}`;
 
     // Update bridge transfer
     const newBridgeTransfer = await bridgeTransferService.updateById(id, {
