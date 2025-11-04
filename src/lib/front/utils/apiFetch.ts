@@ -5,7 +5,7 @@ export interface ApiFetchOptions {
   headers?: Record<string, string>;
   body?: any;
   params?: Record<string, string | number>;
-  token?: Token; // برای client-side
+  token?: Token;
   cache?: RequestCache;
 }
 
@@ -35,27 +35,40 @@ export async function apiFetch<T>(
     );
   }
 
-  const allHeaders: HeadersInit = {
-    "Content-Type": "application/json",
+  // ---------- تشخیص نوع body ----------
+  let finalBody: BodyInit | undefined = undefined;
+  const allHeaders: Record<string, string> = {
     ...(token?.value ? { Authorization: `Bearer ${token.value}` } : {}),
     ...headers,
   };
 
+  if (body instanceof FormData) {
+    // اگر FormData بود، خودش هندل میشه، نیازی به Content-Type نیست
+    finalBody = body;
+  } else if (body && typeof body === "object") {
+    // اگر object بود، به JSON تبدیلش کن
+    finalBody = JSON.stringify(body);
+    allHeaders["Content-Type"] = "application/json";
+  } else {
+    // برای DELETE یا GET معمولاً body وجود نداره
+    finalBody = body;
+  }
+
   const res = await fetch(url.toString(), {
     method,
     headers: allHeaders,
-    body: body
-      ? allHeaders["Content-Type"] === "multipart/form-data"
-        ? body
-        : JSON.stringify(body)
-      : undefined,
+    body: finalBody,
     cache,
   });
 
+  // ---------- هندل پاسخ ----------
   if (!res.ok) {
     const text = await res.text();
     throw new Error(`API Error ${res.status}: ${text}`);
   }
+
+  // اگه response خالی بود (204 مثلاً)، json نخوان
+  if (res.status === 204) return {} as T;
 
   return res.json();
 }

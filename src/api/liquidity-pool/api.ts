@@ -77,9 +77,6 @@ export const uploadLiquidityPoolDocument = (
     api["liquidity-pool"] + "/" + liquidityPool_id + "/upload",
     {
       body: formData,
-      headers: {
-        "Content-Type": "multipart/form-data",
-      },
       token,
     }
   );

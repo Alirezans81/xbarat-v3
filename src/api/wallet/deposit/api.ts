@@ -52,9 +52,6 @@ export const uploadDepositDocument = (
   return apiFetch(api["deposit"] + "/" + deposit_id + "/upload-document", {
     method: "POST",
     body: formData,
-    headers: {
-      "Content-Type": "multipart/form-data",
-    },
     token,
   });
 };
