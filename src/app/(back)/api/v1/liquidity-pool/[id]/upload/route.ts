@@ -54,10 +54,15 @@ export async function POST(
     fs.writeFileSync(filePath, buffer);
 
     // Construct accessible file URL
-    const host = request.headers.get("host");
-    const protocol =
-      process.env.NEXT_PUBLIC_APP_MODE === "production" ? "https" : "http";
-    const baseUrl = `${protocol}://${host}`;
+    const forwardedHost =
+      request.headers.get("x-forwarded-host") || request.headers.get("host");
+    const forwardedProto =
+      request.headers.get("x-forwarded-proto") ||
+      (process.env.NEXT_PUBLIC_APP_MODE === "production" ? "https" : "http");
+
+    const baseUrl =
+      process.env.NEXT_PUBLIC_BASE_URL ||
+      `${forwardedProto}://${forwardedHost}`;
 
     const fileUrl = `${baseUrl}/api/v1/files/${fileName}`;
 
