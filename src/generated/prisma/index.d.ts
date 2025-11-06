@@ -192,7 +192,6 @@ export const TransactionKind: {
   DEPOSIT: 'DEPOSIT',
   WITHDRAWAL: 'WITHDRAWAL',
   TRANSFER: 'TRANSFER',
-  EXCHANGE: 'EXCHANGE',
   REFUND: 'REFUND'
 };
 
@@ -6659,10 +6658,12 @@ export namespace Prisma {
 
   export type CurrencyPairAvgAggregateOutputType = {
     rate: Decimal | null
+    feePercentage: Decimal | null
   }
 
   export type CurrencyPairSumAggregateOutputType = {
     rate: Decimal | null
+    feePercentage: Decimal | null
   }
 
   export type CurrencyPairMinAggregateOutputType = {
@@ -6671,6 +6672,7 @@ export namespace Prisma {
     toCurrencyId: string | null
     rate: Decimal | null
     isInverseRate: boolean | null
+    feePercentage: Decimal | null
     isActive: boolean | null
     createdAt: Date | null
     updatedAt: Date | null
@@ -6682,6 +6684,7 @@ export namespace Prisma {
     toCurrencyId: string | null
     rate: Decimal | null
     isInverseRate: boolean | null
+    feePercentage: Decimal | null
     isActive: boolean | null
     createdAt: Date | null
     updatedAt: Date | null
@@ -6693,6 +6696,7 @@ export namespace Prisma {
     toCurrencyId: number
     rate: number
     isInverseRate: number
+    feePercentage: number
     isActive: number
     createdAt: number
     updatedAt: number
@@ -6702,10 +6706,12 @@ export namespace Prisma {
 
   export type CurrencyPairAvgAggregateInputType = {
     rate?: true
+    feePercentage?: true
   }
 
   export type CurrencyPairSumAggregateInputType = {
     rate?: true
+    feePercentage?: true
   }
 
   export type CurrencyPairMinAggregateInputType = {
@@ -6714,6 +6720,7 @@ export namespace Prisma {
     toCurrencyId?: true
     rate?: true
     isInverseRate?: true
+    feePercentage?: true
     isActive?: true
     createdAt?: true
     updatedAt?: true
@@ -6725,6 +6732,7 @@ export namespace Prisma {
     toCurrencyId?: true
     rate?: true
     isInverseRate?: true
+    feePercentage?: true
     isActive?: true
     createdAt?: true
     updatedAt?: true
@@ -6736,6 +6744,7 @@ export namespace Prisma {
     toCurrencyId?: true
     rate?: true
     isInverseRate?: true
+    feePercentage?: true
     isActive?: true
     createdAt?: true
     updatedAt?: true
@@ -6834,6 +6843,7 @@ export namespace Prisma {
     toCurrencyId: string
     rate: Decimal
     isInverseRate: boolean
+    feePercentage: Decimal
     isActive: boolean
     createdAt: Date
     updatedAt: Date
@@ -6864,6 +6874,7 @@ export namespace Prisma {
     toCurrencyId?: boolean
     rate?: boolean
     isInverseRate?: boolean
+    feePercentage?: boolean
     isActive?: boolean
     createdAt?: boolean
     updatedAt?: boolean
@@ -6879,6 +6890,7 @@ export namespace Prisma {
     toCurrencyId?: boolean
     rate?: boolean
     isInverseRate?: boolean
+    feePercentage?: boolean
     isActive?: boolean
     createdAt?: boolean
     updatedAt?: boolean
@@ -6892,6 +6904,7 @@ export namespace Prisma {
     toCurrencyId?: boolean
     rate?: boolean
     isInverseRate?: boolean
+    feePercentage?: boolean
     isActive?: boolean
     createdAt?: boolean
     updatedAt?: boolean
@@ -6905,12 +6918,13 @@ export namespace Prisma {
     toCurrencyId?: boolean
     rate?: boolean
     isInverseRate?: boolean
+    feePercentage?: boolean
     isActive?: boolean
     createdAt?: boolean
     updatedAt?: boolean
   }
 
-  export type CurrencyPairOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "fromCurrencyId" | "toCurrencyId" | "rate" | "isInverseRate" | "isActive" | "createdAt" | "updatedAt", ExtArgs["result"]["currencyPair"]>
+  export type CurrencyPairOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "fromCurrencyId" | "toCurrencyId" | "rate" | "isInverseRate" | "feePercentage" | "isActive" | "createdAt" | "updatedAt", ExtArgs["result"]["currencyPair"]>
   export type CurrencyPairInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     fromCurrency?: boolean | CurrencyDefaultArgs<ExtArgs>
     toCurrency?: boolean | CurrencyDefaultArgs<ExtArgs>
@@ -6939,6 +6953,7 @@ export namespace Prisma {
       toCurrencyId: string
       rate: Prisma.Decimal
       isInverseRate: boolean
+      feePercentage: Prisma.Decimal
       isActive: boolean
       createdAt: Date
       updatedAt: Date
@@ -7373,6 +7388,7 @@ export namespace Prisma {
     readonly toCurrencyId: FieldRef<"CurrencyPair", 'String'>
     readonly rate: FieldRef<"CurrencyPair", 'Decimal'>
     readonly isInverseRate: FieldRef<"CurrencyPair", 'Boolean'>
+    readonly feePercentage: FieldRef<"CurrencyPair", 'Decimal'>
     readonly isActive: FieldRef<"CurrencyPair", 'Boolean'>
     readonly createdAt: FieldRef<"CurrencyPair", 'DateTime'>
     readonly updatedAt: FieldRef<"CurrencyPair", 'DateTime'>
@@ -19876,11 +19892,15 @@ export namespace Prisma {
   }
 
   export type FeeSettingAvgAggregateOutputType = {
+    fromAmount: Decimal | null
+    toAmount: Decimal | null
     fixedFee: Decimal | null
     percentageFee: Decimal | null
   }
 
   export type FeeSettingSumAggregateOutputType = {
+    fromAmount: Decimal | null
+    toAmount: Decimal | null
     fixedFee: Decimal | null
     percentageFee: Decimal | null
   }
@@ -19889,6 +19909,8 @@ export namespace Prisma {
     id: string | null
     transactionType: $Enums.TransactionKind | null
     currencyId: string | null
+    fromAmount: Decimal | null
+    toAmount: Decimal | null
     fixedFee: Decimal | null
     percentageFee: Decimal | null
     createdAt: Date | null
@@ -19898,6 +19920,8 @@ export namespace Prisma {
     id: string | null
     transactionType: $Enums.TransactionKind | null
     currencyId: string | null
+    fromAmount: Decimal | null
+    toAmount: Decimal | null
     fixedFee: Decimal | null
     percentageFee: Decimal | null
     createdAt: Date | null
@@ -19907,6 +19931,8 @@ export namespace Prisma {
     id: number
     transactionType: number
     currencyId: number
+    fromAmount: number
+    toAmount: number
     fixedFee: number
     percentageFee: number
     createdAt: number
@@ -19915,11 +19941,15 @@ export namespace Prisma {
 
 
   export type FeeSettingAvgAggregateInputType = {
+    fromAmount?: true
+    toAmount?: true
     fixedFee?: true
     percentageFee?: true
   }
 
   export type FeeSettingSumAggregateInputType = {
+    fromAmount?: true
+    toAmount?: true
     fixedFee?: true
     percentageFee?: true
   }
@@ -19928,6 +19958,8 @@ export namespace Prisma {
     id?: true
     transactionType?: true
     currencyId?: true
+    fromAmount?: true
+    toAmount?: true
     fixedFee?: true
     percentageFee?: true
     createdAt?: true
@@ -19937,6 +19969,8 @@ export namespace Prisma {
     id?: true
     transactionType?: true
     currencyId?: true
+    fromAmount?: true
+    toAmount?: true
     fixedFee?: true
     percentageFee?: true
     createdAt?: true
@@ -19946,6 +19980,8 @@ export namespace Prisma {
     id?: true
     transactionType?: true
     currencyId?: true
+    fromAmount?: true
+    toAmount?: true
     fixedFee?: true
     percentageFee?: true
     createdAt?: true
@@ -20041,9 +20077,11 @@ export namespace Prisma {
   export type FeeSettingGroupByOutputType = {
     id: string
     transactionType: $Enums.TransactionKind
-    currencyId: string | null
-    fixedFee: Decimal | null
-    percentageFee: Decimal | null
+    currencyId: string
+    fromAmount: Decimal
+    toAmount: Decimal
+    fixedFee: Decimal
+    percentageFee: Decimal
     createdAt: Date
     _count: FeeSettingCountAggregateOutputType | null
     _avg: FeeSettingAvgAggregateOutputType | null
@@ -20070,63 +20108,73 @@ export namespace Prisma {
     id?: boolean
     transactionType?: boolean
     currencyId?: boolean
+    fromAmount?: boolean
+    toAmount?: boolean
     fixedFee?: boolean
     percentageFee?: boolean
     createdAt?: boolean
-    currency?: boolean | FeeSetting$currencyArgs<ExtArgs>
+    currency?: boolean | CurrencyDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["feeSetting"]>
 
   export type FeeSettingSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
     transactionType?: boolean
     currencyId?: boolean
+    fromAmount?: boolean
+    toAmount?: boolean
     fixedFee?: boolean
     percentageFee?: boolean
     createdAt?: boolean
-    currency?: boolean | FeeSetting$currencyArgs<ExtArgs>
+    currency?: boolean | CurrencyDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["feeSetting"]>
 
   export type FeeSettingSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
     transactionType?: boolean
     currencyId?: boolean
+    fromAmount?: boolean
+    toAmount?: boolean
     fixedFee?: boolean
     percentageFee?: boolean
     createdAt?: boolean
-    currency?: boolean | FeeSetting$currencyArgs<ExtArgs>
+    currency?: boolean | CurrencyDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["feeSetting"]>
 
   export type FeeSettingSelectScalar = {
     id?: boolean
     transactionType?: boolean
     currencyId?: boolean
+    fromAmount?: boolean
+    toAmount?: boolean
     fixedFee?: boolean
     percentageFee?: boolean
     createdAt?: boolean
   }
 
-  export type FeeSettingOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "transactionType" | "currencyId" | "fixedFee" | "percentageFee" | "createdAt", ExtArgs["result"]["feeSetting"]>
+  export type FeeSettingOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "transactionType" | "currencyId" | "fromAmount" | "toAmount" | "fixedFee" | "percentageFee" | "createdAt", ExtArgs["result"]["feeSetting"]>
   export type FeeSettingInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    currency?: boolean | FeeSetting$currencyArgs<ExtArgs>
+    currency?: boolean | CurrencyDefaultArgs<ExtArgs>
   }
   export type FeeSettingIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    currency?: boolean | FeeSetting$currencyArgs<ExtArgs>
+    currency?: boolean | CurrencyDefaultArgs<ExtArgs>
   }
   export type FeeSettingIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    currency?: boolean | FeeSetting$currencyArgs<ExtArgs>
+    currency?: boolean | CurrencyDefaultArgs<ExtArgs>
   }
 
   export type $FeeSettingPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "FeeSetting"
     objects: {
-      currency: Prisma.$CurrencyPayload<ExtArgs> | null
+      currency: Prisma.$CurrencyPayload<ExtArgs>
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
       transactionType: $Enums.TransactionKind
-      currencyId: string | null
-      fixedFee: Prisma.Decimal | null
-      percentageFee: Prisma.Decimal | null
+      currencyId: string
+      fromAmount: Prisma.Decimal
+      toAmount: Prisma.Decimal
+      fixedFee: Prisma.Decimal
+      percentageFee: Prisma.Decimal
       createdAt: Date
     }, ExtArgs["result"]["feeSetting"]>
     composites: {}
@@ -20522,7 +20570,7 @@ export namespace Prisma {
    */
   export interface Prisma__FeeSettingClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
-    currency<T extends FeeSetting$currencyArgs<ExtArgs> = {}>(args?: Subset<T, FeeSetting$currencyArgs<ExtArgs>>): Prisma__CurrencyClient<$Result.GetResult<Prisma.$CurrencyPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    currency<T extends CurrencyDefaultArgs<ExtArgs> = {}>(args?: Subset<T, CurrencyDefaultArgs<ExtArgs>>): Prisma__CurrencyClient<$Result.GetResult<Prisma.$CurrencyPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -20555,6 +20603,8 @@ export namespace Prisma {
     readonly id: FieldRef<"FeeSetting", 'String'>
     readonly transactionType: FieldRef<"FeeSetting", 'TransactionKind'>
     readonly currencyId: FieldRef<"FeeSetting", 'String'>
+    readonly fromAmount: FieldRef<"FeeSetting", 'Decimal'>
+    readonly toAmount: FieldRef<"FeeSetting", 'Decimal'>
     readonly fixedFee: FieldRef<"FeeSetting", 'Decimal'>
     readonly percentageFee: FieldRef<"FeeSetting", 'Decimal'>
     readonly createdAt: FieldRef<"FeeSetting", 'DateTime'>
@@ -20954,25 +21004,6 @@ export namespace Prisma {
   }
 
   /**
-   * FeeSetting.currency
-   */
-  export type FeeSetting$currencyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the Currency
-     */
-    select?: CurrencySelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the Currency
-     */
-    omit?: CurrencyOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: CurrencyInclude<ExtArgs> | null
-    where?: CurrencyWhereInput
-  }
-
-  /**
    * FeeSetting without action
    */
   export type FeeSettingDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -21064,6 +21095,7 @@ export namespace Prisma {
     toCurrencyId: 'toCurrencyId',
     rate: 'rate',
     isInverseRate: 'isInverseRate',
+    feePercentage: 'feePercentage',
     isActive: 'isActive',
     createdAt: 'createdAt',
     updatedAt: 'updatedAt'
@@ -21235,6 +21267,8 @@ export namespace Prisma {
     id: 'id',
     transactionType: 'transactionType',
     currencyId: 'currencyId',
+    fromAmount: 'fromAmount',
+    toAmount: 'toAmount',
     fixedFee: 'fixedFee',
     percentageFee: 'percentageFee',
     createdAt: 'createdAt'
@@ -21844,6 +21878,7 @@ export namespace Prisma {
     toCurrencyId?: StringFilter<"CurrencyPair"> | string
     rate?: DecimalFilter<"CurrencyPair"> | Decimal | DecimalJsLike | number | string
     isInverseRate?: BoolFilter<"CurrencyPair"> | boolean
+    feePercentage?: DecimalFilter<"CurrencyPair"> | Decimal | DecimalJsLike | number | string
     isActive?: BoolFilter<"CurrencyPair"> | boolean
     createdAt?: DateTimeFilter<"CurrencyPair"> | Date | string
     updatedAt?: DateTimeFilter<"CurrencyPair"> | Date | string
@@ -21858,6 +21893,7 @@ export namespace Prisma {
     toCurrencyId?: SortOrder
     rate?: SortOrder
     isInverseRate?: SortOrder
+    feePercentage?: SortOrder
     isActive?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
@@ -21876,6 +21912,7 @@ export namespace Prisma {
     toCurrencyId?: StringFilter<"CurrencyPair"> | string
     rate?: DecimalFilter<"CurrencyPair"> | Decimal | DecimalJsLike | number | string
     isInverseRate?: BoolFilter<"CurrencyPair"> | boolean
+    feePercentage?: DecimalFilter<"CurrencyPair"> | Decimal | DecimalJsLike | number | string
     isActive?: BoolFilter<"CurrencyPair"> | boolean
     createdAt?: DateTimeFilter<"CurrencyPair"> | Date | string
     updatedAt?: DateTimeFilter<"CurrencyPair"> | Date | string
@@ -21890,6 +21927,7 @@ export namespace Prisma {
     toCurrencyId?: SortOrder
     rate?: SortOrder
     isInverseRate?: SortOrder
+    feePercentage?: SortOrder
     isActive?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
@@ -21909,6 +21947,7 @@ export namespace Prisma {
     toCurrencyId?: StringWithAggregatesFilter<"CurrencyPair"> | string
     rate?: DecimalWithAggregatesFilter<"CurrencyPair"> | Decimal | DecimalJsLike | number | string
     isInverseRate?: BoolWithAggregatesFilter<"CurrencyPair"> | boolean
+    feePercentage?: DecimalWithAggregatesFilter<"CurrencyPair"> | Decimal | DecimalJsLike | number | string
     isActive?: BoolWithAggregatesFilter<"CurrencyPair"> | boolean
     createdAt?: DateTimeWithAggregatesFilter<"CurrencyPair"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"CurrencyPair"> | Date | string
@@ -22807,19 +22846,23 @@ export namespace Prisma {
     NOT?: FeeSettingWhereInput | FeeSettingWhereInput[]
     id?: StringFilter<"FeeSetting"> | string
     transactionType?: EnumTransactionKindFilter<"FeeSetting"> | $Enums.TransactionKind
-    currencyId?: StringNullableFilter<"FeeSetting"> | string | null
-    fixedFee?: DecimalNullableFilter<"FeeSetting"> | Decimal | DecimalJsLike | number | string | null
-    percentageFee?: DecimalNullableFilter<"FeeSetting"> | Decimal | DecimalJsLike | number | string | null
+    currencyId?: StringFilter<"FeeSetting"> | string
+    fromAmount?: DecimalFilter<"FeeSetting"> | Decimal | DecimalJsLike | number | string
+    toAmount?: DecimalFilter<"FeeSetting"> | Decimal | DecimalJsLike | number | string
+    fixedFee?: DecimalFilter<"FeeSetting"> | Decimal | DecimalJsLike | number | string
+    percentageFee?: DecimalFilter<"FeeSetting"> | Decimal | DecimalJsLike | number | string
     createdAt?: DateTimeFilter<"FeeSetting"> | Date | string
-    currency?: XOR<CurrencyNullableScalarRelationFilter, CurrencyWhereInput> | null
+    currency?: XOR<CurrencyScalarRelationFilter, CurrencyWhereInput>
   }
 
   export type FeeSettingOrderByWithRelationInput = {
     id?: SortOrder
     transactionType?: SortOrder
-    currencyId?: SortOrderInput | SortOrder
-    fixedFee?: SortOrderInput | SortOrder
-    percentageFee?: SortOrderInput | SortOrder
+    currencyId?: SortOrder
+    fromAmount?: SortOrder
+    toAmount?: SortOrder
+    fixedFee?: SortOrder
+    percentageFee?: SortOrder
     createdAt?: SortOrder
     currency?: CurrencyOrderByWithRelationInput
   }
@@ -22830,19 +22873,23 @@ export namespace Prisma {
     OR?: FeeSettingWhereInput[]
     NOT?: FeeSettingWhereInput | FeeSettingWhereInput[]
     transactionType?: EnumTransactionKindFilter<"FeeSetting"> | $Enums.TransactionKind
-    currencyId?: StringNullableFilter<"FeeSetting"> | string | null
-    fixedFee?: DecimalNullableFilter<"FeeSetting"> | Decimal | DecimalJsLike | number | string | null
-    percentageFee?: DecimalNullableFilter<"FeeSetting"> | Decimal | DecimalJsLike | number | string | null
+    currencyId?: StringFilter<"FeeSetting"> | string
+    fromAmount?: DecimalFilter<"FeeSetting"> | Decimal | DecimalJsLike | number | string
+    toAmount?: DecimalFilter<"FeeSetting"> | Decimal | DecimalJsLike | number | string
+    fixedFee?: DecimalFilter<"FeeSetting"> | Decimal | DecimalJsLike | number | string
+    percentageFee?: DecimalFilter<"FeeSetting"> | Decimal | DecimalJsLike | number | string
     createdAt?: DateTimeFilter<"FeeSetting"> | Date | string
-    currency?: XOR<CurrencyNullableScalarRelationFilter, CurrencyWhereInput> | null
+    currency?: XOR<CurrencyScalarRelationFilter, CurrencyWhereInput>
   }, "id">
 
   export type FeeSettingOrderByWithAggregationInput = {
     id?: SortOrder
     transactionType?: SortOrder
-    currencyId?: SortOrderInput | SortOrder
-    fixedFee?: SortOrderInput | SortOrder
-    percentageFee?: SortOrderInput | SortOrder
+    currencyId?: SortOrder
+    fromAmount?: SortOrder
+    toAmount?: SortOrder
+    fixedFee?: SortOrder
+    percentageFee?: SortOrder
     createdAt?: SortOrder
     _count?: FeeSettingCountOrderByAggregateInput
     _avg?: FeeSettingAvgOrderByAggregateInput
@@ -22857,9 +22904,11 @@ export namespace Prisma {
     NOT?: FeeSettingScalarWhereWithAggregatesInput | FeeSettingScalarWhereWithAggregatesInput[]
     id?: StringWithAggregatesFilter<"FeeSetting"> | string
     transactionType?: EnumTransactionKindWithAggregatesFilter<"FeeSetting"> | $Enums.TransactionKind
-    currencyId?: StringNullableWithAggregatesFilter<"FeeSetting"> | string | null
-    fixedFee?: DecimalNullableWithAggregatesFilter<"FeeSetting"> | Decimal | DecimalJsLike | number | string | null
-    percentageFee?: DecimalNullableWithAggregatesFilter<"FeeSetting"> | Decimal | DecimalJsLike | number | string | null
+    currencyId?: StringWithAggregatesFilter<"FeeSetting"> | string
+    fromAmount?: DecimalWithAggregatesFilter<"FeeSetting"> | Decimal | DecimalJsLike | number | string
+    toAmount?: DecimalWithAggregatesFilter<"FeeSetting"> | Decimal | DecimalJsLike | number | string
+    fixedFee?: DecimalWithAggregatesFilter<"FeeSetting"> | Decimal | DecimalJsLike | number | string
+    percentageFee?: DecimalWithAggregatesFilter<"FeeSetting"> | Decimal | DecimalJsLike | number | string
     createdAt?: DateTimeWithAggregatesFilter<"FeeSetting"> | Date | string
   }
 
@@ -23247,6 +23296,7 @@ export namespace Prisma {
     id?: string
     rate: Decimal | DecimalJsLike | number | string
     isInverseRate?: boolean
+    feePercentage?: Decimal | DecimalJsLike | number | string
     isActive?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -23261,6 +23311,7 @@ export namespace Prisma {
     toCurrencyId: string
     rate: Decimal | DecimalJsLike | number | string
     isInverseRate?: boolean
+    feePercentage?: Decimal | DecimalJsLike | number | string
     isActive?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -23271,6 +23322,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     rate?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     isInverseRate?: BoolFieldUpdateOperationsInput | boolean
+    feePercentage?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     isActive?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -23285,6 +23337,7 @@ export namespace Prisma {
     toCurrencyId?: StringFieldUpdateOperationsInput | string
     rate?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     isInverseRate?: BoolFieldUpdateOperationsInput | boolean
+    feePercentage?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     isActive?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -23297,6 +23350,7 @@ export namespace Prisma {
     toCurrencyId: string
     rate: Decimal | DecimalJsLike | number | string
     isInverseRate?: boolean
+    feePercentage?: Decimal | DecimalJsLike | number | string
     isActive?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -23306,6 +23360,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     rate?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     isInverseRate?: BoolFieldUpdateOperationsInput | boolean
+    feePercentage?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     isActive?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -23317,6 +23372,7 @@ export namespace Prisma {
     toCurrencyId?: StringFieldUpdateOperationsInput | string
     rate?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     isInverseRate?: BoolFieldUpdateOperationsInput | boolean
+    feePercentage?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     isActive?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -24249,62 +24305,76 @@ export namespace Prisma {
   export type FeeSettingCreateInput = {
     id?: string
     transactionType: $Enums.TransactionKind
-    fixedFee?: Decimal | DecimalJsLike | number | string | null
-    percentageFee?: Decimal | DecimalJsLike | number | string | null
+    fromAmount?: Decimal | DecimalJsLike | number | string
+    toAmount?: Decimal | DecimalJsLike | number | string
+    fixedFee: Decimal | DecimalJsLike | number | string
+    percentageFee: Decimal | DecimalJsLike | number | string
     createdAt?: Date | string
-    currency?: CurrencyCreateNestedOneWithoutFeeSettingInput
+    currency: CurrencyCreateNestedOneWithoutFeeSettingInput
   }
 
   export type FeeSettingUncheckedCreateInput = {
     id?: string
     transactionType: $Enums.TransactionKind
-    currencyId?: string | null
-    fixedFee?: Decimal | DecimalJsLike | number | string | null
-    percentageFee?: Decimal | DecimalJsLike | number | string | null
+    currencyId: string
+    fromAmount?: Decimal | DecimalJsLike | number | string
+    toAmount?: Decimal | DecimalJsLike | number | string
+    fixedFee: Decimal | DecimalJsLike | number | string
+    percentageFee: Decimal | DecimalJsLike | number | string
     createdAt?: Date | string
   }
 
   export type FeeSettingUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
     transactionType?: EnumTransactionKindFieldUpdateOperationsInput | $Enums.TransactionKind
-    fixedFee?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
-    percentageFee?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    fromAmount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    toAmount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    fixedFee?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    percentageFee?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    currency?: CurrencyUpdateOneWithoutFeeSettingNestedInput
+    currency?: CurrencyUpdateOneRequiredWithoutFeeSettingNestedInput
   }
 
   export type FeeSettingUncheckedUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
     transactionType?: EnumTransactionKindFieldUpdateOperationsInput | $Enums.TransactionKind
-    currencyId?: NullableStringFieldUpdateOperationsInput | string | null
-    fixedFee?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
-    percentageFee?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    currencyId?: StringFieldUpdateOperationsInput | string
+    fromAmount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    toAmount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    fixedFee?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    percentageFee?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type FeeSettingCreateManyInput = {
     id?: string
     transactionType: $Enums.TransactionKind
-    currencyId?: string | null
-    fixedFee?: Decimal | DecimalJsLike | number | string | null
-    percentageFee?: Decimal | DecimalJsLike | number | string | null
+    currencyId: string
+    fromAmount?: Decimal | DecimalJsLike | number | string
+    toAmount?: Decimal | DecimalJsLike | number | string
+    fixedFee: Decimal | DecimalJsLike | number | string
+    percentageFee: Decimal | DecimalJsLike | number | string
     createdAt?: Date | string
   }
 
   export type FeeSettingUpdateManyMutationInput = {
     id?: StringFieldUpdateOperationsInput | string
     transactionType?: EnumTransactionKindFieldUpdateOperationsInput | $Enums.TransactionKind
-    fixedFee?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
-    percentageFee?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    fromAmount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    toAmount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    fixedFee?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    percentageFee?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type FeeSettingUncheckedUpdateManyInput = {
     id?: StringFieldUpdateOperationsInput | string
     transactionType?: EnumTransactionKindFieldUpdateOperationsInput | $Enums.TransactionKind
-    currencyId?: NullableStringFieldUpdateOperationsInput | string | null
-    fixedFee?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
-    percentageFee?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    currencyId?: StringFieldUpdateOperationsInput | string
+    fromAmount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    toAmount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    fixedFee?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    percentageFee?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
@@ -24807,6 +24877,7 @@ export namespace Prisma {
     toCurrencyId?: SortOrder
     rate?: SortOrder
     isInverseRate?: SortOrder
+    feePercentage?: SortOrder
     isActive?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
@@ -24814,6 +24885,7 @@ export namespace Prisma {
 
   export type CurrencyPairAvgOrderByAggregateInput = {
     rate?: SortOrder
+    feePercentage?: SortOrder
   }
 
   export type CurrencyPairMaxOrderByAggregateInput = {
@@ -24822,6 +24894,7 @@ export namespace Prisma {
     toCurrencyId?: SortOrder
     rate?: SortOrder
     isInverseRate?: SortOrder
+    feePercentage?: SortOrder
     isActive?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
@@ -24833,6 +24906,7 @@ export namespace Prisma {
     toCurrencyId?: SortOrder
     rate?: SortOrder
     isInverseRate?: SortOrder
+    feePercentage?: SortOrder
     isActive?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
@@ -24840,6 +24914,7 @@ export namespace Prisma {
 
   export type CurrencyPairSumOrderByAggregateInput = {
     rate?: SortOrder
+    feePercentage?: SortOrder
   }
 
   export type DecimalWithAggregatesFilter<$PrismaModel = never> = {
@@ -25602,32 +25677,20 @@ export namespace Prisma {
     not?: NestedEnumTransactionKindFilter<$PrismaModel> | $Enums.TransactionKind
   }
 
-  export type DecimalNullableFilter<$PrismaModel = never> = {
-    equals?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel> | null
-    in?: Decimal[] | DecimalJsLike[] | number[] | string[] | ListDecimalFieldRefInput<$PrismaModel> | null
-    notIn?: Decimal[] | DecimalJsLike[] | number[] | string[] | ListDecimalFieldRefInput<$PrismaModel> | null
-    lt?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
-    lte?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
-    gt?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
-    gte?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
-    not?: NestedDecimalNullableFilter<$PrismaModel> | Decimal | DecimalJsLike | number | string | null
-  }
-
-  export type CurrencyNullableScalarRelationFilter = {
-    is?: CurrencyWhereInput | null
-    isNot?: CurrencyWhereInput | null
-  }
-
   export type FeeSettingCountOrderByAggregateInput = {
     id?: SortOrder
     transactionType?: SortOrder
     currencyId?: SortOrder
+    fromAmount?: SortOrder
+    toAmount?: SortOrder
     fixedFee?: SortOrder
     percentageFee?: SortOrder
     createdAt?: SortOrder
   }
 
   export type FeeSettingAvgOrderByAggregateInput = {
+    fromAmount?: SortOrder
+    toAmount?: SortOrder
     fixedFee?: SortOrder
     percentageFee?: SortOrder
   }
@@ -25636,6 +25699,8 @@ export namespace Prisma {
     id?: SortOrder
     transactionType?: SortOrder
     currencyId?: SortOrder
+    fromAmount?: SortOrder
+    toAmount?: SortOrder
     fixedFee?: SortOrder
     percentageFee?: SortOrder
     createdAt?: SortOrder
@@ -25645,12 +25710,16 @@ export namespace Prisma {
     id?: SortOrder
     transactionType?: SortOrder
     currencyId?: SortOrder
+    fromAmount?: SortOrder
+    toAmount?: SortOrder
     fixedFee?: SortOrder
     percentageFee?: SortOrder
     createdAt?: SortOrder
   }
 
   export type FeeSettingSumOrderByAggregateInput = {
+    fromAmount?: SortOrder
+    toAmount?: SortOrder
     fixedFee?: SortOrder
     percentageFee?: SortOrder
   }
@@ -25663,22 +25732,6 @@ export namespace Prisma {
     _count?: NestedIntFilter<$PrismaModel>
     _min?: NestedEnumTransactionKindFilter<$PrismaModel>
     _max?: NestedEnumTransactionKindFilter<$PrismaModel>
-  }
-
-  export type DecimalNullableWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel> | null
-    in?: Decimal[] | DecimalJsLike[] | number[] | string[] | ListDecimalFieldRefInput<$PrismaModel> | null
-    notIn?: Decimal[] | DecimalJsLike[] | number[] | string[] | ListDecimalFieldRefInput<$PrismaModel> | null
-    lt?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
-    lte?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
-    gt?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
-    gte?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
-    not?: NestedDecimalNullableWithAggregatesFilter<$PrismaModel> | Decimal | DecimalJsLike | number | string | null
-    _count?: NestedIntNullableFilter<$PrismaModel>
-    _avg?: NestedDecimalNullableFilter<$PrismaModel>
-    _sum?: NestedDecimalNullableFilter<$PrismaModel>
-    _min?: NestedDecimalNullableFilter<$PrismaModel>
-    _max?: NestedDecimalNullableFilter<$PrismaModel>
   }
 
   export type ActivityLogCreateNestedManyWithoutUserInput = {
@@ -27349,20 +27402,10 @@ export namespace Prisma {
     set?: $Enums.TransactionKind
   }
 
-  export type NullableDecimalFieldUpdateOperationsInput = {
-    set?: Decimal | DecimalJsLike | number | string | null
-    increment?: Decimal | DecimalJsLike | number | string
-    decrement?: Decimal | DecimalJsLike | number | string
-    multiply?: Decimal | DecimalJsLike | number | string
-    divide?: Decimal | DecimalJsLike | number | string
-  }
-
-  export type CurrencyUpdateOneWithoutFeeSettingNestedInput = {
+  export type CurrencyUpdateOneRequiredWithoutFeeSettingNestedInput = {
     create?: XOR<CurrencyCreateWithoutFeeSettingInput, CurrencyUncheckedCreateWithoutFeeSettingInput>
     connectOrCreate?: CurrencyCreateOrConnectWithoutFeeSettingInput
     upsert?: CurrencyUpsertWithoutFeeSettingInput
-    disconnect?: CurrencyWhereInput | boolean
-    delete?: CurrencyWhereInput | boolean
     connect?: CurrencyWhereUniqueInput
     update?: XOR<XOR<CurrencyUpdateToOneWithWhereWithoutFeeSettingInput, CurrencyUpdateWithoutFeeSettingInput>, CurrencyUncheckedUpdateWithoutFeeSettingInput>
   }
@@ -27768,17 +27811,6 @@ export namespace Prisma {
     not?: NestedEnumTransactionKindFilter<$PrismaModel> | $Enums.TransactionKind
   }
 
-  export type NestedDecimalNullableFilter<$PrismaModel = never> = {
-    equals?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel> | null
-    in?: Decimal[] | DecimalJsLike[] | number[] | string[] | ListDecimalFieldRefInput<$PrismaModel> | null
-    notIn?: Decimal[] | DecimalJsLike[] | number[] | string[] | ListDecimalFieldRefInput<$PrismaModel> | null
-    lt?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
-    lte?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
-    gt?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
-    gte?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
-    not?: NestedDecimalNullableFilter<$PrismaModel> | Decimal | DecimalJsLike | number | string | null
-  }
-
   export type NestedEnumTransactionKindWithAggregatesFilter<$PrismaModel = never> = {
     equals?: $Enums.TransactionKind | EnumTransactionKindFieldRefInput<$PrismaModel>
     in?: $Enums.TransactionKind[] | ListEnumTransactionKindFieldRefInput<$PrismaModel>
@@ -27787,22 +27819,6 @@ export namespace Prisma {
     _count?: NestedIntFilter<$PrismaModel>
     _min?: NestedEnumTransactionKindFilter<$PrismaModel>
     _max?: NestedEnumTransactionKindFilter<$PrismaModel>
-  }
-
-  export type NestedDecimalNullableWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel> | null
-    in?: Decimal[] | DecimalJsLike[] | number[] | string[] | ListDecimalFieldRefInput<$PrismaModel> | null
-    notIn?: Decimal[] | DecimalJsLike[] | number[] | string[] | ListDecimalFieldRefInput<$PrismaModel> | null
-    lt?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
-    lte?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
-    gt?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
-    gte?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
-    not?: NestedDecimalNullableWithAggregatesFilter<$PrismaModel> | Decimal | DecimalJsLike | number | string | null
-    _count?: NestedIntNullableFilter<$PrismaModel>
-    _avg?: NestedDecimalNullableFilter<$PrismaModel>
-    _sum?: NestedDecimalNullableFilter<$PrismaModel>
-    _min?: NestedDecimalNullableFilter<$PrismaModel>
-    _max?: NestedDecimalNullableFilter<$PrismaModel>
   }
 
   export type ActivityLogCreateWithoutUserInput = {
@@ -28590,6 +28606,7 @@ export namespace Prisma {
     id?: string
     rate: Decimal | DecimalJsLike | number | string
     isInverseRate?: boolean
+    feePercentage?: Decimal | DecimalJsLike | number | string
     isActive?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -28602,6 +28619,7 @@ export namespace Prisma {
     toCurrencyId: string
     rate: Decimal | DecimalJsLike | number | string
     isInverseRate?: boolean
+    feePercentage?: Decimal | DecimalJsLike | number | string
     isActive?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -28622,6 +28640,7 @@ export namespace Prisma {
     id?: string
     rate: Decimal | DecimalJsLike | number | string
     isInverseRate?: boolean
+    feePercentage?: Decimal | DecimalJsLike | number | string
     isActive?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -28634,6 +28653,7 @@ export namespace Prisma {
     fromCurrencyId: string
     rate: Decimal | DecimalJsLike | number | string
     isInverseRate?: boolean
+    feePercentage?: Decimal | DecimalJsLike | number | string
     isActive?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -28653,16 +28673,20 @@ export namespace Prisma {
   export type FeeSettingCreateWithoutCurrencyInput = {
     id?: string
     transactionType: $Enums.TransactionKind
-    fixedFee?: Decimal | DecimalJsLike | number | string | null
-    percentageFee?: Decimal | DecimalJsLike | number | string | null
+    fromAmount?: Decimal | DecimalJsLike | number | string
+    toAmount?: Decimal | DecimalJsLike | number | string
+    fixedFee: Decimal | DecimalJsLike | number | string
+    percentageFee: Decimal | DecimalJsLike | number | string
     createdAt?: Date | string
   }
 
   export type FeeSettingUncheckedCreateWithoutCurrencyInput = {
     id?: string
     transactionType: $Enums.TransactionKind
-    fixedFee?: Decimal | DecimalJsLike | number | string | null
-    percentageFee?: Decimal | DecimalJsLike | number | string | null
+    fromAmount?: Decimal | DecimalJsLike | number | string
+    toAmount?: Decimal | DecimalJsLike | number | string
+    fixedFee: Decimal | DecimalJsLike | number | string
+    percentageFee: Decimal | DecimalJsLike | number | string
     createdAt?: Date | string
   }
 
@@ -28796,6 +28820,7 @@ export namespace Prisma {
     toCurrencyId?: StringFilter<"CurrencyPair"> | string
     rate?: DecimalFilter<"CurrencyPair"> | Decimal | DecimalJsLike | number | string
     isInverseRate?: BoolFilter<"CurrencyPair"> | boolean
+    feePercentage?: DecimalFilter<"CurrencyPair"> | Decimal | DecimalJsLike | number | string
     isActive?: BoolFilter<"CurrencyPair"> | boolean
     createdAt?: DateTimeFilter<"CurrencyPair"> | Date | string
     updatedAt?: DateTimeFilter<"CurrencyPair"> | Date | string
@@ -28839,9 +28864,11 @@ export namespace Prisma {
     NOT?: FeeSettingScalarWhereInput | FeeSettingScalarWhereInput[]
     id?: StringFilter<"FeeSetting"> | string
     transactionType?: EnumTransactionKindFilter<"FeeSetting"> | $Enums.TransactionKind
-    currencyId?: StringNullableFilter<"FeeSetting"> | string | null
-    fixedFee?: DecimalNullableFilter<"FeeSetting"> | Decimal | DecimalJsLike | number | string | null
-    percentageFee?: DecimalNullableFilter<"FeeSetting"> | Decimal | DecimalJsLike | number | string | null
+    currencyId?: StringFilter<"FeeSetting"> | string
+    fromAmount?: DecimalFilter<"FeeSetting"> | Decimal | DecimalJsLike | number | string
+    toAmount?: DecimalFilter<"FeeSetting"> | Decimal | DecimalJsLike | number | string
+    fixedFee?: DecimalFilter<"FeeSetting"> | Decimal | DecimalJsLike | number | string
+    percentageFee?: DecimalFilter<"FeeSetting"> | Decimal | DecimalJsLike | number | string
     createdAt?: DateTimeFilter<"FeeSetting"> | Date | string
   }
 
@@ -31373,6 +31400,7 @@ export namespace Prisma {
     id?: string
     rate: Decimal | DecimalJsLike | number | string
     isInverseRate?: boolean
+    feePercentage?: Decimal | DecimalJsLike | number | string
     isActive?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -31386,6 +31414,7 @@ export namespace Prisma {
     toCurrencyId: string
     rate: Decimal | DecimalJsLike | number | string
     isInverseRate?: boolean
+    feePercentage?: Decimal | DecimalJsLike | number | string
     isActive?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -31538,6 +31567,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     rate?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     isInverseRate?: BoolFieldUpdateOperationsInput | boolean
+    feePercentage?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     isActive?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -31551,6 +31581,7 @@ export namespace Prisma {
     toCurrencyId?: StringFieldUpdateOperationsInput | string
     rate?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     isInverseRate?: BoolFieldUpdateOperationsInput | boolean
+    feePercentage?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     isActive?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -32696,6 +32727,7 @@ export namespace Prisma {
     toCurrencyId: string
     rate: Decimal | DecimalJsLike | number | string
     isInverseRate?: boolean
+    feePercentage?: Decimal | DecimalJsLike | number | string
     isActive?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -32706,6 +32738,7 @@ export namespace Prisma {
     fromCurrencyId: string
     rate: Decimal | DecimalJsLike | number | string
     isInverseRate?: boolean
+    feePercentage?: Decimal | DecimalJsLike | number | string
     isActive?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -32714,8 +32747,10 @@ export namespace Prisma {
   export type FeeSettingCreateManyCurrencyInput = {
     id?: string
     transactionType: $Enums.TransactionKind
-    fixedFee?: Decimal | DecimalJsLike | number | string | null
-    percentageFee?: Decimal | DecimalJsLike | number | string | null
+    fromAmount?: Decimal | DecimalJsLike | number | string
+    toAmount?: Decimal | DecimalJsLike | number | string
+    fixedFee: Decimal | DecimalJsLike | number | string
+    percentageFee: Decimal | DecimalJsLike | number | string
     createdAt?: Date | string
   }
 
@@ -32742,6 +32777,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     rate?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     isInverseRate?: BoolFieldUpdateOperationsInput | boolean
+    feePercentage?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     isActive?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -32754,6 +32790,7 @@ export namespace Prisma {
     toCurrencyId?: StringFieldUpdateOperationsInput | string
     rate?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     isInverseRate?: BoolFieldUpdateOperationsInput | boolean
+    feePercentage?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     isActive?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -32765,6 +32802,7 @@ export namespace Prisma {
     toCurrencyId?: StringFieldUpdateOperationsInput | string
     rate?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     isInverseRate?: BoolFieldUpdateOperationsInput | boolean
+    feePercentage?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     isActive?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -32774,6 +32812,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     rate?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     isInverseRate?: BoolFieldUpdateOperationsInput | boolean
+    feePercentage?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     isActive?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -32786,6 +32825,7 @@ export namespace Prisma {
     fromCurrencyId?: StringFieldUpdateOperationsInput | string
     rate?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     isInverseRate?: BoolFieldUpdateOperationsInput | boolean
+    feePercentage?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     isActive?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -32797,6 +32837,7 @@ export namespace Prisma {
     fromCurrencyId?: StringFieldUpdateOperationsInput | string
     rate?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     isInverseRate?: BoolFieldUpdateOperationsInput | boolean
+    feePercentage?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     isActive?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -32805,24 +32846,30 @@ export namespace Prisma {
   export type FeeSettingUpdateWithoutCurrencyInput = {
     id?: StringFieldUpdateOperationsInput | string
     transactionType?: EnumTransactionKindFieldUpdateOperationsInput | $Enums.TransactionKind
-    fixedFee?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
-    percentageFee?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    fromAmount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    toAmount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    fixedFee?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    percentageFee?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type FeeSettingUncheckedUpdateWithoutCurrencyInput = {
     id?: StringFieldUpdateOperationsInput | string
     transactionType?: EnumTransactionKindFieldUpdateOperationsInput | $Enums.TransactionKind
-    fixedFee?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
-    percentageFee?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    fromAmount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    toAmount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    fixedFee?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    percentageFee?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type FeeSettingUncheckedUpdateManyWithoutCurrencyInput = {
     id?: StringFieldUpdateOperationsInput | string
     transactionType?: EnumTransactionKindFieldUpdateOperationsInput | $Enums.TransactionKind
-    fixedFee?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
-    percentageFee?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    fromAmount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    toAmount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    fixedFee?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    percentageFee?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 

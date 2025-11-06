@@ -170,6 +170,7 @@ exports.Prisma.CurrencyPairScalarFieldEnum = {
   toCurrencyId: 'toCurrencyId',
   rate: 'rate',
   isInverseRate: 'isInverseRate',
+  feePercentage: 'feePercentage',
   isActive: 'isActive',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
@@ -308,6 +309,8 @@ exports.Prisma.FeeSettingScalarFieldEnum = {
   id: 'id',
   transactionType: 'transactionType',
   currencyId: 'currencyId',
+  fromAmount: 'fromAmount',
+  toAmount: 'toAmount',
   fixedFee: 'fixedFee',
   percentageFee: 'percentageFee',
   createdAt: 'createdAt'
@@ -410,7 +413,6 @@ exports.TransactionKind = exports.$Enums.TransactionKind = {
   DEPOSIT: 'DEPOSIT',
   WITHDRAWAL: 'WITHDRAWAL',
   TRANSFER: 'TRANSFER',
-  EXCHANGE: 'EXCHANGE',
   REFUND: 'REFUND'
 };
 

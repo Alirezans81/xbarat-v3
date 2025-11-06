@@ -81,6 +81,7 @@ model CurrencyPair {
   toCurrencyId   String
   rate           Decimal
   isInverseRate  Boolean    @default(false)
+  feePercentage  Decimal    @default(0.00)
   isActive       Boolean    @default(true)
   createdAt      DateTime   @default(now())
   updatedAt      DateTime   @updatedAt
@@ -268,11 +269,13 @@ model ActivityLog {
 model FeeSetting {
   id              String          @id @default(uuid())
   transactionType TransactionKind
-  currencyId      String?
-  fixedFee        Decimal?
-  percentageFee   Decimal?
+  currencyId      String
+  fromAmount      Decimal         @default(0.00)
+  toAmount        Decimal         @default(0.00)
+  fixedFee        Decimal
+  percentageFee   Decimal
   createdAt       DateTime        @default(now())
-  currency        Currency?       @relation(fields: [currencyId], references: [id])
+  currency        Currency        @relation(fields: [currencyId], references: [id])
 
   @@index([transactionType, currencyId])
 }
@@ -349,6 +352,5 @@ enum TransactionKind {
   DEPOSIT
   WITHDRAWAL
   TRANSFER
-  EXCHANGE
   REFUND
 }

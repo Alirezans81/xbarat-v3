@@ -54,6 +54,7 @@ export const approveWithdrawalDocument = (
   return apiFetch(
     api["withdrawal"] + "/" + withdrawal_id + "/approve-document",
     {
+      method: "POST",
       token,
     }
   );

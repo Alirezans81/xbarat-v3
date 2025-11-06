@@ -196,7 +196,8 @@ DECLARE
 BEGIN
   IF NEW.status = 'PENDING' THEN
     UPDATE "Wallet"
-    SET frozen = frozen + NEW.amount
+    SET balance = balance - NEW.amount,
+    frozen = frozen + NEW.amount
     WHERE id = NEW."walletId";
 
     SELECT "liquidityPoolId"
