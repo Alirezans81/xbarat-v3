@@ -12,7 +12,6 @@ import {
 import { Input } from "../../../ui/input";
 import { useRouter } from "@/i18n/navigation";
 import { useUploadLiquidityPoolDocument } from "@/api/liquidity-pool/hook";
-import Image from "next/image";
 import { Upload } from "lucide-react";
 
 interface Props {
@@ -74,9 +73,10 @@ export default function UploadLiquidityPoolDocument({
         <form onSubmit={handleSubmit} className="space-y-2">
           <div>
             <Input
+              id="payment-document"
               ref={documentRef}
               className="hidden"
-              name="document"
+              name="payment-document"
               type="file"
               accept="image/*"
               onChange={(e) =>

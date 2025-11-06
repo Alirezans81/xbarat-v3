@@ -12,7 +12,7 @@ import {
 import { BridgeTransfer } from "../../types/front/bridgeTransfer";
 import { useTranslations } from "next-intl";
 import ApproveLiquidityPoolDocument from "../dialog/liquidity-pool/payments/approve-liquidity-pool-document-dialog";
-import UploadLiquidityPoolDocument from "../dialog/liquidity-pool/payments/upload-liquidity-pool-document-dialg";
+import UploadLiquidityPoolDocument from "../dialog/liquidity-pool/payments/upload-liquidity-pool-document-dialog";
 
 interface Props {
   data: BridgeTransfer[];

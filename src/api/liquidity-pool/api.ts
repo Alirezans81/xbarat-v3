@@ -76,6 +76,7 @@ export const uploadLiquidityPoolDocument = (
   return apiFetch<LiquidityPool>(
     api["liquidity-pool"] + "/" + liquidityPool_id + "/upload",
     {
+      method: "POST",
       body: formData,
       token,
     }
