@@ -285,3 +285,34 @@ CREATE TRIGGER withdrawal_completed_trigger
 AFTER UPDATE OF status ON "Withdrawal"
 FOR EACH ROW
 EXECUTE FUNCTION update_balances_on_withdrawal();
+
+DROP TRIGGER IF EXISTS transfer_fee_to_fee_user_trigger ON "Exchange";
+DROP FUNCTION IF EXISTS transfer_fee_to_fee_user();
+
+CREATE OR REPLACE FUNCTION transfer_fee_to_fee_user()
+RETURNS TRIGGER AS $$
+DECLARE
+  wallet_id TEXT;
+BEGIN
+  IF NEW.status = 'COMPLETED' AND OLD.status IS DISTINCT FROM 'COMPLETED' THEN
+    SELECT w.id
+    INTO wallet_id
+    FROM "FeeUser" fu
+    JOIN "User" u ON u.id = fu."userId"
+    JOIN "Wallet" w ON u.id = w."userId"
+    WHERE NEW.fromCurrencyId = w.currencyId
+    LIMIT 1;
+
+    UPDATE "Wallet"
+    SET balance = balance + NEW.fee
+    WHERE id = wallet_id;
+  END IF;
+
+  RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE TRIGGER transfer_fee_to_fee_user_trigger
+AFTER UPDATE OF status ON "Exchange"
+FOR EACH ROW
+EXECUTE FUNCTION transfer_fee_to_fee_user();
