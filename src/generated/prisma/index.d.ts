@@ -84,6 +84,11 @@ export type ExchangeMatch = $Result.DefaultSelection<Prisma.$ExchangeMatchPayloa
  */
 export type ActivityLog = $Result.DefaultSelection<Prisma.$ActivityLogPayload>
 /**
+ * Model FeeUser
+ * 
+ */
+export type FeeUser = $Result.DefaultSelection<Prisma.$FeeUserPayload>
+/**
  * Model FeeSetting
  * 
  */
@@ -503,6 +508,16 @@ export class PrismaClient<
     * ```
     */
   get activityLog(): Prisma.ActivityLogDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.feeUser`: Exposes CRUD operations for the **FeeUser** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more FeeUsers
+    * const feeUsers = await prisma.feeUser.findMany()
+    * ```
+    */
+  get feeUser(): Prisma.FeeUserDelegate<ExtArgs, ClientOptions>;
 
   /**
    * `prisma.feeSetting`: Exposes CRUD operations for the **FeeSetting** model.
@@ -967,6 +982,7 @@ export namespace Prisma {
     Exchange: 'Exchange',
     ExchangeMatch: 'ExchangeMatch',
     ActivityLog: 'ActivityLog',
+    FeeUser: 'FeeUser',
     FeeSetting: 'FeeSetting'
   };
 
@@ -986,7 +1002,7 @@ export namespace Prisma {
       omit: GlobalOmitOptions
     }
     meta: {
-      modelProps: "user" | "paymentChannel" | "currency" | "currencyPair" | "liquidityPool" | "wallet" | "deposit" | "withdrawal" | "bridgeTransfer" | "transfer" | "refund" | "exchange" | "exchangeMatch" | "activityLog" | "feeSetting"
+      modelProps: "user" | "paymentChannel" | "currency" | "currencyPair" | "liquidityPool" | "wallet" | "deposit" | "withdrawal" | "bridgeTransfer" | "transfer" | "refund" | "exchange" | "exchangeMatch" | "activityLog" | "feeUser" | "feeSetting"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
@@ -2026,6 +2042,80 @@ export namespace Prisma {
           }
         }
       }
+      FeeUser: {
+        payload: Prisma.$FeeUserPayload<ExtArgs>
+        fields: Prisma.FeeUserFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.FeeUserFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$FeeUserPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.FeeUserFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$FeeUserPayload>
+          }
+          findFirst: {
+            args: Prisma.FeeUserFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$FeeUserPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.FeeUserFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$FeeUserPayload>
+          }
+          findMany: {
+            args: Prisma.FeeUserFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$FeeUserPayload>[]
+          }
+          create: {
+            args: Prisma.FeeUserCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$FeeUserPayload>
+          }
+          createMany: {
+            args: Prisma.FeeUserCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.FeeUserCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$FeeUserPayload>[]
+          }
+          delete: {
+            args: Prisma.FeeUserDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$FeeUserPayload>
+          }
+          update: {
+            args: Prisma.FeeUserUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$FeeUserPayload>
+          }
+          deleteMany: {
+            args: Prisma.FeeUserDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.FeeUserUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.FeeUserUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$FeeUserPayload>[]
+          }
+          upsert: {
+            args: Prisma.FeeUserUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$FeeUserPayload>
+          }
+          aggregate: {
+            args: Prisma.FeeUserAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateFeeUser>
+          }
+          groupBy: {
+            args: Prisma.FeeUserGroupByArgs<ExtArgs>
+            result: $Utils.Optional<FeeUserGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.FeeUserCountArgs<ExtArgs>
+            result: $Utils.Optional<FeeUserCountAggregateOutputType> | number
+          }
+        }
+      }
       FeeSetting: {
         payload: Prisma.$FeeSettingPayload<ExtArgs>
         fields: Prisma.FeeSettingFieldRefs
@@ -2198,6 +2288,7 @@ export namespace Prisma {
     exchange?: ExchangeOmit
     exchangeMatch?: ExchangeMatchOmit
     activityLog?: ActivityLogOmit
+    feeUser?: FeeUserOmit
     feeSetting?: FeeSettingOmit
   }
 
@@ -2301,6 +2392,7 @@ export namespace Prisma {
     wallet: number
     withdrawals: number
     transfers: number
+    feeUserWallets: number
   }
 
   export type UserCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -2312,6 +2404,7 @@ export namespace Prisma {
     wallet?: boolean | UserCountOutputTypeCountWalletArgs
     withdrawals?: boolean | UserCountOutputTypeCountWithdrawalsArgs
     transfers?: boolean | UserCountOutputTypeCountTransfersArgs
+    feeUserWallets?: boolean | UserCountOutputTypeCountFeeUserWalletsArgs
   }
 
   // Custom InputTypes
@@ -2379,6 +2472,13 @@ export namespace Prisma {
    */
   export type UserCountOutputTypeCountTransfersArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: TransferWhereInput
+  }
+
+  /**
+   * UserCountOutputType without action
+   */
+  export type UserCountOutputTypeCountFeeUserWalletsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: FeeUserWhereInput
   }
 
 
@@ -3061,6 +3161,7 @@ export namespace Prisma {
     wallet?: boolean | User$walletArgs<ExtArgs>
     withdrawals?: boolean | User$withdrawalsArgs<ExtArgs>
     transfers?: boolean | User$transfersArgs<ExtArgs>
+    feeUserWallets?: boolean | User$feeUserWalletsArgs<ExtArgs>
     _count?: boolean | UserCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["user"]>
 
@@ -3158,6 +3259,7 @@ export namespace Prisma {
     wallet?: boolean | User$walletArgs<ExtArgs>
     withdrawals?: boolean | User$withdrawalsArgs<ExtArgs>
     transfers?: boolean | User$transfersArgs<ExtArgs>
+    feeUserWallets?: boolean | User$feeUserWalletsArgs<ExtArgs>
     _count?: boolean | UserCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type UserIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
@@ -3174,6 +3276,7 @@ export namespace Prisma {
       wallet: Prisma.$WalletPayload<ExtArgs>[]
       withdrawals: Prisma.$WithdrawalPayload<ExtArgs>[]
       transfers: Prisma.$TransferPayload<ExtArgs>[]
+      feeUserWallets: Prisma.$FeeUserPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -3603,6 +3706,7 @@ export namespace Prisma {
     wallet<T extends User$walletArgs<ExtArgs> = {}>(args?: Subset<T, User$walletArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$WalletPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     withdrawals<T extends User$withdrawalsArgs<ExtArgs> = {}>(args?: Subset<T, User$withdrawalsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$WithdrawalPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     transfers<T extends User$transfersArgs<ExtArgs> = {}>(args?: Subset<T, User$transfersArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$TransferPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    feeUserWallets<T extends User$feeUserWalletsArgs<ExtArgs> = {}>(args?: Subset<T, User$feeUserWalletsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$FeeUserPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -4234,6 +4338,30 @@ export namespace Prisma {
     take?: number
     skip?: number
     distinct?: TransferScalarFieldEnum | TransferScalarFieldEnum[]
+  }
+
+  /**
+   * User.feeUserWallets
+   */
+  export type User$feeUserWalletsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the FeeUser
+     */
+    select?: FeeUserSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the FeeUser
+     */
+    omit?: FeeUserOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: FeeUserInclude<ExtArgs> | null
+    where?: FeeUserWhereInput
+    orderBy?: FeeUserOrderByWithRelationInput | FeeUserOrderByWithRelationInput[]
+    cursor?: FeeUserWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: FeeUserScalarFieldEnum | FeeUserScalarFieldEnum[]
   }
 
   /**
@@ -19938,6 +20066,1038 @@ export namespace Prisma {
 
 
   /**
+   * Model FeeUser
+   */
+
+  export type AggregateFeeUser = {
+    _count: FeeUserCountAggregateOutputType | null
+    _min: FeeUserMinAggregateOutputType | null
+    _max: FeeUserMaxAggregateOutputType | null
+  }
+
+  export type FeeUserMinAggregateOutputType = {
+    id: string | null
+    userId: string | null
+    isActive: boolean | null
+  }
+
+  export type FeeUserMaxAggregateOutputType = {
+    id: string | null
+    userId: string | null
+    isActive: boolean | null
+  }
+
+  export type FeeUserCountAggregateOutputType = {
+    id: number
+    userId: number
+    isActive: number
+    _all: number
+  }
+
+
+  export type FeeUserMinAggregateInputType = {
+    id?: true
+    userId?: true
+    isActive?: true
+  }
+
+  export type FeeUserMaxAggregateInputType = {
+    id?: true
+    userId?: true
+    isActive?: true
+  }
+
+  export type FeeUserCountAggregateInputType = {
+    id?: true
+    userId?: true
+    isActive?: true
+    _all?: true
+  }
+
+  export type FeeUserAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which FeeUser to aggregate.
+     */
+    where?: FeeUserWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of FeeUsers to fetch.
+     */
+    orderBy?: FeeUserOrderByWithRelationInput | FeeUserOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: FeeUserWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` FeeUsers from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` FeeUsers.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned FeeUsers
+    **/
+    _count?: true | FeeUserCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: FeeUserMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: FeeUserMaxAggregateInputType
+  }
+
+  export type GetFeeUserAggregateType<T extends FeeUserAggregateArgs> = {
+        [P in keyof T & keyof AggregateFeeUser]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateFeeUser[P]>
+      : GetScalarType<T[P], AggregateFeeUser[P]>
+  }
+
+
+
+
+  export type FeeUserGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: FeeUserWhereInput
+    orderBy?: FeeUserOrderByWithAggregationInput | FeeUserOrderByWithAggregationInput[]
+    by: FeeUserScalarFieldEnum[] | FeeUserScalarFieldEnum
+    having?: FeeUserScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: FeeUserCountAggregateInputType | true
+    _min?: FeeUserMinAggregateInputType
+    _max?: FeeUserMaxAggregateInputType
+  }
+
+  export type FeeUserGroupByOutputType = {
+    id: string
+    userId: string
+    isActive: boolean
+    _count: FeeUserCountAggregateOutputType | null
+    _min: FeeUserMinAggregateOutputType | null
+    _max: FeeUserMaxAggregateOutputType | null
+  }
+
+  type GetFeeUserGroupByPayload<T extends FeeUserGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<FeeUserGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof FeeUserGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], FeeUserGroupByOutputType[P]>
+            : GetScalarType<T[P], FeeUserGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type FeeUserSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    userId?: boolean
+    isActive?: boolean
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["feeUser"]>
+
+  export type FeeUserSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    userId?: boolean
+    isActive?: boolean
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["feeUser"]>
+
+  export type FeeUserSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    userId?: boolean
+    isActive?: boolean
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["feeUser"]>
+
+  export type FeeUserSelectScalar = {
+    id?: boolean
+    userId?: boolean
+    isActive?: boolean
+  }
+
+  export type FeeUserOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "userId" | "isActive", ExtArgs["result"]["feeUser"]>
+  export type FeeUserInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }
+  export type FeeUserIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }
+  export type FeeUserIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }
+
+  export type $FeeUserPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "FeeUser"
+    objects: {
+      user: Prisma.$UserPayload<ExtArgs>
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      userId: string
+      isActive: boolean
+    }, ExtArgs["result"]["feeUser"]>
+    composites: {}
+  }
+
+  type FeeUserGetPayload<S extends boolean | null | undefined | FeeUserDefaultArgs> = $Result.GetResult<Prisma.$FeeUserPayload, S>
+
+  type FeeUserCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<FeeUserFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: FeeUserCountAggregateInputType | true
+    }
+
+  export interface FeeUserDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['FeeUser'], meta: { name: 'FeeUser' } }
+    /**
+     * Find zero or one FeeUser that matches the filter.
+     * @param {FeeUserFindUniqueArgs} args - Arguments to find a FeeUser
+     * @example
+     * // Get one FeeUser
+     * const feeUser = await prisma.feeUser.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends FeeUserFindUniqueArgs>(args: SelectSubset<T, FeeUserFindUniqueArgs<ExtArgs>>): Prisma__FeeUserClient<$Result.GetResult<Prisma.$FeeUserPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one FeeUser that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {FeeUserFindUniqueOrThrowArgs} args - Arguments to find a FeeUser
+     * @example
+     * // Get one FeeUser
+     * const feeUser = await prisma.feeUser.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends FeeUserFindUniqueOrThrowArgs>(args: SelectSubset<T, FeeUserFindUniqueOrThrowArgs<ExtArgs>>): Prisma__FeeUserClient<$Result.GetResult<Prisma.$FeeUserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first FeeUser that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {FeeUserFindFirstArgs} args - Arguments to find a FeeUser
+     * @example
+     * // Get one FeeUser
+     * const feeUser = await prisma.feeUser.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends FeeUserFindFirstArgs>(args?: SelectSubset<T, FeeUserFindFirstArgs<ExtArgs>>): Prisma__FeeUserClient<$Result.GetResult<Prisma.$FeeUserPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first FeeUser that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {FeeUserFindFirstOrThrowArgs} args - Arguments to find a FeeUser
+     * @example
+     * // Get one FeeUser
+     * const feeUser = await prisma.feeUser.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends FeeUserFindFirstOrThrowArgs>(args?: SelectSubset<T, FeeUserFindFirstOrThrowArgs<ExtArgs>>): Prisma__FeeUserClient<$Result.GetResult<Prisma.$FeeUserPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more FeeUsers that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {FeeUserFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all FeeUsers
+     * const feeUsers = await prisma.feeUser.findMany()
+     * 
+     * // Get first 10 FeeUsers
+     * const feeUsers = await prisma.feeUser.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const feeUserWithIdOnly = await prisma.feeUser.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends FeeUserFindManyArgs>(args?: SelectSubset<T, FeeUserFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$FeeUserPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a FeeUser.
+     * @param {FeeUserCreateArgs} args - Arguments to create a FeeUser.
+     * @example
+     * // Create one FeeUser
+     * const FeeUser = await prisma.feeUser.create({
+     *   data: {
+     *     // ... data to create a FeeUser
+     *   }
+     * })
+     * 
+     */
+    create<T extends FeeUserCreateArgs>(args: SelectSubset<T, FeeUserCreateArgs<ExtArgs>>): Prisma__FeeUserClient<$Result.GetResult<Prisma.$FeeUserPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many FeeUsers.
+     * @param {FeeUserCreateManyArgs} args - Arguments to create many FeeUsers.
+     * @example
+     * // Create many FeeUsers
+     * const feeUser = await prisma.feeUser.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends FeeUserCreateManyArgs>(args?: SelectSubset<T, FeeUserCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many FeeUsers and returns the data saved in the database.
+     * @param {FeeUserCreateManyAndReturnArgs} args - Arguments to create many FeeUsers.
+     * @example
+     * // Create many FeeUsers
+     * const feeUser = await prisma.feeUser.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many FeeUsers and only return the `id`
+     * const feeUserWithIdOnly = await prisma.feeUser.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends FeeUserCreateManyAndReturnArgs>(args?: SelectSubset<T, FeeUserCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$FeeUserPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a FeeUser.
+     * @param {FeeUserDeleteArgs} args - Arguments to delete one FeeUser.
+     * @example
+     * // Delete one FeeUser
+     * const FeeUser = await prisma.feeUser.delete({
+     *   where: {
+     *     // ... filter to delete one FeeUser
+     *   }
+     * })
+     * 
+     */
+    delete<T extends FeeUserDeleteArgs>(args: SelectSubset<T, FeeUserDeleteArgs<ExtArgs>>): Prisma__FeeUserClient<$Result.GetResult<Prisma.$FeeUserPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one FeeUser.
+     * @param {FeeUserUpdateArgs} args - Arguments to update one FeeUser.
+     * @example
+     * // Update one FeeUser
+     * const feeUser = await prisma.feeUser.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends FeeUserUpdateArgs>(args: SelectSubset<T, FeeUserUpdateArgs<ExtArgs>>): Prisma__FeeUserClient<$Result.GetResult<Prisma.$FeeUserPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more FeeUsers.
+     * @param {FeeUserDeleteManyArgs} args - Arguments to filter FeeUsers to delete.
+     * @example
+     * // Delete a few FeeUsers
+     * const { count } = await prisma.feeUser.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends FeeUserDeleteManyArgs>(args?: SelectSubset<T, FeeUserDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more FeeUsers.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {FeeUserUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many FeeUsers
+     * const feeUser = await prisma.feeUser.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends FeeUserUpdateManyArgs>(args: SelectSubset<T, FeeUserUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more FeeUsers and returns the data updated in the database.
+     * @param {FeeUserUpdateManyAndReturnArgs} args - Arguments to update many FeeUsers.
+     * @example
+     * // Update many FeeUsers
+     * const feeUser = await prisma.feeUser.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more FeeUsers and only return the `id`
+     * const feeUserWithIdOnly = await prisma.feeUser.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends FeeUserUpdateManyAndReturnArgs>(args: SelectSubset<T, FeeUserUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$FeeUserPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one FeeUser.
+     * @param {FeeUserUpsertArgs} args - Arguments to update or create a FeeUser.
+     * @example
+     * // Update or create a FeeUser
+     * const feeUser = await prisma.feeUser.upsert({
+     *   create: {
+     *     // ... data to create a FeeUser
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the FeeUser we want to update
+     *   }
+     * })
+     */
+    upsert<T extends FeeUserUpsertArgs>(args: SelectSubset<T, FeeUserUpsertArgs<ExtArgs>>): Prisma__FeeUserClient<$Result.GetResult<Prisma.$FeeUserPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of FeeUsers.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {FeeUserCountArgs} args - Arguments to filter FeeUsers to count.
+     * @example
+     * // Count the number of FeeUsers
+     * const count = await prisma.feeUser.count({
+     *   where: {
+     *     // ... the filter for the FeeUsers we want to count
+     *   }
+     * })
+    **/
+    count<T extends FeeUserCountArgs>(
+      args?: Subset<T, FeeUserCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], FeeUserCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a FeeUser.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {FeeUserAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends FeeUserAggregateArgs>(args: Subset<T, FeeUserAggregateArgs>): Prisma.PrismaPromise<GetFeeUserAggregateType<T>>
+
+    /**
+     * Group by FeeUser.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {FeeUserGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends FeeUserGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: FeeUserGroupByArgs['orderBy'] }
+        : { orderBy?: FeeUserGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, FeeUserGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetFeeUserGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the FeeUser model
+   */
+  readonly fields: FeeUserFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for FeeUser.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__FeeUserClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    user<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the FeeUser model
+   */
+  interface FeeUserFieldRefs {
+    readonly id: FieldRef<"FeeUser", 'String'>
+    readonly userId: FieldRef<"FeeUser", 'String'>
+    readonly isActive: FieldRef<"FeeUser", 'Boolean'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * FeeUser findUnique
+   */
+  export type FeeUserFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the FeeUser
+     */
+    select?: FeeUserSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the FeeUser
+     */
+    omit?: FeeUserOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: FeeUserInclude<ExtArgs> | null
+    /**
+     * Filter, which FeeUser to fetch.
+     */
+    where: FeeUserWhereUniqueInput
+  }
+
+  /**
+   * FeeUser findUniqueOrThrow
+   */
+  export type FeeUserFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the FeeUser
+     */
+    select?: FeeUserSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the FeeUser
+     */
+    omit?: FeeUserOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: FeeUserInclude<ExtArgs> | null
+    /**
+     * Filter, which FeeUser to fetch.
+     */
+    where: FeeUserWhereUniqueInput
+  }
+
+  /**
+   * FeeUser findFirst
+   */
+  export type FeeUserFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the FeeUser
+     */
+    select?: FeeUserSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the FeeUser
+     */
+    omit?: FeeUserOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: FeeUserInclude<ExtArgs> | null
+    /**
+     * Filter, which FeeUser to fetch.
+     */
+    where?: FeeUserWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of FeeUsers to fetch.
+     */
+    orderBy?: FeeUserOrderByWithRelationInput | FeeUserOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for FeeUsers.
+     */
+    cursor?: FeeUserWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` FeeUsers from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` FeeUsers.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of FeeUsers.
+     */
+    distinct?: FeeUserScalarFieldEnum | FeeUserScalarFieldEnum[]
+  }
+
+  /**
+   * FeeUser findFirstOrThrow
+   */
+  export type FeeUserFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the FeeUser
+     */
+    select?: FeeUserSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the FeeUser
+     */
+    omit?: FeeUserOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: FeeUserInclude<ExtArgs> | null
+    /**
+     * Filter, which FeeUser to fetch.
+     */
+    where?: FeeUserWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of FeeUsers to fetch.
+     */
+    orderBy?: FeeUserOrderByWithRelationInput | FeeUserOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for FeeUsers.
+     */
+    cursor?: FeeUserWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` FeeUsers from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` FeeUsers.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of FeeUsers.
+     */
+    distinct?: FeeUserScalarFieldEnum | FeeUserScalarFieldEnum[]
+  }
+
+  /**
+   * FeeUser findMany
+   */
+  export type FeeUserFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the FeeUser
+     */
+    select?: FeeUserSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the FeeUser
+     */
+    omit?: FeeUserOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: FeeUserInclude<ExtArgs> | null
+    /**
+     * Filter, which FeeUsers to fetch.
+     */
+    where?: FeeUserWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of FeeUsers to fetch.
+     */
+    orderBy?: FeeUserOrderByWithRelationInput | FeeUserOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing FeeUsers.
+     */
+    cursor?: FeeUserWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` FeeUsers from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` FeeUsers.
+     */
+    skip?: number
+    distinct?: FeeUserScalarFieldEnum | FeeUserScalarFieldEnum[]
+  }
+
+  /**
+   * FeeUser create
+   */
+  export type FeeUserCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the FeeUser
+     */
+    select?: FeeUserSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the FeeUser
+     */
+    omit?: FeeUserOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: FeeUserInclude<ExtArgs> | null
+    /**
+     * The data needed to create a FeeUser.
+     */
+    data: XOR<FeeUserCreateInput, FeeUserUncheckedCreateInput>
+  }
+
+  /**
+   * FeeUser createMany
+   */
+  export type FeeUserCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many FeeUsers.
+     */
+    data: FeeUserCreateManyInput | FeeUserCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * FeeUser createManyAndReturn
+   */
+  export type FeeUserCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the FeeUser
+     */
+    select?: FeeUserSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the FeeUser
+     */
+    omit?: FeeUserOmit<ExtArgs> | null
+    /**
+     * The data used to create many FeeUsers.
+     */
+    data: FeeUserCreateManyInput | FeeUserCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: FeeUserIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * FeeUser update
+   */
+  export type FeeUserUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the FeeUser
+     */
+    select?: FeeUserSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the FeeUser
+     */
+    omit?: FeeUserOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: FeeUserInclude<ExtArgs> | null
+    /**
+     * The data needed to update a FeeUser.
+     */
+    data: XOR<FeeUserUpdateInput, FeeUserUncheckedUpdateInput>
+    /**
+     * Choose, which FeeUser to update.
+     */
+    where: FeeUserWhereUniqueInput
+  }
+
+  /**
+   * FeeUser updateMany
+   */
+  export type FeeUserUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update FeeUsers.
+     */
+    data: XOR<FeeUserUpdateManyMutationInput, FeeUserUncheckedUpdateManyInput>
+    /**
+     * Filter which FeeUsers to update
+     */
+    where?: FeeUserWhereInput
+    /**
+     * Limit how many FeeUsers to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * FeeUser updateManyAndReturn
+   */
+  export type FeeUserUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the FeeUser
+     */
+    select?: FeeUserSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the FeeUser
+     */
+    omit?: FeeUserOmit<ExtArgs> | null
+    /**
+     * The data used to update FeeUsers.
+     */
+    data: XOR<FeeUserUpdateManyMutationInput, FeeUserUncheckedUpdateManyInput>
+    /**
+     * Filter which FeeUsers to update
+     */
+    where?: FeeUserWhereInput
+    /**
+     * Limit how many FeeUsers to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: FeeUserIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * FeeUser upsert
+   */
+  export type FeeUserUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the FeeUser
+     */
+    select?: FeeUserSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the FeeUser
+     */
+    omit?: FeeUserOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: FeeUserInclude<ExtArgs> | null
+    /**
+     * The filter to search for the FeeUser to update in case it exists.
+     */
+    where: FeeUserWhereUniqueInput
+    /**
+     * In case the FeeUser found by the `where` argument doesn't exist, create a new FeeUser with this data.
+     */
+    create: XOR<FeeUserCreateInput, FeeUserUncheckedCreateInput>
+    /**
+     * In case the FeeUser was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<FeeUserUpdateInput, FeeUserUncheckedUpdateInput>
+  }
+
+  /**
+   * FeeUser delete
+   */
+  export type FeeUserDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the FeeUser
+     */
+    select?: FeeUserSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the FeeUser
+     */
+    omit?: FeeUserOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: FeeUserInclude<ExtArgs> | null
+    /**
+     * Filter which FeeUser to delete.
+     */
+    where: FeeUserWhereUniqueInput
+  }
+
+  /**
+   * FeeUser deleteMany
+   */
+  export type FeeUserDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which FeeUsers to delete
+     */
+    where?: FeeUserWhereInput
+    /**
+     * Limit how many FeeUsers to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * FeeUser without action
+   */
+  export type FeeUserDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the FeeUser
+     */
+    select?: FeeUserSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the FeeUser
+     */
+    omit?: FeeUserOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: FeeUserInclude<ExtArgs> | null
+  }
+
+
+  /**
    * Model FeeSetting
    */
 
@@ -21322,6 +22482,15 @@ export namespace Prisma {
   export type ActivityLogScalarFieldEnum = (typeof ActivityLogScalarFieldEnum)[keyof typeof ActivityLogScalarFieldEnum]
 
 
+  export const FeeUserScalarFieldEnum: {
+    id: 'id',
+    userId: 'userId',
+    isActive: 'isActive'
+  };
+
+  export type FeeUserScalarFieldEnum = (typeof FeeUserScalarFieldEnum)[keyof typeof FeeUserScalarFieldEnum]
+
+
   export const FeeSettingScalarFieldEnum: {
     id: 'id',
     transactionType: 'transactionType',
@@ -21653,6 +22822,7 @@ export namespace Prisma {
     wallet?: WalletListRelationFilter
     withdrawals?: WithdrawalListRelationFilter
     transfers?: TransferListRelationFilter
+    feeUserWallets?: FeeUserListRelationFilter
   }
 
   export type UserOrderByWithRelationInput = {
@@ -21689,6 +22859,7 @@ export namespace Prisma {
     wallet?: WalletOrderByRelationAggregateInput
     withdrawals?: WithdrawalOrderByRelationAggregateInput
     transfers?: TransferOrderByRelationAggregateInput
+    feeUserWallets?: FeeUserOrderByRelationAggregateInput
   }
 
   export type UserWhereUniqueInput = Prisma.AtLeast<{
@@ -21728,6 +22899,7 @@ export namespace Prisma {
     wallet?: WalletListRelationFilter
     withdrawals?: WithdrawalListRelationFilter
     transfers?: TransferListRelationFilter
+    feeUserWallets?: FeeUserListRelationFilter
   }, "id" | "email" | "phoneNumber" | "documentNumber">
 
   export type UserOrderByWithAggregationInput = {
@@ -22910,6 +24082,51 @@ export namespace Prisma {
     createdAt?: DateTimeWithAggregatesFilter<"ActivityLog"> | Date | string
   }
 
+  export type FeeUserWhereInput = {
+    AND?: FeeUserWhereInput | FeeUserWhereInput[]
+    OR?: FeeUserWhereInput[]
+    NOT?: FeeUserWhereInput | FeeUserWhereInput[]
+    id?: StringFilter<"FeeUser"> | string
+    userId?: StringFilter<"FeeUser"> | string
+    isActive?: BoolFilter<"FeeUser"> | boolean
+    user?: XOR<UserScalarRelationFilter, UserWhereInput>
+  }
+
+  export type FeeUserOrderByWithRelationInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    isActive?: SortOrder
+    user?: UserOrderByWithRelationInput
+  }
+
+  export type FeeUserWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    AND?: FeeUserWhereInput | FeeUserWhereInput[]
+    OR?: FeeUserWhereInput[]
+    NOT?: FeeUserWhereInput | FeeUserWhereInput[]
+    userId?: StringFilter<"FeeUser"> | string
+    isActive?: BoolFilter<"FeeUser"> | boolean
+    user?: XOR<UserScalarRelationFilter, UserWhereInput>
+  }, "id">
+
+  export type FeeUserOrderByWithAggregationInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    isActive?: SortOrder
+    _count?: FeeUserCountOrderByAggregateInput
+    _max?: FeeUserMaxOrderByAggregateInput
+    _min?: FeeUserMinOrderByAggregateInput
+  }
+
+  export type FeeUserScalarWhereWithAggregatesInput = {
+    AND?: FeeUserScalarWhereWithAggregatesInput | FeeUserScalarWhereWithAggregatesInput[]
+    OR?: FeeUserScalarWhereWithAggregatesInput[]
+    NOT?: FeeUserScalarWhereWithAggregatesInput | FeeUserScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"FeeUser"> | string
+    userId?: StringWithAggregatesFilter<"FeeUser"> | string
+    isActive?: BoolWithAggregatesFilter<"FeeUser"> | boolean
+  }
+
   export type FeeSettingWhereInput = {
     AND?: FeeSettingWhereInput | FeeSettingWhereInput[]
     OR?: FeeSettingWhereInput[]
@@ -23016,6 +24233,7 @@ export namespace Prisma {
     wallet?: WalletCreateNestedManyWithoutUserInput
     withdrawals?: WithdrawalCreateNestedManyWithoutUserInput
     transfers?: TransferCreateNestedManyWithoutUserInput
+    feeUserWallets?: FeeUserCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateInput = {
@@ -23052,6 +24270,7 @@ export namespace Prisma {
     wallet?: WalletUncheckedCreateNestedManyWithoutUserInput
     withdrawals?: WithdrawalUncheckedCreateNestedManyWithoutUserInput
     transfers?: TransferUncheckedCreateNestedManyWithoutUserInput
+    feeUserWallets?: FeeUserUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserUpdateInput = {
@@ -23088,6 +24307,7 @@ export namespace Prisma {
     wallet?: WalletUpdateManyWithoutUserNestedInput
     withdrawals?: WithdrawalUpdateManyWithoutUserNestedInput
     transfers?: TransferUpdateManyWithoutUserNestedInput
+    feeUserWallets?: FeeUserUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateInput = {
@@ -23124,6 +24344,7 @@ export namespace Prisma {
     wallet?: WalletUncheckedUpdateManyWithoutUserNestedInput
     withdrawals?: WithdrawalUncheckedUpdateManyWithoutUserNestedInput
     transfers?: TransferUncheckedUpdateManyWithoutUserNestedInput
+    feeUserWallets?: FeeUserUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserCreateManyInput = {
@@ -24382,6 +25603,47 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
+  export type FeeUserCreateInput = {
+    id?: string
+    isActive?: boolean
+    user: UserCreateNestedOneWithoutFeeUserWalletsInput
+  }
+
+  export type FeeUserUncheckedCreateInput = {
+    id?: string
+    userId: string
+    isActive?: boolean
+  }
+
+  export type FeeUserUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    user?: UserUpdateOneRequiredWithoutFeeUserWalletsNestedInput
+  }
+
+  export type FeeUserUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+  }
+
+  export type FeeUserCreateManyInput = {
+    id?: string
+    userId: string
+    isActive?: boolean
+  }
+
+  export type FeeUserUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+  }
+
+  export type FeeUserUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+  }
+
   export type FeeSettingCreateInput = {
     id?: string
     transactionType: $Enums.TransactionKind
@@ -24584,6 +25846,12 @@ export namespace Prisma {
     none?: TransferWhereInput
   }
 
+  export type FeeUserListRelationFilter = {
+    every?: FeeUserWhereInput
+    some?: FeeUserWhereInput
+    none?: FeeUserWhereInput
+  }
+
   export type SortOrderInput = {
     sort: SortOrder
     nulls?: NullsOrder
@@ -24618,6 +25886,10 @@ export namespace Prisma {
   }
 
   export type TransferOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type FeeUserOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
 
@@ -25753,6 +27025,24 @@ export namespace Prisma {
     _max?: NestedEnumUserRoleNullableFilter<$PrismaModel>
   }
 
+  export type FeeUserCountOrderByAggregateInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    isActive?: SortOrder
+  }
+
+  export type FeeUserMaxOrderByAggregateInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    isActive?: SortOrder
+  }
+
+  export type FeeUserMinOrderByAggregateInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    isActive?: SortOrder
+  }
+
   export type EnumTransactionKindFilter<$PrismaModel = never> = {
     equals?: $Enums.TransactionKind | EnumTransactionKindFieldRefInput<$PrismaModel>
     in?: $Enums.TransactionKind[] | ListEnumTransactionKindFieldRefInput<$PrismaModel>
@@ -25872,6 +27162,13 @@ export namespace Prisma {
     connect?: TransferWhereUniqueInput | TransferWhereUniqueInput[]
   }
 
+  export type FeeUserCreateNestedManyWithoutUserInput = {
+    create?: XOR<FeeUserCreateWithoutUserInput, FeeUserUncheckedCreateWithoutUserInput> | FeeUserCreateWithoutUserInput[] | FeeUserUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: FeeUserCreateOrConnectWithoutUserInput | FeeUserCreateOrConnectWithoutUserInput[]
+    createMany?: FeeUserCreateManyUserInputEnvelope
+    connect?: FeeUserWhereUniqueInput | FeeUserWhereUniqueInput[]
+  }
+
   export type ActivityLogUncheckedCreateNestedManyWithoutUserInput = {
     create?: XOR<ActivityLogCreateWithoutUserInput, ActivityLogUncheckedCreateWithoutUserInput> | ActivityLogCreateWithoutUserInput[] | ActivityLogUncheckedCreateWithoutUserInput[]
     connectOrCreate?: ActivityLogCreateOrConnectWithoutUserInput | ActivityLogCreateOrConnectWithoutUserInput[]
@@ -25925,6 +27222,13 @@ export namespace Prisma {
     create?: XOR<TransferCreateWithoutUserInput, TransferUncheckedCreateWithoutUserInput> | TransferCreateWithoutUserInput[] | TransferUncheckedCreateWithoutUserInput[]
     connectOrCreate?: TransferCreateOrConnectWithoutUserInput | TransferCreateOrConnectWithoutUserInput[]
     connect?: TransferWhereUniqueInput | TransferWhereUniqueInput[]
+  }
+
+  export type FeeUserUncheckedCreateNestedManyWithoutUserInput = {
+    create?: XOR<FeeUserCreateWithoutUserInput, FeeUserUncheckedCreateWithoutUserInput> | FeeUserCreateWithoutUserInput[] | FeeUserUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: FeeUserCreateOrConnectWithoutUserInput | FeeUserCreateOrConnectWithoutUserInput[]
+    createMany?: FeeUserCreateManyUserInputEnvelope
+    connect?: FeeUserWhereUniqueInput | FeeUserWhereUniqueInput[]
   }
 
   export type StringFieldUpdateOperationsInput = {
@@ -26070,6 +27374,20 @@ export namespace Prisma {
     deleteMany?: TransferScalarWhereInput | TransferScalarWhereInput[]
   }
 
+  export type FeeUserUpdateManyWithoutUserNestedInput = {
+    create?: XOR<FeeUserCreateWithoutUserInput, FeeUserUncheckedCreateWithoutUserInput> | FeeUserCreateWithoutUserInput[] | FeeUserUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: FeeUserCreateOrConnectWithoutUserInput | FeeUserCreateOrConnectWithoutUserInput[]
+    upsert?: FeeUserUpsertWithWhereUniqueWithoutUserInput | FeeUserUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: FeeUserCreateManyUserInputEnvelope
+    set?: FeeUserWhereUniqueInput | FeeUserWhereUniqueInput[]
+    disconnect?: FeeUserWhereUniqueInput | FeeUserWhereUniqueInput[]
+    delete?: FeeUserWhereUniqueInput | FeeUserWhereUniqueInput[]
+    connect?: FeeUserWhereUniqueInput | FeeUserWhereUniqueInput[]
+    update?: FeeUserUpdateWithWhereUniqueWithoutUserInput | FeeUserUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: FeeUserUpdateManyWithWhereWithoutUserInput | FeeUserUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: FeeUserScalarWhereInput | FeeUserScalarWhereInput[]
+  }
+
   export type ActivityLogUncheckedUpdateManyWithoutUserNestedInput = {
     create?: XOR<ActivityLogCreateWithoutUserInput, ActivityLogUncheckedCreateWithoutUserInput> | ActivityLogCreateWithoutUserInput[] | ActivityLogUncheckedCreateWithoutUserInput[]
     connectOrCreate?: ActivityLogCreateOrConnectWithoutUserInput | ActivityLogCreateOrConnectWithoutUserInput[]
@@ -26179,6 +27497,20 @@ export namespace Prisma {
     update?: TransferUpdateWithWhereUniqueWithoutUserInput | TransferUpdateWithWhereUniqueWithoutUserInput[]
     updateMany?: TransferUpdateManyWithWhereWithoutUserInput | TransferUpdateManyWithWhereWithoutUserInput[]
     deleteMany?: TransferScalarWhereInput | TransferScalarWhereInput[]
+  }
+
+  export type FeeUserUncheckedUpdateManyWithoutUserNestedInput = {
+    create?: XOR<FeeUserCreateWithoutUserInput, FeeUserUncheckedCreateWithoutUserInput> | FeeUserCreateWithoutUserInput[] | FeeUserUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: FeeUserCreateOrConnectWithoutUserInput | FeeUserCreateOrConnectWithoutUserInput[]
+    upsert?: FeeUserUpsertWithWhereUniqueWithoutUserInput | FeeUserUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: FeeUserCreateManyUserInputEnvelope
+    set?: FeeUserWhereUniqueInput | FeeUserWhereUniqueInput[]
+    disconnect?: FeeUserWhereUniqueInput | FeeUserWhereUniqueInput[]
+    delete?: FeeUserWhereUniqueInput | FeeUserWhereUniqueInput[]
+    connect?: FeeUserWhereUniqueInput | FeeUserWhereUniqueInput[]
+    update?: FeeUserUpdateWithWhereUniqueWithoutUserInput | FeeUserUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: FeeUserUpdateManyWithWhereWithoutUserInput | FeeUserUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: FeeUserScalarWhereInput | FeeUserScalarWhereInput[]
   }
 
   export type DepositCreateNestedManyWithoutPaymentChannelInput = {
@@ -27531,6 +28863,20 @@ export namespace Prisma {
     update?: XOR<XOR<UserUpdateToOneWithWhereWithoutActivityLogInput, UserUpdateWithoutActivityLogInput>, UserUncheckedUpdateWithoutActivityLogInput>
   }
 
+  export type UserCreateNestedOneWithoutFeeUserWalletsInput = {
+    create?: XOR<UserCreateWithoutFeeUserWalletsInput, UserUncheckedCreateWithoutFeeUserWalletsInput>
+    connectOrCreate?: UserCreateOrConnectWithoutFeeUserWalletsInput
+    connect?: UserWhereUniqueInput
+  }
+
+  export type UserUpdateOneRequiredWithoutFeeUserWalletsNestedInput = {
+    create?: XOR<UserCreateWithoutFeeUserWalletsInput, UserUncheckedCreateWithoutFeeUserWalletsInput>
+    connectOrCreate?: UserCreateOrConnectWithoutFeeUserWalletsInput
+    upsert?: UserUpsertWithoutFeeUserWalletsInput
+    connect?: UserWhereUniqueInput
+    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutFeeUserWalletsInput, UserUpdateWithoutFeeUserWalletsInput>, UserUncheckedUpdateWithoutFeeUserWalletsInput>
+  }
+
   export type CurrencyCreateNestedOneWithoutFeeSettingInput = {
     create?: XOR<CurrencyCreateWithoutFeeSettingInput, CurrencyUncheckedCreateWithoutFeeSettingInput>
     connectOrCreate?: CurrencyCreateOrConnectWithoutFeeSettingInput
@@ -28257,6 +29603,26 @@ export namespace Prisma {
     create: XOR<TransferCreateWithoutUserInput, TransferUncheckedCreateWithoutUserInput>
   }
 
+  export type FeeUserCreateWithoutUserInput = {
+    id?: string
+    isActive?: boolean
+  }
+
+  export type FeeUserUncheckedCreateWithoutUserInput = {
+    id?: string
+    isActive?: boolean
+  }
+
+  export type FeeUserCreateOrConnectWithoutUserInput = {
+    where: FeeUserWhereUniqueInput
+    create: XOR<FeeUserCreateWithoutUserInput, FeeUserUncheckedCreateWithoutUserInput>
+  }
+
+  export type FeeUserCreateManyUserInputEnvelope = {
+    data: FeeUserCreateManyUserInput | FeeUserCreateManyUserInput[]
+    skipDuplicates?: boolean
+  }
+
   export type ActivityLogUpsertWithWhereUniqueWithoutUserInput = {
     where: ActivityLogWhereUniqueInput
     update: XOR<ActivityLogUpdateWithoutUserInput, ActivityLogUncheckedUpdateWithoutUserInput>
@@ -28514,6 +29880,31 @@ export namespace Prisma {
     createdAt?: DateTimeFilter<"Transfer"> | Date | string
     completedAt?: DateTimeNullableFilter<"Transfer"> | Date | string | null
     failedAt?: DateTimeNullableFilter<"Transfer"> | Date | string | null
+  }
+
+  export type FeeUserUpsertWithWhereUniqueWithoutUserInput = {
+    where: FeeUserWhereUniqueInput
+    update: XOR<FeeUserUpdateWithoutUserInput, FeeUserUncheckedUpdateWithoutUserInput>
+    create: XOR<FeeUserCreateWithoutUserInput, FeeUserUncheckedCreateWithoutUserInput>
+  }
+
+  export type FeeUserUpdateWithWhereUniqueWithoutUserInput = {
+    where: FeeUserWhereUniqueInput
+    data: XOR<FeeUserUpdateWithoutUserInput, FeeUserUncheckedUpdateWithoutUserInput>
+  }
+
+  export type FeeUserUpdateManyWithWhereWithoutUserInput = {
+    where: FeeUserScalarWhereInput
+    data: XOR<FeeUserUpdateManyMutationInput, FeeUserUncheckedUpdateManyWithoutUserInput>
+  }
+
+  export type FeeUserScalarWhereInput = {
+    AND?: FeeUserScalarWhereInput | FeeUserScalarWhereInput[]
+    OR?: FeeUserScalarWhereInput[]
+    NOT?: FeeUserScalarWhereInput | FeeUserScalarWhereInput[]
+    id?: StringFilter<"FeeUser"> | string
+    userId?: StringFilter<"FeeUser"> | string
+    isActive?: BoolFilter<"FeeUser"> | boolean
   }
 
   export type DepositCreateWithoutPaymentChannelInput = {
@@ -29402,6 +30793,7 @@ export namespace Prisma {
     wallet?: WalletCreateNestedManyWithoutUserInput
     withdrawals?: WithdrawalCreateNestedManyWithoutUserInput
     transfers?: TransferCreateNestedManyWithoutUserInput
+    feeUserWallets?: FeeUserCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutLiquidityPoolInput = {
@@ -29437,6 +30829,7 @@ export namespace Prisma {
     wallet?: WalletUncheckedCreateNestedManyWithoutUserInput
     withdrawals?: WithdrawalUncheckedCreateNestedManyWithoutUserInput
     transfers?: TransferUncheckedCreateNestedManyWithoutUserInput
+    feeUserWallets?: FeeUserUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutLiquidityPoolInput = {
@@ -29590,6 +30983,7 @@ export namespace Prisma {
     wallet?: WalletUpdateManyWithoutUserNestedInput
     withdrawals?: WithdrawalUpdateManyWithoutUserNestedInput
     transfers?: TransferUpdateManyWithoutUserNestedInput
+    feeUserWallets?: FeeUserUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutLiquidityPoolInput = {
@@ -29625,6 +31019,7 @@ export namespace Prisma {
     wallet?: WalletUncheckedUpdateManyWithoutUserNestedInput
     withdrawals?: WithdrawalUncheckedUpdateManyWithoutUserNestedInput
     transfers?: TransferUncheckedUpdateManyWithoutUserNestedInput
+    feeUserWallets?: FeeUserUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type DepositCreateWithoutWalletInput = {
@@ -29837,6 +31232,7 @@ export namespace Prisma {
     refunds?: RefundCreateNestedManyWithoutUserInput
     withdrawals?: WithdrawalCreateNestedManyWithoutUserInput
     transfers?: TransferCreateNestedManyWithoutUserInput
+    feeUserWallets?: FeeUserCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutWalletInput = {
@@ -29872,6 +31268,7 @@ export namespace Prisma {
     refunds?: RefundUncheckedCreateNestedManyWithoutUserInput
     withdrawals?: WithdrawalUncheckedCreateNestedManyWithoutUserInput
     transfers?: TransferUncheckedCreateNestedManyWithoutUserInput
+    feeUserWallets?: FeeUserUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutWalletInput = {
@@ -30100,6 +31497,7 @@ export namespace Prisma {
     refunds?: RefundUpdateManyWithoutUserNestedInput
     withdrawals?: WithdrawalUpdateManyWithoutUserNestedInput
     transfers?: TransferUpdateManyWithoutUserNestedInput
+    feeUserWallets?: FeeUserUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutWalletInput = {
@@ -30135,6 +31533,7 @@ export namespace Prisma {
     refunds?: RefundUncheckedUpdateManyWithoutUserNestedInput
     withdrawals?: WithdrawalUncheckedUpdateManyWithoutUserNestedInput
     transfers?: TransferUncheckedUpdateManyWithoutUserNestedInput
+    feeUserWallets?: FeeUserUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type WithdrawalUpsertWithWhereUniqueWithoutWalletInput = {
@@ -30269,6 +31668,7 @@ export namespace Prisma {
     wallet?: WalletCreateNestedManyWithoutUserInput
     withdrawals?: WithdrawalCreateNestedManyWithoutUserInput
     transfers?: TransferCreateNestedManyWithoutUserInput
+    feeUserWallets?: FeeUserCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutDepositsInput = {
@@ -30304,6 +31704,7 @@ export namespace Prisma {
     wallet?: WalletUncheckedCreateNestedManyWithoutUserInput
     withdrawals?: WithdrawalUncheckedCreateNestedManyWithoutUserInput
     transfers?: TransferUncheckedCreateNestedManyWithoutUserInput
+    feeUserWallets?: FeeUserUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutDepositsInput = {
@@ -30456,6 +31857,7 @@ export namespace Prisma {
     wallet?: WalletUpdateManyWithoutUserNestedInput
     withdrawals?: WithdrawalUpdateManyWithoutUserNestedInput
     transfers?: TransferUpdateManyWithoutUserNestedInput
+    feeUserWallets?: FeeUserUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutDepositsInput = {
@@ -30491,6 +31893,7 @@ export namespace Prisma {
     wallet?: WalletUncheckedUpdateManyWithoutUserNestedInput
     withdrawals?: WithdrawalUncheckedUpdateManyWithoutUserNestedInput
     transfers?: TransferUncheckedUpdateManyWithoutUserNestedInput
+    feeUserWallets?: FeeUserUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type WalletUpsertWithoutDepositsInput = {
@@ -30621,6 +32024,7 @@ export namespace Prisma {
     refunds?: RefundCreateNestedManyWithoutUserInput
     wallet?: WalletCreateNestedManyWithoutUserInput
     transfers?: TransferCreateNestedManyWithoutUserInput
+    feeUserWallets?: FeeUserCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutWithdrawalsInput = {
@@ -30656,6 +32060,7 @@ export namespace Prisma {
     refunds?: RefundUncheckedCreateNestedManyWithoutUserInput
     wallet?: WalletUncheckedCreateNestedManyWithoutUserInput
     transfers?: TransferUncheckedCreateNestedManyWithoutUserInput
+    feeUserWallets?: FeeUserUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutWithdrawalsInput = {
@@ -30808,6 +32213,7 @@ export namespace Prisma {
     refunds?: RefundUpdateManyWithoutUserNestedInput
     wallet?: WalletUpdateManyWithoutUserNestedInput
     transfers?: TransferUpdateManyWithoutUserNestedInput
+    feeUserWallets?: FeeUserUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutWithdrawalsInput = {
@@ -30843,6 +32249,7 @@ export namespace Prisma {
     refunds?: RefundUncheckedUpdateManyWithoutUserNestedInput
     wallet?: WalletUncheckedUpdateManyWithoutUserNestedInput
     transfers?: TransferUncheckedUpdateManyWithoutUserNestedInput
+    feeUserWallets?: FeeUserUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type WalletUpsertWithoutWithdrawalsInput = {
@@ -31213,6 +32620,7 @@ export namespace Prisma {
     refunds?: RefundCreateNestedManyWithoutUserInput
     wallet?: WalletCreateNestedManyWithoutUserInput
     withdrawals?: WithdrawalCreateNestedManyWithoutUserInput
+    feeUserWallets?: FeeUserCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutTransfersInput = {
@@ -31248,6 +32656,7 @@ export namespace Prisma {
     refunds?: RefundUncheckedCreateNestedManyWithoutUserInput
     wallet?: WalletUncheckedCreateNestedManyWithoutUserInput
     withdrawals?: WithdrawalUncheckedCreateNestedManyWithoutUserInput
+    feeUserWallets?: FeeUserUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutTransfersInput = {
@@ -31417,6 +32826,7 @@ export namespace Prisma {
     wallet?: WalletCreateNestedManyWithoutUserInput
     withdrawals?: WithdrawalCreateNestedManyWithoutUserInput
     transfers?: TransferCreateNestedManyWithoutUserInput
+    feeUserWallets?: FeeUserCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutRefundsInput = {
@@ -31452,6 +32862,7 @@ export namespace Prisma {
     wallet?: WalletUncheckedCreateNestedManyWithoutUserInput
     withdrawals?: WithdrawalUncheckedCreateNestedManyWithoutUserInput
     transfers?: TransferUncheckedCreateNestedManyWithoutUserInput
+    feeUserWallets?: FeeUserUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutRefundsInput = {
@@ -31538,6 +32949,7 @@ export namespace Prisma {
     wallet?: WalletUpdateManyWithoutUserNestedInput
     withdrawals?: WithdrawalUpdateManyWithoutUserNestedInput
     transfers?: TransferUpdateManyWithoutUserNestedInput
+    feeUserWallets?: FeeUserUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutRefundsInput = {
@@ -31573,6 +32985,7 @@ export namespace Prisma {
     wallet?: WalletUncheckedUpdateManyWithoutUserNestedInput
     withdrawals?: WithdrawalUncheckedUpdateManyWithoutUserNestedInput
     transfers?: TransferUncheckedUpdateManyWithoutUserNestedInput
+    feeUserWallets?: FeeUserUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type WalletUpsertWithoutRefundInput = {
@@ -31678,6 +33091,7 @@ export namespace Prisma {
     wallet?: WalletCreateNestedManyWithoutUserInput
     withdrawals?: WithdrawalCreateNestedManyWithoutUserInput
     transfers?: TransferCreateNestedManyWithoutUserInput
+    feeUserWallets?: FeeUserCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutInitiatedExchangesInput = {
@@ -31713,6 +33127,7 @@ export namespace Prisma {
     wallet?: WalletUncheckedCreateNestedManyWithoutUserInput
     withdrawals?: WithdrawalUncheckedCreateNestedManyWithoutUserInput
     transfers?: TransferUncheckedCreateNestedManyWithoutUserInput
+    feeUserWallets?: FeeUserUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutInitiatedExchangesInput = {
@@ -31855,6 +33270,7 @@ export namespace Prisma {
     wallet?: WalletUpdateManyWithoutUserNestedInput
     withdrawals?: WithdrawalUpdateManyWithoutUserNestedInput
     transfers?: TransferUpdateManyWithoutUserNestedInput
+    feeUserWallets?: FeeUserUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutInitiatedExchangesInput = {
@@ -31890,6 +33306,7 @@ export namespace Prisma {
     wallet?: WalletUncheckedUpdateManyWithoutUserNestedInput
     withdrawals?: WithdrawalUncheckedUpdateManyWithoutUserNestedInput
     transfers?: TransferUncheckedUpdateManyWithoutUserNestedInput
+    feeUserWallets?: FeeUserUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type ExchangeMatchUpsertWithWhereUniqueWithoutFromExchangeInput = {
@@ -32201,6 +33618,7 @@ export namespace Prisma {
     wallet?: WalletCreateNestedManyWithoutUserInput
     withdrawals?: WithdrawalCreateNestedManyWithoutUserInput
     transfers?: TransferCreateNestedManyWithoutUserInput
+    feeUserWallets?: FeeUserCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutActivityLogInput = {
@@ -32236,6 +33654,7 @@ export namespace Prisma {
     wallet?: WalletUncheckedCreateNestedManyWithoutUserInput
     withdrawals?: WithdrawalUncheckedCreateNestedManyWithoutUserInput
     transfers?: TransferUncheckedCreateNestedManyWithoutUserInput
+    feeUserWallets?: FeeUserUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutActivityLogInput = {
@@ -32287,6 +33706,7 @@ export namespace Prisma {
     wallet?: WalletUpdateManyWithoutUserNestedInput
     withdrawals?: WithdrawalUpdateManyWithoutUserNestedInput
     transfers?: TransferUpdateManyWithoutUserNestedInput
+    feeUserWallets?: FeeUserUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutActivityLogInput = {
@@ -32315,6 +33735,167 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     isDeleted?: BoolFieldUpdateOperationsInput | boolean
+    deposits?: DepositUncheckedUpdateManyWithoutUserNestedInput
+    initiatedExchanges?: ExchangeUncheckedUpdateManyWithoutUserNestedInput
+    LiquidityPool?: LiquidityPoolUncheckedUpdateManyWithoutUserNestedInput
+    refunds?: RefundUncheckedUpdateManyWithoutUserNestedInput
+    wallet?: WalletUncheckedUpdateManyWithoutUserNestedInput
+    withdrawals?: WithdrawalUncheckedUpdateManyWithoutUserNestedInput
+    transfers?: TransferUncheckedUpdateManyWithoutUserNestedInput
+    feeUserWallets?: FeeUserUncheckedUpdateManyWithoutUserNestedInput
+  }
+
+  export type UserCreateWithoutFeeUserWalletsInput = {
+    id?: string
+    email: string
+    phoneNumber: string
+    fullName: string
+    avatarUrl?: string | null
+    passwordHash: string
+    countryCode: string
+    nationality?: string | null
+    language?: string | null
+    kycStatus?: $Enums.KycStatus
+    documentType?: $Enums.DocumentType | null
+    documentNumber?: string | null
+    documentPhotoUrl?: string | null
+    dateOfBirth?: Date | string | null
+    address?: string | null
+    postalCode?: string | null
+    city?: string | null
+    state?: string | null
+    isPhoneVerified?: boolean
+    isEmailVerified?: boolean
+    role?: $Enums.UserRole
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    deletedAt?: Date | string | null
+    isDeleted?: boolean
+    ActivityLog?: ActivityLogCreateNestedManyWithoutUserInput
+    deposits?: DepositCreateNestedManyWithoutUserInput
+    initiatedExchanges?: ExchangeCreateNestedManyWithoutUserInput
+    LiquidityPool?: LiquidityPoolCreateNestedManyWithoutUserInput
+    refunds?: RefundCreateNestedManyWithoutUserInput
+    wallet?: WalletCreateNestedManyWithoutUserInput
+    withdrawals?: WithdrawalCreateNestedManyWithoutUserInput
+    transfers?: TransferCreateNestedManyWithoutUserInput
+  }
+
+  export type UserUncheckedCreateWithoutFeeUserWalletsInput = {
+    id?: string
+    email: string
+    phoneNumber: string
+    fullName: string
+    avatarUrl?: string | null
+    passwordHash: string
+    countryCode: string
+    nationality?: string | null
+    language?: string | null
+    kycStatus?: $Enums.KycStatus
+    documentType?: $Enums.DocumentType | null
+    documentNumber?: string | null
+    documentPhotoUrl?: string | null
+    dateOfBirth?: Date | string | null
+    address?: string | null
+    postalCode?: string | null
+    city?: string | null
+    state?: string | null
+    isPhoneVerified?: boolean
+    isEmailVerified?: boolean
+    role?: $Enums.UserRole
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    deletedAt?: Date | string | null
+    isDeleted?: boolean
+    ActivityLog?: ActivityLogUncheckedCreateNestedManyWithoutUserInput
+    deposits?: DepositUncheckedCreateNestedManyWithoutUserInput
+    initiatedExchanges?: ExchangeUncheckedCreateNestedManyWithoutUserInput
+    LiquidityPool?: LiquidityPoolUncheckedCreateNestedManyWithoutUserInput
+    refunds?: RefundUncheckedCreateNestedManyWithoutUserInput
+    wallet?: WalletUncheckedCreateNestedManyWithoutUserInput
+    withdrawals?: WithdrawalUncheckedCreateNestedManyWithoutUserInput
+    transfers?: TransferUncheckedCreateNestedManyWithoutUserInput
+  }
+
+  export type UserCreateOrConnectWithoutFeeUserWalletsInput = {
+    where: UserWhereUniqueInput
+    create: XOR<UserCreateWithoutFeeUserWalletsInput, UserUncheckedCreateWithoutFeeUserWalletsInput>
+  }
+
+  export type UserUpsertWithoutFeeUserWalletsInput = {
+    update: XOR<UserUpdateWithoutFeeUserWalletsInput, UserUncheckedUpdateWithoutFeeUserWalletsInput>
+    create: XOR<UserCreateWithoutFeeUserWalletsInput, UserUncheckedCreateWithoutFeeUserWalletsInput>
+    where?: UserWhereInput
+  }
+
+  export type UserUpdateToOneWithWhereWithoutFeeUserWalletsInput = {
+    where?: UserWhereInput
+    data: XOR<UserUpdateWithoutFeeUserWalletsInput, UserUncheckedUpdateWithoutFeeUserWalletsInput>
+  }
+
+  export type UserUpdateWithoutFeeUserWalletsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    phoneNumber?: StringFieldUpdateOperationsInput | string
+    fullName?: StringFieldUpdateOperationsInput | string
+    avatarUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    passwordHash?: StringFieldUpdateOperationsInput | string
+    countryCode?: StringFieldUpdateOperationsInput | string
+    nationality?: NullableStringFieldUpdateOperationsInput | string | null
+    language?: NullableStringFieldUpdateOperationsInput | string | null
+    kycStatus?: EnumKycStatusFieldUpdateOperationsInput | $Enums.KycStatus
+    documentType?: NullableEnumDocumentTypeFieldUpdateOperationsInput | $Enums.DocumentType | null
+    documentNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    documentPhotoUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    dateOfBirth?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    address?: NullableStringFieldUpdateOperationsInput | string | null
+    postalCode?: NullableStringFieldUpdateOperationsInput | string | null
+    city?: NullableStringFieldUpdateOperationsInput | string | null
+    state?: NullableStringFieldUpdateOperationsInput | string | null
+    isPhoneVerified?: BoolFieldUpdateOperationsInput | boolean
+    isEmailVerified?: BoolFieldUpdateOperationsInput | boolean
+    role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
+    ActivityLog?: ActivityLogUpdateManyWithoutUserNestedInput
+    deposits?: DepositUpdateManyWithoutUserNestedInput
+    initiatedExchanges?: ExchangeUpdateManyWithoutUserNestedInput
+    LiquidityPool?: LiquidityPoolUpdateManyWithoutUserNestedInput
+    refunds?: RefundUpdateManyWithoutUserNestedInput
+    wallet?: WalletUpdateManyWithoutUserNestedInput
+    withdrawals?: WithdrawalUpdateManyWithoutUserNestedInput
+    transfers?: TransferUpdateManyWithoutUserNestedInput
+  }
+
+  export type UserUncheckedUpdateWithoutFeeUserWalletsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    phoneNumber?: StringFieldUpdateOperationsInput | string
+    fullName?: StringFieldUpdateOperationsInput | string
+    avatarUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    passwordHash?: StringFieldUpdateOperationsInput | string
+    countryCode?: StringFieldUpdateOperationsInput | string
+    nationality?: NullableStringFieldUpdateOperationsInput | string | null
+    language?: NullableStringFieldUpdateOperationsInput | string | null
+    kycStatus?: EnumKycStatusFieldUpdateOperationsInput | $Enums.KycStatus
+    documentType?: NullableEnumDocumentTypeFieldUpdateOperationsInput | $Enums.DocumentType | null
+    documentNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    documentPhotoUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    dateOfBirth?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    address?: NullableStringFieldUpdateOperationsInput | string | null
+    postalCode?: NullableStringFieldUpdateOperationsInput | string | null
+    city?: NullableStringFieldUpdateOperationsInput | string | null
+    state?: NullableStringFieldUpdateOperationsInput | string | null
+    isPhoneVerified?: BoolFieldUpdateOperationsInput | boolean
+    isEmailVerified?: BoolFieldUpdateOperationsInput | boolean
+    role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
+    ActivityLog?: ActivityLogUncheckedUpdateManyWithoutUserNestedInput
     deposits?: DepositUncheckedUpdateManyWithoutUserNestedInput
     initiatedExchanges?: ExchangeUncheckedUpdateManyWithoutUserNestedInput
     LiquidityPool?: LiquidityPoolUncheckedUpdateManyWithoutUserNestedInput
@@ -32481,6 +34062,11 @@ export namespace Prisma {
     receiverAddress: string
     addressOwnerName: string
     documentUrl?: string | null
+  }
+
+  export type FeeUserCreateManyUserInput = {
+    id?: string
+    isActive?: boolean
   }
 
   export type ActivityLogUpdateWithoutUserInput = {
@@ -32803,6 +34389,21 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     failedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  }
+
+  export type FeeUserUpdateWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+  }
+
+  export type FeeUserUncheckedUpdateWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+  }
+
+  export type FeeUserUncheckedUpdateManyWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    isActive?: BoolFieldUpdateOperationsInput | boolean
   }
 
   export type DepositCreateManyPaymentChannelInput = {
@@ -33714,6 +35315,7 @@ export namespace Prisma {
     refunds?: RefundUpdateManyWithoutUserNestedInput
     wallet?: WalletUpdateManyWithoutUserNestedInput
     withdrawals?: WithdrawalUpdateManyWithoutUserNestedInput
+    feeUserWallets?: FeeUserUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutTransfersInput = {
@@ -33749,6 +35351,7 @@ export namespace Prisma {
     refunds?: RefundUncheckedUpdateManyWithoutUserNestedInput
     wallet?: WalletUncheckedUpdateManyWithoutUserNestedInput
     withdrawals?: WithdrawalUncheckedUpdateManyWithoutUserNestedInput
+    feeUserWallets?: FeeUserUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateManyWithoutTransfersInput = {

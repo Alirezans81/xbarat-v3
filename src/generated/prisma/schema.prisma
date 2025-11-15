@@ -43,6 +43,7 @@ model User {
   wallet             Wallet[]
   withdrawals        Withdrawal[]
   transfers          Transfer[]      @relation("TransferToUser")
+  feeUserWallets     FeeUser[]
 
   @@index([email])
   @@index([phoneNumber])
@@ -267,6 +268,14 @@ model ActivityLog {
   @@index([action])
   @@index([referenceId])
   @@index([role])
+}
+
+model FeeUser {
+  id       String  @id @default(uuid())
+  userId   String
+  isActive Boolean @default(false)
+
+  user User @relation(fields: [userId], references: [id])
 }
 
 model FeeSetting {

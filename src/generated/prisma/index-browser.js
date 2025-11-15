@@ -306,6 +306,12 @@ exports.Prisma.ActivityLogScalarFieldEnum = {
   createdAt: 'createdAt'
 };
 
+exports.Prisma.FeeUserScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  isActive: 'isActive'
+};
+
 exports.Prisma.FeeSettingScalarFieldEnum = {
   id: 'id',
   transactionType: 'transactionType',
@@ -432,6 +438,7 @@ exports.Prisma.ModelName = {
   Exchange: 'Exchange',
   ExchangeMatch: 'ExchangeMatch',
   ActivityLog: 'ActivityLog',
+  FeeUser: 'FeeUser',
   FeeSetting: 'FeeSetting'
 };
 
