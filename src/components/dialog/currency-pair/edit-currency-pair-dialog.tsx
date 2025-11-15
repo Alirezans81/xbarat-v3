@@ -10,10 +10,8 @@ import {
   DialogTrigger,
 } from "../../ui/dialog";
 import { Input } from "../../ui/input";
-import { useCreateCurrency, useGetCurrencies } from "@/api/currency/hook";
+import { useGetCurrencies } from "@/api/currency/hook";
 import { useRouter } from "@/i18n/navigation";
-import { PaymentChannel } from "@/types/front/paymentChannel";
-import { useGetPaymentChannels } from "@/api/payment-channel/hook";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Label } from "@/components/ui/label";
 import { Currency } from "@/types/front/currency";
@@ -24,10 +22,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import {
-  useCreateCurrencyPair,
-  useUpdateCurrencyPair,
-} from "@/api/currency-pair/hook";
+import { useUpdateCurrencyPair } from "@/api/currency-pair/hook";
 import { CurrencyPair } from "@/types/front/currencyPair";
 
 interface Props {
@@ -80,6 +75,22 @@ export default function EditCurrencyPairDialog({ data }: Props) {
     return true;
   };
 
+  const [feePercentage, setFeePercentage] = useState(+data.feePercentage);
+  const [feePercentageError, setFeePercentageError] = useState("");
+  const validateFeePercentage = (value: number) => {
+    if (!value) {
+      setFeePercentageError("Fee Percentage required!");
+      return false;
+    }
+
+    if (value < 0 || value > 100) {
+      setFeePercentageError("Fee Percentage must be between 0 and 100!");
+      return false;
+    }
+
+    return true;
+  };
+
   const [isInverseRate, setIsInverseRate] = useState(data.isInverseRate);
 
   const [isActive, setIsActive] = useState(data.isActive);
@@ -101,6 +112,7 @@ export default function EditCurrencyPairDialog({ data }: Props) {
           fromCurrencyId,
           toCurrencyId,
           rate,
+          feePercentage,
           isInverseRate,
           isActive,
         },
@@ -191,6 +203,20 @@ export default function EditCurrencyPairDialog({ data }: Props) {
               onBlur={(e) => validateRate(+e.target.value)}
               required
             />
+          </div>
+          <div className="relative">
+            <Input
+              placeholder="Fee Percentage"
+              type="number"
+              inputMode="numeric"
+              value={feePercentage}
+              onChange={(e) => setFeePercentage(+e.target.value)}
+              onBlur={(e) => validateFeePercentage(+e.target.value)}
+              required
+            />
+            <span className="absolute right-4 top-1/2 -translate-y-1/2 text-muted-foreground">
+              %
+            </span>
           </div>
           <div>
             <div className="flex flex-col gap-4 bg-card p-3 rounded-md">

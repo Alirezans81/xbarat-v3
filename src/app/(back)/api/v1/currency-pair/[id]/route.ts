@@ -42,12 +42,19 @@ export async function PUT(
     if (!userIsAdmin) return UnauthorizedResponse;
 
     const { id } = await params;
-    const { fromCurrencyId, toCurrencyId, rate, isInverseRate, isActive } =
-      await request.json();
+    const {
+      fromCurrencyId,
+      toCurrencyId,
+      rate,
+      feePercentage,
+      isInverseRate,
+      isActive,
+    } = await request.json();
     const newCurrency = await currencyPairService.updateById(id, {
       fromCurrencyId,
       toCurrencyId,
       rate,
+      feePercentage,
       isInverseRate,
       isActive,
     });

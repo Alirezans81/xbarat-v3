@@ -23,6 +23,7 @@ export type CreateCurrencyPair = {
   fromCurrencyId: string;
   toCurrencyId: string;
   rate: number;
+  feePercentage: number;
   isInverseRate?: boolean;
   isActive?: boolean;
 };
@@ -31,6 +32,7 @@ export type UpdateCurrencyPair = {
   fromCurrencyId?: string;
   toCurrencyId?: string;
   rate?: number;
+  feePercentage?: number;
   isInverseRate?: boolean;
   isActive?: boolean;
 };

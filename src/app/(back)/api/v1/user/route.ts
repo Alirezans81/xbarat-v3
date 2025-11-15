@@ -4,6 +4,7 @@ import {
   UnauthorizedResponse,
 } from "@/lib/back/utils/globalResponses.utils";
 import { jwtUtils } from "@/lib/back/utils/jwt.utils";
+import { cookies } from "next/headers";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function GET(request: NextRequest) {
@@ -30,7 +31,20 @@ export async function POST(request: Request) {
   try {
     const body = await request.json();
 
-    const { user, token } = await userService.register(body);
+    const { user, token, token_exp } = await userService.register(body);
+
+    const cookiesStore = await cookies();
+    const expiresMs = Number(token_exp ?? 0) * 1000;
+    const expiresDate = new Date(Date.now() + expiresMs);
+    const tokenData = {
+      value: token,
+      expiration: expiresDate.toLocaleDateString(),
+    };
+    cookiesStore.set("token", JSON.stringify(tokenData), {
+      path: "/",
+      expires: expiresDate,
+      httpOnly: true,
+    });
 
     return NextResponse.json({ user, token }, { status: 201 });
   } catch (error) {

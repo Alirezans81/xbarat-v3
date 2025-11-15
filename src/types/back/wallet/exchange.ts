@@ -39,6 +39,7 @@ export type CreateExchange = {
   remainingAmount: number;
   toAmount: number;
   exchangeRate: number;
+  fee: number;
 };
 
 export type UpdateExchange = {

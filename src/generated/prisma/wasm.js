@@ -275,7 +275,7 @@ exports.Prisma.ExchangeScalarFieldEnum = {
   fromAmount: 'fromAmount',
   toAmount: 'toAmount',
   exchangeRate: 'exchangeRate',
-  feePercentage: 'feePercentage',
+  fee: 'fee',
   status: 'status',
   matchedAmount: 'matchedAmount',
   remainingAmount: 'remainingAmount',
@@ -290,6 +290,7 @@ exports.Prisma.ExchangeMatchScalarFieldEnum = {
   toExchangeId: 'toExchangeId',
   fromMatchedAmount: 'fromMatchedAmount',
   toMatchedAmount: 'toMatchedAmount',
+  feeWalletId: 'feeWalletId',
   createdAt: 'createdAt'
 };
 

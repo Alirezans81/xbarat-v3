@@ -21,13 +21,19 @@ export const userService = {
       countryCode,
     });
 
-    const token = jwtUtils.sign({
-      id: user.id,
-      email: user.email,
-      role: user.role,
-    });
+    const now = new Date();
+    const daysExpiration = 7;
+    const tokenExpiration = {
+      date: addDays(now, daysExpiration),
+      value: `${daysExpiration}d`,
+    };
 
-    return { user, token };
+    const token = jwtUtils.sign(
+      { id: user.id },
+      { expiresIn: tokenExpiration.value }
+    );
+
+    return { user, token, token_exp: tokenExpiration.date };
   },
 
   login: async ({ email, password }: { email: string; password: string }) => {

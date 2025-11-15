@@ -23,6 +23,8 @@ import { useGetWallets } from "@/api/wallet/hook";
 import { useCreateExchange } from "@/api/wallet/exchange/hooks";
 import { useRouter } from "@/i18n/navigation";
 import { toast } from "sonner";
+import { roundDown } from "@/lib/front/utils/number";
+import Timer from "./Timer";
 
 interface Props {
   currencies: Currency[];
@@ -36,7 +38,6 @@ export default function ExchangeForm({
 }: Props) {
   const { isLoggedIn, token } = useAuthStore();
   const { setOpen: setLoginSignupDialogOpen } = useLoginSignupDialogStore();
-  const currentTime = useCurrentTime();
   const router = useRouter();
 
   const [loading, setLoading] = useState(false);
@@ -57,12 +58,17 @@ export default function ExchangeForm({
   const [targets, setTargets] = useState<Currency[]>([]);
 
   const [selectedSourceId, setSelectedSourceId] = useState("");
+  const selectedSource = sources.find((e) => e.id === selectedSourceId);
   const [selectedTargetId, setSelectedTargetId] = useState("");
+  const selectedTarget = targets.find((e) => e.id === selectedTargetId);
   const [selectedPair, setSelectedPair] = useState<CurrencyPair | null>(null);
   const [selectedWallet, setSelectedWallet] = useState<Wallet | null>(null);
 
   const [amount, setAmount] = useState("");
   const [rate, setRate] = useState("");
+  const fee = selectedPair
+    ? +amount.replaceAll(",", "") * (+selectedPair.feePercentage / 100)
+    : 0;
 
   useEffect(() => {
     setSources(currencies);
@@ -120,8 +126,9 @@ export default function ExchangeForm({
             remainingAmount: +amount,
             exchangeRate: +rate,
             toAmount: !selectedPair.isInverseRate
-              ? +amount * +rate
-              : +amount / +rate,
+              ? +amount * (1 - +selectedPair.feePercentage / 100) * +rate
+              : (+amount * (1 - +selectedPair.feePercentage / 100)) / +rate,
+            fee,
           },
           onSuccess() {
             router.push(`/wallet/exchange`);
@@ -235,31 +242,41 @@ export default function ExchangeForm({
           <div className="flex flex-col">
             <div className="flex items-center gap-2 text-lg font-semibold">
               <span>
-                {sources.find((e) => e.id === selectedSourceId)?.symbol}{" "}
-                {(+(amount || "0")).toLocaleString()}
+                {selectedSource?.symbol} {(+(amount || "0")).toLocaleString()}
               </span>
+              <span className="text-destructive">
+                - {selectedPair ? fee.toLocaleString() : "0"} fee{" "}
+                <span className="text-xs">
+                  {selectedPair ? "(" + selectedPair.feePercentage + "%)" : ""}
+                </span>
+              </span>
+
               <span>=</span>
               <span>
-                {targets.find((e) => e.id === selectedTargetId)?.symbol}{" "}
+                {selectedTarget?.symbol}{" "}
                 <span className="text-secondary">
-                  {(!selectedPair?.isInverseRate
-                    ? +amount.replaceAll(",", "") * +rate.replaceAll(",", "")
-                    : (
-                        +amount.replaceAll(",", "") / +rate.replaceAll(",", "")
-                      ).toFixed(
-                        targets.find((e) => e.id === selectedTargetId)?.decimals
-                      )
-                  ).toLocaleString()}
+                  {selectedPair
+                    ? (!selectedPair.isInverseRate
+                        ? roundDown(
+                            +amount.replaceAll(",", "") *
+                              (1 - +selectedPair.feePercentage / 100) *
+                              +rate.replaceAll(",", ""),
+                            selectedTarget?.decimals || 2
+                          )
+                        : roundDown(
+                            (+amount.replaceAll(",", "") *
+                              (1 - +selectedPair.feePercentage / 100)) /
+                              +rate.replaceAll(",", ""),
+                            selectedTarget?.decimals || 2
+                          )
+                      ).toLocaleString()
+                    : "0"}
                 </span>
               </span>
             </div>
             {selectedSourceId && selectedTargetId ? (
               <div className="text-muted-foreground">
-                Mid-market exchange rate at{" "}
-                <span className="text-foreground">
-                  {currentTime.toLocaleTimeString()}
-                </span>{" "}
-                is{" "}
+                Mid-market exchange rate at <Timer /> is{" "}
                 <button
                   className="text-secondary cursor-pointer"
                   type="button"

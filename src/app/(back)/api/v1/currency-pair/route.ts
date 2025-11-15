@@ -30,16 +30,29 @@ export async function POST(request: NextRequest) {
     if (!userIsAdmin) return UnauthorizedResponse;
 
     const body = await request.json();
-    const { fromCurrencyId, toCurrencyId, rate, isInverseRate, isActive } =
-      body;
+    const {
+      fromCurrencyId,
+      toCurrencyId,
+      rate,
+      feePercentage,
+      isInverseRate,
+      isActive,
+    } = body;
 
-    if (!fromCurrencyId || !toCurrencyId || !rate || !isActive)
+    if (
+      !fromCurrencyId ||
+      !toCurrencyId ||
+      !rate ||
+      !feePercentage ||
+      !isActive
+    )
       return MissingFieldsResponse;
 
     const currencyPair = await currencyPairService.create({
       fromCurrencyId,
       toCurrencyId,
       rate,
+      feePercentage,
       isInverseRate,
       isActive,
     });

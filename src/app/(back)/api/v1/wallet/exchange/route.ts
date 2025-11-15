@@ -12,6 +12,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { currencyPairService } from "@/lib/back/services/currencyPair.service";
 import { exchangeMatchService } from "@/lib/back/services/wallet/exchangeMatch.service";
 import { walletService } from "@/lib/back/services/wallet.service";
+import { calculateFee } from "@/lib/back/utils/exchange.utils";
 
 export async function POST(request: NextRequest) {
   try {
@@ -39,6 +40,14 @@ export async function POST(request: NextRequest) {
     )
       return MissingFieldsResponse;
 
+    const selectedCurrencyPair = await currencyPairService.getById(
+      currencyPairId
+    );
+
+    const fee = selectedCurrencyPair
+      ? calculateFee(+fromAmount, +selectedCurrencyPair.feePercentage)
+      : 0;
+
     const exchange = await exchangeService.create({
       userId: payload.id,
       currencyPairId,
@@ -46,6 +55,7 @@ export async function POST(request: NextRequest) {
       remainingAmount,
       toAmount,
       exchangeRate,
+      fee,
     });
 
     // Check for exchange match

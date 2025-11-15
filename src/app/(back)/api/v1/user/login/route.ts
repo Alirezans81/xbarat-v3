@@ -1,5 +1,6 @@
 import { userService } from "@/lib/back/services/user.service";
 import { ServerErrorResponse } from "@/lib/back/utils/globalResponses.utils";
+import { cookies } from "next/headers";
 import { NextResponse } from "next/server";
 
 export async function POST(request: Request) {
@@ -8,6 +9,19 @@ export async function POST(request: Request) {
     const { user, token, token_exp } = await userService.login({
       email,
       password,
+    });
+
+    const cookiesStore = await cookies();
+    const expiresMs = Number(token_exp ?? 0) * 1000;
+    const expiresDate = new Date(Date.now() + expiresMs);
+    const tokenData = {
+      value: token,
+      expiration: expiresDate.toLocaleDateString(),
+    };
+    cookiesStore.set("token", JSON.stringify(tokenData), {
+      path: "/",
+      expires: expiresDate,
+      httpOnly: true,
     });
 
     return NextResponse.json({ user, token, token_exp });

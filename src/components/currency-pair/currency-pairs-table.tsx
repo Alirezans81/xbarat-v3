@@ -25,6 +25,7 @@ export default function CurrencyPairsTable({ data }: Props) {
           <TableHead>Source</TableHead>
           <TableHead>Target</TableHead>
           <TableHead>Rate</TableHead>
+          <TableHead>Fee Percentage</TableHead>
           <TableHead>Created At</TableHead>
           <TableHead>Inverse Rate</TableHead>
           <TableHead>Active</TableHead>
@@ -39,6 +40,9 @@ export default function CurrencyPairsTable({ data }: Props) {
             </TableCell>
             <TableCell>{currencyPair.toCurrency.code}</TableCell>
             <TableCell>{(+currencyPair.rate).toLocaleString()}</TableCell>
+            <TableCell>
+              {(+currencyPair.feePercentage).toLocaleString()}%
+            </TableCell>
             <TableCell>
               {new Date(currencyPair.createdAt).toISOString()}
             </TableCell>

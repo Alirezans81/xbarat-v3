@@ -2588,6 +2588,7 @@ export namespace Prisma {
     transfersFrom: number
     transfersTo: number
     withdrawals: number
+    exchangeMatches: number
   }
 
   export type WalletCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -2596,6 +2597,7 @@ export namespace Prisma {
     transfersFrom?: boolean | WalletCountOutputTypeCountTransfersFromArgs
     transfersTo?: boolean | WalletCountOutputTypeCountTransfersToArgs
     withdrawals?: boolean | WalletCountOutputTypeCountWithdrawalsArgs
+    exchangeMatches?: boolean | WalletCountOutputTypeCountExchangeMatchesArgs
   }
 
   // Custom InputTypes
@@ -2642,6 +2644,13 @@ export namespace Prisma {
    */
   export type WalletCountOutputTypeCountWithdrawalsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: WithdrawalWhereInput
+  }
+
+  /**
+   * WalletCountOutputType without action
+   */
+  export type WalletCountOutputTypeCountExchangeMatchesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: ExchangeMatchWhereInput
   }
 
 
@@ -9236,6 +9245,7 @@ export namespace Prisma {
     currency?: boolean | CurrencyDefaultArgs<ExtArgs>
     user?: boolean | UserDefaultArgs<ExtArgs>
     withdrawals?: boolean | Wallet$withdrawalsArgs<ExtArgs>
+    exchangeMatches?: boolean | Wallet$exchangeMatchesArgs<ExtArgs>
     _count?: boolean | WalletCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["wallet"]>
 
@@ -9282,6 +9292,7 @@ export namespace Prisma {
     currency?: boolean | CurrencyDefaultArgs<ExtArgs>
     user?: boolean | UserDefaultArgs<ExtArgs>
     withdrawals?: boolean | Wallet$withdrawalsArgs<ExtArgs>
+    exchangeMatches?: boolean | Wallet$exchangeMatchesArgs<ExtArgs>
     _count?: boolean | WalletCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type WalletIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -9303,6 +9314,7 @@ export namespace Prisma {
       currency: Prisma.$CurrencyPayload<ExtArgs>
       user: Prisma.$UserPayload<ExtArgs>
       withdrawals: Prisma.$WithdrawalPayload<ExtArgs>[]
+      exchangeMatches: Prisma.$ExchangeMatchPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -9713,6 +9725,7 @@ export namespace Prisma {
     currency<T extends CurrencyDefaultArgs<ExtArgs> = {}>(args?: Subset<T, CurrencyDefaultArgs<ExtArgs>>): Prisma__CurrencyClient<$Result.GetResult<Prisma.$CurrencyPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     user<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     withdrawals<T extends Wallet$withdrawalsArgs<ExtArgs> = {}>(args?: Subset<T, Wallet$withdrawalsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$WithdrawalPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    exchangeMatches<T extends Wallet$exchangeMatchesArgs<ExtArgs> = {}>(args?: Subset<T, Wallet$exchangeMatchesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ExchangeMatchPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -10262,6 +10275,30 @@ export namespace Prisma {
     take?: number
     skip?: number
     distinct?: WithdrawalScalarFieldEnum | WithdrawalScalarFieldEnum[]
+  }
+
+  /**
+   * Wallet.exchangeMatches
+   */
+  export type Wallet$exchangeMatchesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ExchangeMatch
+     */
+    select?: ExchangeMatchSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ExchangeMatch
+     */
+    omit?: ExchangeMatchOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ExchangeMatchInclude<ExtArgs> | null
+    where?: ExchangeMatchWhereInput
+    orderBy?: ExchangeMatchOrderByWithRelationInput | ExchangeMatchOrderByWithRelationInput[]
+    cursor?: ExchangeMatchWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: ExchangeMatchScalarFieldEnum | ExchangeMatchScalarFieldEnum[]
   }
 
   /**
@@ -16371,7 +16408,7 @@ export namespace Prisma {
     fromAmount: Decimal | null
     toAmount: Decimal | null
     exchangeRate: Decimal | null
-    feePercentage: Decimal | null
+    fee: Decimal | null
     matchedAmount: Decimal | null
     remainingAmount: Decimal | null
   }
@@ -16380,7 +16417,7 @@ export namespace Prisma {
     fromAmount: Decimal | null
     toAmount: Decimal | null
     exchangeRate: Decimal | null
-    feePercentage: Decimal | null
+    fee: Decimal | null
     matchedAmount: Decimal | null
     remainingAmount: Decimal | null
   }
@@ -16392,7 +16429,7 @@ export namespace Prisma {
     fromAmount: Decimal | null
     toAmount: Decimal | null
     exchangeRate: Decimal | null
-    feePercentage: Decimal | null
+    fee: Decimal | null
     status: $Enums.ExchangeStatus | null
     matchedAmount: Decimal | null
     remainingAmount: Decimal | null
@@ -16408,7 +16445,7 @@ export namespace Prisma {
     fromAmount: Decimal | null
     toAmount: Decimal | null
     exchangeRate: Decimal | null
-    feePercentage: Decimal | null
+    fee: Decimal | null
     status: $Enums.ExchangeStatus | null
     matchedAmount: Decimal | null
     remainingAmount: Decimal | null
@@ -16424,7 +16461,7 @@ export namespace Prisma {
     fromAmount: number
     toAmount: number
     exchangeRate: number
-    feePercentage: number
+    fee: number
     status: number
     matchedAmount: number
     remainingAmount: number
@@ -16439,7 +16476,7 @@ export namespace Prisma {
     fromAmount?: true
     toAmount?: true
     exchangeRate?: true
-    feePercentage?: true
+    fee?: true
     matchedAmount?: true
     remainingAmount?: true
   }
@@ -16448,7 +16485,7 @@ export namespace Prisma {
     fromAmount?: true
     toAmount?: true
     exchangeRate?: true
-    feePercentage?: true
+    fee?: true
     matchedAmount?: true
     remainingAmount?: true
   }
@@ -16460,7 +16497,7 @@ export namespace Prisma {
     fromAmount?: true
     toAmount?: true
     exchangeRate?: true
-    feePercentage?: true
+    fee?: true
     status?: true
     matchedAmount?: true
     remainingAmount?: true
@@ -16476,7 +16513,7 @@ export namespace Prisma {
     fromAmount?: true
     toAmount?: true
     exchangeRate?: true
-    feePercentage?: true
+    fee?: true
     status?: true
     matchedAmount?: true
     remainingAmount?: true
@@ -16492,7 +16529,7 @@ export namespace Prisma {
     fromAmount?: true
     toAmount?: true
     exchangeRate?: true
-    feePercentage?: true
+    fee?: true
     status?: true
     matchedAmount?: true
     remainingAmount?: true
@@ -16595,7 +16632,7 @@ export namespace Prisma {
     fromAmount: Decimal
     toAmount: Decimal
     exchangeRate: Decimal
-    feePercentage: Decimal
+    fee: Decimal
     status: $Enums.ExchangeStatus
     matchedAmount: Decimal
     remainingAmount: Decimal
@@ -16630,7 +16667,7 @@ export namespace Prisma {
     fromAmount?: boolean
     toAmount?: boolean
     exchangeRate?: boolean
-    feePercentage?: boolean
+    fee?: boolean
     status?: boolean
     matchedAmount?: boolean
     remainingAmount?: boolean
@@ -16651,7 +16688,7 @@ export namespace Prisma {
     fromAmount?: boolean
     toAmount?: boolean
     exchangeRate?: boolean
-    feePercentage?: boolean
+    fee?: boolean
     status?: boolean
     matchedAmount?: boolean
     remainingAmount?: boolean
@@ -16669,7 +16706,7 @@ export namespace Prisma {
     fromAmount?: boolean
     toAmount?: boolean
     exchangeRate?: boolean
-    feePercentage?: boolean
+    fee?: boolean
     status?: boolean
     matchedAmount?: boolean
     remainingAmount?: boolean
@@ -16687,7 +16724,7 @@ export namespace Prisma {
     fromAmount?: boolean
     toAmount?: boolean
     exchangeRate?: boolean
-    feePercentage?: boolean
+    fee?: boolean
     status?: boolean
     matchedAmount?: boolean
     remainingAmount?: boolean
@@ -16696,7 +16733,7 @@ export namespace Prisma {
     failedAt?: boolean
   }
 
-  export type ExchangeOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "currencyPairId" | "userId" | "fromAmount" | "toAmount" | "exchangeRate" | "feePercentage" | "status" | "matchedAmount" | "remainingAmount" | "createdAt" | "completedAt" | "failedAt", ExtArgs["result"]["exchange"]>
+  export type ExchangeOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "currencyPairId" | "userId" | "fromAmount" | "toAmount" | "exchangeRate" | "fee" | "status" | "matchedAmount" | "remainingAmount" | "createdAt" | "completedAt" | "failedAt", ExtArgs["result"]["exchange"]>
   export type ExchangeInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     currencyPair?: boolean | CurrencyPairDefaultArgs<ExtArgs>
     user?: boolean | UserDefaultArgs<ExtArgs>
@@ -16728,7 +16765,7 @@ export namespace Prisma {
       fromAmount: Prisma.Decimal
       toAmount: Prisma.Decimal
       exchangeRate: Prisma.Decimal
-      feePercentage: Prisma.Decimal
+      fee: Prisma.Decimal
       status: $Enums.ExchangeStatus
       matchedAmount: Prisma.Decimal
       remainingAmount: Prisma.Decimal
@@ -17168,7 +17205,7 @@ export namespace Prisma {
     readonly fromAmount: FieldRef<"Exchange", 'Decimal'>
     readonly toAmount: FieldRef<"Exchange", 'Decimal'>
     readonly exchangeRate: FieldRef<"Exchange", 'Decimal'>
-    readonly feePercentage: FieldRef<"Exchange", 'Decimal'>
+    readonly fee: FieldRef<"Exchange", 'Decimal'>
     readonly status: FieldRef<"Exchange", 'ExchangeStatus'>
     readonly matchedAmount: FieldRef<"Exchange", 'Decimal'>
     readonly remainingAmount: FieldRef<"Exchange", 'Decimal'>
@@ -17665,6 +17702,7 @@ export namespace Prisma {
     toExchangeId: string | null
     fromMatchedAmount: Decimal | null
     toMatchedAmount: Decimal | null
+    feeWalletId: string | null
     createdAt: Date | null
   }
 
@@ -17674,6 +17712,7 @@ export namespace Prisma {
     toExchangeId: string | null
     fromMatchedAmount: Decimal | null
     toMatchedAmount: Decimal | null
+    feeWalletId: string | null
     createdAt: Date | null
   }
 
@@ -17683,6 +17722,7 @@ export namespace Prisma {
     toExchangeId: number
     fromMatchedAmount: number
     toMatchedAmount: number
+    feeWalletId: number
     createdAt: number
     _all: number
   }
@@ -17704,6 +17744,7 @@ export namespace Prisma {
     toExchangeId?: true
     fromMatchedAmount?: true
     toMatchedAmount?: true
+    feeWalletId?: true
     createdAt?: true
   }
 
@@ -17713,6 +17754,7 @@ export namespace Prisma {
     toExchangeId?: true
     fromMatchedAmount?: true
     toMatchedAmount?: true
+    feeWalletId?: true
     createdAt?: true
   }
 
@@ -17722,6 +17764,7 @@ export namespace Prisma {
     toExchangeId?: true
     fromMatchedAmount?: true
     toMatchedAmount?: true
+    feeWalletId?: true
     createdAt?: true
     _all?: true
   }
@@ -17818,6 +17861,7 @@ export namespace Prisma {
     toExchangeId: string
     fromMatchedAmount: Decimal
     toMatchedAmount: Decimal
+    feeWalletId: string
     createdAt: Date
     _count: ExchangeMatchCountAggregateOutputType | null
     _avg: ExchangeMatchAvgAggregateOutputType | null
@@ -17846,9 +17890,11 @@ export namespace Prisma {
     toExchangeId?: boolean
     fromMatchedAmount?: boolean
     toMatchedAmount?: boolean
+    feeWalletId?: boolean
     createdAt?: boolean
     fromExchange?: boolean | ExchangeDefaultArgs<ExtArgs>
     toExchange?: boolean | ExchangeDefaultArgs<ExtArgs>
+    feeWallet?: boolean | WalletDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["exchangeMatch"]>
 
   export type ExchangeMatchSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -17857,9 +17903,11 @@ export namespace Prisma {
     toExchangeId?: boolean
     fromMatchedAmount?: boolean
     toMatchedAmount?: boolean
+    feeWalletId?: boolean
     createdAt?: boolean
     fromExchange?: boolean | ExchangeDefaultArgs<ExtArgs>
     toExchange?: boolean | ExchangeDefaultArgs<ExtArgs>
+    feeWallet?: boolean | WalletDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["exchangeMatch"]>
 
   export type ExchangeMatchSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -17868,9 +17916,11 @@ export namespace Prisma {
     toExchangeId?: boolean
     fromMatchedAmount?: boolean
     toMatchedAmount?: boolean
+    feeWalletId?: boolean
     createdAt?: boolean
     fromExchange?: boolean | ExchangeDefaultArgs<ExtArgs>
     toExchange?: boolean | ExchangeDefaultArgs<ExtArgs>
+    feeWallet?: boolean | WalletDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["exchangeMatch"]>
 
   export type ExchangeMatchSelectScalar = {
@@ -17879,21 +17929,25 @@ export namespace Prisma {
     toExchangeId?: boolean
     fromMatchedAmount?: boolean
     toMatchedAmount?: boolean
+    feeWalletId?: boolean
     createdAt?: boolean
   }
 
-  export type ExchangeMatchOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "fromExchangeId" | "toExchangeId" | "fromMatchedAmount" | "toMatchedAmount" | "createdAt", ExtArgs["result"]["exchangeMatch"]>
+  export type ExchangeMatchOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "fromExchangeId" | "toExchangeId" | "fromMatchedAmount" | "toMatchedAmount" | "feeWalletId" | "createdAt", ExtArgs["result"]["exchangeMatch"]>
   export type ExchangeMatchInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     fromExchange?: boolean | ExchangeDefaultArgs<ExtArgs>
     toExchange?: boolean | ExchangeDefaultArgs<ExtArgs>
+    feeWallet?: boolean | WalletDefaultArgs<ExtArgs>
   }
   export type ExchangeMatchIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     fromExchange?: boolean | ExchangeDefaultArgs<ExtArgs>
     toExchange?: boolean | ExchangeDefaultArgs<ExtArgs>
+    feeWallet?: boolean | WalletDefaultArgs<ExtArgs>
   }
   export type ExchangeMatchIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     fromExchange?: boolean | ExchangeDefaultArgs<ExtArgs>
     toExchange?: boolean | ExchangeDefaultArgs<ExtArgs>
+    feeWallet?: boolean | WalletDefaultArgs<ExtArgs>
   }
 
   export type $ExchangeMatchPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -17901,6 +17955,7 @@ export namespace Prisma {
     objects: {
       fromExchange: Prisma.$ExchangePayload<ExtArgs>
       toExchange: Prisma.$ExchangePayload<ExtArgs>
+      feeWallet: Prisma.$WalletPayload<ExtArgs>
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -17908,6 +17963,7 @@ export namespace Prisma {
       toExchangeId: string
       fromMatchedAmount: Prisma.Decimal
       toMatchedAmount: Prisma.Decimal
+      feeWalletId: string
       createdAt: Date
     }, ExtArgs["result"]["exchangeMatch"]>
     composites: {}
@@ -18305,6 +18361,7 @@ export namespace Prisma {
     readonly [Symbol.toStringTag]: "PrismaPromise"
     fromExchange<T extends ExchangeDefaultArgs<ExtArgs> = {}>(args?: Subset<T, ExchangeDefaultArgs<ExtArgs>>): Prisma__ExchangeClient<$Result.GetResult<Prisma.$ExchangePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     toExchange<T extends ExchangeDefaultArgs<ExtArgs> = {}>(args?: Subset<T, ExchangeDefaultArgs<ExtArgs>>): Prisma__ExchangeClient<$Result.GetResult<Prisma.$ExchangePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    feeWallet<T extends WalletDefaultArgs<ExtArgs> = {}>(args?: Subset<T, WalletDefaultArgs<ExtArgs>>): Prisma__WalletClient<$Result.GetResult<Prisma.$WalletPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -18339,6 +18396,7 @@ export namespace Prisma {
     readonly toExchangeId: FieldRef<"ExchangeMatch", 'String'>
     readonly fromMatchedAmount: FieldRef<"ExchangeMatch", 'Decimal'>
     readonly toMatchedAmount: FieldRef<"ExchangeMatch", 'Decimal'>
+    readonly feeWalletId: FieldRef<"ExchangeMatch", 'String'>
     readonly createdAt: FieldRef<"ExchangeMatch", 'DateTime'>
   }
     
@@ -21224,7 +21282,7 @@ export namespace Prisma {
     fromAmount: 'fromAmount',
     toAmount: 'toAmount',
     exchangeRate: 'exchangeRate',
-    feePercentage: 'feePercentage',
+    fee: 'fee',
     status: 'status',
     matchedAmount: 'matchedAmount',
     remainingAmount: 'remainingAmount',
@@ -21242,6 +21300,7 @@ export namespace Prisma {
     toExchangeId: 'toExchangeId',
     fromMatchedAmount: 'fromMatchedAmount',
     toMatchedAmount: 'toMatchedAmount',
+    feeWalletId: 'feeWalletId',
     createdAt: 'createdAt'
   };
 
@@ -22052,6 +22111,7 @@ export namespace Prisma {
     currency?: XOR<CurrencyScalarRelationFilter, CurrencyWhereInput>
     user?: XOR<UserScalarRelationFilter, UserWhereInput>
     withdrawals?: WithdrawalListRelationFilter
+    exchangeMatches?: ExchangeMatchListRelationFilter
   }
 
   export type WalletOrderByWithRelationInput = {
@@ -22069,6 +22129,7 @@ export namespace Prisma {
     currency?: CurrencyOrderByWithRelationInput
     user?: UserOrderByWithRelationInput
     withdrawals?: WithdrawalOrderByRelationAggregateInput
+    exchangeMatches?: ExchangeMatchOrderByRelationAggregateInput
   }
 
   export type WalletWhereUniqueInput = Prisma.AtLeast<{
@@ -22090,6 +22151,7 @@ export namespace Prisma {
     currency?: XOR<CurrencyScalarRelationFilter, CurrencyWhereInput>
     user?: XOR<UserScalarRelationFilter, UserWhereInput>
     withdrawals?: WithdrawalListRelationFilter
+    exchangeMatches?: ExchangeMatchListRelationFilter
   }, "id" | "userId_currencyId">
 
   export type WalletOrderByWithAggregationInput = {
@@ -22603,7 +22665,7 @@ export namespace Prisma {
     fromAmount?: DecimalFilter<"Exchange"> | Decimal | DecimalJsLike | number | string
     toAmount?: DecimalFilter<"Exchange"> | Decimal | DecimalJsLike | number | string
     exchangeRate?: DecimalFilter<"Exchange"> | Decimal | DecimalJsLike | number | string
-    feePercentage?: DecimalFilter<"Exchange"> | Decimal | DecimalJsLike | number | string
+    fee?: DecimalFilter<"Exchange"> | Decimal | DecimalJsLike | number | string
     status?: EnumExchangeStatusFilter<"Exchange"> | $Enums.ExchangeStatus
     matchedAmount?: DecimalFilter<"Exchange"> | Decimal | DecimalJsLike | number | string
     remainingAmount?: DecimalFilter<"Exchange"> | Decimal | DecimalJsLike | number | string
@@ -22623,7 +22685,7 @@ export namespace Prisma {
     fromAmount?: SortOrder
     toAmount?: SortOrder
     exchangeRate?: SortOrder
-    feePercentage?: SortOrder
+    fee?: SortOrder
     status?: SortOrder
     matchedAmount?: SortOrder
     remainingAmount?: SortOrder
@@ -22646,7 +22708,7 @@ export namespace Prisma {
     fromAmount?: DecimalFilter<"Exchange"> | Decimal | DecimalJsLike | number | string
     toAmount?: DecimalFilter<"Exchange"> | Decimal | DecimalJsLike | number | string
     exchangeRate?: DecimalFilter<"Exchange"> | Decimal | DecimalJsLike | number | string
-    feePercentage?: DecimalFilter<"Exchange"> | Decimal | DecimalJsLike | number | string
+    fee?: DecimalFilter<"Exchange"> | Decimal | DecimalJsLike | number | string
     status?: EnumExchangeStatusFilter<"Exchange"> | $Enums.ExchangeStatus
     matchedAmount?: DecimalFilter<"Exchange"> | Decimal | DecimalJsLike | number | string
     remainingAmount?: DecimalFilter<"Exchange"> | Decimal | DecimalJsLike | number | string
@@ -22666,7 +22728,7 @@ export namespace Prisma {
     fromAmount?: SortOrder
     toAmount?: SortOrder
     exchangeRate?: SortOrder
-    feePercentage?: SortOrder
+    fee?: SortOrder
     status?: SortOrder
     matchedAmount?: SortOrder
     remainingAmount?: SortOrder
@@ -22690,7 +22752,7 @@ export namespace Prisma {
     fromAmount?: DecimalWithAggregatesFilter<"Exchange"> | Decimal | DecimalJsLike | number | string
     toAmount?: DecimalWithAggregatesFilter<"Exchange"> | Decimal | DecimalJsLike | number | string
     exchangeRate?: DecimalWithAggregatesFilter<"Exchange"> | Decimal | DecimalJsLike | number | string
-    feePercentage?: DecimalWithAggregatesFilter<"Exchange"> | Decimal | DecimalJsLike | number | string
+    fee?: DecimalWithAggregatesFilter<"Exchange"> | Decimal | DecimalJsLike | number | string
     status?: EnumExchangeStatusWithAggregatesFilter<"Exchange"> | $Enums.ExchangeStatus
     matchedAmount?: DecimalWithAggregatesFilter<"Exchange"> | Decimal | DecimalJsLike | number | string
     remainingAmount?: DecimalWithAggregatesFilter<"Exchange"> | Decimal | DecimalJsLike | number | string
@@ -22708,9 +22770,11 @@ export namespace Prisma {
     toExchangeId?: StringFilter<"ExchangeMatch"> | string
     fromMatchedAmount?: DecimalFilter<"ExchangeMatch"> | Decimal | DecimalJsLike | number | string
     toMatchedAmount?: DecimalFilter<"ExchangeMatch"> | Decimal | DecimalJsLike | number | string
+    feeWalletId?: StringFilter<"ExchangeMatch"> | string
     createdAt?: DateTimeFilter<"ExchangeMatch"> | Date | string
     fromExchange?: XOR<ExchangeScalarRelationFilter, ExchangeWhereInput>
     toExchange?: XOR<ExchangeScalarRelationFilter, ExchangeWhereInput>
+    feeWallet?: XOR<WalletScalarRelationFilter, WalletWhereInput>
   }
 
   export type ExchangeMatchOrderByWithRelationInput = {
@@ -22719,9 +22783,11 @@ export namespace Prisma {
     toExchangeId?: SortOrder
     fromMatchedAmount?: SortOrder
     toMatchedAmount?: SortOrder
+    feeWalletId?: SortOrder
     createdAt?: SortOrder
     fromExchange?: ExchangeOrderByWithRelationInput
     toExchange?: ExchangeOrderByWithRelationInput
+    feeWallet?: WalletOrderByWithRelationInput
   }
 
   export type ExchangeMatchWhereUniqueInput = Prisma.AtLeast<{
@@ -22734,9 +22800,11 @@ export namespace Prisma {
     toExchangeId?: StringFilter<"ExchangeMatch"> | string
     fromMatchedAmount?: DecimalFilter<"ExchangeMatch"> | Decimal | DecimalJsLike | number | string
     toMatchedAmount?: DecimalFilter<"ExchangeMatch"> | Decimal | DecimalJsLike | number | string
+    feeWalletId?: StringFilter<"ExchangeMatch"> | string
     createdAt?: DateTimeFilter<"ExchangeMatch"> | Date | string
     fromExchange?: XOR<ExchangeScalarRelationFilter, ExchangeWhereInput>
     toExchange?: XOR<ExchangeScalarRelationFilter, ExchangeWhereInput>
+    feeWallet?: XOR<WalletScalarRelationFilter, WalletWhereInput>
   }, "id" | "fromExchangeId_toExchangeId">
 
   export type ExchangeMatchOrderByWithAggregationInput = {
@@ -22745,6 +22813,7 @@ export namespace Prisma {
     toExchangeId?: SortOrder
     fromMatchedAmount?: SortOrder
     toMatchedAmount?: SortOrder
+    feeWalletId?: SortOrder
     createdAt?: SortOrder
     _count?: ExchangeMatchCountOrderByAggregateInput
     _avg?: ExchangeMatchAvgOrderByAggregateInput
@@ -22762,6 +22831,7 @@ export namespace Prisma {
     toExchangeId?: StringWithAggregatesFilter<"ExchangeMatch"> | string
     fromMatchedAmount?: DecimalWithAggregatesFilter<"ExchangeMatch"> | Decimal | DecimalJsLike | number | string
     toMatchedAmount?: DecimalWithAggregatesFilter<"ExchangeMatch"> | Decimal | DecimalJsLike | number | string
+    feeWalletId?: StringWithAggregatesFilter<"ExchangeMatch"> | string
     createdAt?: DateTimeWithAggregatesFilter<"ExchangeMatch"> | Date | string
   }
 
@@ -23469,6 +23539,7 @@ export namespace Prisma {
     currency: CurrencyCreateNestedOneWithoutWalletsInput
     user: UserCreateNestedOneWithoutWalletInput
     withdrawals?: WithdrawalCreateNestedManyWithoutWalletInput
+    exchangeMatches?: ExchangeMatchCreateNestedManyWithoutFeeWalletInput
   }
 
   export type WalletUncheckedCreateInput = {
@@ -23484,6 +23555,7 @@ export namespace Prisma {
     transfersFrom?: TransferUncheckedCreateNestedManyWithoutFromWalletInput
     transfersTo?: TransferUncheckedCreateNestedManyWithoutToWalletInput
     withdrawals?: WithdrawalUncheckedCreateNestedManyWithoutWalletInput
+    exchangeMatches?: ExchangeMatchUncheckedCreateNestedManyWithoutFeeWalletInput
   }
 
   export type WalletUpdateInput = {
@@ -23499,6 +23571,7 @@ export namespace Prisma {
     currency?: CurrencyUpdateOneRequiredWithoutWalletsNestedInput
     user?: UserUpdateOneRequiredWithoutWalletNestedInput
     withdrawals?: WithdrawalUpdateManyWithoutWalletNestedInput
+    exchangeMatches?: ExchangeMatchUpdateManyWithoutFeeWalletNestedInput
   }
 
   export type WalletUncheckedUpdateInput = {
@@ -23514,6 +23587,7 @@ export namespace Prisma {
     transfersFrom?: TransferUncheckedUpdateManyWithoutFromWalletNestedInput
     transfersTo?: TransferUncheckedUpdateManyWithoutToWalletNestedInput
     withdrawals?: WithdrawalUncheckedUpdateManyWithoutWalletNestedInput
+    exchangeMatches?: ExchangeMatchUncheckedUpdateManyWithoutFeeWalletNestedInput
   }
 
   export type WalletCreateManyInput = {
@@ -24045,7 +24119,7 @@ export namespace Prisma {
     fromAmount: Decimal | DecimalJsLike | number | string
     toAmount: Decimal | DecimalJsLike | number | string
     exchangeRate: Decimal | DecimalJsLike | number | string
-    feePercentage?: Decimal | DecimalJsLike | number | string
+    fee?: Decimal | DecimalJsLike | number | string
     status?: $Enums.ExchangeStatus
     matchedAmount?: Decimal | DecimalJsLike | number | string
     remainingAmount?: Decimal | DecimalJsLike | number | string
@@ -24065,7 +24139,7 @@ export namespace Prisma {
     fromAmount: Decimal | DecimalJsLike | number | string
     toAmount: Decimal | DecimalJsLike | number | string
     exchangeRate: Decimal | DecimalJsLike | number | string
-    feePercentage?: Decimal | DecimalJsLike | number | string
+    fee?: Decimal | DecimalJsLike | number | string
     status?: $Enums.ExchangeStatus
     matchedAmount?: Decimal | DecimalJsLike | number | string
     remainingAmount?: Decimal | DecimalJsLike | number | string
@@ -24081,7 +24155,7 @@ export namespace Prisma {
     fromAmount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     toAmount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     exchangeRate?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
-    feePercentage?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    fee?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     status?: EnumExchangeStatusFieldUpdateOperationsInput | $Enums.ExchangeStatus
     matchedAmount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     remainingAmount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
@@ -24101,7 +24175,7 @@ export namespace Prisma {
     fromAmount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     toAmount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     exchangeRate?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
-    feePercentage?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    fee?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     status?: EnumExchangeStatusFieldUpdateOperationsInput | $Enums.ExchangeStatus
     matchedAmount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     remainingAmount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
@@ -24119,7 +24193,7 @@ export namespace Prisma {
     fromAmount: Decimal | DecimalJsLike | number | string
     toAmount: Decimal | DecimalJsLike | number | string
     exchangeRate: Decimal | DecimalJsLike | number | string
-    feePercentage?: Decimal | DecimalJsLike | number | string
+    fee?: Decimal | DecimalJsLike | number | string
     status?: $Enums.ExchangeStatus
     matchedAmount?: Decimal | DecimalJsLike | number | string
     remainingAmount?: Decimal | DecimalJsLike | number | string
@@ -24133,7 +24207,7 @@ export namespace Prisma {
     fromAmount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     toAmount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     exchangeRate?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
-    feePercentage?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    fee?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     status?: EnumExchangeStatusFieldUpdateOperationsInput | $Enums.ExchangeStatus
     matchedAmount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     remainingAmount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
@@ -24149,7 +24223,7 @@ export namespace Prisma {
     fromAmount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     toAmount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     exchangeRate?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
-    feePercentage?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    fee?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     status?: EnumExchangeStatusFieldUpdateOperationsInput | $Enums.ExchangeStatus
     matchedAmount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     remainingAmount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
@@ -24165,6 +24239,7 @@ export namespace Prisma {
     createdAt?: Date | string
     fromExchange: ExchangeCreateNestedOneWithoutMatchesFromInput
     toExchange: ExchangeCreateNestedOneWithoutMatchesToInput
+    feeWallet: WalletCreateNestedOneWithoutExchangeMatchesInput
   }
 
   export type ExchangeMatchUncheckedCreateInput = {
@@ -24173,6 +24248,7 @@ export namespace Prisma {
     toExchangeId: string
     fromMatchedAmount: Decimal | DecimalJsLike | number | string
     toMatchedAmount: Decimal | DecimalJsLike | number | string
+    feeWalletId: string
     createdAt?: Date | string
   }
 
@@ -24183,6 +24259,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     fromExchange?: ExchangeUpdateOneRequiredWithoutMatchesFromNestedInput
     toExchange?: ExchangeUpdateOneRequiredWithoutMatchesToNestedInput
+    feeWallet?: WalletUpdateOneRequiredWithoutExchangeMatchesNestedInput
   }
 
   export type ExchangeMatchUncheckedUpdateInput = {
@@ -24191,6 +24268,7 @@ export namespace Prisma {
     toExchangeId?: StringFieldUpdateOperationsInput | string
     fromMatchedAmount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     toMatchedAmount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    feeWalletId?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
@@ -24200,6 +24278,7 @@ export namespace Prisma {
     toExchangeId: string
     fromMatchedAmount: Decimal | DecimalJsLike | number | string
     toMatchedAmount: Decimal | DecimalJsLike | number | string
+    feeWalletId: string
     createdAt?: Date | string
   }
 
@@ -24216,6 +24295,7 @@ export namespace Prisma {
     toExchangeId?: StringFieldUpdateOperationsInput | string
     fromMatchedAmount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     toMatchedAmount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    feeWalletId?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
@@ -24996,6 +25076,16 @@ export namespace Prisma {
     frozen?: SortOrder
   }
 
+  export type ExchangeMatchListRelationFilter = {
+    every?: ExchangeMatchWhereInput
+    some?: ExchangeMatchWhereInput
+    none?: ExchangeMatchWhereInput
+  }
+
+  export type ExchangeMatchOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
   export type WalletUserIdCurrencyIdCompoundUniqueInput = {
     userId: string
     currencyId: string
@@ -25432,16 +25522,6 @@ export namespace Prisma {
     isNot?: CurrencyPairWhereInput
   }
 
-  export type ExchangeMatchListRelationFilter = {
-    every?: ExchangeMatchWhereInput
-    some?: ExchangeMatchWhereInput
-    none?: ExchangeMatchWhereInput
-  }
-
-  export type ExchangeMatchOrderByRelationAggregateInput = {
-    _count?: SortOrder
-  }
-
   export type ExchangeCountOrderByAggregateInput = {
     id?: SortOrder
     currencyPairId?: SortOrder
@@ -25449,7 +25529,7 @@ export namespace Prisma {
     fromAmount?: SortOrder
     toAmount?: SortOrder
     exchangeRate?: SortOrder
-    feePercentage?: SortOrder
+    fee?: SortOrder
     status?: SortOrder
     matchedAmount?: SortOrder
     remainingAmount?: SortOrder
@@ -25462,7 +25542,7 @@ export namespace Prisma {
     fromAmount?: SortOrder
     toAmount?: SortOrder
     exchangeRate?: SortOrder
-    feePercentage?: SortOrder
+    fee?: SortOrder
     matchedAmount?: SortOrder
     remainingAmount?: SortOrder
   }
@@ -25474,7 +25554,7 @@ export namespace Prisma {
     fromAmount?: SortOrder
     toAmount?: SortOrder
     exchangeRate?: SortOrder
-    feePercentage?: SortOrder
+    fee?: SortOrder
     status?: SortOrder
     matchedAmount?: SortOrder
     remainingAmount?: SortOrder
@@ -25490,7 +25570,7 @@ export namespace Prisma {
     fromAmount?: SortOrder
     toAmount?: SortOrder
     exchangeRate?: SortOrder
-    feePercentage?: SortOrder
+    fee?: SortOrder
     status?: SortOrder
     matchedAmount?: SortOrder
     remainingAmount?: SortOrder
@@ -25503,7 +25583,7 @@ export namespace Prisma {
     fromAmount?: SortOrder
     toAmount?: SortOrder
     exchangeRate?: SortOrder
-    feePercentage?: SortOrder
+    fee?: SortOrder
     matchedAmount?: SortOrder
     remainingAmount?: SortOrder
   }
@@ -25534,6 +25614,7 @@ export namespace Prisma {
     toExchangeId?: SortOrder
     fromMatchedAmount?: SortOrder
     toMatchedAmount?: SortOrder
+    feeWalletId?: SortOrder
     createdAt?: SortOrder
   }
 
@@ -25548,6 +25629,7 @@ export namespace Prisma {
     toExchangeId?: SortOrder
     fromMatchedAmount?: SortOrder
     toMatchedAmount?: SortOrder
+    feeWalletId?: SortOrder
     createdAt?: SortOrder
   }
 
@@ -25557,6 +25639,7 @@ export namespace Prisma {
     toExchangeId?: SortOrder
     fromMatchedAmount?: SortOrder
     toMatchedAmount?: SortOrder
+    feeWalletId?: SortOrder
     createdAt?: SortOrder
   }
 
@@ -26727,6 +26810,13 @@ export namespace Prisma {
     connect?: WithdrawalWhereUniqueInput | WithdrawalWhereUniqueInput[]
   }
 
+  export type ExchangeMatchCreateNestedManyWithoutFeeWalletInput = {
+    create?: XOR<ExchangeMatchCreateWithoutFeeWalletInput, ExchangeMatchUncheckedCreateWithoutFeeWalletInput> | ExchangeMatchCreateWithoutFeeWalletInput[] | ExchangeMatchUncheckedCreateWithoutFeeWalletInput[]
+    connectOrCreate?: ExchangeMatchCreateOrConnectWithoutFeeWalletInput | ExchangeMatchCreateOrConnectWithoutFeeWalletInput[]
+    createMany?: ExchangeMatchCreateManyFeeWalletInputEnvelope
+    connect?: ExchangeMatchWhereUniqueInput | ExchangeMatchWhereUniqueInput[]
+  }
+
   export type DepositUncheckedCreateNestedManyWithoutWalletInput = {
     create?: XOR<DepositCreateWithoutWalletInput, DepositUncheckedCreateWithoutWalletInput> | DepositCreateWithoutWalletInput[] | DepositUncheckedCreateWithoutWalletInput[]
     connectOrCreate?: DepositCreateOrConnectWithoutWalletInput | DepositCreateOrConnectWithoutWalletInput[]
@@ -26760,6 +26850,13 @@ export namespace Prisma {
     connectOrCreate?: WithdrawalCreateOrConnectWithoutWalletInput | WithdrawalCreateOrConnectWithoutWalletInput[]
     createMany?: WithdrawalCreateManyWalletInputEnvelope
     connect?: WithdrawalWhereUniqueInput | WithdrawalWhereUniqueInput[]
+  }
+
+  export type ExchangeMatchUncheckedCreateNestedManyWithoutFeeWalletInput = {
+    create?: XOR<ExchangeMatchCreateWithoutFeeWalletInput, ExchangeMatchUncheckedCreateWithoutFeeWalletInput> | ExchangeMatchCreateWithoutFeeWalletInput[] | ExchangeMatchUncheckedCreateWithoutFeeWalletInput[]
+    connectOrCreate?: ExchangeMatchCreateOrConnectWithoutFeeWalletInput | ExchangeMatchCreateOrConnectWithoutFeeWalletInput[]
+    createMany?: ExchangeMatchCreateManyFeeWalletInputEnvelope
+    connect?: ExchangeMatchWhereUniqueInput | ExchangeMatchWhereUniqueInput[]
   }
 
   export type DepositUpdateManyWithoutWalletNestedInput = {
@@ -26848,6 +26945,20 @@ export namespace Prisma {
     deleteMany?: WithdrawalScalarWhereInput | WithdrawalScalarWhereInput[]
   }
 
+  export type ExchangeMatchUpdateManyWithoutFeeWalletNestedInput = {
+    create?: XOR<ExchangeMatchCreateWithoutFeeWalletInput, ExchangeMatchUncheckedCreateWithoutFeeWalletInput> | ExchangeMatchCreateWithoutFeeWalletInput[] | ExchangeMatchUncheckedCreateWithoutFeeWalletInput[]
+    connectOrCreate?: ExchangeMatchCreateOrConnectWithoutFeeWalletInput | ExchangeMatchCreateOrConnectWithoutFeeWalletInput[]
+    upsert?: ExchangeMatchUpsertWithWhereUniqueWithoutFeeWalletInput | ExchangeMatchUpsertWithWhereUniqueWithoutFeeWalletInput[]
+    createMany?: ExchangeMatchCreateManyFeeWalletInputEnvelope
+    set?: ExchangeMatchWhereUniqueInput | ExchangeMatchWhereUniqueInput[]
+    disconnect?: ExchangeMatchWhereUniqueInput | ExchangeMatchWhereUniqueInput[]
+    delete?: ExchangeMatchWhereUniqueInput | ExchangeMatchWhereUniqueInput[]
+    connect?: ExchangeMatchWhereUniqueInput | ExchangeMatchWhereUniqueInput[]
+    update?: ExchangeMatchUpdateWithWhereUniqueWithoutFeeWalletInput | ExchangeMatchUpdateWithWhereUniqueWithoutFeeWalletInput[]
+    updateMany?: ExchangeMatchUpdateManyWithWhereWithoutFeeWalletInput | ExchangeMatchUpdateManyWithWhereWithoutFeeWalletInput[]
+    deleteMany?: ExchangeMatchScalarWhereInput | ExchangeMatchScalarWhereInput[]
+  }
+
   export type DepositUncheckedUpdateManyWithoutWalletNestedInput = {
     create?: XOR<DepositCreateWithoutWalletInput, DepositUncheckedCreateWithoutWalletInput> | DepositCreateWithoutWalletInput[] | DepositUncheckedCreateWithoutWalletInput[]
     connectOrCreate?: DepositCreateOrConnectWithoutWalletInput | DepositCreateOrConnectWithoutWalletInput[]
@@ -26916,6 +27027,20 @@ export namespace Prisma {
     update?: WithdrawalUpdateWithWhereUniqueWithoutWalletInput | WithdrawalUpdateWithWhereUniqueWithoutWalletInput[]
     updateMany?: WithdrawalUpdateManyWithWhereWithoutWalletInput | WithdrawalUpdateManyWithWhereWithoutWalletInput[]
     deleteMany?: WithdrawalScalarWhereInput | WithdrawalScalarWhereInput[]
+  }
+
+  export type ExchangeMatchUncheckedUpdateManyWithoutFeeWalletNestedInput = {
+    create?: XOR<ExchangeMatchCreateWithoutFeeWalletInput, ExchangeMatchUncheckedCreateWithoutFeeWalletInput> | ExchangeMatchCreateWithoutFeeWalletInput[] | ExchangeMatchUncheckedCreateWithoutFeeWalletInput[]
+    connectOrCreate?: ExchangeMatchCreateOrConnectWithoutFeeWalletInput | ExchangeMatchCreateOrConnectWithoutFeeWalletInput[]
+    upsert?: ExchangeMatchUpsertWithWhereUniqueWithoutFeeWalletInput | ExchangeMatchUpsertWithWhereUniqueWithoutFeeWalletInput[]
+    createMany?: ExchangeMatchCreateManyFeeWalletInputEnvelope
+    set?: ExchangeMatchWhereUniqueInput | ExchangeMatchWhereUniqueInput[]
+    disconnect?: ExchangeMatchWhereUniqueInput | ExchangeMatchWhereUniqueInput[]
+    delete?: ExchangeMatchWhereUniqueInput | ExchangeMatchWhereUniqueInput[]
+    connect?: ExchangeMatchWhereUniqueInput | ExchangeMatchWhereUniqueInput[]
+    update?: ExchangeMatchUpdateWithWhereUniqueWithoutFeeWalletInput | ExchangeMatchUpdateWithWhereUniqueWithoutFeeWalletInput[]
+    updateMany?: ExchangeMatchUpdateManyWithWhereWithoutFeeWalletInput | ExchangeMatchUpdateManyWithWhereWithoutFeeWalletInput[]
+    deleteMany?: ExchangeMatchScalarWhereInput | ExchangeMatchScalarWhereInput[]
   }
 
   export type BridgeTransferCreateNestedOneWithoutDepositInput = {
@@ -27356,6 +27481,12 @@ export namespace Prisma {
     connect?: ExchangeWhereUniqueInput
   }
 
+  export type WalletCreateNestedOneWithoutExchangeMatchesInput = {
+    create?: XOR<WalletCreateWithoutExchangeMatchesInput, WalletUncheckedCreateWithoutExchangeMatchesInput>
+    connectOrCreate?: WalletCreateOrConnectWithoutExchangeMatchesInput
+    connect?: WalletWhereUniqueInput
+  }
+
   export type ExchangeUpdateOneRequiredWithoutMatchesFromNestedInput = {
     create?: XOR<ExchangeCreateWithoutMatchesFromInput, ExchangeUncheckedCreateWithoutMatchesFromInput>
     connectOrCreate?: ExchangeCreateOrConnectWithoutMatchesFromInput
@@ -27370,6 +27501,14 @@ export namespace Prisma {
     upsert?: ExchangeUpsertWithoutMatchesToInput
     connect?: ExchangeWhereUniqueInput
     update?: XOR<XOR<ExchangeUpdateToOneWithWhereWithoutMatchesToInput, ExchangeUpdateWithoutMatchesToInput>, ExchangeUncheckedUpdateWithoutMatchesToInput>
+  }
+
+  export type WalletUpdateOneRequiredWithoutExchangeMatchesNestedInput = {
+    create?: XOR<WalletCreateWithoutExchangeMatchesInput, WalletUncheckedCreateWithoutExchangeMatchesInput>
+    connectOrCreate?: WalletCreateOrConnectWithoutExchangeMatchesInput
+    upsert?: WalletUpsertWithoutExchangeMatchesInput
+    connect?: WalletWhereUniqueInput
+    update?: XOR<XOR<WalletUpdateToOneWithWhereWithoutExchangeMatchesInput, WalletUpdateWithoutExchangeMatchesInput>, WalletUncheckedUpdateWithoutExchangeMatchesInput>
   }
 
   export type UserCreateNestedOneWithoutActivityLogInput = {
@@ -27898,7 +28037,7 @@ export namespace Prisma {
     fromAmount: Decimal | DecimalJsLike | number | string
     toAmount: Decimal | DecimalJsLike | number | string
     exchangeRate: Decimal | DecimalJsLike | number | string
-    feePercentage?: Decimal | DecimalJsLike | number | string
+    fee?: Decimal | DecimalJsLike | number | string
     status?: $Enums.ExchangeStatus
     matchedAmount?: Decimal | DecimalJsLike | number | string
     remainingAmount?: Decimal | DecimalJsLike | number | string
@@ -27916,7 +28055,7 @@ export namespace Prisma {
     fromAmount: Decimal | DecimalJsLike | number | string
     toAmount: Decimal | DecimalJsLike | number | string
     exchangeRate: Decimal | DecimalJsLike | number | string
-    feePercentage?: Decimal | DecimalJsLike | number | string
+    fee?: Decimal | DecimalJsLike | number | string
     status?: $Enums.ExchangeStatus
     matchedAmount?: Decimal | DecimalJsLike | number | string
     remainingAmount?: Decimal | DecimalJsLike | number | string
@@ -28013,6 +28152,7 @@ export namespace Prisma {
     transfersTo?: TransferCreateNestedManyWithoutToWalletInput
     currency: CurrencyCreateNestedOneWithoutWalletsInput
     withdrawals?: WithdrawalCreateNestedManyWithoutWalletInput
+    exchangeMatches?: ExchangeMatchCreateNestedManyWithoutFeeWalletInput
   }
 
   export type WalletUncheckedCreateWithoutUserInput = {
@@ -28027,6 +28167,7 @@ export namespace Prisma {
     transfersFrom?: TransferUncheckedCreateNestedManyWithoutFromWalletInput
     transfersTo?: TransferUncheckedCreateNestedManyWithoutToWalletInput
     withdrawals?: WithdrawalUncheckedCreateNestedManyWithoutWalletInput
+    exchangeMatches?: ExchangeMatchUncheckedCreateNestedManyWithoutFeeWalletInput
   }
 
   export type WalletCreateOrConnectWithoutUserInput = {
@@ -28207,7 +28348,7 @@ export namespace Prisma {
     fromAmount?: DecimalFilter<"Exchange"> | Decimal | DecimalJsLike | number | string
     toAmount?: DecimalFilter<"Exchange"> | Decimal | DecimalJsLike | number | string
     exchangeRate?: DecimalFilter<"Exchange"> | Decimal | DecimalJsLike | number | string
-    feePercentage?: DecimalFilter<"Exchange"> | Decimal | DecimalJsLike | number | string
+    fee?: DecimalFilter<"Exchange"> | Decimal | DecimalJsLike | number | string
     status?: EnumExchangeStatusFilter<"Exchange"> | $Enums.ExchangeStatus
     matchedAmount?: DecimalFilter<"Exchange"> | Decimal | DecimalJsLike | number | string
     remainingAmount?: DecimalFilter<"Exchange"> | Decimal | DecimalJsLike | number | string
@@ -28744,6 +28885,7 @@ export namespace Prisma {
     transfersTo?: TransferCreateNestedManyWithoutToWalletInput
     user: UserCreateNestedOneWithoutWalletInput
     withdrawals?: WithdrawalCreateNestedManyWithoutWalletInput
+    exchangeMatches?: ExchangeMatchCreateNestedManyWithoutFeeWalletInput
   }
 
   export type WalletUncheckedCreateWithoutCurrencyInput = {
@@ -28758,6 +28900,7 @@ export namespace Prisma {
     transfersFrom?: TransferUncheckedCreateNestedManyWithoutFromWalletInput
     transfersTo?: TransferUncheckedCreateNestedManyWithoutToWalletInput
     withdrawals?: WithdrawalUncheckedCreateNestedManyWithoutWalletInput
+    exchangeMatches?: ExchangeMatchUncheckedCreateNestedManyWithoutFeeWalletInput
   }
 
   export type WalletCreateOrConnectWithoutCurrencyInput = {
@@ -29001,7 +29144,7 @@ export namespace Prisma {
     fromAmount: Decimal | DecimalJsLike | number | string
     toAmount: Decimal | DecimalJsLike | number | string
     exchangeRate: Decimal | DecimalJsLike | number | string
-    feePercentage?: Decimal | DecimalJsLike | number | string
+    fee?: Decimal | DecimalJsLike | number | string
     status?: $Enums.ExchangeStatus
     matchedAmount?: Decimal | DecimalJsLike | number | string
     remainingAmount?: Decimal | DecimalJsLike | number | string
@@ -29019,7 +29162,7 @@ export namespace Prisma {
     fromAmount: Decimal | DecimalJsLike | number | string
     toAmount: Decimal | DecimalJsLike | number | string
     exchangeRate: Decimal | DecimalJsLike | number | string
-    feePercentage?: Decimal | DecimalJsLike | number | string
+    fee?: Decimal | DecimalJsLike | number | string
     status?: $Enums.ExchangeStatus
     matchedAmount?: Decimal | DecimalJsLike | number | string
     remainingAmount?: Decimal | DecimalJsLike | number | string
@@ -29782,6 +29925,34 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
+  export type ExchangeMatchCreateWithoutFeeWalletInput = {
+    id?: string
+    fromMatchedAmount: Decimal | DecimalJsLike | number | string
+    toMatchedAmount: Decimal | DecimalJsLike | number | string
+    createdAt?: Date | string
+    fromExchange: ExchangeCreateNestedOneWithoutMatchesFromInput
+    toExchange: ExchangeCreateNestedOneWithoutMatchesToInput
+  }
+
+  export type ExchangeMatchUncheckedCreateWithoutFeeWalletInput = {
+    id?: string
+    fromExchangeId: string
+    toExchangeId: string
+    fromMatchedAmount: Decimal | DecimalJsLike | number | string
+    toMatchedAmount: Decimal | DecimalJsLike | number | string
+    createdAt?: Date | string
+  }
+
+  export type ExchangeMatchCreateOrConnectWithoutFeeWalletInput = {
+    where: ExchangeMatchWhereUniqueInput
+    create: XOR<ExchangeMatchCreateWithoutFeeWalletInput, ExchangeMatchUncheckedCreateWithoutFeeWalletInput>
+  }
+
+  export type ExchangeMatchCreateManyFeeWalletInputEnvelope = {
+    data: ExchangeMatchCreateManyFeeWalletInput | ExchangeMatchCreateManyFeeWalletInput[]
+    skipDuplicates?: boolean
+  }
+
   export type DepositUpsertWithWhereUniqueWithoutWalletInput = {
     where: DepositWhereUniqueInput
     update: XOR<DepositUpdateWithoutWalletInput, DepositUncheckedUpdateWithoutWalletInput>
@@ -29982,6 +30153,35 @@ export namespace Prisma {
     data: XOR<WithdrawalUpdateManyMutationInput, WithdrawalUncheckedUpdateManyWithoutWalletInput>
   }
 
+  export type ExchangeMatchUpsertWithWhereUniqueWithoutFeeWalletInput = {
+    where: ExchangeMatchWhereUniqueInput
+    update: XOR<ExchangeMatchUpdateWithoutFeeWalletInput, ExchangeMatchUncheckedUpdateWithoutFeeWalletInput>
+    create: XOR<ExchangeMatchCreateWithoutFeeWalletInput, ExchangeMatchUncheckedCreateWithoutFeeWalletInput>
+  }
+
+  export type ExchangeMatchUpdateWithWhereUniqueWithoutFeeWalletInput = {
+    where: ExchangeMatchWhereUniqueInput
+    data: XOR<ExchangeMatchUpdateWithoutFeeWalletInput, ExchangeMatchUncheckedUpdateWithoutFeeWalletInput>
+  }
+
+  export type ExchangeMatchUpdateManyWithWhereWithoutFeeWalletInput = {
+    where: ExchangeMatchScalarWhereInput
+    data: XOR<ExchangeMatchUpdateManyMutationInput, ExchangeMatchUncheckedUpdateManyWithoutFeeWalletInput>
+  }
+
+  export type ExchangeMatchScalarWhereInput = {
+    AND?: ExchangeMatchScalarWhereInput | ExchangeMatchScalarWhereInput[]
+    OR?: ExchangeMatchScalarWhereInput[]
+    NOT?: ExchangeMatchScalarWhereInput | ExchangeMatchScalarWhereInput[]
+    id?: StringFilter<"ExchangeMatch"> | string
+    fromExchangeId?: StringFilter<"ExchangeMatch"> | string
+    toExchangeId?: StringFilter<"ExchangeMatch"> | string
+    fromMatchedAmount?: DecimalFilter<"ExchangeMatch"> | Decimal | DecimalJsLike | number | string
+    toMatchedAmount?: DecimalFilter<"ExchangeMatch"> | Decimal | DecimalJsLike | number | string
+    feeWalletId?: StringFilter<"ExchangeMatch"> | string
+    createdAt?: DateTimeFilter<"ExchangeMatch"> | Date | string
+  }
+
   export type BridgeTransferCreateWithoutDepositInput = {
     id?: string
     status?: $Enums.BridgeStatus
@@ -30123,6 +30323,7 @@ export namespace Prisma {
     currency: CurrencyCreateNestedOneWithoutWalletsInput
     user: UserCreateNestedOneWithoutWalletInput
     withdrawals?: WithdrawalCreateNestedManyWithoutWalletInput
+    exchangeMatches?: ExchangeMatchCreateNestedManyWithoutFeeWalletInput
   }
 
   export type WalletUncheckedCreateWithoutDepositsInput = {
@@ -30137,6 +30338,7 @@ export namespace Prisma {
     transfersFrom?: TransferUncheckedCreateNestedManyWithoutFromWalletInput
     transfersTo?: TransferUncheckedCreateNestedManyWithoutToWalletInput
     withdrawals?: WithdrawalUncheckedCreateNestedManyWithoutWalletInput
+    exchangeMatches?: ExchangeMatchUncheckedCreateNestedManyWithoutFeeWalletInput
   }
 
   export type WalletCreateOrConnectWithoutDepositsInput = {
@@ -30314,6 +30516,7 @@ export namespace Prisma {
     currency?: CurrencyUpdateOneRequiredWithoutWalletsNestedInput
     user?: UserUpdateOneRequiredWithoutWalletNestedInput
     withdrawals?: WithdrawalUpdateManyWithoutWalletNestedInput
+    exchangeMatches?: ExchangeMatchUpdateManyWithoutFeeWalletNestedInput
   }
 
   export type WalletUncheckedUpdateWithoutDepositsInput = {
@@ -30328,6 +30531,7 @@ export namespace Prisma {
     transfersFrom?: TransferUncheckedUpdateManyWithoutFromWalletNestedInput
     transfersTo?: TransferUncheckedUpdateManyWithoutToWalletNestedInput
     withdrawals?: WithdrawalUncheckedUpdateManyWithoutWalletNestedInput
+    exchangeMatches?: ExchangeMatchUncheckedUpdateManyWithoutFeeWalletNestedInput
   }
 
   export type BridgeTransferCreateWithoutWithdrawalInput = {
@@ -30471,6 +30675,7 @@ export namespace Prisma {
     transfersTo?: TransferCreateNestedManyWithoutToWalletInput
     currency: CurrencyCreateNestedOneWithoutWalletsInput
     user: UserCreateNestedOneWithoutWalletInput
+    exchangeMatches?: ExchangeMatchCreateNestedManyWithoutFeeWalletInput
   }
 
   export type WalletUncheckedCreateWithoutWithdrawalsInput = {
@@ -30485,6 +30690,7 @@ export namespace Prisma {
     Refund?: RefundUncheckedCreateNestedManyWithoutWalletInput
     transfersFrom?: TransferUncheckedCreateNestedManyWithoutFromWalletInput
     transfersTo?: TransferUncheckedCreateNestedManyWithoutToWalletInput
+    exchangeMatches?: ExchangeMatchUncheckedCreateNestedManyWithoutFeeWalletInput
   }
 
   export type WalletCreateOrConnectWithoutWithdrawalsInput = {
@@ -30662,6 +30868,7 @@ export namespace Prisma {
     transfersTo?: TransferUpdateManyWithoutToWalletNestedInput
     currency?: CurrencyUpdateOneRequiredWithoutWalletsNestedInput
     user?: UserUpdateOneRequiredWithoutWalletNestedInput
+    exchangeMatches?: ExchangeMatchUpdateManyWithoutFeeWalletNestedInput
   }
 
   export type WalletUncheckedUpdateWithoutWithdrawalsInput = {
@@ -30676,6 +30883,7 @@ export namespace Prisma {
     Refund?: RefundUncheckedUpdateManyWithoutWalletNestedInput
     transfersFrom?: TransferUncheckedUpdateManyWithoutFromWalletNestedInput
     transfersTo?: TransferUncheckedUpdateManyWithoutToWalletNestedInput
+    exchangeMatches?: ExchangeMatchUncheckedUpdateManyWithoutFeeWalletNestedInput
   }
 
   export type DepositCreateWithoutBridgeTransferInput = {
@@ -30914,6 +31122,7 @@ export namespace Prisma {
     currency: CurrencyCreateNestedOneWithoutWalletsInput
     user: UserCreateNestedOneWithoutWalletInput
     withdrawals?: WithdrawalCreateNestedManyWithoutWalletInput
+    exchangeMatches?: ExchangeMatchCreateNestedManyWithoutFeeWalletInput
   }
 
   export type WalletUncheckedCreateWithoutTransfersFromInput = {
@@ -30928,6 +31137,7 @@ export namespace Prisma {
     Refund?: RefundUncheckedCreateNestedManyWithoutWalletInput
     transfersTo?: TransferUncheckedCreateNestedManyWithoutToWalletInput
     withdrawals?: WithdrawalUncheckedCreateNestedManyWithoutWalletInput
+    exchangeMatches?: ExchangeMatchUncheckedCreateNestedManyWithoutFeeWalletInput
   }
 
   export type WalletCreateOrConnectWithoutTransfersFromInput = {
@@ -30947,6 +31157,7 @@ export namespace Prisma {
     currency: CurrencyCreateNestedOneWithoutWalletsInput
     user: UserCreateNestedOneWithoutWalletInput
     withdrawals?: WithdrawalCreateNestedManyWithoutWalletInput
+    exchangeMatches?: ExchangeMatchCreateNestedManyWithoutFeeWalletInput
   }
 
   export type WalletUncheckedCreateWithoutTransfersToInput = {
@@ -30961,6 +31172,7 @@ export namespace Prisma {
     Refund?: RefundUncheckedCreateNestedManyWithoutWalletInput
     transfersFrom?: TransferUncheckedCreateNestedManyWithoutFromWalletInput
     withdrawals?: WithdrawalUncheckedCreateNestedManyWithoutWalletInput
+    exchangeMatches?: ExchangeMatchUncheckedCreateNestedManyWithoutFeeWalletInput
   }
 
   export type WalletCreateOrConnectWithoutTransfersToInput = {
@@ -31066,6 +31278,7 @@ export namespace Prisma {
     currency?: CurrencyUpdateOneRequiredWithoutWalletsNestedInput
     user?: UserUpdateOneRequiredWithoutWalletNestedInput
     withdrawals?: WithdrawalUpdateManyWithoutWalletNestedInput
+    exchangeMatches?: ExchangeMatchUpdateManyWithoutFeeWalletNestedInput
   }
 
   export type WalletUncheckedUpdateWithoutTransfersFromInput = {
@@ -31080,6 +31293,7 @@ export namespace Prisma {
     Refund?: RefundUncheckedUpdateManyWithoutWalletNestedInput
     transfersTo?: TransferUncheckedUpdateManyWithoutToWalletNestedInput
     withdrawals?: WithdrawalUncheckedUpdateManyWithoutWalletNestedInput
+    exchangeMatches?: ExchangeMatchUncheckedUpdateManyWithoutFeeWalletNestedInput
   }
 
   export type WalletUpsertWithoutTransfersToInput = {
@@ -31105,6 +31319,7 @@ export namespace Prisma {
     currency?: CurrencyUpdateOneRequiredWithoutWalletsNestedInput
     user?: UserUpdateOneRequiredWithoutWalletNestedInput
     withdrawals?: WithdrawalUpdateManyWithoutWalletNestedInput
+    exchangeMatches?: ExchangeMatchUpdateManyWithoutFeeWalletNestedInput
   }
 
   export type WalletUncheckedUpdateWithoutTransfersToInput = {
@@ -31119,6 +31334,7 @@ export namespace Prisma {
     Refund?: RefundUncheckedUpdateManyWithoutWalletNestedInput
     transfersFrom?: TransferUncheckedUpdateManyWithoutFromWalletNestedInput
     withdrawals?: WithdrawalUncheckedUpdateManyWithoutWalletNestedInput
+    exchangeMatches?: ExchangeMatchUncheckedUpdateManyWithoutFeeWalletNestedInput
   }
 
   export type UserUpsertWithWhereUniqueWithoutTransfersInput = {
@@ -31255,6 +31471,7 @@ export namespace Prisma {
     currency: CurrencyCreateNestedOneWithoutWalletsInput
     user: UserCreateNestedOneWithoutWalletInput
     withdrawals?: WithdrawalCreateNestedManyWithoutWalletInput
+    exchangeMatches?: ExchangeMatchCreateNestedManyWithoutFeeWalletInput
   }
 
   export type WalletUncheckedCreateWithoutRefundInput = {
@@ -31269,6 +31486,7 @@ export namespace Prisma {
     transfersFrom?: TransferUncheckedCreateNestedManyWithoutFromWalletInput
     transfersTo?: TransferUncheckedCreateNestedManyWithoutToWalletInput
     withdrawals?: WithdrawalUncheckedCreateNestedManyWithoutWalletInput
+    exchangeMatches?: ExchangeMatchUncheckedCreateNestedManyWithoutFeeWalletInput
   }
 
   export type WalletCreateOrConnectWithoutRefundInput = {
@@ -31380,6 +31598,7 @@ export namespace Prisma {
     currency?: CurrencyUpdateOneRequiredWithoutWalletsNestedInput
     user?: UserUpdateOneRequiredWithoutWalletNestedInput
     withdrawals?: WithdrawalUpdateManyWithoutWalletNestedInput
+    exchangeMatches?: ExchangeMatchUpdateManyWithoutFeeWalletNestedInput
   }
 
   export type WalletUncheckedUpdateWithoutRefundInput = {
@@ -31394,6 +31613,7 @@ export namespace Prisma {
     transfersFrom?: TransferUncheckedUpdateManyWithoutFromWalletNestedInput
     transfersTo?: TransferUncheckedUpdateManyWithoutToWalletNestedInput
     withdrawals?: WithdrawalUncheckedUpdateManyWithoutWalletNestedInput
+    exchangeMatches?: ExchangeMatchUncheckedUpdateManyWithoutFeeWalletNestedInput
   }
 
   export type CurrencyPairCreateWithoutExchangeInput = {
@@ -31506,6 +31726,7 @@ export namespace Prisma {
     toMatchedAmount: Decimal | DecimalJsLike | number | string
     createdAt?: Date | string
     toExchange: ExchangeCreateNestedOneWithoutMatchesToInput
+    feeWallet: WalletCreateNestedOneWithoutExchangeMatchesInput
   }
 
   export type ExchangeMatchUncheckedCreateWithoutFromExchangeInput = {
@@ -31513,6 +31734,7 @@ export namespace Prisma {
     toExchangeId: string
     fromMatchedAmount: Decimal | DecimalJsLike | number | string
     toMatchedAmount: Decimal | DecimalJsLike | number | string
+    feeWalletId: string
     createdAt?: Date | string
   }
 
@@ -31532,6 +31754,7 @@ export namespace Prisma {
     toMatchedAmount: Decimal | DecimalJsLike | number | string
     createdAt?: Date | string
     fromExchange: ExchangeCreateNestedOneWithoutMatchesFromInput
+    feeWallet: WalletCreateNestedOneWithoutExchangeMatchesInput
   }
 
   export type ExchangeMatchUncheckedCreateWithoutToExchangeInput = {
@@ -31539,6 +31762,7 @@ export namespace Prisma {
     fromExchangeId: string
     fromMatchedAmount: Decimal | DecimalJsLike | number | string
     toMatchedAmount: Decimal | DecimalJsLike | number | string
+    feeWalletId: string
     createdAt?: Date | string
   }
 
@@ -31684,18 +31908,6 @@ export namespace Prisma {
     data: XOR<ExchangeMatchUpdateManyMutationInput, ExchangeMatchUncheckedUpdateManyWithoutFromExchangeInput>
   }
 
-  export type ExchangeMatchScalarWhereInput = {
-    AND?: ExchangeMatchScalarWhereInput | ExchangeMatchScalarWhereInput[]
-    OR?: ExchangeMatchScalarWhereInput[]
-    NOT?: ExchangeMatchScalarWhereInput | ExchangeMatchScalarWhereInput[]
-    id?: StringFilter<"ExchangeMatch"> | string
-    fromExchangeId?: StringFilter<"ExchangeMatch"> | string
-    toExchangeId?: StringFilter<"ExchangeMatch"> | string
-    fromMatchedAmount?: DecimalFilter<"ExchangeMatch"> | Decimal | DecimalJsLike | number | string
-    toMatchedAmount?: DecimalFilter<"ExchangeMatch"> | Decimal | DecimalJsLike | number | string
-    createdAt?: DateTimeFilter<"ExchangeMatch"> | Date | string
-  }
-
   export type ExchangeMatchUpsertWithWhereUniqueWithoutToExchangeInput = {
     where: ExchangeMatchWhereUniqueInput
     update: XOR<ExchangeMatchUpdateWithoutToExchangeInput, ExchangeMatchUncheckedUpdateWithoutToExchangeInput>
@@ -31717,7 +31929,7 @@ export namespace Prisma {
     fromAmount: Decimal | DecimalJsLike | number | string
     toAmount: Decimal | DecimalJsLike | number | string
     exchangeRate: Decimal | DecimalJsLike | number | string
-    feePercentage?: Decimal | DecimalJsLike | number | string
+    fee?: Decimal | DecimalJsLike | number | string
     status?: $Enums.ExchangeStatus
     matchedAmount?: Decimal | DecimalJsLike | number | string
     remainingAmount?: Decimal | DecimalJsLike | number | string
@@ -31736,7 +31948,7 @@ export namespace Prisma {
     fromAmount: Decimal | DecimalJsLike | number | string
     toAmount: Decimal | DecimalJsLike | number | string
     exchangeRate: Decimal | DecimalJsLike | number | string
-    feePercentage?: Decimal | DecimalJsLike | number | string
+    fee?: Decimal | DecimalJsLike | number | string
     status?: $Enums.ExchangeStatus
     matchedAmount?: Decimal | DecimalJsLike | number | string
     remainingAmount?: Decimal | DecimalJsLike | number | string
@@ -31756,7 +31968,7 @@ export namespace Prisma {
     fromAmount: Decimal | DecimalJsLike | number | string
     toAmount: Decimal | DecimalJsLike | number | string
     exchangeRate: Decimal | DecimalJsLike | number | string
-    feePercentage?: Decimal | DecimalJsLike | number | string
+    fee?: Decimal | DecimalJsLike | number | string
     status?: $Enums.ExchangeStatus
     matchedAmount?: Decimal | DecimalJsLike | number | string
     remainingAmount?: Decimal | DecimalJsLike | number | string
@@ -31775,7 +31987,7 @@ export namespace Prisma {
     fromAmount: Decimal | DecimalJsLike | number | string
     toAmount: Decimal | DecimalJsLike | number | string
     exchangeRate: Decimal | DecimalJsLike | number | string
-    feePercentage?: Decimal | DecimalJsLike | number | string
+    fee?: Decimal | DecimalJsLike | number | string
     status?: $Enums.ExchangeStatus
     matchedAmount?: Decimal | DecimalJsLike | number | string
     remainingAmount?: Decimal | DecimalJsLike | number | string
@@ -31788,6 +32000,41 @@ export namespace Prisma {
   export type ExchangeCreateOrConnectWithoutMatchesToInput = {
     where: ExchangeWhereUniqueInput
     create: XOR<ExchangeCreateWithoutMatchesToInput, ExchangeUncheckedCreateWithoutMatchesToInput>
+  }
+
+  export type WalletCreateWithoutExchangeMatchesInput = {
+    id?: string
+    balance?: Decimal | DecimalJsLike | number | string
+    frozen?: Decimal | DecimalJsLike | number | string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    deposits?: DepositCreateNestedManyWithoutWalletInput
+    Refund?: RefundCreateNestedManyWithoutWalletInput
+    transfersFrom?: TransferCreateNestedManyWithoutFromWalletInput
+    transfersTo?: TransferCreateNestedManyWithoutToWalletInput
+    currency: CurrencyCreateNestedOneWithoutWalletsInput
+    user: UserCreateNestedOneWithoutWalletInput
+    withdrawals?: WithdrawalCreateNestedManyWithoutWalletInput
+  }
+
+  export type WalletUncheckedCreateWithoutExchangeMatchesInput = {
+    id?: string
+    userId: string
+    currencyId: string
+    balance?: Decimal | DecimalJsLike | number | string
+    frozen?: Decimal | DecimalJsLike | number | string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    deposits?: DepositUncheckedCreateNestedManyWithoutWalletInput
+    Refund?: RefundUncheckedCreateNestedManyWithoutWalletInput
+    transfersFrom?: TransferUncheckedCreateNestedManyWithoutFromWalletInput
+    transfersTo?: TransferUncheckedCreateNestedManyWithoutToWalletInput
+    withdrawals?: WithdrawalUncheckedCreateNestedManyWithoutWalletInput
+  }
+
+  export type WalletCreateOrConnectWithoutExchangeMatchesInput = {
+    where: WalletWhereUniqueInput
+    create: XOR<WalletCreateWithoutExchangeMatchesInput, WalletUncheckedCreateWithoutExchangeMatchesInput>
   }
 
   export type ExchangeUpsertWithoutMatchesFromInput = {
@@ -31806,7 +32053,7 @@ export namespace Prisma {
     fromAmount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     toAmount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     exchangeRate?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
-    feePercentage?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    fee?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     status?: EnumExchangeStatusFieldUpdateOperationsInput | $Enums.ExchangeStatus
     matchedAmount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     remainingAmount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
@@ -31825,7 +32072,7 @@ export namespace Prisma {
     fromAmount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     toAmount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     exchangeRate?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
-    feePercentage?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    fee?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     status?: EnumExchangeStatusFieldUpdateOperationsInput | $Enums.ExchangeStatus
     matchedAmount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     remainingAmount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
@@ -31851,7 +32098,7 @@ export namespace Prisma {
     fromAmount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     toAmount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     exchangeRate?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
-    feePercentage?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    fee?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     status?: EnumExchangeStatusFieldUpdateOperationsInput | $Enums.ExchangeStatus
     matchedAmount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     remainingAmount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
@@ -31870,7 +32117,7 @@ export namespace Prisma {
     fromAmount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     toAmount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     exchangeRate?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
-    feePercentage?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    fee?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     status?: EnumExchangeStatusFieldUpdateOperationsInput | $Enums.ExchangeStatus
     matchedAmount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     remainingAmount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
@@ -31878,6 +32125,47 @@ export namespace Prisma {
     completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     failedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     matchesFrom?: ExchangeMatchUncheckedUpdateManyWithoutFromExchangeNestedInput
+  }
+
+  export type WalletUpsertWithoutExchangeMatchesInput = {
+    update: XOR<WalletUpdateWithoutExchangeMatchesInput, WalletUncheckedUpdateWithoutExchangeMatchesInput>
+    create: XOR<WalletCreateWithoutExchangeMatchesInput, WalletUncheckedCreateWithoutExchangeMatchesInput>
+    where?: WalletWhereInput
+  }
+
+  export type WalletUpdateToOneWithWhereWithoutExchangeMatchesInput = {
+    where?: WalletWhereInput
+    data: XOR<WalletUpdateWithoutExchangeMatchesInput, WalletUncheckedUpdateWithoutExchangeMatchesInput>
+  }
+
+  export type WalletUpdateWithoutExchangeMatchesInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    balance?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    frozen?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    deposits?: DepositUpdateManyWithoutWalletNestedInput
+    Refund?: RefundUpdateManyWithoutWalletNestedInput
+    transfersFrom?: TransferUpdateManyWithoutFromWalletNestedInput
+    transfersTo?: TransferUpdateManyWithoutToWalletNestedInput
+    currency?: CurrencyUpdateOneRequiredWithoutWalletsNestedInput
+    user?: UserUpdateOneRequiredWithoutWalletNestedInput
+    withdrawals?: WithdrawalUpdateManyWithoutWalletNestedInput
+  }
+
+  export type WalletUncheckedUpdateWithoutExchangeMatchesInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    currencyId?: StringFieldUpdateOperationsInput | string
+    balance?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    frozen?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    deposits?: DepositUncheckedUpdateManyWithoutWalletNestedInput
+    Refund?: RefundUncheckedUpdateManyWithoutWalletNestedInput
+    transfersFrom?: TransferUncheckedUpdateManyWithoutFromWalletNestedInput
+    transfersTo?: TransferUncheckedUpdateManyWithoutToWalletNestedInput
+    withdrawals?: WithdrawalUncheckedUpdateManyWithoutWalletNestedInput
   }
 
   export type UserCreateWithoutActivityLogInput = {
@@ -32139,7 +32427,7 @@ export namespace Prisma {
     fromAmount: Decimal | DecimalJsLike | number | string
     toAmount: Decimal | DecimalJsLike | number | string
     exchangeRate: Decimal | DecimalJsLike | number | string
-    feePercentage?: Decimal | DecimalJsLike | number | string
+    fee?: Decimal | DecimalJsLike | number | string
     status?: $Enums.ExchangeStatus
     matchedAmount?: Decimal | DecimalJsLike | number | string
     remainingAmount?: Decimal | DecimalJsLike | number | string
@@ -32277,7 +32565,7 @@ export namespace Prisma {
     fromAmount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     toAmount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     exchangeRate?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
-    feePercentage?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    fee?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     status?: EnumExchangeStatusFieldUpdateOperationsInput | $Enums.ExchangeStatus
     matchedAmount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     remainingAmount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
@@ -32295,7 +32583,7 @@ export namespace Prisma {
     fromAmount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     toAmount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     exchangeRate?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
-    feePercentage?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    fee?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     status?: EnumExchangeStatusFieldUpdateOperationsInput | $Enums.ExchangeStatus
     matchedAmount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     remainingAmount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
@@ -32312,7 +32600,7 @@ export namespace Prisma {
     fromAmount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     toAmount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     exchangeRate?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
-    feePercentage?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    fee?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     status?: EnumExchangeStatusFieldUpdateOperationsInput | $Enums.ExchangeStatus
     matchedAmount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     remainingAmount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
@@ -32398,6 +32686,7 @@ export namespace Prisma {
     transfersTo?: TransferUpdateManyWithoutToWalletNestedInput
     currency?: CurrencyUpdateOneRequiredWithoutWalletsNestedInput
     withdrawals?: WithdrawalUpdateManyWithoutWalletNestedInput
+    exchangeMatches?: ExchangeMatchUpdateManyWithoutFeeWalletNestedInput
   }
 
   export type WalletUncheckedUpdateWithoutUserInput = {
@@ -32412,6 +32701,7 @@ export namespace Prisma {
     transfersFrom?: TransferUncheckedUpdateManyWithoutFromWalletNestedInput
     transfersTo?: TransferUncheckedUpdateManyWithoutToWalletNestedInput
     withdrawals?: WithdrawalUncheckedUpdateManyWithoutWalletNestedInput
+    exchangeMatches?: ExchangeMatchUncheckedUpdateManyWithoutFeeWalletNestedInput
   }
 
   export type WalletUncheckedUpdateManyWithoutUserInput = {
@@ -32917,6 +33207,7 @@ export namespace Prisma {
     transfersTo?: TransferUpdateManyWithoutToWalletNestedInput
     user?: UserUpdateOneRequiredWithoutWalletNestedInput
     withdrawals?: WithdrawalUpdateManyWithoutWalletNestedInput
+    exchangeMatches?: ExchangeMatchUpdateManyWithoutFeeWalletNestedInput
   }
 
   export type WalletUncheckedUpdateWithoutCurrencyInput = {
@@ -32931,6 +33222,7 @@ export namespace Prisma {
     transfersFrom?: TransferUncheckedUpdateManyWithoutFromWalletNestedInput
     transfersTo?: TransferUncheckedUpdateManyWithoutToWalletNestedInput
     withdrawals?: WithdrawalUncheckedUpdateManyWithoutWalletNestedInput
+    exchangeMatches?: ExchangeMatchUncheckedUpdateManyWithoutFeeWalletNestedInput
   }
 
   export type WalletUncheckedUpdateManyWithoutCurrencyInput = {
@@ -32975,7 +33267,7 @@ export namespace Prisma {
     fromAmount: Decimal | DecimalJsLike | number | string
     toAmount: Decimal | DecimalJsLike | number | string
     exchangeRate: Decimal | DecimalJsLike | number | string
-    feePercentage?: Decimal | DecimalJsLike | number | string
+    fee?: Decimal | DecimalJsLike | number | string
     status?: $Enums.ExchangeStatus
     matchedAmount?: Decimal | DecimalJsLike | number | string
     remainingAmount?: Decimal | DecimalJsLike | number | string
@@ -32989,7 +33281,7 @@ export namespace Prisma {
     fromAmount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     toAmount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     exchangeRate?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
-    feePercentage?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    fee?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     status?: EnumExchangeStatusFieldUpdateOperationsInput | $Enums.ExchangeStatus
     matchedAmount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     remainingAmount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
@@ -33007,7 +33299,7 @@ export namespace Prisma {
     fromAmount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     toAmount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     exchangeRate?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
-    feePercentage?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    fee?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     status?: EnumExchangeStatusFieldUpdateOperationsInput | $Enums.ExchangeStatus
     matchedAmount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     remainingAmount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
@@ -33024,7 +33316,7 @@ export namespace Prisma {
     fromAmount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     toAmount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     exchangeRate?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
-    feePercentage?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    fee?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     status?: EnumExchangeStatusFieldUpdateOperationsInput | $Enums.ExchangeStatus
     matchedAmount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     remainingAmount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
@@ -33145,6 +33437,15 @@ export namespace Prisma {
     receiverAddress: string
     addressOwnerName: string
     documentUrl?: string | null
+  }
+
+  export type ExchangeMatchCreateManyFeeWalletInput = {
+    id?: string
+    fromExchangeId: string
+    toExchangeId: string
+    fromMatchedAmount: Decimal | DecimalJsLike | number | string
+    toMatchedAmount: Decimal | DecimalJsLike | number | string
+    createdAt?: Date | string
   }
 
   export type DepositUpdateWithoutWalletInput = {
@@ -33353,6 +33654,33 @@ export namespace Prisma {
     documentUrl?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
+  export type ExchangeMatchUpdateWithoutFeeWalletInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    fromMatchedAmount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    toMatchedAmount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    fromExchange?: ExchangeUpdateOneRequiredWithoutMatchesFromNestedInput
+    toExchange?: ExchangeUpdateOneRequiredWithoutMatchesToNestedInput
+  }
+
+  export type ExchangeMatchUncheckedUpdateWithoutFeeWalletInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    fromExchangeId?: StringFieldUpdateOperationsInput | string
+    toExchangeId?: StringFieldUpdateOperationsInput | string
+    fromMatchedAmount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    toMatchedAmount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type ExchangeMatchUncheckedUpdateManyWithoutFeeWalletInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    fromExchangeId?: StringFieldUpdateOperationsInput | string
+    toExchangeId?: StringFieldUpdateOperationsInput | string
+    fromMatchedAmount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    toMatchedAmount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
   export type UserUpdateWithoutTransfersInput = {
     id?: StringFieldUpdateOperationsInput | string
     email?: StringFieldUpdateOperationsInput | string
@@ -33456,6 +33784,7 @@ export namespace Prisma {
     toExchangeId: string
     fromMatchedAmount: Decimal | DecimalJsLike | number | string
     toMatchedAmount: Decimal | DecimalJsLike | number | string
+    feeWalletId: string
     createdAt?: Date | string
   }
 
@@ -33464,6 +33793,7 @@ export namespace Prisma {
     fromExchangeId: string
     fromMatchedAmount: Decimal | DecimalJsLike | number | string
     toMatchedAmount: Decimal | DecimalJsLike | number | string
+    feeWalletId: string
     createdAt?: Date | string
   }
 
@@ -33473,6 +33803,7 @@ export namespace Prisma {
     toMatchedAmount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     toExchange?: ExchangeUpdateOneRequiredWithoutMatchesToNestedInput
+    feeWallet?: WalletUpdateOneRequiredWithoutExchangeMatchesNestedInput
   }
 
   export type ExchangeMatchUncheckedUpdateWithoutFromExchangeInput = {
@@ -33480,6 +33811,7 @@ export namespace Prisma {
     toExchangeId?: StringFieldUpdateOperationsInput | string
     fromMatchedAmount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     toMatchedAmount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    feeWalletId?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
@@ -33488,6 +33820,7 @@ export namespace Prisma {
     toExchangeId?: StringFieldUpdateOperationsInput | string
     fromMatchedAmount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     toMatchedAmount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    feeWalletId?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
@@ -33497,6 +33830,7 @@ export namespace Prisma {
     toMatchedAmount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     fromExchange?: ExchangeUpdateOneRequiredWithoutMatchesFromNestedInput
+    feeWallet?: WalletUpdateOneRequiredWithoutExchangeMatchesNestedInput
   }
 
   export type ExchangeMatchUncheckedUpdateWithoutToExchangeInput = {
@@ -33504,6 +33838,7 @@ export namespace Prisma {
     fromExchangeId?: StringFieldUpdateOperationsInput | string
     fromMatchedAmount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     toMatchedAmount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    feeWalletId?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
@@ -33512,6 +33847,7 @@ export namespace Prisma {
     fromExchangeId?: StringFieldUpdateOperationsInput | string
     fromMatchedAmount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     toMatchedAmount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    feeWalletId?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 

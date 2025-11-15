@@ -74,6 +74,22 @@ export default function AddCurrencyPairDialog({}: Props) {
     return true;
   };
 
+  const [feePercentage, setFeePercentage] = useState(0);
+  const [feePercentageError, setFeePercentageError] = useState("");
+  const validateFeePercentage = (value: number) => {
+    if (!value) {
+      setFeePercentageError("Fee Percentage required!");
+      return false;
+    }
+
+    if (value < 0 || value > 100) {
+      setFeePercentageError("Fee Percentage must be between 0 and 100!");
+      return false;
+    }
+
+    return true;
+  };
+
   const [isInverseRate, setIsInverseRate] = useState(false);
 
   const [isActive, setIsActive] = useState(true);
@@ -94,6 +110,7 @@ export default function AddCurrencyPairDialog({}: Props) {
           fromCurrencyId,
           toCurrencyId,
           rate,
+          feePercentage,
           isInverseRate,
           isActive,
         },
@@ -184,6 +201,20 @@ export default function AddCurrencyPairDialog({}: Props) {
               onBlur={(e) => validateRate(+e.target.value)}
               required
             />
+          </div>
+          <div className="relative">
+            <Input
+              placeholder="Fee Percentage"
+              type="number"
+              inputMode="numeric"
+              value={feePercentage}
+              onChange={(e) => setFeePercentage(+e.target.value)}
+              onBlur={(e) => validateFeePercentage(+e.target.value)}
+              required
+            />
+            <span className="absolute right-4 top-1/2 -translate-y-1/2 text-muted-foreground">
+              %
+            </span>
           </div>
           <div>
             <div className="flex flex-col gap-4 bg-card p-3 rounded-md">
