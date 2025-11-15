@@ -1,24 +1,46 @@
 import { prisma } from "../prisma";
-import { FeeUser } from "@/generated/prisma";
-import { CreateFeeUser, GetFeeUserFilters } from "@/types/back/feeUser";
+import {
+  CreateFeeUser,
+  GetFeeUserFilters,
+  UpdateFeeUser,
+} from "@/types/back/feeUser";
 
 export const feeUserRepository = {
   create: async (data: CreateFeeUser) => {
     return await prisma.feeUser.create({
-      data: {
-        id: data.id,
-        userId: data.userId,
-        isActive: data.isActive,
-      },
+      data,
     });
   },
   getAll: async (filter?: GetFeeUserFilters) => {
     return prisma.feeUser.findMany({
       where: {
-        ...(filter?.id && { id: filter.id }),
         ...(filter?.userId && { userId: filter.userId }),
         ...(filter?.isActive && { isActive: filter.isActive }),
       },
     });
+  },
+
+  setInactiveOthers: async (id: string) => {
+    return prisma.feeUser.updateMany({
+      where: {
+        id: { not: id },
+      },
+      data: {
+        isActive: false,
+      },
+    });
+  },
+
+  setActive: async (id: string) => {
+    return prisma.feeUser.update({
+      where: { id },
+      data: {
+        isActive: true,
+      },
+    });
+  },
+
+  deleteById: async (id: string) => {
+    return prisma.feeUser.delete({ where: { id } });
   },
 };

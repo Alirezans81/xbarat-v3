@@ -1,6 +1,6 @@
 generator client {
-  provider 	= "prisma-client-js"
-  output   	= "../src/generated/prisma"
+  provider      = "prisma-client-js"
+  output        = "../src/generated/prisma"
   binaryTargets = ["native", "debian-openssl-3.0.x"]
 }
 
@@ -77,19 +77,19 @@ model Currency {
 }
 
 model CurrencyPair {
-  id             String   @id @default(uuid())
+  id             String     @id @default(uuid())
   fromCurrencyId String
   toCurrencyId   String
   rate           Decimal
-  isInverseRate  Boolean  @default(false)
-  feePercentage  Decimal  @default(0.00)
-  isActive       Boolean  @default(true)
-  createdAt      DateTime @default(now())
-  updatedAt      DateTime @updatedAt
-  fromCurrency   Currency @relation("FromCurrency", fields: [fromCurrencyId], references: [id])
-  toCurrency     Currency @relation("ToCurrency", fields: [toCurrencyId], references: [id])
+  isInverseRate  Boolean    @default(false)
+  feePercentage  Decimal    @default(0.00)
+  isActive       Boolean    @default(true)
+  createdAt      DateTime   @default(now())
+  updatedAt      DateTime   @updatedAt
+  fromCurrency   Currency   @relation("FromCurrency", fields: [fromCurrencyId], references: [id])
+  toCurrency     Currency   @relation("ToCurrency", fields: [toCurrencyId], references: [id])
   Exchange       Exchange[]
-  
+
   @@unique([fromCurrencyId, toCurrencyId])
 }
 
@@ -109,20 +109,20 @@ model LiquidityPool {
 }
 
 model Wallet {
-  id            String       @id @default(uuid())
-  userId        String
-  currencyId    String
-  balance       Decimal      @default(0.00)
-  frozen        Decimal      @default(0.00)
-  createdAt     DateTime     @default(now())
-  updatedAt     DateTime     @updatedAt
-  deposits      Deposit[]
-  Refund        Refund[]
-  transfersFrom Transfer[]   @relation("FromWallet")
-  transfersTo   Transfer[]   @relation("ToWallet")
-  currency      Currency     @relation(fields: [currencyId], references: [id], onDelete: Cascade)
-  user          User         @relation(fields: [userId], references: [id])
-  withdrawals   Withdrawal[]
+  id              String          @id @default(uuid())
+  userId          String
+  currencyId      String
+  balance         Decimal         @default(0.00)
+  frozen          Decimal         @default(0.00)
+  createdAt       DateTime        @default(now())
+  updatedAt       DateTime        @updatedAt
+  deposits        Deposit[]
+  Refund          Refund[]
+  transfersFrom   Transfer[]      @relation("FromWallet")
+  transfersTo     Transfer[]      @relation("ToWallet")
+  currency        Currency        @relation(fields: [currencyId], references: [id], onDelete: Cascade)
+  user            User            @relation(fields: [userId], references: [id])
+  withdrawals     Withdrawal[]
   exchangeMatches ExchangeMatch[]
 
   @@unique([userId, currencyId])
@@ -218,8 +218,8 @@ model Refund {
 
 model Exchange {
   id              String          @id @default(uuid())
-  currencyPairId  String 
-  userId          String 
+  currencyPairId  String
+  userId          String
   fromAmount      Decimal         @db.Decimal(20, 8)
   toAmount        Decimal         @db.Decimal(20, 8)
   exchangeRate    Decimal         @db.Decimal(20, 8)
@@ -228,8 +228,8 @@ model Exchange {
   matchedAmount   Decimal         @default(0.00)
   remainingAmount Decimal         @default(0.00)
   createdAt       DateTime        @default(now())
-  completedAt     DateTime? 
-  failedAt        DateTime? 
+  completedAt     DateTime?
+  failedAt        DateTime?
   currencyPair    CurrencyPair    @relation(fields: [currencyPairId], references: [id])
   user            User            @relation("Initiator", fields: [userId], references: [id])
   matchesFrom     ExchangeMatch[] @relation("FromExchangeMatch")
@@ -237,16 +237,16 @@ model Exchange {
 }
 
 model ExchangeMatch {
-  id                String      @id @default(uuid())
+  id                String   @id @default(uuid())
   fromExchangeId    String
   toExchangeId      String
-  fromMatchedAmount Decimal     @db.Decimal(20, 8)
-  toMatchedAmount   Decimal     @db.Decimal(20, 8)
+  fromMatchedAmount Decimal  @db.Decimal(20, 8)
+  toMatchedAmount   Decimal  @db.Decimal(20, 8)
   feeWalletId       String
-  createdAt         DateTime    @default(now())
-  fromExchange      Exchange    @relation("FromExchangeMatch", fields: [fromExchangeId], references: [id])
-  toExchange        Exchange    @relation("ToExchangeMatch", fields: [toExchangeId], references: [id])
-  feeWallet         Wallet      @relation(fields: [feeWalletId], references: [id])
+  createdAt         DateTime @default(now())
+  fromExchange      Exchange @relation("FromExchangeMatch", fields: [fromExchangeId], references: [id])
+  toExchange        Exchange @relation("ToExchangeMatch", fields: [toExchangeId], references: [id])
+  feeWallet         Wallet   @relation(fields: [feeWalletId], references: [id])
 
   @@unique([fromExchangeId, toExchangeId])
   @@index([createdAt])
@@ -271,23 +271,23 @@ model ActivityLog {
 }
 
 model FeeUser {
-  id          String    @id @default(uuid())
-  userId      String
-  isActive    Boolean   @default(false)
+  id       String  @id @default(uuid())
+  userId   String
+  isActive Boolean @default(false)
 
-  user        User      @relation(fields: [userId], references: [id])
+  user User @relation(fields: [userId], references: [id])
 }
 
 model FeeSetting {
   id              String          @id @default(uuid())
   transactionType TransactionKind
   currencyId      String
-  fromAmount      Decimal        @default(0.00)
-  toAmount        Decimal        @default(0.00)
+  fromAmount      Decimal         @default(0.00)
+  toAmount        Decimal         @default(0.00)
   fixedFee        Decimal
   percentageFee   Decimal
   createdAt       DateTime        @default(now())
-  currency        Currency       @relation(fields: [currencyId], references: [id])
+  currency        Currency        @relation(fields: [currencyId], references: [id])
 
   @@index([transactionType, currencyId])
 }

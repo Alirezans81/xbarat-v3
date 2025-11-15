@@ -1,9 +1,13 @@
-import { FeeUser as feeUser } from "@/generated/prisma";
-
-export type CreateFeeUser = feeUser;
+export type CreateFeeUser = {
+  userId: string;
+  isActive: boolean;
+};
 
 export type GetFeeUserFilters = {
-  id?: string;
   userId?: string;
+  isActive?: boolean;
+};
+
+export type UpdateFeeUser = {
   isActive?: boolean;
 };
