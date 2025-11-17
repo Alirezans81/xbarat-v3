@@ -7,14 +7,5 @@ export const feeUserService = {
 
   deleteById: feeUserRepository.deleteById,
 
-  active: async (id: string) => {
-    try {
-      await feeUserRepository.setActive(id);
-      await feeUserRepository.setInactiveOthers(id);
-
-      return { ok: true };
-    } catch (error) {
-      return { ok: false };
-    }
-  },
+  active: feeUserRepository.active,
 };

@@ -71,6 +71,8 @@ export const userService = {
     return userService.getById(decoded.id);
   },
 
+  getUserByEmail: userRepository.findByEmail,
+
   checkUserIsAdmin: async (id: string): Promise<boolean> => {
     const user = await userService.getById(id);
 

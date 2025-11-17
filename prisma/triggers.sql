@@ -300,7 +300,7 @@ BEGIN
     FROM "FeeUser" fu
     JOIN "User" u ON u.id = fu."userId"
     JOIN "Wallet" w ON u.id = w."userId"
-    WHERE NEW.fromCurrencyId = w.currencyId
+    WHERE NEW.fromCurrencyId = w.currencyId AND fu.isActive = true
     LIMIT 1;
 
     UPDATE "Wallet"

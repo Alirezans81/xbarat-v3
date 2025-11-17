@@ -9,12 +9,14 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Link } from "@/i18n/navigation";
+import { getFeeUsers } from "@/api/fee-user/action";
 
 export default async function page() {
   try {
     const currencies = await getCurrencies();
     const paymentChannels = await getPaymentChannels();
     const currencyPairs = await getCurrencyPairs();
+    const feeUsers = await getFeeUsers();
 
     return (
       <div className="w-full">
@@ -22,7 +24,7 @@ export default async function page() {
           <span className="text-3xl">Panel Admin</span>
           <div className="grid grid-cols-4 gap-3">
             <Link href="/panel-admin/payment-channel">
-              <Card className="hover:shadow-xl h-full transition-all duration-300 dark:hover:shadow-secondary/10">
+              <Card className="hover:shadow-xl h-44 transition-all duration-300 dark:hover:shadow-secondary/10">
                 <CardHeader>
                   <CardTitle>Payment Channels</CardTitle>
                   <CardDescription>
@@ -36,7 +38,7 @@ export default async function page() {
               </Card>
             </Link>
             <Link href="/panel-admin/currency">
-              <Card className="hover:shadow-xl h-full transition-all duration-300 dark:hover:shadow-secondary/10">
+              <Card className="hover:shadow-xl h-44 transition-all duration-300 dark:hover:shadow-secondary/10">
                 <CardHeader>
                   <CardTitle>Currencies</CardTitle>
                   <CardDescription>All Currency Settings</CardDescription>
@@ -47,7 +49,7 @@ export default async function page() {
               </Card>
             </Link>
             <Link href="/panel-admin/currency-pair">
-              <Card className="hover:shadow-xl h-full transition-all duration-300 dark:hover:shadow-secondary/10">
+              <Card className="hover:shadow-xl h-44 transition-all duration-300 dark:hover:shadow-secondary/10">
                 <CardHeader>
                   <CardTitle>Currency Pairs</CardTitle>
                   <CardDescription>All Currency Pair Settings</CardDescription>
@@ -58,7 +60,7 @@ export default async function page() {
               </Card>
             </Link>
             <Link href="/panel-admin/order">
-              <Card className="hover:shadow-xl h-full transition-all duration-300 dark:hover:shadow-secondary/10">
+              <Card className="hover:shadow-xl h-44 transition-all duration-300 dark:hover:shadow-secondary/10">
                 <CardHeader>
                   <CardTitle>Orders</CardTitle>
                   <CardDescription>
@@ -66,6 +68,17 @@ export default async function page() {
                     Refunds
                   </CardDescription>
                 </CardHeader>
+              </Card>
+            </Link>
+            <Link href="/panel-admin/fee-user">
+              <Card className="hover:shadow-xl h-44 transition-all duration-300 dark:hover:shadow-secondary/10">
+                <CardHeader>
+                  <CardTitle>Fee Users</CardTitle>
+                  <CardDescription>What user can get the fee</CardDescription>
+                </CardHeader>
+                <CardFooter className="mt-auto">
+                  <p className="">{feeUsers.length} users</p>
+                </CardFooter>
               </Card>
             </Link>
           </div>
