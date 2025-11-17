@@ -425,7 +425,7 @@ const config = {
       "value": "prisma-client-js"
     },
     "output": {
-      "value": "D:\\Programing\\Projects\\Xbarat\\alireza\\xbarat-v3\\src\\generated\\prisma",
+      "value": "/home/strix/Next/xbarat-v3/src/generated/prisma",
       "fromEnvVar": null
     },
     "config": {
@@ -434,7 +434,7 @@ const config = {
     "binaryTargets": [
       {
         "fromEnvVar": null,
-        "value": "windows",
+        "value": "debian-openssl-3.0.x",
         "native": true
       },
       {
@@ -443,7 +443,7 @@ const config = {
       }
     ],
     "previewFeatures": [],
-    "sourceFilePath": "D:\\Programing\\Projects\\Xbarat\\alireza\\xbarat-v3\\prisma\\schema.prisma",
+    "sourceFilePath": "/home/strix/Next/xbarat-v3/prisma/schema.prisma",
     "isCustomOutput": true
   },
   "relativeEnvPaths": {
@@ -461,7 +461,7 @@ const config = {
     "db": {
       "url": {
         "fromEnvVar": "DATABASE_URL",
-        "value": "postgresql://postgres:Alireza1382@localhost:5432/xbarat?schema=public"
+        "value": "postgresql://strix:20021381@localhost:5432/xbarat"
       }
     }
   },
@@ -503,10 +503,6 @@ warnEnvConflicts({
 const PrismaClient = getPrismaClient(config)
 exports.PrismaClient = PrismaClient
 Object.assign(exports, Prisma)
-
-// file annotations for bundling tools to include these files
-path.join(__dirname, "query_engine-windows.dll.node");
-path.join(process.cwd(), "src/generated/prisma/query_engine-windows.dll.node")
 
 // file annotations for bundling tools to include these files
 path.join(__dirname, "libquery_engine-debian-openssl-3.0.x.so.node");
