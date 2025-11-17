@@ -109,21 +109,20 @@ model LiquidityPool {
 }
 
 model Wallet {
-  id              String          @id @default(uuid())
-  userId          String
-  currencyId      String
-  balance         Decimal         @default(0.00)
-  frozen          Decimal         @default(0.00)
-  createdAt       DateTime        @default(now())
-  updatedAt       DateTime        @updatedAt
-  deposits        Deposit[]
-  Refund          Refund[]
-  transfersFrom   Transfer[]      @relation("FromWallet")
-  transfersTo     Transfer[]      @relation("ToWallet")
-  currency        Currency        @relation(fields: [currencyId], references: [id], onDelete: Cascade)
-  user            User            @relation(fields: [userId], references: [id])
-  withdrawals     Withdrawal[]
-  exchangeMatches ExchangeMatch[]
+  id            String       @id @default(uuid())
+  userId        String
+  currencyId    String
+  balance       Decimal      @default(0.00)
+  frozen        Decimal      @default(0.00)
+  createdAt     DateTime     @default(now())
+  updatedAt     DateTime     @updatedAt
+  deposits      Deposit[]
+  Refund        Refund[]
+  transfersFrom Transfer[]   @relation("FromWallet")
+  transfersTo   Transfer[]   @relation("ToWallet")
+  currency      Currency     @relation(fields: [currencyId], references: [id], onDelete: Cascade)
+  user          User         @relation(fields: [userId], references: [id])
+  withdrawals   Withdrawal[]
 
   @@unique([userId, currencyId])
   @@index([currencyId])
@@ -242,11 +241,9 @@ model ExchangeMatch {
   toExchangeId      String
   fromMatchedAmount Decimal  @db.Decimal(20, 8)
   toMatchedAmount   Decimal  @db.Decimal(20, 8)
-  feeWalletId       String
   createdAt         DateTime @default(now())
   fromExchange      Exchange @relation("FromExchangeMatch", fields: [fromExchangeId], references: [id])
   toExchange        Exchange @relation("ToExchangeMatch", fields: [toExchangeId], references: [id])
-  feeWallet         Wallet   @relation(fields: [feeWalletId], references: [id])
 
   @@unique([fromExchangeId, toExchangeId])
   @@index([createdAt])

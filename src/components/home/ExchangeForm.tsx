@@ -123,7 +123,7 @@ export default function ExchangeForm({
           exchange: {
             currencyPairId: selectedPair.id,
             fromAmount: +amount,
-            remainingAmount: +amount,
+            remainingAmount: +amount - fee,
             exchangeRate: +rate,
             toAmount: !selectedPair.isInverseRate
               ? +amount * (1 - +selectedPair.feePercentage / 100) * +rate

@@ -123,7 +123,6 @@ model Wallet {
   currency        Currency        @relation(fields: [currencyId], references: [id], onDelete: Cascade)
   user            User            @relation(fields: [userId], references: [id])
   withdrawals     Withdrawal[]
-  exchangeMatches ExchangeMatch[]
 
   @@unique([userId, currencyId])
   @@index([currencyId])
@@ -242,11 +241,9 @@ model ExchangeMatch {
   toExchangeId      String
   fromMatchedAmount Decimal  @db.Decimal(20, 8)
   toMatchedAmount   Decimal  @db.Decimal(20, 8)
-  feeWalletId       String
   createdAt         DateTime @default(now())
   fromExchange      Exchange @relation("FromExchangeMatch", fields: [fromExchangeId], references: [id])
   toExchange        Exchange @relation("ToExchangeMatch", fields: [toExchangeId], references: [id])
-  feeWallet         Wallet   @relation(fields: [feeWalletId], references: [id])
 
   @@unique([fromExchangeId, toExchangeId])
   @@index([createdAt])

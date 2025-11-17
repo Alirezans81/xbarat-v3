@@ -291,7 +291,6 @@ exports.Prisma.ExchangeMatchScalarFieldEnum = {
   toExchangeId: 'toExchangeId',
   fromMatchedAmount: 'fromMatchedAmount',
   toMatchedAmount: 'toMatchedAmount',
-  feeWalletId: 'feeWalletId',
   createdAt: 'createdAt'
 };
 
