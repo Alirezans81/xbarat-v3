@@ -39,21 +39,17 @@ export async function POST(
     const bytes = await file.arrayBuffer();
     const buffer = Buffer.from(bytes);
 
-    // Create target folder
-    const uploadDir = path.join(process.cwd(), "uploads");
+    const uploadDir = process.env.UPLOAD_DIR || "/uploads";
     fs.mkdirSync(uploadDir, { recursive: true });
 
-    // Generate a unique name
     const sanitizedFileName = file.name
       .replace(/[^a-z0-9_.-]/gi, "_")
       .toLowerCase();
     const fileName = `${Date.now()}-${id}-${sanitizedFileName}`;
-    const filePath = path.join(uploadDir, fileName);
 
-    // Write file asynchronously
+    const filePath = path.join(uploadDir, fileName);
     fs.writeFileSync(filePath, buffer);
 
-    // Construct accessible file URL
     const forwardedHost =
       request.headers.get("x-forwarded-host") || request.headers.get("host");
     const forwardedProto =
@@ -64,15 +60,13 @@ export async function POST(
       process.env.NEXT_PUBLIC_BASE_URL ||
       `${forwardedProto}://${forwardedHost}`;
 
-    const fileUrl = `${baseUrl}/api/v1/files/${fileName}`;
+    const fileUrl = `${baseUrl}/uploads/${fileName}`;
 
-    // Update bridge transfer
     const newBridgeTransfer = await bridgeTransferService.updateById(id, {
       documentUrl: fileUrl,
       status: "APPROVAL",
     });
 
-    // Update withdrawal
     if (newBridgeTransfer.withdrawalId) {
       await withdrawalService.updateById(newBridgeTransfer.withdrawalId, {
         documentUrl: fileUrl,
