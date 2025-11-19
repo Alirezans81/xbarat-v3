@@ -135,7 +135,7 @@ END;
 $$ LANGUAGE plpgsql;
 
 CREATE TRIGGER trigger_wallet_on_update
-BEFORE INSERT ON "Exchange"
+AFTER INSERT ON "Exchange"
 FOR EACH ROW
 EXECUTE FUNCTION wallet_update_on_create_exchange();
 
@@ -163,7 +163,7 @@ BEGIN
   END IF;
 
   UPDATE "Wallet"
-  SET frozen = GREATEST(frozen - delta, 0)
+  SET frozen = GREATEST(frozen - delta - NEW.fee, 0)
   WHERE "userId" = NEW."userId" AND "currencyId" = new_from_currency_id;
 
   IF is_inverse THEN
@@ -292,20 +292,28 @@ DROP FUNCTION IF EXISTS transfer_fee_to_fee_user();
 CREATE OR REPLACE FUNCTION transfer_fee_to_fee_user()
 RETURNS TRIGGER AS $$
 DECLARE
+  currency_id TEXT;
   wallet_id TEXT;
 BEGIN
   IF NEW.status = 'COMPLETED' AND OLD.status IS DISTINCT FROM 'COMPLETED' THEN
+    SELECT cp."fromCurrencyId"
+    INTO currency_id
+    FROM "CurrencyPair" cp
+    WHERE cp.id = NEW."currencyPairId";
+
     SELECT w.id
     INTO wallet_id
     FROM "FeeUser" fu
     JOIN "User" u ON u.id = fu."userId"
     JOIN "Wallet" w ON u.id = w."userId"
-    WHERE NEW.fromCurrencyId = w.currencyId AND fu.isActive = true
+    WHERE NEW.fromCurrencyId = currency_id AND fu.isActive = true
     LIMIT 1;
 
-    UPDATE "Wallet"
-    SET balance = balance + NEW.fee
-    WHERE id = wallet_id;
+    IF wallet_id IS NOT NULL THEN
+      UPDATE "Wallet"
+      SET balance = balance + NEW.fee
+      WHERE id = wallet_id;
+    END IF;
   END IF;
 
   RETURN NEW;
@@ -313,6 +321,6 @@ END;
 $$ LANGUAGE plpgsql;
 
 CREATE TRIGGER transfer_fee_to_fee_user_trigger
-AFTER UPDATE OF status ON "Exchange"
+AFTER UPDATE OF "status" ON "Exchange"
 FOR EACH ROW
 EXECUTE FUNCTION transfer_fee_to_fee_user();
