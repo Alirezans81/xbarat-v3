@@ -210,7 +210,7 @@ export default function ExchangeForm({
               onValueChange={(value) => {
                 if (!isSwitching) {
                   setSelectedTargetId(value);
-                  setAmount("1");
+                  amount === "" && setAmount("1");
                   setRate((+(selectedPair?.rate || "")).toLocaleString());
                 }
               }}
