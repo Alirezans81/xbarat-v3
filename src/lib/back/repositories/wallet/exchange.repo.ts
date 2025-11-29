@@ -38,6 +38,38 @@ export const exchangeRepository = {
     });
   },
 
+  getLast: async () => {
+    return prisma.exchange.findMany({
+      take: 5,
+      orderBy: {
+        createdAt: "desc",
+      },
+      select: {
+        fromAmount: true,
+        toAmount: true,
+        currencyPair: {
+          select: {
+            fromCurrency: {
+              select: {
+                id: true,
+                code: true,
+                symbol: true,
+              },
+            },
+            toCurrency: {
+              select: {
+                id: true,
+                code: true,
+                symbol: true,
+              },
+            },
+            isInverseRate: true,
+          },
+        },
+      },
+    });
+  },
+
   getAll: async (filters?: GetExchangesFilters) => {
     return prisma.exchange.findMany({
       where: {

@@ -5,6 +5,8 @@ export const exchangeService = {
 
   getAll: exchangeRepository.getAll,
 
+  getLast: exchangeRepository.getLast,
+
   getById: exchangeRepository.findById,
 
   updateById: exchangeRepository.updateById,
