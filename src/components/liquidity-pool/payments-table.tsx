@@ -77,7 +77,13 @@ export default function PaymentsTable({ data }: Props) {
                 bridgeTransfer.depositId && (
                   <ApproveLiquidityPoolDocument
                     liquidityPool_id={bridgeTransfer.id}
-                    document_url={bridgeTransfer.documentUrl || ""}
+                    documents={[
+                      {
+                        bridgeTransferId: bridgeTransfer.id,
+                        amount: +bridgeTransfer.amount,
+                        documentUrl: bridgeTransfer.documentUrl!,
+                      },
+                    ]}
                   />
                 )}
               {bridgeTransfer.status === "AWAITING_PAYMENT" &&

@@ -71,7 +71,7 @@ export default function WithdrawalTable({ data }: Props) {
               {withdrawal.status === "APPROVAL" && (
                 <ApproveWithdrawalDocument
                   withdrawal_id={withdrawal.id}
-                  document_url={withdrawal.documentUrl || ""}
+                  document_url={withdrawal.BridgeTransfer?.documentUrl || ""}
                 />
               )}
             </TableCell>

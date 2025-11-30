@@ -21,6 +21,12 @@ export type Withdrawal = Omit<
   };
 } & {
   paymentChannel: Pick<PaymentChannel, "name">;
+} & {
+  BridgeTransfer: {
+    id: string;
+    status: string;
+    documentUrl: string | null;
+  } | null;
 };
 
 export type GetWithdrawalsFilters = {

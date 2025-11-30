@@ -47,5 +47,8 @@ export type UpdateDeposit = {
 };
 
 export type UploadDepositDocument = {
-  document: File;
+  documents: {
+    bridgeTransferId: string;
+    document: File;
+  }[];
 };

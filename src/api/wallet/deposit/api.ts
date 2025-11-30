@@ -47,11 +47,43 @@ export const uploadDepositDocument = (
   data: UploadDepositDocument
 ) => {
   const formData = new FormData();
-  data.document && formData.append("document", data.document);
+  data.documents.forEach((item, index) => {
+    formData.append(`items[${index}][bridgeTransferId]`, item.bridgeTransferId);
+    formData.append(`items[${index}][document]`, item.document);
+  });
 
   return apiFetch(api["deposit"] + "/" + deposit_id + "/upload-document", {
     method: "POST",
     body: formData,
     token,
   });
+};
+
+export const getMatchedDepositBridgeTransfers = (
+  token: Token,
+  deposit_id: string
+) => {
+  return apiFetch<any[]>(
+    api["deposit"] + "/" + deposit_id + "/matched-bridge-transfers",
+    {
+      method: "GET",
+      token,
+    }
+  );
+};
+
+export const getMatchedLiquidityPoolBridgeTransfers = (
+  token: Token,
+  liquidityPool_id: string
+) => {
+  return apiFetch<any[]>(
+    api["liquidity-pool"] +
+      "/" +
+      liquidityPool_id +
+      "/matched-bridge-transfers",
+    {
+      method: "GET",
+      token,
+    }
+  );
 };

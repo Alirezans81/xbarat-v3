@@ -38,10 +38,13 @@ export default function LiquidityPoolsTable({ data }: Props) {
           <TableRow key={liquidityPool.id}>
             <TableCell>{liquidityPool.address}</TableCell>
             <TableCell>
-              {liquidityPool.balance + " " + liquidityPool.currency.symbol}
+              {(+liquidityPool.balance).toLocaleString()}
+              {" " + liquidityPool.currency.symbol}
             </TableCell>
             <TableCell>
-              <span className="!text-destructive">{+liquidityPool.frozen}</span>
+              <span className="!text-destructive">
+                {(+liquidityPool.frozen).toLocaleString()}
+              </span>
               {" " + liquidityPool.currency.symbol}
             </TableCell>
             <TableCell>

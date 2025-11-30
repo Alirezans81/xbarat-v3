@@ -45,6 +45,5 @@ export type UpdateWithdrawal = {
   paymentChannelId?: string;
   receiverAddress?: string;
   addressOwnerName?: string;
-  documentUrl?: string;
   status?: WithdrawalStatus;
 };

@@ -54,6 +54,13 @@ export const withdrawalRepository = {
             name: true,
           },
         },
+        BridgeTransfer: {
+          select: {
+            id: true,
+            status: true,
+            documentUrl: true,
+          },
+        },
       },
     });
   },

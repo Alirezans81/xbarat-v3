@@ -298,7 +298,7 @@ export default function ExchangeForm({
               </div>
             )}
           </div>
-          <Button size={"lg"} type="submit" className="text-lg">
+          <Button size={"lg"} type="submit" className="text-lg" disabled={loading}>
             {loading ? "Loading..." : "Exchange"}
           </Button>
         </div>
