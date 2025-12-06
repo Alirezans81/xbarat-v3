@@ -3,17 +3,17 @@
 import { Currency } from "@/types/front/currency";
 import { CurrencyPair } from "@/types/front/currencyPair";
 import { Wallet } from "@/types/front/wallet";
-import { Skeleton } from "../ui/skeleton";
+import { Skeleton } from "@/components/ui/skeleton";
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "../ui/select";
-import { Input } from "../ui/input";
+} from "@/components/ui/select";
+import { Input } from "@/components/ui/input";
 import { ArrowRightLeft } from "lucide-react";
-import { Button } from "../ui/button";
+import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { useAuthStore } from "@/lib/front/stores/auth";
 import { useLoginSignupDialogStore } from "@/lib/front/stores/dialog";
@@ -24,22 +24,26 @@ import { useCreateExchange } from "@/api/wallet/exchange/hooks";
 import { useRouter } from "@/i18n/navigation";
 import { toast } from "sonner";
 import { roundDown } from "@/lib/front/utils/number";
-import Timer from "./Timer";
+import Timer from "../Timer";
+
 
 interface Props {
   currencies: Currency[];
   currencyPairs: CurrencyPair[];
   wallets: Wallet[];
+  selectedPair: CurrencyPair | null;
+  setSelectedPair: (pair: CurrencyPair | null) => void;
 }
 export default function ExchangeForm({
   currencies,
   currencyPairs,
   wallets: outerWallet,
+  selectedPair,
+  setSelectedPair
 }: Props) {
   const { isLoggedIn, token } = useAuthStore();
   const { setOpen: setLoginSignupDialogOpen } = useLoginSignupDialogStore();
   const router = useRouter();
-
   const [loading, setLoading] = useState(false);
 
   const [wallets, setWallets] = useState<Wallet[]>(outerWallet);
@@ -57,11 +61,10 @@ export default function ExchangeForm({
   const [sources, setSources] = useState<Currency[]>([]);
   const [targets, setTargets] = useState<Currency[]>([]);
 
-  const [selectedSourceId, setSelectedSourceId] = useState("");
+  const [selectedSourceId, setSelectedSourceId] = useState<string>("");
   const selectedSource = sources.find((e) => e.id === selectedSourceId);
-  const [selectedTargetId, setSelectedTargetId] = useState("");
+  const [selectedTargetId, setSelectedTargetId] = useState<string>("");
   const selectedTarget = targets.find((e) => e.id === selectedTargetId);
-  const [selectedPair, setSelectedPair] = useState<CurrencyPair | null>(null);
   const [selectedWallet, setSelectedWallet] = useState<Wallet | null>(null);
 
   const [amount, setAmount] = useState("");
@@ -154,9 +157,8 @@ export default function ExchangeForm({
       </div>
 
       <form
-        className={`bg-card dark:bg-accent px-6 py-5 rounded-xl flex flex-col items-center gap-4 transition-all duration-500 shadow-xl ease-in-out ${
-          selectedWallet ? "translate-y-16" : ""
-        }`}
+        className={`bg-card dark:bg-accent px-6 py-5 rounded-xl flex flex-col items-center gap-4 transition-all duration-500 shadow-xl ease-in-out ${selectedWallet ? "translate-y-16" : ""
+          }`}
         onSubmit={(e) => {
           e.preventDefault();
           handleSubmit();
@@ -166,7 +168,7 @@ export default function ExchangeForm({
           <div className="flex-1 flex">
             <Select
               value={selectedSourceId}
-              onValueChange={(value) => {
+              onValueChange={(value: string) => {
                 setSelectedSourceId(value);
                 if (!isSwitching) {
                   setSelectedTargetId("");
@@ -193,7 +195,7 @@ export default function ExchangeForm({
               inputMode="decimal"
               placeholder="Amount"
               value={amount}
-              onChange={(e) => setAmount(e.currentTarget.value)}
+              onChange={(e: any) => setAmount(e.currentTarget.value)}
               required
             />
           </div>
@@ -207,7 +209,7 @@ export default function ExchangeForm({
           <div className="flex-1 flex">
             <Select
               value={selectedTargetId}
-              onValueChange={(value) => {
+              onValueChange={(value: string) => {
                 if (!isSwitching) {
                   setSelectedTargetId(value);
                   amount === "" && setAmount("1");
@@ -233,7 +235,7 @@ export default function ExchangeForm({
               inputMode="decimal"
               placeholder="Rate"
               value={rate}
-              onChange={(e) => setRate(e.target.value)}
+              onChange={(e: any) => setRate(e.target.value)}
               required
             />
           </div>
@@ -257,19 +259,19 @@ export default function ExchangeForm({
                 <span className="text-secondary">
                   {selectedPair
                     ? (!selectedPair.isInverseRate
-                        ? roundDown(
-                            +amount.replaceAll(",", "") *
-                              (1 - +selectedPair.feePercentage / 100) *
-                              +rate.replaceAll(",", ""),
-                            selectedTarget?.decimals || 2
-                          )
-                        : roundDown(
-                            (+amount.replaceAll(",", "") *
-                              (1 - +selectedPair.feePercentage / 100)) /
-                              +rate.replaceAll(",", ""),
-                            selectedTarget?.decimals || 2
-                          )
-                      ).toLocaleString()
+                      ? roundDown(
+                        +amount.replaceAll(",", "") *
+                        (1 - +selectedPair.feePercentage / 100) *
+                        +rate.replaceAll(",", ""),
+                        selectedTarget?.decimals || 2
+                      )
+                      : roundDown(
+                        (+amount.replaceAll(",", "") *
+                          (1 - +selectedPair.feePercentage / 100)) /
+                        +rate.replaceAll(",", ""),
+                        selectedTarget?.decimals || 2
+                      )
+                    ).toLocaleString()
                     : "0"}
                 </span>
               </span>

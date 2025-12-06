@@ -17,6 +17,7 @@ export default function getApiUrl() {
     withdrawal: `${apiDomain}/wallet/withdrawal`,
     transfer: `${apiDomain}/wallet/transfer`,
     refund: `${apiDomain}/wallet/refund`,
+    "order-book": `${apiDomain}/order-book`,
     assign: `${apiDomain}/wallet/assign`,
     "bridge-transfer": `${apiDomain}/bridge-transfer`,
     "fee-user": `${apiDomain}/fee-user`,
