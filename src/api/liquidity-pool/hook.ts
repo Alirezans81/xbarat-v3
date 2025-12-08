@@ -165,6 +165,7 @@ export const useDeleteLiquidityPool = () => {
 
 type ApproveLiquidityPoolDocumentProps = {
   liquidityPool_id: string;
+  approvedBridgeTransfers: string[];
 };
 export const useApproveLiquidityPoolDocument = () => {
   const t = useTranslations("ApiErrors");
@@ -174,12 +175,17 @@ export const useApproveLiquidityPoolDocument = () => {
 
   const fetch = ({
     liquidityPool_id,
+    approvedBridgeTransfers,
     onError,
     onSuccess,
     onFinally,
   }: ApproveLiquidityPoolDocumentProps & FetchProps) => {
     checkTokenExpiration(async () => {
-      await approveLiquidityPoolDocument(token, liquidityPool_id)
+      await approveLiquidityPoolDocument(
+        token,
+        liquidityPool_id,
+        approvedBridgeTransfers
+      )
         .then((res) => {
           onSuccess?.(res);
         })

@@ -69,14 +69,13 @@ export async function POST(
 
     if (newBridgeTransfer.withdrawalId) {
       await withdrawalService.updateById(newBridgeTransfer.withdrawalId, {
-        documentUrl: fileUrl,
         status: "APPROVAL",
       });
     }
 
     return NextResponse.json(newBridgeTransfer, { status: 200 });
   } catch (error) {
-    console.error("[UPLOAD_DEPOSIT_DOCUMENT]", error);
+    console.error("[UPLOAD_LIQUIDITY_POOL_DOCUMENT]", error);
     return ServerErrorResponse;
   }
 }

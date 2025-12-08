@@ -54,13 +54,15 @@ export const deleteLiquidityPool = (token: Token, liquidityPool_id: string) => {
 
 export const approveLiquidityPoolDocument = (
   token: Token,
-  liquidityPool_id: string
+  liquidityPool_id: string,
+  approvedBridgeTransfers: string[]
 ) => {
   return apiFetch<LiquidityPool>(
     api["liquidity-pool"] + "/" + liquidityPool_id + "/approve",
     {
       method: "POST",
       token,
+      body: { approvedBridgeTransfers },
     }
   );
 };

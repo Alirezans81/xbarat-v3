@@ -44,7 +44,6 @@ export type UpdateDeposit = {
   walletId?: string;
   paymentChannelId?: string;
   status?: DepositStatus;
-  documentUrl?: string;
 };
 
 export type UploadDepositDocument = {

@@ -140,7 +140,6 @@ model Deposit {
   completedAt      DateTime?
   failedAt         DateTime?
   paymentChannelId String
-  documentUrl      String?
   BridgeTransfer   BridgeTransfer?
   paymentChannel   PaymentChannel  @relation(fields: [paymentChannelId], references: [id])
   user             User            @relation(fields: [userId], references: [id])
@@ -162,7 +161,6 @@ model Withdrawal {
   bridgeTransferId String?
   receiverAddress  String
   addressOwnerName String
-  documentUrl      String?
   BridgeTransfer   BridgeTransfer?
   paymentChannel   PaymentChannel   @relation(fields: [paymentChannelId], references: [id])
   user             User             @relation(fields: [userId], references: [id])

@@ -1,19 +1,16 @@
+import { bridgeTransferService } from "./../../../../../../../lib/back/services/bridgeTransfer.service";
 import { NextRequest, NextResponse } from "next/server";
-import { withdrawalService } from "@/lib/back/services/wallet/withdrawal.service";
 import {
+  MissingFieldsResponse,
   ServerErrorResponse,
   UnauthorizedResponse,
 } from "@/lib/back/utils/globalResponses.utils";
 import { jwtUtils } from "@/lib/back/utils/jwt.utils";
-import { bridgeTransferService } from "@/lib/back/services/bridgeTransfer.service";
 import { depositService } from "@/lib/back/services/wallet/deposit.service";
 
 export const runtime = "nodejs";
 
-export async function POST(
-  request: NextRequest,
-  { params }: { params: Promise<{ id: string }> }
-) {
+export async function POST(request: NextRequest) {
   try {
     const token = request.headers.get("authorization")?.split(" ")[1];
     if (!token) return UnauthorizedResponse;
@@ -21,27 +18,43 @@ export async function POST(
     const payload = jwtUtils.verify(token);
     if (!payload) return UnauthorizedResponse;
 
-    const { id } = await params;
+    const body = await request.json();
+    const { approvedBridgeTransfers } = body;
 
-    const userOwnsBridgeTransfer =
-      await bridgeTransferService.userOwnsTheBridgeTransfer(payload.id, id);
-    if (!userOwnsBridgeTransfer) return UnauthorizedResponse;
+    if (!approvedBridgeTransfers || !Array.isArray(approvedBridgeTransfers))
+      return MissingFieldsResponse;
 
-    // Update Bridge Transfer
-    const newBridgeTransfer = await bridgeTransferService.updateById(id, {
-      status: "COMPLETED",
-    });
+    const newBridgeTransfers = await Promise.all(
+      approvedBridgeTransfers.map(async (bridgeTransferId: string) => {
+        const ownsBridgeTransfer =
+          await bridgeTransferService.userOwnsTheBridgeTransfer(
+            payload.id,
+            bridgeTransferId
+          );
+        if (!ownsBridgeTransfer) return UnauthorizedResponse;
 
-    // Update Deposit
-    if (newBridgeTransfer.depositId) {
-      await depositService.updateById(newBridgeTransfer.depositId, {
-        status: "COMPLETED",
-      });
-    }
+        console.log();
 
-    return NextResponse.json(newBridgeTransfer, { status: 200 });
+        const newBridgeTransfer = await bridgeTransferService.updateById(
+          bridgeTransferId,
+          {
+            status: "COMPLETED",
+          }
+        );
+
+        if (newBridgeTransfer.depositId) {
+          await depositService.updateById(newBridgeTransfer.depositId, {
+            status: "COMPLETED",
+          });
+        }
+
+        return newBridgeTransfer;
+      })
+    );
+
+    return NextResponse.json(newBridgeTransfers, { status: 200 });
   } catch (error) {
-    console.error("[UPLOAD_WITHDRAWAL_DOCUMENT]", error);
+    console.error("[APPROVE_BRIDGE_TRANSFERS]", error);
     return ServerErrorResponse;
   }
 }

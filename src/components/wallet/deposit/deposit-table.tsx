@@ -38,10 +38,10 @@ export default function DepositTable({ data }: Props) {
               {deposit.wallet.currency.code}
             </TableCell>
             <TableCell>
-              {deposit.wallet.currency.symbol + " " + deposit.amount}
+              {deposit.wallet.currency.symbol + " " + (+deposit.amount).toLocaleString()}
             </TableCell>
             <TableCell>
-              {deposit.wallet.currency.symbol + " " + deposit.fee}
+              {deposit.wallet.currency.symbol + " " + (+deposit.fee).toLocaleString()}
             </TableCell>
             <TableCell>
               {new Date(deposit.createdAt).toDateString() +

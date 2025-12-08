@@ -6,6 +6,8 @@ import {
   createDeposit,
   deleteDeposit,
   getDeposits,
+  getMatchedDepositBridgeTransfers,
+  getMatchedLiquidityPoolBridgeTransfers,
   updateDeposit,
   uploadDepositDocument,
 } from "./api";
@@ -183,6 +185,82 @@ export const useUploadDepositDocument = () => {
     checkTokenExpiration(async () => {
       await uploadDepositDocument(token, deposit_id, data)
         .then((res) => {
+          onSuccess?.(res);
+        })
+        .catch((err) => {
+          process.env.NEXT_PUBLIC_APP_MODE === "development" &&
+            console.error(err.response);
+          toast.error(t(err.response.data.error.message));
+          onError?.(err);
+        })
+        .finally(() => {
+          onFinally?.();
+        });
+    });
+  };
+
+  return fetch;
+};
+
+type GetMatchedDepositBridgeTransfersProps = {
+  deposit_id: string;
+  setMatchedBridgeTransfers: (value: any[]) => void;
+};
+export const useGetMatchedDepositBridgeTransfers = () => {
+  const t = useTranslations("ApiErrors");
+
+  const checkTokenExpiration = useCheckTokenExpiration();
+  const { token } = useAuthStore();
+
+  const fetch = ({
+    deposit_id,
+    setMatchedBridgeTransfers,
+    onError,
+    onSuccess,
+    onFinally,
+  }: GetMatchedDepositBridgeTransfersProps & FetchProps) => {
+    checkTokenExpiration(async () => {
+      await getMatchedDepositBridgeTransfers(token, deposit_id)
+        .then((res) => {
+          setMatchedBridgeTransfers(res);
+          onSuccess?.(res);
+        })
+        .catch((err) => {
+          process.env.NEXT_PUBLIC_APP_MODE === "development" &&
+            console.error(err.response);
+          toast.error(t(err.response.data.error.message));
+          onError?.(err);
+        })
+        .finally(() => {
+          onFinally?.();
+        });
+    });
+  };
+
+  return fetch;
+};
+
+type GetMatchedLiquidityPoolBridgeTransfersProps = {
+  liquidityPool_id: string;
+  setMatchedBridgeTransfers: (value: any[]) => void;
+};
+export const useGetMatchedLiquidityPoolBridgeTransfers = () => {
+  const t = useTranslations("ApiErrors");
+
+  const checkTokenExpiration = useCheckTokenExpiration();
+  const { token } = useAuthStore();
+
+  const fetch = ({
+    liquidityPool_id,
+    setMatchedBridgeTransfers,
+    onError,
+    onSuccess,
+    onFinally,
+  }: GetMatchedLiquidityPoolBridgeTransfersProps & FetchProps) => {
+    checkTokenExpiration(async () => {
+      await getMatchedLiquidityPoolBridgeTransfers(token, liquidityPool_id)
+        .then((res) => {
+          setMatchedBridgeTransfers(res);
           onSuccess?.(res);
         })
         .catch((err) => {

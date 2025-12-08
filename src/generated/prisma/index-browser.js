@@ -209,8 +209,7 @@ exports.Prisma.DepositScalarFieldEnum = {
   createdAt: 'createdAt',
   completedAt: 'completedAt',
   failedAt: 'failedAt',
-  paymentChannelId: 'paymentChannelId',
-  documentUrl: 'documentUrl'
+  paymentChannelId: 'paymentChannelId'
 };
 
 exports.Prisma.WithdrawalScalarFieldEnum = {
@@ -227,8 +226,7 @@ exports.Prisma.WithdrawalScalarFieldEnum = {
   paymentChannelId: 'paymentChannelId',
   bridgeTransferId: 'bridgeTransferId',
   receiverAddress: 'receiverAddress',
-  addressOwnerName: 'addressOwnerName',
-  documentUrl: 'documentUrl'
+  addressOwnerName: 'addressOwnerName'
 };
 
 exports.Prisma.BridgeTransferScalarFieldEnum = {

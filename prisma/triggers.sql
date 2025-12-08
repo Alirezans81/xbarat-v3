@@ -105,21 +105,13 @@ BEGIN
     SELECT "liquidityPoolId"
     INTO liquidity_pool_id
     FROM "BridgeTransfer"
-    WHERE "depositId" = NEW.id
-    LIMIT 1;
+    WHERE "depositId" = NEW.id;
 
     IF liquidity_pool_id IS NOT NULL THEN
       UPDATE "LiquidityPool"
       SET balance = balance + NEW.amount,
           "updatedAt" = NOW()
       WHERE id = liquidity_pool_id;
-    END IF;
-
-    -- set completedAt if not set (optional, but helpful)
-    IF NEW.completedAt IS NULL THEN
-      UPDATE "Deposit"
-      SET "completedAt" = NOW()
-      WHERE id = NEW.id;
     END IF;
   END IF;
 
@@ -223,8 +215,7 @@ BEGIN
     SELECT "liquidityPoolId"
     INTO liquidity_pool_id
     FROM "BridgeTransfer"
-    WHERE "withdrawalId" = NEW.id
-    LIMIT 1;
+    WHERE "withdrawalId" = NEW.id;
 
     IF liquidity_pool_id IS NOT NULL THEN
       UPDATE "LiquidityPool"
@@ -233,9 +224,6 @@ BEGIN
       WHERE id = liquidity_pool_id;
     END IF;
 
-    IF NEW.completedAt IS NULL THEN
-      UPDATE "Withdrawal" SET "completedAt" = NOW() WHERE id = NEW.id;
-    END IF;
   END IF;
 
   -- transition to FAILED/REJECTED: refund amount + fee (if fee was taken at creation)

@@ -10437,7 +10437,6 @@ export namespace Prisma {
     completedAt: Date | null
     failedAt: Date | null
     paymentChannelId: string | null
-    documentUrl: string | null
   }
 
   export type DepositMaxAggregateOutputType = {
@@ -10452,7 +10451,6 @@ export namespace Prisma {
     completedAt: Date | null
     failedAt: Date | null
     paymentChannelId: string | null
-    documentUrl: string | null
   }
 
   export type DepositCountAggregateOutputType = {
@@ -10467,7 +10465,6 @@ export namespace Prisma {
     completedAt: number
     failedAt: number
     paymentChannelId: number
-    documentUrl: number
     _all: number
   }
 
@@ -10494,7 +10491,6 @@ export namespace Prisma {
     completedAt?: true
     failedAt?: true
     paymentChannelId?: true
-    documentUrl?: true
   }
 
   export type DepositMaxAggregateInputType = {
@@ -10509,7 +10505,6 @@ export namespace Prisma {
     completedAt?: true
     failedAt?: true
     paymentChannelId?: true
-    documentUrl?: true
   }
 
   export type DepositCountAggregateInputType = {
@@ -10524,7 +10519,6 @@ export namespace Prisma {
     completedAt?: true
     failedAt?: true
     paymentChannelId?: true
-    documentUrl?: true
     _all?: true
   }
 
@@ -10626,7 +10620,6 @@ export namespace Prisma {
     completedAt: Date | null
     failedAt: Date | null
     paymentChannelId: string
-    documentUrl: string | null
     _count: DepositCountAggregateOutputType | null
     _avg: DepositAvgAggregateOutputType | null
     _sum: DepositSumAggregateOutputType | null
@@ -10660,7 +10653,6 @@ export namespace Prisma {
     completedAt?: boolean
     failedAt?: boolean
     paymentChannelId?: boolean
-    documentUrl?: boolean
     BridgeTransfer?: boolean | Deposit$BridgeTransferArgs<ExtArgs>
     paymentChannel?: boolean | PaymentChannelDefaultArgs<ExtArgs>
     user?: boolean | UserDefaultArgs<ExtArgs>
@@ -10679,7 +10671,6 @@ export namespace Prisma {
     completedAt?: boolean
     failedAt?: boolean
     paymentChannelId?: boolean
-    documentUrl?: boolean
     paymentChannel?: boolean | PaymentChannelDefaultArgs<ExtArgs>
     user?: boolean | UserDefaultArgs<ExtArgs>
     wallet?: boolean | WalletDefaultArgs<ExtArgs>
@@ -10697,7 +10688,6 @@ export namespace Prisma {
     completedAt?: boolean
     failedAt?: boolean
     paymentChannelId?: boolean
-    documentUrl?: boolean
     paymentChannel?: boolean | PaymentChannelDefaultArgs<ExtArgs>
     user?: boolean | UserDefaultArgs<ExtArgs>
     wallet?: boolean | WalletDefaultArgs<ExtArgs>
@@ -10715,10 +10705,9 @@ export namespace Prisma {
     completedAt?: boolean
     failedAt?: boolean
     paymentChannelId?: boolean
-    documentUrl?: boolean
   }
 
-  export type DepositOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "userId" | "walletId" | "amount" | "fee" | "status" | "reference" | "createdAt" | "completedAt" | "failedAt" | "paymentChannelId" | "documentUrl", ExtArgs["result"]["deposit"]>
+  export type DepositOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "userId" | "walletId" | "amount" | "fee" | "status" | "reference" | "createdAt" | "completedAt" | "failedAt" | "paymentChannelId", ExtArgs["result"]["deposit"]>
   export type DepositInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     BridgeTransfer?: boolean | Deposit$BridgeTransferArgs<ExtArgs>
     paymentChannel?: boolean | PaymentChannelDefaultArgs<ExtArgs>
@@ -10756,7 +10745,6 @@ export namespace Prisma {
       completedAt: Date | null
       failedAt: Date | null
       paymentChannelId: string
-      documentUrl: string | null
     }, ExtArgs["result"]["deposit"]>
     composites: {}
   }
@@ -11195,7 +11183,6 @@ export namespace Prisma {
     readonly completedAt: FieldRef<"Deposit", 'DateTime'>
     readonly failedAt: FieldRef<"Deposit", 'DateTime'>
     readonly paymentChannelId: FieldRef<"Deposit", 'String'>
-    readonly documentUrl: FieldRef<"Deposit", 'String'>
   }
     
 
@@ -11666,7 +11653,6 @@ export namespace Prisma {
     bridgeTransferId: string | null
     receiverAddress: string | null
     addressOwnerName: string | null
-    documentUrl: string | null
   }
 
   export type WithdrawalMaxAggregateOutputType = {
@@ -11684,7 +11670,6 @@ export namespace Prisma {
     bridgeTransferId: string | null
     receiverAddress: string | null
     addressOwnerName: string | null
-    documentUrl: string | null
   }
 
   export type WithdrawalCountAggregateOutputType = {
@@ -11702,7 +11687,6 @@ export namespace Prisma {
     bridgeTransferId: number
     receiverAddress: number
     addressOwnerName: number
-    documentUrl: number
     _all: number
   }
 
@@ -11732,7 +11716,6 @@ export namespace Prisma {
     bridgeTransferId?: true
     receiverAddress?: true
     addressOwnerName?: true
-    documentUrl?: true
   }
 
   export type WithdrawalMaxAggregateInputType = {
@@ -11750,7 +11733,6 @@ export namespace Prisma {
     bridgeTransferId?: true
     receiverAddress?: true
     addressOwnerName?: true
-    documentUrl?: true
   }
 
   export type WithdrawalCountAggregateInputType = {
@@ -11768,7 +11750,6 @@ export namespace Prisma {
     bridgeTransferId?: true
     receiverAddress?: true
     addressOwnerName?: true
-    documentUrl?: true
     _all?: true
   }
 
@@ -11873,7 +11854,6 @@ export namespace Prisma {
     bridgeTransferId: string | null
     receiverAddress: string
     addressOwnerName: string
-    documentUrl: string | null
     _count: WithdrawalCountAggregateOutputType | null
     _avg: WithdrawalAvgAggregateOutputType | null
     _sum: WithdrawalSumAggregateOutputType | null
@@ -11910,7 +11890,6 @@ export namespace Prisma {
     bridgeTransferId?: boolean
     receiverAddress?: boolean
     addressOwnerName?: boolean
-    documentUrl?: boolean
     BridgeTransfer?: boolean | Withdrawal$BridgeTransferArgs<ExtArgs>
     paymentChannel?: boolean | PaymentChannelDefaultArgs<ExtArgs>
     user?: boolean | UserDefaultArgs<ExtArgs>
@@ -11932,7 +11911,6 @@ export namespace Prisma {
     bridgeTransferId?: boolean
     receiverAddress?: boolean
     addressOwnerName?: boolean
-    documentUrl?: boolean
     paymentChannel?: boolean | PaymentChannelDefaultArgs<ExtArgs>
     user?: boolean | UserDefaultArgs<ExtArgs>
     wallet?: boolean | WalletDefaultArgs<ExtArgs>
@@ -11953,7 +11931,6 @@ export namespace Prisma {
     bridgeTransferId?: boolean
     receiverAddress?: boolean
     addressOwnerName?: boolean
-    documentUrl?: boolean
     paymentChannel?: boolean | PaymentChannelDefaultArgs<ExtArgs>
     user?: boolean | UserDefaultArgs<ExtArgs>
     wallet?: boolean | WalletDefaultArgs<ExtArgs>
@@ -11974,10 +11951,9 @@ export namespace Prisma {
     bridgeTransferId?: boolean
     receiverAddress?: boolean
     addressOwnerName?: boolean
-    documentUrl?: boolean
   }
 
-  export type WithdrawalOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "userId" | "walletId" | "amount" | "fee" | "status" | "reference" | "createdAt" | "completedAt" | "failedAt" | "paymentChannelId" | "bridgeTransferId" | "receiverAddress" | "addressOwnerName" | "documentUrl", ExtArgs["result"]["withdrawal"]>
+  export type WithdrawalOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "userId" | "walletId" | "amount" | "fee" | "status" | "reference" | "createdAt" | "completedAt" | "failedAt" | "paymentChannelId" | "bridgeTransferId" | "receiverAddress" | "addressOwnerName", ExtArgs["result"]["withdrawal"]>
   export type WithdrawalInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     BridgeTransfer?: boolean | Withdrawal$BridgeTransferArgs<ExtArgs>
     paymentChannel?: boolean | PaymentChannelDefaultArgs<ExtArgs>
@@ -12018,7 +11994,6 @@ export namespace Prisma {
       bridgeTransferId: string | null
       receiverAddress: string
       addressOwnerName: string
-      documentUrl: string | null
     }, ExtArgs["result"]["withdrawal"]>
     composites: {}
   }
@@ -12460,7 +12435,6 @@ export namespace Prisma {
     readonly bridgeTransferId: FieldRef<"Withdrawal", 'String'>
     readonly receiverAddress: FieldRef<"Withdrawal", 'String'>
     readonly addressOwnerName: FieldRef<"Withdrawal", 'String'>
-    readonly documentUrl: FieldRef<"Withdrawal", 'String'>
   }
     
 
@@ -22320,8 +22294,7 @@ export namespace Prisma {
     createdAt: 'createdAt',
     completedAt: 'completedAt',
     failedAt: 'failedAt',
-    paymentChannelId: 'paymentChannelId',
-    documentUrl: 'documentUrl'
+    paymentChannelId: 'paymentChannelId'
   };
 
   export type DepositScalarFieldEnum = (typeof DepositScalarFieldEnum)[keyof typeof DepositScalarFieldEnum]
@@ -22341,8 +22314,7 @@ export namespace Prisma {
     paymentChannelId: 'paymentChannelId',
     bridgeTransferId: 'bridgeTransferId',
     receiverAddress: 'receiverAddress',
-    addressOwnerName: 'addressOwnerName',
-    documentUrl: 'documentUrl'
+    addressOwnerName: 'addressOwnerName'
   };
 
   export type WithdrawalScalarFieldEnum = (typeof WithdrawalScalarFieldEnum)[keyof typeof WithdrawalScalarFieldEnum]
@@ -23327,7 +23299,6 @@ export namespace Prisma {
     completedAt?: DateTimeNullableFilter<"Deposit"> | Date | string | null
     failedAt?: DateTimeNullableFilter<"Deposit"> | Date | string | null
     paymentChannelId?: StringFilter<"Deposit"> | string
-    documentUrl?: StringNullableFilter<"Deposit"> | string | null
     BridgeTransfer?: XOR<BridgeTransferNullableScalarRelationFilter, BridgeTransferWhereInput> | null
     paymentChannel?: XOR<PaymentChannelScalarRelationFilter, PaymentChannelWhereInput>
     user?: XOR<UserScalarRelationFilter, UserWhereInput>
@@ -23346,7 +23317,6 @@ export namespace Prisma {
     completedAt?: SortOrderInput | SortOrder
     failedAt?: SortOrderInput | SortOrder
     paymentChannelId?: SortOrder
-    documentUrl?: SortOrderInput | SortOrder
     BridgeTransfer?: BridgeTransferOrderByWithRelationInput
     paymentChannel?: PaymentChannelOrderByWithRelationInput
     user?: UserOrderByWithRelationInput
@@ -23368,7 +23338,6 @@ export namespace Prisma {
     completedAt?: DateTimeNullableFilter<"Deposit"> | Date | string | null
     failedAt?: DateTimeNullableFilter<"Deposit"> | Date | string | null
     paymentChannelId?: StringFilter<"Deposit"> | string
-    documentUrl?: StringNullableFilter<"Deposit"> | string | null
     BridgeTransfer?: XOR<BridgeTransferNullableScalarRelationFilter, BridgeTransferWhereInput> | null
     paymentChannel?: XOR<PaymentChannelScalarRelationFilter, PaymentChannelWhereInput>
     user?: XOR<UserScalarRelationFilter, UserWhereInput>
@@ -23387,7 +23356,6 @@ export namespace Prisma {
     completedAt?: SortOrderInput | SortOrder
     failedAt?: SortOrderInput | SortOrder
     paymentChannelId?: SortOrder
-    documentUrl?: SortOrderInput | SortOrder
     _count?: DepositCountOrderByAggregateInput
     _avg?: DepositAvgOrderByAggregateInput
     _max?: DepositMaxOrderByAggregateInput
@@ -23410,7 +23378,6 @@ export namespace Prisma {
     completedAt?: DateTimeNullableWithAggregatesFilter<"Deposit"> | Date | string | null
     failedAt?: DateTimeNullableWithAggregatesFilter<"Deposit"> | Date | string | null
     paymentChannelId?: StringWithAggregatesFilter<"Deposit"> | string
-    documentUrl?: StringNullableWithAggregatesFilter<"Deposit"> | string | null
   }
 
   export type WithdrawalWhereInput = {
@@ -23431,7 +23398,6 @@ export namespace Prisma {
     bridgeTransferId?: StringNullableFilter<"Withdrawal"> | string | null
     receiverAddress?: StringFilter<"Withdrawal"> | string
     addressOwnerName?: StringFilter<"Withdrawal"> | string
-    documentUrl?: StringNullableFilter<"Withdrawal"> | string | null
     BridgeTransfer?: XOR<BridgeTransferNullableScalarRelationFilter, BridgeTransferWhereInput> | null
     paymentChannel?: XOR<PaymentChannelScalarRelationFilter, PaymentChannelWhereInput>
     user?: XOR<UserScalarRelationFilter, UserWhereInput>
@@ -23453,7 +23419,6 @@ export namespace Prisma {
     bridgeTransferId?: SortOrderInput | SortOrder
     receiverAddress?: SortOrder
     addressOwnerName?: SortOrder
-    documentUrl?: SortOrderInput | SortOrder
     BridgeTransfer?: BridgeTransferOrderByWithRelationInput
     paymentChannel?: PaymentChannelOrderByWithRelationInput
     user?: UserOrderByWithRelationInput
@@ -23478,7 +23443,6 @@ export namespace Prisma {
     bridgeTransferId?: StringNullableFilter<"Withdrawal"> | string | null
     receiverAddress?: StringFilter<"Withdrawal"> | string
     addressOwnerName?: StringFilter<"Withdrawal"> | string
-    documentUrl?: StringNullableFilter<"Withdrawal"> | string | null
     BridgeTransfer?: XOR<BridgeTransferNullableScalarRelationFilter, BridgeTransferWhereInput> | null
     paymentChannel?: XOR<PaymentChannelScalarRelationFilter, PaymentChannelWhereInput>
     user?: XOR<UserScalarRelationFilter, UserWhereInput>
@@ -23500,7 +23464,6 @@ export namespace Prisma {
     bridgeTransferId?: SortOrderInput | SortOrder
     receiverAddress?: SortOrder
     addressOwnerName?: SortOrder
-    documentUrl?: SortOrderInput | SortOrder
     _count?: WithdrawalCountOrderByAggregateInput
     _avg?: WithdrawalAvgOrderByAggregateInput
     _max?: WithdrawalMaxOrderByAggregateInput
@@ -23526,7 +23489,6 @@ export namespace Prisma {
     bridgeTransferId?: StringNullableWithAggregatesFilter<"Withdrawal"> | string | null
     receiverAddress?: StringWithAggregatesFilter<"Withdrawal"> | string
     addressOwnerName?: StringWithAggregatesFilter<"Withdrawal"> | string
-    documentUrl?: StringNullableWithAggregatesFilter<"Withdrawal"> | string | null
   }
 
   export type BridgeTransferWhereInput = {
@@ -24804,7 +24766,6 @@ export namespace Prisma {
     createdAt?: Date | string
     completedAt?: Date | string | null
     failedAt?: Date | string | null
-    documentUrl?: string | null
     BridgeTransfer?: BridgeTransferCreateNestedOneWithoutDepositInput
     paymentChannel: PaymentChannelCreateNestedOneWithoutDepositInput
     user: UserCreateNestedOneWithoutDepositsInput
@@ -24823,7 +24784,6 @@ export namespace Prisma {
     completedAt?: Date | string | null
     failedAt?: Date | string | null
     paymentChannelId: string
-    documentUrl?: string | null
     BridgeTransfer?: BridgeTransferUncheckedCreateNestedOneWithoutDepositInput
   }
 
@@ -24836,7 +24796,6 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     failedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    documentUrl?: NullableStringFieldUpdateOperationsInput | string | null
     BridgeTransfer?: BridgeTransferUpdateOneWithoutDepositNestedInput
     paymentChannel?: PaymentChannelUpdateOneRequiredWithoutDepositNestedInput
     user?: UserUpdateOneRequiredWithoutDepositsNestedInput
@@ -24855,7 +24814,6 @@ export namespace Prisma {
     completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     failedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     paymentChannelId?: StringFieldUpdateOperationsInput | string
-    documentUrl?: NullableStringFieldUpdateOperationsInput | string | null
     BridgeTransfer?: BridgeTransferUncheckedUpdateOneWithoutDepositNestedInput
   }
 
@@ -24871,7 +24829,6 @@ export namespace Prisma {
     completedAt?: Date | string | null
     failedAt?: Date | string | null
     paymentChannelId: string
-    documentUrl?: string | null
   }
 
   export type DepositUpdateManyMutationInput = {
@@ -24883,7 +24840,6 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     failedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    documentUrl?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type DepositUncheckedUpdateManyInput = {
@@ -24898,7 +24854,6 @@ export namespace Prisma {
     completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     failedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     paymentChannelId?: StringFieldUpdateOperationsInput | string
-    documentUrl?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type WithdrawalCreateInput = {
@@ -24913,7 +24868,6 @@ export namespace Prisma {
     bridgeTransferId?: string | null
     receiverAddress: string
     addressOwnerName: string
-    documentUrl?: string | null
     BridgeTransfer?: BridgeTransferCreateNestedOneWithoutWithdrawalInput
     paymentChannel: PaymentChannelCreateNestedOneWithoutWithdrawalInput
     user: UserCreateNestedOneWithoutWithdrawalsInput
@@ -24935,7 +24889,6 @@ export namespace Prisma {
     bridgeTransferId?: string | null
     receiverAddress: string
     addressOwnerName: string
-    documentUrl?: string | null
     BridgeTransfer?: BridgeTransferUncheckedCreateNestedOneWithoutWithdrawalInput
   }
 
@@ -24951,7 +24904,6 @@ export namespace Prisma {
     bridgeTransferId?: NullableStringFieldUpdateOperationsInput | string | null
     receiverAddress?: StringFieldUpdateOperationsInput | string
     addressOwnerName?: StringFieldUpdateOperationsInput | string
-    documentUrl?: NullableStringFieldUpdateOperationsInput | string | null
     BridgeTransfer?: BridgeTransferUpdateOneWithoutWithdrawalNestedInput
     paymentChannel?: PaymentChannelUpdateOneRequiredWithoutWithdrawalNestedInput
     user?: UserUpdateOneRequiredWithoutWithdrawalsNestedInput
@@ -24973,7 +24925,6 @@ export namespace Prisma {
     bridgeTransferId?: NullableStringFieldUpdateOperationsInput | string | null
     receiverAddress?: StringFieldUpdateOperationsInput | string
     addressOwnerName?: StringFieldUpdateOperationsInput | string
-    documentUrl?: NullableStringFieldUpdateOperationsInput | string | null
     BridgeTransfer?: BridgeTransferUncheckedUpdateOneWithoutWithdrawalNestedInput
   }
 
@@ -24992,7 +24943,6 @@ export namespace Prisma {
     bridgeTransferId?: string | null
     receiverAddress: string
     addressOwnerName: string
-    documentUrl?: string | null
   }
 
   export type WithdrawalUpdateManyMutationInput = {
@@ -25007,7 +24957,6 @@ export namespace Prisma {
     bridgeTransferId?: NullableStringFieldUpdateOperationsInput | string | null
     receiverAddress?: StringFieldUpdateOperationsInput | string
     addressOwnerName?: StringFieldUpdateOperationsInput | string
-    documentUrl?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type WithdrawalUncheckedUpdateManyInput = {
@@ -25025,7 +24974,6 @@ export namespace Prisma {
     bridgeTransferId?: NullableStringFieldUpdateOperationsInput | string | null
     receiverAddress?: StringFieldUpdateOperationsInput | string
     addressOwnerName?: StringFieldUpdateOperationsInput | string
-    documentUrl?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type BridgeTransferCreateInput = {
@@ -26386,7 +26334,6 @@ export namespace Prisma {
     completedAt?: SortOrder
     failedAt?: SortOrder
     paymentChannelId?: SortOrder
-    documentUrl?: SortOrder
   }
 
   export type DepositAvgOrderByAggregateInput = {
@@ -26406,7 +26353,6 @@ export namespace Prisma {
     completedAt?: SortOrder
     failedAt?: SortOrder
     paymentChannelId?: SortOrder
-    documentUrl?: SortOrder
   }
 
   export type DepositMinOrderByAggregateInput = {
@@ -26421,7 +26367,6 @@ export namespace Prisma {
     completedAt?: SortOrder
     failedAt?: SortOrder
     paymentChannelId?: SortOrder
-    documentUrl?: SortOrder
   }
 
   export type DepositSumOrderByAggregateInput = {
@@ -26461,7 +26406,6 @@ export namespace Prisma {
     bridgeTransferId?: SortOrder
     receiverAddress?: SortOrder
     addressOwnerName?: SortOrder
-    documentUrl?: SortOrder
   }
 
   export type WithdrawalAvgOrderByAggregateInput = {
@@ -26484,7 +26428,6 @@ export namespace Prisma {
     bridgeTransferId?: SortOrder
     receiverAddress?: SortOrder
     addressOwnerName?: SortOrder
-    documentUrl?: SortOrder
   }
 
   export type WithdrawalMinOrderByAggregateInput = {
@@ -26502,7 +26445,6 @@ export namespace Prisma {
     bridgeTransferId?: SortOrder
     receiverAddress?: SortOrder
     addressOwnerName?: SortOrder
-    documentUrl?: SortOrder
   }
 
   export type WithdrawalSumOrderByAggregateInput = {
@@ -29258,7 +29200,6 @@ export namespace Prisma {
     createdAt?: Date | string
     completedAt?: Date | string | null
     failedAt?: Date | string | null
-    documentUrl?: string | null
     BridgeTransfer?: BridgeTransferCreateNestedOneWithoutDepositInput
     paymentChannel: PaymentChannelCreateNestedOneWithoutDepositInput
     wallet: WalletCreateNestedOneWithoutDepositsInput
@@ -29275,7 +29216,6 @@ export namespace Prisma {
     completedAt?: Date | string | null
     failedAt?: Date | string | null
     paymentChannelId: string
-    documentUrl?: string | null
     BridgeTransfer?: BridgeTransferUncheckedCreateNestedOneWithoutDepositInput
   }
 
@@ -29447,7 +29387,6 @@ export namespace Prisma {
     bridgeTransferId?: string | null
     receiverAddress: string
     addressOwnerName: string
-    documentUrl?: string | null
     BridgeTransfer?: BridgeTransferCreateNestedOneWithoutWithdrawalInput
     paymentChannel: PaymentChannelCreateNestedOneWithoutWithdrawalInput
     wallet: WalletCreateNestedOneWithoutWithdrawalsInput
@@ -29467,7 +29406,6 @@ export namespace Prisma {
     bridgeTransferId?: string | null
     receiverAddress: string
     addressOwnerName: string
-    documentUrl?: string | null
     BridgeTransfer?: BridgeTransferUncheckedCreateNestedOneWithoutWithdrawalInput
   }
 
@@ -29598,7 +29536,6 @@ export namespace Prisma {
     completedAt?: DateTimeNullableFilter<"Deposit"> | Date | string | null
     failedAt?: DateTimeNullableFilter<"Deposit"> | Date | string | null
     paymentChannelId?: StringFilter<"Deposit"> | string
-    documentUrl?: StringNullableFilter<"Deposit"> | string | null
   }
 
   export type ExchangeUpsertWithWhereUniqueWithoutUserInput = {
@@ -29760,7 +29697,6 @@ export namespace Prisma {
     bridgeTransferId?: StringNullableFilter<"Withdrawal"> | string | null
     receiverAddress?: StringFilter<"Withdrawal"> | string
     addressOwnerName?: StringFilter<"Withdrawal"> | string
-    documentUrl?: StringNullableFilter<"Withdrawal"> | string | null
   }
 
   export type TransferUpsertWithWhereUniqueWithoutUserInput = {
@@ -29831,7 +29767,6 @@ export namespace Prisma {
     createdAt?: Date | string
     completedAt?: Date | string | null
     failedAt?: Date | string | null
-    documentUrl?: string | null
     BridgeTransfer?: BridgeTransferCreateNestedOneWithoutDepositInput
     user: UserCreateNestedOneWithoutDepositsInput
     wallet: WalletCreateNestedOneWithoutDepositsInput
@@ -29848,7 +29783,6 @@ export namespace Prisma {
     createdAt?: Date | string
     completedAt?: Date | string | null
     failedAt?: Date | string | null
-    documentUrl?: string | null
     BridgeTransfer?: BridgeTransferUncheckedCreateNestedOneWithoutDepositInput
   }
 
@@ -29906,7 +29840,6 @@ export namespace Prisma {
     bridgeTransferId?: string | null
     receiverAddress: string
     addressOwnerName: string
-    documentUrl?: string | null
     BridgeTransfer?: BridgeTransferCreateNestedOneWithoutWithdrawalInput
     user: UserCreateNestedOneWithoutWithdrawalsInput
     wallet: WalletCreateNestedOneWithoutWithdrawalsInput
@@ -29926,7 +29859,6 @@ export namespace Prisma {
     bridgeTransferId?: string | null
     receiverAddress: string
     addressOwnerName: string
-    documentUrl?: string | null
     BridgeTransfer?: BridgeTransferUncheckedCreateNestedOneWithoutWithdrawalInput
   }
 
@@ -30944,7 +30876,6 @@ export namespace Prisma {
     createdAt?: Date | string
     completedAt?: Date | string | null
     failedAt?: Date | string | null
-    documentUrl?: string | null
     BridgeTransfer?: BridgeTransferCreateNestedOneWithoutDepositInput
     paymentChannel: PaymentChannelCreateNestedOneWithoutDepositInput
     user: UserCreateNestedOneWithoutDepositsInput
@@ -30961,7 +30892,6 @@ export namespace Prisma {
     completedAt?: Date | string | null
     failedAt?: Date | string | null
     paymentChannelId: string
-    documentUrl?: string | null
     BridgeTransfer?: BridgeTransferUncheckedCreateNestedOneWithoutDepositInput
   }
 
@@ -31201,7 +31131,6 @@ export namespace Prisma {
     bridgeTransferId?: string | null
     receiverAddress: string
     addressOwnerName: string
-    documentUrl?: string | null
     BridgeTransfer?: BridgeTransferCreateNestedOneWithoutWithdrawalInput
     paymentChannel: PaymentChannelCreateNestedOneWithoutWithdrawalInput
     user: UserCreateNestedOneWithoutWithdrawalsInput
@@ -31221,7 +31150,6 @@ export namespace Prisma {
     bridgeTransferId?: string | null
     receiverAddress: string
     addressOwnerName: string
-    documentUrl?: string | null
     BridgeTransfer?: BridgeTransferUncheckedCreateNestedOneWithoutWithdrawalInput
   }
 
@@ -32150,7 +32078,6 @@ export namespace Prisma {
     createdAt?: Date | string
     completedAt?: Date | string | null
     failedAt?: Date | string | null
-    documentUrl?: string | null
     paymentChannel: PaymentChannelCreateNestedOneWithoutDepositInput
     user: UserCreateNestedOneWithoutDepositsInput
     wallet: WalletCreateNestedOneWithoutDepositsInput
@@ -32168,7 +32095,6 @@ export namespace Prisma {
     completedAt?: Date | string | null
     failedAt?: Date | string | null
     paymentChannelId: string
-    documentUrl?: string | null
   }
 
   export type DepositCreateOrConnectWithoutBridgeTransferInput = {
@@ -32215,7 +32141,6 @@ export namespace Prisma {
     bridgeTransferId?: string | null
     receiverAddress: string
     addressOwnerName: string
-    documentUrl?: string | null
     paymentChannel: PaymentChannelCreateNestedOneWithoutWithdrawalInput
     user: UserCreateNestedOneWithoutWithdrawalsInput
     wallet: WalletCreateNestedOneWithoutWithdrawalsInput
@@ -32236,7 +32161,6 @@ export namespace Prisma {
     bridgeTransferId?: string | null
     receiverAddress: string
     addressOwnerName: string
-    documentUrl?: string | null
   }
 
   export type WithdrawalCreateOrConnectWithoutBridgeTransferInput = {
@@ -32264,7 +32188,6 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     failedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    documentUrl?: NullableStringFieldUpdateOperationsInput | string | null
     paymentChannel?: PaymentChannelUpdateOneRequiredWithoutDepositNestedInput
     user?: UserUpdateOneRequiredWithoutDepositsNestedInput
     wallet?: WalletUpdateOneRequiredWithoutDepositsNestedInput
@@ -32282,7 +32205,6 @@ export namespace Prisma {
     completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     failedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     paymentChannelId?: StringFieldUpdateOperationsInput | string
-    documentUrl?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type LiquidityPoolUpsertWithoutBridgeTransferInput = {
@@ -32341,7 +32263,6 @@ export namespace Prisma {
     bridgeTransferId?: NullableStringFieldUpdateOperationsInput | string | null
     receiverAddress?: StringFieldUpdateOperationsInput | string
     addressOwnerName?: StringFieldUpdateOperationsInput | string
-    documentUrl?: NullableStringFieldUpdateOperationsInput | string | null
     paymentChannel?: PaymentChannelUpdateOneRequiredWithoutWithdrawalNestedInput
     user?: UserUpdateOneRequiredWithoutWithdrawalsNestedInput
     wallet?: WalletUpdateOneRequiredWithoutWithdrawalsNestedInput
@@ -32362,7 +32283,6 @@ export namespace Prisma {
     bridgeTransferId?: NullableStringFieldUpdateOperationsInput | string | null
     receiverAddress?: StringFieldUpdateOperationsInput | string
     addressOwnerName?: StringFieldUpdateOperationsInput | string
-    documentUrl?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type WalletCreateWithoutTransfersFromInput = {
@@ -33767,7 +33687,6 @@ export namespace Prisma {
     completedAt?: Date | string | null
     failedAt?: Date | string | null
     paymentChannelId: string
-    documentUrl?: string | null
   }
 
   export type ExchangeCreateManyUserInput = {
@@ -33829,7 +33748,6 @@ export namespace Prisma {
     bridgeTransferId?: string | null
     receiverAddress: string
     addressOwnerName: string
-    documentUrl?: string | null
   }
 
   export type FeeUserCreateManyUserInput = {
@@ -33881,7 +33799,6 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     failedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    documentUrl?: NullableStringFieldUpdateOperationsInput | string | null
     BridgeTransfer?: BridgeTransferUpdateOneWithoutDepositNestedInput
     paymentChannel?: PaymentChannelUpdateOneRequiredWithoutDepositNestedInput
     wallet?: WalletUpdateOneRequiredWithoutDepositsNestedInput
@@ -33898,7 +33815,6 @@ export namespace Prisma {
     completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     failedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     paymentChannelId?: StringFieldUpdateOperationsInput | string
-    documentUrl?: NullableStringFieldUpdateOperationsInput | string | null
     BridgeTransfer?: BridgeTransferUncheckedUpdateOneWithoutDepositNestedInput
   }
 
@@ -33913,7 +33829,6 @@ export namespace Prisma {
     completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     failedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     paymentChannelId?: StringFieldUpdateOperationsInput | string
-    documentUrl?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type ExchangeUpdateWithoutUserInput = {
@@ -34079,7 +33994,6 @@ export namespace Prisma {
     bridgeTransferId?: NullableStringFieldUpdateOperationsInput | string | null
     receiverAddress?: StringFieldUpdateOperationsInput | string
     addressOwnerName?: StringFieldUpdateOperationsInput | string
-    documentUrl?: NullableStringFieldUpdateOperationsInput | string | null
     BridgeTransfer?: BridgeTransferUpdateOneWithoutWithdrawalNestedInput
     paymentChannel?: PaymentChannelUpdateOneRequiredWithoutWithdrawalNestedInput
     wallet?: WalletUpdateOneRequiredWithoutWithdrawalsNestedInput
@@ -34099,7 +34013,6 @@ export namespace Prisma {
     bridgeTransferId?: NullableStringFieldUpdateOperationsInput | string | null
     receiverAddress?: StringFieldUpdateOperationsInput | string
     addressOwnerName?: StringFieldUpdateOperationsInput | string
-    documentUrl?: NullableStringFieldUpdateOperationsInput | string | null
     BridgeTransfer?: BridgeTransferUncheckedUpdateOneWithoutWithdrawalNestedInput
   }
 
@@ -34117,7 +34030,6 @@ export namespace Prisma {
     bridgeTransferId?: NullableStringFieldUpdateOperationsInput | string | null
     receiverAddress?: StringFieldUpdateOperationsInput | string
     addressOwnerName?: StringFieldUpdateOperationsInput | string
-    documentUrl?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type TransferUpdateWithoutUserInput = {
@@ -34191,7 +34103,6 @@ export namespace Prisma {
     createdAt?: Date | string
     completedAt?: Date | string | null
     failedAt?: Date | string | null
-    documentUrl?: string | null
   }
 
   export type LiquidityPoolCreateManyPaymentChannelInput = {
@@ -34218,7 +34129,6 @@ export namespace Prisma {
     bridgeTransferId?: string | null
     receiverAddress: string
     addressOwnerName: string
-    documentUrl?: string | null
   }
 
   export type DepositUpdateWithoutPaymentChannelInput = {
@@ -34230,7 +34140,6 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     failedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    documentUrl?: NullableStringFieldUpdateOperationsInput | string | null
     BridgeTransfer?: BridgeTransferUpdateOneWithoutDepositNestedInput
     user?: UserUpdateOneRequiredWithoutDepositsNestedInput
     wallet?: WalletUpdateOneRequiredWithoutDepositsNestedInput
@@ -34247,7 +34156,6 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     failedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    documentUrl?: NullableStringFieldUpdateOperationsInput | string | null
     BridgeTransfer?: BridgeTransferUncheckedUpdateOneWithoutDepositNestedInput
   }
 
@@ -34262,7 +34170,6 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     failedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    documentUrl?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type LiquidityPoolUpdateWithoutPaymentChannelInput = {
@@ -34309,7 +34216,6 @@ export namespace Prisma {
     bridgeTransferId?: NullableStringFieldUpdateOperationsInput | string | null
     receiverAddress?: StringFieldUpdateOperationsInput | string
     addressOwnerName?: StringFieldUpdateOperationsInput | string
-    documentUrl?: NullableStringFieldUpdateOperationsInput | string | null
     BridgeTransfer?: BridgeTransferUpdateOneWithoutWithdrawalNestedInput
     user?: UserUpdateOneRequiredWithoutWithdrawalsNestedInput
     wallet?: WalletUpdateOneRequiredWithoutWithdrawalsNestedInput
@@ -34329,7 +34235,6 @@ export namespace Prisma {
     bridgeTransferId?: NullableStringFieldUpdateOperationsInput | string | null
     receiverAddress?: StringFieldUpdateOperationsInput | string
     addressOwnerName?: StringFieldUpdateOperationsInput | string
-    documentUrl?: NullableStringFieldUpdateOperationsInput | string | null
     BridgeTransfer?: BridgeTransferUncheckedUpdateOneWithoutWithdrawalNestedInput
   }
 
@@ -34347,7 +34252,6 @@ export namespace Prisma {
     bridgeTransferId?: NullableStringFieldUpdateOperationsInput | string | null
     receiverAddress?: StringFieldUpdateOperationsInput | string
     addressOwnerName?: StringFieldUpdateOperationsInput | string
-    documentUrl?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type CurrencyUpdateWithoutPaymentChannelsInput = {
@@ -34757,7 +34661,6 @@ export namespace Prisma {
     completedAt?: Date | string | null
     failedAt?: Date | string | null
     paymentChannelId: string
-    documentUrl?: string | null
   }
 
   export type RefundCreateManyWalletInput = {
@@ -34809,7 +34712,6 @@ export namespace Prisma {
     bridgeTransferId?: string | null
     receiverAddress: string
     addressOwnerName: string
-    documentUrl?: string | null
   }
 
   export type DepositUpdateWithoutWalletInput = {
@@ -34821,7 +34723,6 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     failedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    documentUrl?: NullableStringFieldUpdateOperationsInput | string | null
     BridgeTransfer?: BridgeTransferUpdateOneWithoutDepositNestedInput
     paymentChannel?: PaymentChannelUpdateOneRequiredWithoutDepositNestedInput
     user?: UserUpdateOneRequiredWithoutDepositsNestedInput
@@ -34838,7 +34739,6 @@ export namespace Prisma {
     completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     failedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     paymentChannelId?: StringFieldUpdateOperationsInput | string
-    documentUrl?: NullableStringFieldUpdateOperationsInput | string | null
     BridgeTransfer?: BridgeTransferUncheckedUpdateOneWithoutDepositNestedInput
   }
 
@@ -34853,7 +34753,6 @@ export namespace Prisma {
     completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     failedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     paymentChannelId?: StringFieldUpdateOperationsInput | string
-    documentUrl?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type RefundUpdateWithoutWalletInput = {
@@ -34977,7 +34876,6 @@ export namespace Prisma {
     bridgeTransferId?: NullableStringFieldUpdateOperationsInput | string | null
     receiverAddress?: StringFieldUpdateOperationsInput | string
     addressOwnerName?: StringFieldUpdateOperationsInput | string
-    documentUrl?: NullableStringFieldUpdateOperationsInput | string | null
     BridgeTransfer?: BridgeTransferUpdateOneWithoutWithdrawalNestedInput
     paymentChannel?: PaymentChannelUpdateOneRequiredWithoutWithdrawalNestedInput
     user?: UserUpdateOneRequiredWithoutWithdrawalsNestedInput
@@ -34997,7 +34895,6 @@ export namespace Prisma {
     bridgeTransferId?: NullableStringFieldUpdateOperationsInput | string | null
     receiverAddress?: StringFieldUpdateOperationsInput | string
     addressOwnerName?: StringFieldUpdateOperationsInput | string
-    documentUrl?: NullableStringFieldUpdateOperationsInput | string | null
     BridgeTransfer?: BridgeTransferUncheckedUpdateOneWithoutWithdrawalNestedInput
   }
 
@@ -35015,7 +34912,6 @@ export namespace Prisma {
     bridgeTransferId?: NullableStringFieldUpdateOperationsInput | string | null
     receiverAddress?: StringFieldUpdateOperationsInput | string
     addressOwnerName?: StringFieldUpdateOperationsInput | string
-    documentUrl?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type UserUpdateWithoutTransfersInput = {
