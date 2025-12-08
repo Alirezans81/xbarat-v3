@@ -1,6 +1,4 @@
 import { NextRequest, NextResponse } from "next/server";
-import fs from "fs";
-import path from "path";
 import { depositService } from "@/lib/back/services/wallet/deposit.service";
 import {
   ServerErrorResponse,
@@ -10,13 +8,15 @@ import { jwtUtils } from "@/lib/back/utils/jwt.utils";
 import { bridgeTransferService } from "@/lib/back/services/bridgeTransfer.service";
 import { withdrawalService } from "@/lib/back/services/wallet/withdrawal.service";
 
-export const runtime = "nodejs";
+import { PutObjectCommand } from "@aws-sdk/client-s3";
+import { r2 } from "@/lib/back/r2";
 
 export async function POST(
   request: NextRequest,
   { params }: { params: Promise<{ id: string }> }
 ) {
   try {
+    // auth
     const token = request.headers.get("authorization")?.split(" ")[1];
     if (!token) return UnauthorizedResponse;
 
@@ -31,6 +31,7 @@ export async function POST(
     );
     if (!userOwnsDeposit) return UnauthorizedResponse;
 
+    // file
     const formData = await request.formData();
     const file = formData.get("document") as File;
 
@@ -38,33 +39,30 @@ export async function POST(
       return NextResponse.json({ error: "noFileUploaded" }, { status: 400 });
     }
 
-    const bytes = await file.arrayBuffer();
-    const buffer = Buffer.from(bytes);
-
-    const uploadDir = process.env.UPLOAD_DIR || "/uploads";
-    fs.mkdirSync(uploadDir, { recursive: true });
+    // prepare buffer
+    const arrayBuffer = await file.arrayBuffer();
+    const buffer = Buffer.from(arrayBuffer);
 
     const sanitizedFileName = file.name
       .replace(/[^a-z0-9_.-]/gi, "_")
       .toLowerCase();
 
     const fileName = `${Date.now()}-${id}-${sanitizedFileName}`;
-    const filePath = path.join(uploadDir, fileName);
 
-    fs.writeFileSync(filePath, buffer);
+    // upload to R2
+    await r2.send(
+      new PutObjectCommand({
+        Bucket: process.env.R2_BUCKET!,
+        Key: fileName,
+        Body: buffer,
+        ContentType: file.type,
+      })
+    );
 
-    const forwardedHost =
-      request.headers.get("x-forwarded-host") || request.headers.get("host");
-    const forwardedProto =
-      request.headers.get("x-forwarded-proto") ||
-      (process.env.NEXT_PUBLIC_APP_MODE === "production" ? "https" : "http");
+    // generate public URL
+    const fileUrl = `${process.env.R2_PUBLIC_URL}/${fileName}`;
 
-    const baseUrl =
-      process.env.NEXT_PUBLIC_BASE_URL ||
-      `${forwardedProto}://${forwardedHost}`;
-
-    const fileUrl = `${baseUrl}/uploads/${fileName}`;
-
+    // update services
     const bridgeTransfers = await bridgeTransferService.getAll({
       depositId: id,
     });
