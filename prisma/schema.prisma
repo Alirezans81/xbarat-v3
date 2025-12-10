@@ -109,20 +109,20 @@ model LiquidityPool {
 }
 
 model Wallet {
-  id              String          @id @default(uuid())
-  userId          String
-  currencyId      String
-  balance         Decimal         @default(0.00)
-  frozen          Decimal         @default(0.00)
-  createdAt       DateTime        @default(now())
-  updatedAt       DateTime        @updatedAt
-  deposits        Deposit[]
-  Refund          Refund[]
-  transfersFrom   Transfer[]      @relation("FromWallet")
-  transfersTo     Transfer[]      @relation("ToWallet")
-  currency        Currency        @relation(fields: [currencyId], references: [id], onDelete: Cascade)
-  user            User            @relation(fields: [userId], references: [id])
-  withdrawals     Withdrawal[]
+  id            String       @id @default(uuid())
+  userId        String
+  currencyId    String
+  balance       Decimal      @default(0.00)
+  frozen        Decimal      @default(0.00)
+  createdAt     DateTime     @default(now())
+  updatedAt     DateTime     @updatedAt
+  deposits      Deposit[]
+  Refund        Refund[]
+  transfersFrom Transfer[]   @relation("FromWallet")
+  transfersTo   Transfer[]   @relation("ToWallet")
+  currency      Currency     @relation(fields: [currencyId], references: [id], onDelete: Cascade)
+  user          User         @relation(fields: [userId], references: [id])
+  withdrawals   Withdrawal[]
 
   @@unique([userId, currencyId])
   @@index([currencyId])
@@ -266,9 +266,9 @@ model ActivityLog {
 }
 
 model FeeUser {
-  id        String  @id @default(uuid())
+  id        String   @id @default(uuid())
   userId    String
-  isActive  Boolean @default(false)
+  isActive  Boolean  @default(false)
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 

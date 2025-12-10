@@ -1,8 +1,7 @@
 import { getCurrencyPairs } from "@/api/currency-pair/action";
 import { getCurrencies } from "@/api/currency/action";
 import { getWallets } from "@/api/wallet/action";
-import ExchangeForm from "@/components/home/ExchangeForm";
-
+import Exchange from "@/components/home/Exchange/Exchange";
 export default async function Home() {
   try {
     const currencies = await getCurrencies();
@@ -16,11 +15,11 @@ export default async function Home() {
           <span className="capitalize text-6xl font-bold">
             when you are enough!
           </span>
-          <ExchangeForm
-            currencies={currencies}
+          <Exchange currencies={currencies}
             currencyPairs={currencyPairs}
             wallets={wallets}
           />
+
         </div>
       );
     } catch (error) {
@@ -29,8 +28,7 @@ export default async function Home() {
           <span className="capitalize text-6xl font-bold">
             when you are enough!
           </span>
-          <ExchangeForm
-            currencies={currencies}
+          <Exchange currencies={currencies}
             currencyPairs={currencyPairs}
             wallets={[]}
           />
