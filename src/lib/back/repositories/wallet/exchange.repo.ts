@@ -39,77 +39,69 @@ export const exchangeRepository = {
   },
 
   getLast: async (filters?: GetExchangesFilters) => {
-    return prisma.exchange
-      .findMany({
-        where: {
-          ...(filters?.userId && { userId: filters.userId }),
-          ...(filters?.currencyPairId && {
-            currencyPairId: filters.currencyPairId,
-          }),
-          ...(filters?.status && {
-            status: {
-              in: filters.status,
-            },
-          }),
-        },
-        take: 5,
-        orderBy: {
+    const groupedExchanges = await prisma.exchange.groupBy({
+      where: {
+        ...(filters?.userId && { userId: filters.userId }),
+        ...(filters?.currencyPairId && {
+          currencyPairId: filters.currencyPairId,
+        }),
+        ...(filters?.status && {
+          status: {
+            in: filters.status,
+          },
+        }),
+      },
+      by: ["exchangeRate", "currencyPairId"],
+      _count: {
+        _all: true,
+      },
+      _sum: {
+        fromAmount: true,
+        toAmount: true,
+      },
+      _max: {
+        createdAt: true,
+      },
+      orderBy: {
+        _max: {
           createdAt: "desc",
         },
-        select: {
-          exchangeRate: true, // Add rate to select for grouping
-          fromAmount: true,
-          toAmount: true,
-          createdAt: true, // Keep for ordering
-          currencyPair: {
-            select: {
-              fromCurrency: {
-                select: {
-                  id: true,
-                  code: true,
-                  symbol: true,
-                },
-              },
-              toCurrency: {
-                select: {
-                  id: true,
-                  code: true,
-                  symbol: true,
-                },
-              },
-              isInverseRate: true,
-            },
+      },
+      take: 5,
+    });
+
+    const currencyPairIds = groupedExchanges.map((g) => g.currencyPairId);
+    const currencyPairs = await prisma.currencyPair.findMany({
+      where: {
+        id: { in: currencyPairIds },
+      },
+      select: {
+        id: true,
+        fromCurrency: {
+          select: {
+            id: true,
+            code: true,
+            symbol: true,
           },
         },
-      })
-      .then((exchanges) => {
-        const grouped = exchanges.reduce((acc, exchange) => {
-          const key = exchange.exchangeRate.toString();
-          if (!acc[key]) {
-            acc[key] = {
-              rate: exchange.exchangeRate,
-              totalFromAmount: 0,
-              count: 0,
-              latestCreatedAt: exchange.createdAt,
-              currencyPair: exchange.currencyPair,
-              exchanges: [],
-            };
-          }
+        toCurrency: {
+          select: {
+            id: true,
+            code: true,
+            symbol: true,
+          },
+        },
+        isInverseRate: true,
+      },
+    });
 
-          acc[key].totalFromAmount += exchange.fromAmount.toNumber();
-          acc[key].count += 1;
-          if (exchange.createdAt > acc[key].latestCreatedAt) {
-            acc[key].latestCreatedAt = exchange.createdAt;
-          }
-          acc[key].exchanges.push(exchange);
-
-          return acc;
-        }, {} as Record<string, any>);
-
-        return Object.values(grouped)
-          .sort((a, b) => b.latestCreatedAt - a.latestCreatedAt)
-          .slice(0, 5);
-      });
+    return groupedExchanges.map((group) => ({
+      exchangeRate: group.exchangeRate,
+      count: group._count._all,
+      fromAmount: group._sum.fromAmount || 0,
+      latestCreatedAt: group._max.createdAt,
+      currencyPair: currencyPairs.find((cp) => cp.id === group.currencyPairId),
+    }));
   },
 
   getAll: async (filters?: GetExchangesFilters) => {

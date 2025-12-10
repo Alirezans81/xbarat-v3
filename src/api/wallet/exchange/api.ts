@@ -10,7 +10,10 @@ export const createExchange = (token: Token, exchange: CreateExchange) => {
   return apiFetch(api["exchange"], { method: "POST", body: exchange, token });
 };
 export const getLastExchanges = (currencyPairId: string) => {
-  return apiFetch<Exchange[]>(api["order-book"] + "/" + currencyPairId, {
-    method: "GET",
-  });
+  return apiFetch<(Exchange & { count: Number })[]>(
+    api["order-book"] + "/" + currencyPairId,
+    {
+      method: "GET",
+    }
+  );
 };

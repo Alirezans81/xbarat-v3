@@ -2,11 +2,14 @@ import { NextResponse, NextRequest } from "next/server";
 import { exchangeService } from "@/lib/back/services/wallet/exchange.service";
 import { ServerErrorResponse } from "@/lib/back/utils/globalResponses.utils";
 import { GetExchangesFilters } from "@/types/back/wallet/exchange";
-export async function GET(request: NextRequest) {
+export async function GET(
+  request: NextRequest,
+  { params }: { params: Promise<{ currencyPairId: string }> }
+) {
   try {
-    const searchParams = request.nextUrl.searchParams;
+    const { currencyPairId } = await params;
     const filters: GetExchangesFilters = {
-      currencyPairId: searchParams.get("currencyPairId") || undefined,
+      currencyPairId: currencyPairId || undefined,
     };
     const lastOrders = await exchangeService.getLast(filters);
     return NextResponse.json(lastOrders, { status: 200 });
