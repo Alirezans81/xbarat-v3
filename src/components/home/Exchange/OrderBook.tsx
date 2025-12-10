@@ -27,6 +27,12 @@ export default function OrderBook({ currencyPair, currencyPairs, setRate }: Prop
             pair.toCurrencyId === currencyPair?.fromCurrencyId
     );
 
+    const scrollToTop = () => {
+        if (typeof window !== 'undefined') {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+    };
+
     const [orderBooks, setOrderBooks] = useState<(Exchange & { count: Number })[] | null>([]);
     const [reverseOrderBooks, setReverseOrderBooks] = useState<(Exchange & { count: Number })[] | null>([]);
 
@@ -79,7 +85,7 @@ export default function OrderBook({ currencyPair, currencyPairs, setRate }: Prop
     const toCurr = currencyPair?.toCurrency.code;
 
     return (
-        <div className={`w-full h-fit ${orderBooks === null || orderBooks.length == 0 ? "hidden" : "flex"} flex-col mt-24 items-center gap-y-5`}>
+        <div id="latest-table" className={`w-full h-fit ${orderBooks === null || orderBooks.length == 0 ? "hidden" : "flex"} flex-col mt-24 items-center gap-y-5`}>
             <span className="w-fit h-fit text-white text-2xl">Lastest Transactions</span>
             <div className="w-full h-full flex flex-row gap-x-5 justify-center items-start">
 
@@ -118,7 +124,11 @@ export default function OrderBook({ currencyPair, currencyPairs, setRate }: Prop
                                                 </div>
                                             </TableCell>
                                             <TableCell className="font-medium text-center">
-                                                <button onClick={() => setRate(order.exchangeRate.toString())} className="w-full h-12 flex justify-center items-center rounded-2xl bg-gradient-to-br from-[#060606] to-[#282828] shadow-[0_0_5px_0.1px_#1D5E04] hover:bg-gradient-to-br hover:from-accent hover:to-muted">
+                                                <button onClick={() => {
+                                                    setRate(order.exchangeRate.toString())
+                                                    scrollToTop();
+                                                }}
+                                                    className="w-full h-12 flex justify-center items-center rounded-2xl bg-gradient-to-br from-[#060606] to-[#282828] shadow-[0_0_5px_0.1px_#1D5E04] hover:bg-gradient-to-br hover:from-accent hover:to-muted hover:cursor-pointer">
                                                     {addComma(order.exchangeRate)}
                                                 </button>
                                             </TableCell>
@@ -166,7 +176,10 @@ export default function OrderBook({ currencyPair, currencyPairs, setRate }: Prop
                                                 </div>
                                             </TableCell>
                                             <TableCell className="font-medium text-center bg-transparent">
-                                                <button onClick={() => setRate(order.exchangeRate.toString())} className="w-full h-12 flex justify-center items-center rounded-2xl bg-gradient-to-br from-[#060606] to-[#282828] shadow-[0_0_5px_0.1px_#860303] hover:bg-gradient-to-br hover:from-accent hover:to-muted">
+                                                <button onClick={() => {
+                                                    setRate(order.exchangeRate.toString())
+                                                    scrollToTop();
+                                                }} className="w-full h-12 flex justify-center items-center rounded-2xl bg-gradient-to-br from-[#060606] to-[#282828] shadow-[0_0_5px_0.1px_#860303] hover:bg-gradient-to-br hover:from-accent hover:to-muted hover:cursor-pointer">
                                                     {addComma(order.exchangeRate)}
                                                 </button>
                                             </TableCell>
@@ -178,6 +191,6 @@ export default function OrderBook({ currencyPair, currencyPairs, setRate }: Prop
                     </div>
                 </div>
             </div >
-        </div>
+        </div >
     );
 }

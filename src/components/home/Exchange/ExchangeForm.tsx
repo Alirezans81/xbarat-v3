@@ -308,7 +308,7 @@ export default function ExchangeForm({
           </Button>
         </div>
         <Link
-          href="#tables"
+          href="#latest-table"
           className="text-muted-foreground -mb-2 mt-2 transition-all duration-300 hover:text-foreground cursor-pointer w-fit"
         >
           See the tables.
