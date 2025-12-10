@@ -28,6 +28,8 @@ import Timer from "../Timer";
 
 
 interface Props {
+  rate: string,
+  setRate: (numRate: string) => void;
   currencies: Currency[];
   currencyPairs: CurrencyPair[];
   wallets: Wallet[];
@@ -35,6 +37,8 @@ interface Props {
   setSelectedPair: (pair: CurrencyPair | null) => void;
 }
 export default function ExchangeForm({
+  rate,
+  setRate,
   currencies,
   currencyPairs,
   wallets: outerWallet,
@@ -68,7 +72,6 @@ export default function ExchangeForm({
   const [selectedWallet, setSelectedWallet] = useState<Wallet | null>(null);
 
   const [amount, setAmount] = useState("");
-  const [rate, setRate] = useState("");
   const fee = selectedPair
     ? +amount.replaceAll(",", "") * (+selectedPair.feePercentage / 100)
     : 0;

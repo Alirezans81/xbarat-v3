@@ -4,7 +4,7 @@ import OrderBook from "./OrderBook"
 import { Currency } from "@/types/front/currency";
 import { CurrencyPair } from "@/types/front/currencyPair";
 import { Wallet } from "@/types/front/wallet";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 
 interface Props {
     currencies: Currency[];
@@ -17,10 +17,13 @@ export default function Exchange({
     wallets: outerWallet,
 }: Props) {
     const [selectedPair, setSelectedPair] = useState<CurrencyPair | null>(null);
+    const [rate, setRate] = useState<string>("");
 
     return (
         <div className="flex flex-col gap-4 h-full">
             <ExchangeForm
+                rate={rate}
+                setRate={setRate}
                 currencies={currencies}
                 currencyPairs={currencyPairs}
                 wallets={outerWallet}
@@ -28,6 +31,7 @@ export default function Exchange({
                 setSelectedPair={setSelectedPair}
             />
             <OrderBook
+                setRate={setRate}
                 currencyPairs={currencyPairs}
                 currencyPair={selectedPair}
             />
