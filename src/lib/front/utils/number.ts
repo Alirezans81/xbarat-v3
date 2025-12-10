@@ -16,3 +16,7 @@ export const addComma = (value: number | string | Decimal): string => {
 
   return num.toLocaleString("en-US");
 };
+
+export const removeComma = (value: string): number => {
+  return +value.replaceAll(",", "");
+};
