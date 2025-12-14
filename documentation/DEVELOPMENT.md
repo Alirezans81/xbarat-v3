@@ -378,7 +378,7 @@ export default function DepositPage() {
 
 ### ایجاد Endpoint جدید
 
-**مثال: دریافت تاریخچه تراکنش‌های کاربر**
+**مثال 1: دریافت تاریخچه تراکنش‌های کاربر**
 
 ```typescript
 // src/api/transaction/route.ts
@@ -419,6 +419,127 @@ export async function GET(request: NextRequest) {
         error: error.message,
       },
       { status: 400 }
+    );
+  }
+}
+```
+
+**مثال 2: تغییر رمز عبور**
+
+```typescript
+// src/api/user/change-password/route.ts
+import { NextRequest } from "next/server";
+import { verifyAuth } from "@/lib/auth";
+import { prisma } from "@/lib/prisma";
+import bcrypt from "bcryptjs";
+
+export async function POST(request: NextRequest) {
+  try {
+    const user = await verifyAuth(request);
+    const { currentPassword, newPassword, confirmPassword } =
+      await request.json();
+
+    // Validation
+    if (!currentPassword || !newPassword || !confirmPassword) {
+      return Response.json(
+        {
+          success: false,
+          error: "All fields required",
+          code: "MISSING_FIELDS",
+        },
+        { status: 400 }
+      );
+    }
+
+    if (newPassword !== confirmPassword) {
+      return Response.json(
+        { success: false, error: "Passwords do not match" },
+        { status: 400 }
+      );
+    }
+
+    // بررسی رمز عبور فعلی
+    const isPasswordValid = await bcrypt.compare(
+      currentPassword,
+      user.passwordHash
+    );
+    if (!isPasswordValid) {
+      return Response.json(
+        { success: false, error: "Current password incorrect" },
+        { status: 400 }
+      );
+    }
+
+    // Hash و بروزرسانی
+    const hashedNewPassword = await bcrypt.hash(newPassword, 12);
+    await prisma.user.update({
+      where: { id: user.id },
+      data: { passwordHash: hashedNewPassword },
+    });
+
+    return Response.json({
+      success: true,
+      data: { message: "Password changed successfully" },
+    });
+  } catch (error) {
+    return Response.json(
+      { success: false, error: error.message },
+      { status: 500 }
+    );
+  }
+}
+```
+
+**مثال 3: بروزرسانی پروفایل**
+
+```typescript
+// src/api/user/profile/route.ts
+import { NextRequest } from "next/server";
+import { verifyAuth } from "@/lib/auth";
+import { prisma } from "@/lib/prisma";
+
+export async function PUT(request: NextRequest) {
+  try {
+    const user = await verifyAuth(request);
+    const {
+      fullName,
+      avatarUrl,
+      nationality,
+      language,
+      dateOfBirth,
+      address,
+      city,
+      state,
+      postalCode,
+    } = await request.json();
+
+    const updatedUser = await prisma.user.update({
+      where: { id: user.id },
+      data: {
+        ...(fullName && { fullName }),
+        ...(avatarUrl && { avatarUrl }),
+        ...(nationality && { nationality }),
+        ...(language && { language }),
+        ...(dateOfBirth && { dateOfBirth: new Date(dateOfBirth) }),
+        ...(address && { address }),
+        ...(city && { city }),
+        ...(state && { state }),
+        ...(postalCode && { postalCode }),
+      },
+    });
+
+    return Response.json({
+      success: true,
+      data: {
+        id: updatedUser.id,
+        email: updatedUser.email,
+        fullName: updatedUser.fullName,
+      },
+    });
+  } catch (error) {
+    return Response.json(
+      { success: false, error: error.message },
+      { status: 500 }
     );
   }
 }

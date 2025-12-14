@@ -92,4 +92,19 @@ export const userService = {
 
     return false;
   },
+
+  updateUser: userRepository.update,
+
+  checkPassword: async (id: string, password: string): Promise<boolean> => {
+    const user = await userService.getById(id);
+    if (!user) throw new Error("userNotFound");
+
+    const isMatch = await bcrypt.compare(password, user.passwordHash);
+    return isMatch;
+  },
+
+  updatePassword: async (id: string, password: string) => {
+    const hashedPassword = await bcrypt.hash(password, 10);
+    return userRepository.update(id, { passwordHash: hashedPassword });
+  },
 };

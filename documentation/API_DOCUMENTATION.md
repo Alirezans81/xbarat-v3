@@ -182,7 +182,12 @@ Authorization: Bearer <TOKEN>
   "fullName": "Ali Reza Updated",
   "avatarUrl": "https://...",
   "nationality": "IR",
-  "language": "fa"
+  "language": "fa",
+  "dateOfBirth": "1990-01-15",
+  "address": "123 Main Street",
+  "city": "Tehran",
+  "state": "Tehran Province",
+  "postalCode": "12345"
 }
 ```
 
@@ -193,7 +198,18 @@ Authorization: Bearer <TOKEN>
   "success": true,
   "data": {
     "id": "uuid",
+    "email": "user@example.com",
     "fullName": "Ali Reza Updated",
+    "avatarUrl": "https://...",
+    "countryCode": "IR",
+    "nationality": "IR",
+    "language": "fa",
+    "dateOfBirth": "1990-01-15T00:00:00Z",
+    "address": "123 Main Street",
+    "city": "Tehran",
+    "state": "Tehran Province",
+    "postalCode": "12345",
+    "kycStatus": "APPROVED",
     "updatedAt": "2024-01-20T15:45:00Z"
   }
 }
@@ -201,7 +217,120 @@ Authorization: Bearer <TOKEN>
 
 ---
 
-### 5. تایید ایمیل
+### 5. تغییر رمز عبور
+
+```http
+POST /api/user/change-password
+Content-Type: application/json
+Authorization: Bearer <TOKEN>
+```
+
+**Request Body:**
+
+```json
+{
+  "currentPassword": "OldPassword123!",
+  "newPassword": "NewPassword123!",
+  "confirmPassword": "NewPassword123!"
+}
+```
+
+**Response (200):**
+
+```json
+{
+  "success": true,
+  "data": {
+    "message": "Password changed successfully",
+    "passwordChangedAt": "2024-01-20T16:00:00Z"
+  }
+}
+```
+
+**Error (400):**
+
+```json
+{
+  "success": false,
+  "error": "Current password is incorrect",
+  "code": "INVALID_PASSWORD"
+}
+```
+
+**Error (400):**
+
+```json
+{
+  "success": false,
+  "error": "New password must be different from current password",
+  "code": "SAME_PASSWORD"
+}
+```
+
+---
+
+### 6. درخواست تغییر ایمیل
+
+```http
+POST /api/user/request-email-change
+Content-Type: application/json
+Authorization: Bearer <TOKEN>
+```
+
+**Request Body:**
+
+```json
+{
+  "newEmail": "newemail@example.com"
+}
+```
+
+**Response (200):**
+
+```json
+{
+  "success": true,
+  "data": {
+    "message": "Verification code sent to new email",
+    "tempEmail": "newemail@example.com"
+  }
+}
+```
+
+---
+
+### 7. تأیید تغییر ایمیل
+
+```http
+POST /api/user/confirm-email-change
+Content-Type: application/json
+Authorization: Bearer <TOKEN>
+```
+
+**Request Body:**
+
+```json
+{
+  "code": "123456"
+}
+```
+
+**Response (200):**
+
+```json
+{
+  "success": true,
+  "data": {
+    "message": "Email changed successfully",
+    "email": "newemail@example.com",
+    "isEmailVerified": true
+  }
+}
+```
+
+---
+
+### 8. تایید ایمیل
 
 ```http
 POST /api/user/verify-email
@@ -231,7 +360,7 @@ Authorization: Bearer <TOKEN>
 
 ---
 
-### 6. تایید شماره تلفن
+### 9. تایید شماره تلفن
 
 ```http
 POST /api/user/verify-phone
@@ -261,7 +390,7 @@ Authorization: Bearer <TOKEN>
 
 ---
 
-### 7. ارسال درخواست KYC
+### 10. ارسال درخواست KYC
 
 ```http
 POST /api/user/kyc

@@ -1,3 +1,5 @@
+import { User } from "@/generated/prisma";
+
 export type GetUsersFilters = {
   email?: string;
   fullName?: string;
@@ -16,4 +18,20 @@ export type CreateUser = {
 export type LoginUser = {
   email: string;
   password: string;
+};
+
+export type UpdateUser = Partial<
+  Pick<
+    User,
+    | "fullName"
+    | "phoneNumber"
+    | "countryCode"
+    | "nationality"
+    | "city"
+    | "documentNumber"
+    | "address"
+    | "passwordHash"
+  >
+> & {
+  document?: File;
 };

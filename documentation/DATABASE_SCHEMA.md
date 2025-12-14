@@ -117,7 +117,26 @@ model User {
 - `id`: UUID منحصر‌به‌فرد
 - `email`: ایمیل منحصر‌به‌فرد
 - `phoneNumber`: شماره تلفن منحصر‌به‌فرد
+- `fullName`: نام کامل کاربر
 - `passwordHash`: رمز عبور hash‌شده (bcrypt)
+- `countryCode`: کد کشور (مثلاً IR، US، DE)
+- `nationality`: ملیت (اختیاری)
+- `language`: زبان پسندیده (en, fa, de)
+- `dateOfBirth`: تاریخ تولد (برای KYC)
+- `address`: آدرس (برای KYC)
+- `city`: شهر
+- `state`: استان/ایالت
+- `postalCode`: کد پستی
+- `avatarUrl`: آدرس تصویر پروفایل
+- `kycStatus`: وضعیت KYC (PENDING, APPROVED, REJECTED)
+- `documentType`: نوع سند هویتی
+- `documentNumber`: شماره سند
+- `documentPhotoUrl`: عکس سند
+- `isPhoneVerified`: آیا شماره تایید شده
+- `isEmailVerified`: آیا ایمیل تایید شده
+- `role`: نقش کاربر (CUSTOMER, ADMIN)
+- `isDeleted`: برای Soft Delete
+
 - `kycStatus`: وضعیت KYC
 - `isDeleted`: برای Soft Delete
 
