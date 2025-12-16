@@ -20,18 +20,6 @@ export type LoginUser = {
   password: string;
 };
 
-export type UpdateUser = Partial<
-  Pick<
-    User,
-    | "fullName"
-    | "phoneNumber"
-    | "countryCode"
-    | "nationality"
-    | "city"
-    | "documentNumber"
-    | "address"
-    | "passwordHash"
-  >
-> & {
+export type UpdateUser = Partial<Partial<User>> & {
   document?: File;
 };

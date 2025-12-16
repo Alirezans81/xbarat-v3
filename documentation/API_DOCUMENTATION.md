@@ -69,32 +69,49 @@ Content-Type: application/json
 }
 ```
 
+**Required Fields:**
+
+- `email` - ایمیل کاربر (منحصر به فرد)
+- `password` - رمز عبور (حداقل 8 کاراکتر توصیه می‌شود)
+- `fullName` - نام کامل کاربر
+- `phoneNumber` - شماره تلفن کاربر
+- `countryCode` - کد کشور (مثل IR، US)
+
 **Response (201):**
 
 ```json
 {
-  "success": true,
-  "data": {
-    "user": {
-      "id": "550e8400-e29b-41d4-a716-446655440000",
-      "email": "newuser@example.com",
-      "phoneNumber": "+989123456789",
-      "fullName": "Ali Reza",
-      "kycStatus": "PENDING",
-      "role": "CUSTOMER"
-    },
-    "token": "eyJhbGciOiJIUzI1NiIs..."
-  }
+  "user": {
+    "id": "550e8400-e29b-41d4-a716-446655440000",
+    "email": "newuser@example.com",
+    "phoneNumber": "+989123456789",
+    "fullName": "Ali Reza",
+    "countryCode": "IR",
+    "kycStatus": "PENDING",
+    "role": "CUSTOMER",
+    "createdAt": "2024-01-15T10:30:00Z"
+  },
+  "token": "eyJhbGciOiJIUzI1NiIs..."
 }
 ```
 
-**Error (400):**
+**Error (400) - Missing Fields:**
 
 ```json
 {
   "success": false,
-  "error": "Email already exists",
-  "code": "EMAIL_DUPLICATE"
+  "error": "Missing required fields",
+  "code": "MISSING_FIELDS"
+}
+```
+
+**Error (400) - Email Already Exists:**
+
+```json
+{
+  "success": false,
+  "error": "emailAlreadyRegistered",
+  "code": "DUPLICATE_EMAIL"
 }
 ```
 
@@ -175,43 +192,45 @@ Content-Type: application/json
 Authorization: Bearer <TOKEN>
 ```
 
-**Request Body:**
+**Request Body (تمام فیلدها اختیاری هستند):**
 
 ```json
 {
   "fullName": "Ali Reza Updated",
-  "avatarUrl": "https://...",
-  "nationality": "IR",
-  "language": "fa",
-  "dateOfBirth": "1990-01-15",
-  "address": "123 Main Street",
-  "city": "Tehran",
-  "state": "Tehran Province",
-  "postalCode": "12345"
+  "phoneNumber": "+989123456789",
+  "countryCode": "IR"
 }
 ```
+
+**Available Fields:**
+
+- `fullName` - نام کامل کاربر
+- `phoneNumber` - شماره تلفن
+- `countryCode` - کد کشور
+
+> **نکته:** برای بروزرسانی اطلاعات KYC (مدارک، آدرس، شهر، کد پستی و غیره)، از endpoint `/api/user/kyc` استفاده کنید.
 
 **Response (200):**
 
 ```json
 {
-  "success": true,
-  "data": {
-    "id": "uuid",
-    "email": "user@example.com",
-    "fullName": "Ali Reza Updated",
-    "avatarUrl": "https://...",
-    "countryCode": "IR",
-    "nationality": "IR",
-    "language": "fa",
-    "dateOfBirth": "1990-01-15T00:00:00Z",
-    "address": "123 Main Street",
-    "city": "Tehran",
-    "state": "Tehran Province",
-    "postalCode": "12345",
-    "kycStatus": "APPROVED",
-    "updatedAt": "2024-01-20T15:45:00Z"
-  }
+  "id": "uuid",
+  "email": "user@example.com",
+  "fullName": "Ali Reza Updated",
+  "phoneNumber": "+989123456789",
+  "countryCode": "IR",
+  "kycStatus": "PENDING",
+  "updatedAt": "2024-01-20T15:45:00Z"
+}
+```
+
+**Error (400) - Unauthorized:**
+
+```json
+{
+  "success": false,
+  "error": "Unauthorized",
+  "code": "UNAUTHORIZED"
 }
 ```
 
@@ -390,10 +409,10 @@ Authorization: Bearer <TOKEN>
 
 ---
 
-### 10. ارسال درخواست KYC
+### 10. آپدیت اطلاعات KYC
 
 ```http
-POST /api/user/kyc
+PUT /api/user/kyc
 Content-Type: multipart/form-data
 Authorization: Bearer <TOKEN>
 ```
@@ -403,26 +422,57 @@ Authorization: Bearer <TOKEN>
 ```
 documentType: NATIONAL_ID
 documentNumber: 1234567890
-documentPhotoUrl: <file>
+documentPhoto: <file> (عکس مدرک)
 dateOfBirth: 1990-01-15
-address: 123 Main St
+address: 123 Main Street
 city: Tehran
 state: Tehran Province
 postalCode: 11111
 ```
 
-**Response (201):**
+**Available Document Types:**
+
+- `NATIONAL_ID` - شناسه ملی
+- `PASSPORT` - گذرنامه
+- `DRIVER_LICENSE` - گواهینامه رانندگی
+
+**Response (200):**
 
 ```json
 {
-  "success": true,
-  "data": {
-    "id": "uuid",
-    "kycStatus": "PENDING",
-    "documentType": "NATIONAL_ID",
-    "documentNumber": "1234567890",
-    "documentPhotoUrl": "https://s3.../document.jpg"
-  }
+  "id": "uuid",
+  "email": "user@example.com",
+  "fullName": "Ali Reza",
+  "documentType": "NATIONAL_ID",
+  "documentNumber": "1234567890",
+  "documentPhotoUrl": "https://r2-public-url.../document.jpg",
+  "dateOfBirth": "1990-01-15T00:00:00Z",
+  "address": "123 Main Street",
+  "city": "Tehran",
+  "state": "Tehran Province",
+  "postalCode": "11111",
+  "kycStatus": "PENDING",
+  "updatedAt": "2024-01-20T16:00:00Z"
+}
+```
+
+**Error (401) - Unauthorized:**
+
+```json
+{
+  "success": false,
+  "error": "Unauthorized",
+  "code": "UNAUTHORIZED"
+}
+```
+
+**Error (400) - Server Error:**
+
+```json
+{
+  "success": false,
+  "error": "Internal Server Error",
+  "code": "SERVER_ERROR"
 }
 ```
 

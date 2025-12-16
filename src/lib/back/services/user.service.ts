@@ -2,6 +2,7 @@ import bcrypt from "bcryptjs";
 import { jwtUtils } from "@/lib/back/utils/jwt.utils";
 import { userRepository } from "../repositories/user.repo";
 import { addDays } from "date-fns";
+import { CreateUser } from "@/types/back/user";
 
 export const userService = {
   register: async ({
@@ -10,7 +11,7 @@ export const userService = {
     fullName,
     phoneNumber,
     countryCode,
-  }: any) => {
+  }: CreateUser) => {
     const hashedPassword = await bcrypt.hash(password, 10);
 
     const user = await userRepository.createUser({

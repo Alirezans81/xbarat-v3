@@ -39,7 +39,7 @@ export const userRepository = {
 
   update: async (
     id: string,
-    data: Omit<UpdateUser, "document"> & { documentUrl?: string }
+    data: Omit<UpdateUser, "document"> & { documentPhotoUrl?: string }
   ) => {
     return prisma.user.update({ where: { id }, data });
   },
