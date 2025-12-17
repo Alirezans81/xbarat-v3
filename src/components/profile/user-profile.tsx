@@ -10,7 +10,11 @@ import Document from "../../../public/Profile/Document.png";
 import LogOut from "../../../public/Profile/LogOut.png";
 import { useState } from 'react';
 import { GetUser } from '@/types/front/user';
+import { Input } from '../ui/input';
 export default function UserProfile() {
+
+    const [editing, setEditing] = useState<string>("");
+    const [tempVariable, setTempVariable] = useState<string>("");
     const [user, setUser] = useState<GetUser | null>({
         id: "CIRmashIR0419425",
         email: "asgharxbarat@gmail.com",
@@ -27,6 +31,15 @@ export default function UserProfile() {
         address: "22st , Pastor , Ahmadabad,Mashhad,Iran",
         dateOfBirth: "1998/10/10"
     });
+    function handleEdit(val: keyof GetUser) {
+        setEditing(val);
+        user && setTempVariable(user[val]);
+    }
+    function handleBlur(val: keyof GetUser) {
+        setEditing("");
+        setTempVariable("");
+        /*Patch the data*/
+    }
     return (
         <div className='w-full h-full flex flex-col justify-center items-center backdrop-blur-xl bg-gradient-to-br text-[#ebebeb] from-card/10s to-card/5  border-card/40 shadow-[inset_0_1px_0_0_rgba(255,255,255,0.2)] bg-card/20 border-[0.5px] rounded-2xl px-5 pt-1'>
             <div className='w-fit h-fit relative'>
@@ -84,7 +97,7 @@ export default function UserProfile() {
                 <div className='col-span-3 row-span-1 w-full h-full flex flex-col backdrop-blur-xl bg-gradient-to-br from-card/25 to-card/5 border-card/40 shadow-[inset_0_1px_0_0_rgba(255,255,255,0.2)] bg-card/20 border-[0.5px] justify-center items-center rounded-2xl py-1 px-5'>
                     <div className='w-fit h-fit flex flex-row text-card-foreground/50 text-md items-center gap-x-3'>
                         <span>Phone Number</span>
-                        <button onClick={() => console.log("Phone Number add")} className='hover:cursor-pointer w-fit h-fit'>
+                        <button onClick={() => handleEdit("phoneNumber")} className='hover:cursor-pointer w-fit h-fit'>
                             <Image
                                 src={Edit}
                                 width={12}
@@ -94,7 +107,12 @@ export default function UserProfile() {
                             />
                         </button>
                     </div>
-                    <span className='w-fit h-fit text-card-foreground text-sm'>{user?.phoneNumber}</span>
+
+                    {editing === "phoneNumber" ?
+                        <Input onBlur={() => handleBlur("phoneNumber")} onChange={(e) => setUser(prev => prev ? { ...prev, phoneNumber: e.target.value } : null)}
+                            value={user?.phoneNumber} className='w-fit h-fit text-card-foreground/50 text-sm' /> :
+                        <span className='w-fit h-fit text-card-foreground/50 text-sm'>{user?.documentNumber}</span>
+                    }
                 </div>
 
 

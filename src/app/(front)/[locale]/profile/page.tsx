@@ -4,7 +4,7 @@ import Cards from "@/components/profile/cards";
 export default function Profile() {
     return (
         <div className='w-full h-screen flex justify-center items-center'>
-            <div className='w-full h-full  py-3 px-10 flex flex-row justify-between gap-3'>
+            <div className='w-11/12 h-11/12 flex flex-row justify-between gap-3'>
                 <div className='w-1/3 h-fit flex flex-col gap-y-3'>
                     <div className='w-full h-fit'>
                         <UserProfile />
