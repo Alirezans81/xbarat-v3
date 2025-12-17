@@ -160,7 +160,7 @@ export default function ExchangeForm({
       </div>
 
       <form
-        className={`bg-card dark:bg-accent px-6 py-5 rounded-xl flex flex-col items-center gap-4 transition-all duration-500 shadow-xl ease-in-out ${selectedWallet ? "translate-y-16" : ""
+        className={`bg-card backdrop-blur-sm px-6 py-5 rounded-xl flex flex-col items-center gap-4 transition-all duration-500 shadow-xl ease-in-out ${selectedWallet ? "translate-y-16" : ""
           }`}
         onSubmit={(e) => {
           e.preventDefault();

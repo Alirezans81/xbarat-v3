@@ -35,6 +35,7 @@
     "wallet": "Wallet",
     "deposit": "Deposit",
     "withdrawal": "Withdrawal",
+    "profile": "Profile",
     "report": "Report",
     "dashboard": "Dashboard",
     "panelAdmin": "Admin Panel",

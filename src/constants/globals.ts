@@ -7,6 +7,7 @@ import {
   MonitorCog,
   Wallet,
   WavesLadder,
+  User,
 } from "lucide-react";
 import { CountryCode } from "../types/front/globals";
 
@@ -48,6 +49,11 @@ export const loggedInNavabarItems = [
     title: "dashboard",
     url: "/dashboard",
     icon: LayoutDashboard,
+  },
+  {
+    title: "profile",
+    url: "/profile",
+    icon: User,
   },
 ];
 export const adminLoggedInNavbarItems = [
