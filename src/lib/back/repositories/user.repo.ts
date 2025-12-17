@@ -1,5 +1,6 @@
 import { GetUsersFilters } from "@/types/front/user";
 import { prisma } from "../prisma";
+import { UpdateUser } from "@/types/back/user";
 
 export const userRepository = {
   createUser: async (data: {
@@ -34,5 +35,12 @@ export const userRepository = {
 
   findByEmail: async (email: string) => {
     return prisma.user.findUnique({ where: { email } });
+  },
+
+  update: async (
+    id: string,
+    data: Omit<UpdateUser, "document"> & { documentPhotoUrl?: string }
+  ) => {
+    return prisma.user.update({ where: { id }, data });
   },
 };

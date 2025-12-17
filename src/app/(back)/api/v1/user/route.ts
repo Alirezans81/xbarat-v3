@@ -1,5 +1,6 @@
 import { userService } from "@/lib/back/services/user.service";
 import {
+  MissingFieldsResponse,
   ServerErrorResponse,
   UnauthorizedResponse,
 } from "@/lib/back/utils/globalResponses.utils";
@@ -30,8 +31,18 @@ export async function GET(request: NextRequest) {
 export async function POST(request: Request) {
   try {
     const body = await request.json();
+    const { email, password, fullName, phoneNumber, countryCode } = body;
+    if (!email || !password || !fullName || !phoneNumber || !countryCode) {
+      return MissingFieldsResponse;
+    }
 
-    const { user, token, token_exp } = await userService.register(body);
+    const { user, token, token_exp } = await userService.register({
+      email,
+      password,
+      fullName,
+      phoneNumber,
+      countryCode,
+    });
 
     const cookiesStore = await cookies();
     const expiresMs = Number(token_exp ?? 0) * 1000;
