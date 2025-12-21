@@ -44,6 +44,7 @@ model User {
   withdrawals        Withdrawal[]
   transfers          Transfer[]      @relation("TransferToUser")
   feeUserWallets     FeeUser[]
+  tickets            Ticket[]
 
   @@index([email])
   @@index([phoneNumber])
@@ -265,6 +266,30 @@ model ActivityLog {
   @@index([role])
 }
 
+model Ticket {
+  id           String          @id @default(uuid())
+  userId       String
+  subject      String
+  status       TicketStatus    @default(OPEN)
+  unreadCount  Int             @default(0)
+  messages     TicketMessage[]
+  createdAt    DateTime        @default(now())
+  updatedAt    DateTime        @updatedAt
+
+  user User @relation(fields: [userId], references: [id])
+}
+
+model TicketMessage {
+  id         String      @id @default(uuid())
+  ticketId   String
+  message    String
+  filesUrl   String[]
+  senderRole UserRole
+  createdAt  DateTime    @default(now())
+
+  ticket Ticket @relation(fields: [ticketId], references: [id])
+}
+
 model FeeUser {
   id        String   @id @default(uuid())
   userId    String
@@ -362,4 +387,10 @@ enum TransactionKind {
   WITHDRAWAL
   TRANSFER
   REFUND
+}
+
+enum TicketStatus {
+  OPEN
+  PENDING
+  CLOSED
 }
