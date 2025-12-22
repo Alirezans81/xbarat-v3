@@ -3,45 +3,41 @@ import { getCurrencies } from "@/api/currency/action";
 import { getWallets } from "@/api/wallet/action";
 import Exchange from "@/components/home/Exchange/Exchange";
 export default async function Home() {
+  let currencies;
+  let currencyPairs;
+  let wallets;
+  let error = false;
+
   try {
-    const currencies = await getCurrencies();
-    const currencyPairs = await getCurrencyPairs();
+    currencies = await getCurrencies();
+    currencyPairs = await getCurrencyPairs();
+    wallets = await getWallets();
+  } catch (err) {
+    console.error("Error fetching data:", err);
+    error = true;
+  }
 
-    try {
-      const wallets = await getWallets();
-
-      return (
-        <div className="w-full flex flex-col justify-center items-center gap-8 py-36 container mx-auto px-5">
-          <span className="capitalize text-6xl font-bold">
-            when you are enough!
-          </span>
-          <Exchange currencies={currencies}
-            currencyPairs={currencyPairs}
-            wallets={wallets}
-          />
-
-        </div>
-      );
-    } catch (error) {
-      return (
-        <div className="w-full flex flex-col justify-center items-center gap-8 py-36 container mx-auto px-5">
-          <span className="capitalize text-6xl font-bold">
-            when you are enough!
-          </span>
-          <Exchange currencies={currencies}
-            currencyPairs={currencyPairs}
-            wallets={[]}
-          />
-        </div>
-      );
-    }
-  } catch (error) {
-    console.error("Error fetching data:", error);
+  if (error) {
     return (
       <div className="w-full flex flex-col justify-center items-center gap-8 py-36 container mx-auto px-5">
         <span className="capitalize text-6xl font-bold">
           Something went wrong!
         </span>
+      </div>
+    );
+  }
+
+  if (currencies && currencyPairs) {
+    return (
+      <div className="w-full flex flex-col justify-center items-center gap-8 py-36 container mx-auto px-5">
+        <span className="capitalize text-6xl font-bold">
+          when you are enough!
+        </span>
+        <Exchange
+          currencies={currencies}
+          currencyPairs={currencyPairs}
+          wallets={wallets || []}
+        />
       </div>
     );
   }
