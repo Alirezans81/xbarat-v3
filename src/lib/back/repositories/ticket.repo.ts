@@ -15,14 +15,30 @@ export const ticketRepository = {
         ...(filters?.status && { status: filters.status }),
       },
       orderBy: { updatedAt: "desc" },
-      include: { messages: true },
+      include: {
+        messages: true,
+        user: {
+          select: {
+            email: true,
+            fullName: true,
+          },
+        },
+      },
     });
   },
 
   findById: async (id: string) => {
     return prisma.ticket.findUnique({
       where: { id },
-      include: { messages: true },
+      include: {
+        messages: true,
+        user: {
+          select: {
+            email: true,
+            fullName: true,
+          },
+        },
+      },
     });
   },
 

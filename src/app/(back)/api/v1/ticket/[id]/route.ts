@@ -4,9 +4,9 @@ import { ticketService } from "@/lib/back/services/ticket.service";
 import { UnauthorizedResponse } from "@/lib/back/utils/globalResponses.utils";
 import { userService } from "@/lib/back/services/user.service";
 
-export async function POST(
+export async function PUT(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   const token = request.headers.get("authorization")?.split(" ")[1];
   if (!token) return UnauthorizedResponse;
@@ -19,10 +19,11 @@ export async function POST(
 
   if (!isAdmin && !isSupport) return UnauthorizedResponse;
 
+  const { id } = await params;
   const { status } = await request.json();
 
-  if (status === "CLOSED") await ticketService.close(params.id);
-  if (status === "OPEN") await ticketService.reopen(params.id);
+  if (status === "CLOSED") await ticketService.close(id);
+  if (status === "OPEN") await ticketService.reopen(id);
 
   return NextResponse.json({ success: true });
 }
