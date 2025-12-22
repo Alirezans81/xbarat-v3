@@ -36,6 +36,8 @@ export default function UserProfile() {
         user && setTempVariable(user[val]);
     }
     function handleBlur(val: keyof GetUser) {
+        console.log("val", val);
+        console.log(user ? [val] : "");
         setEditing("");
         setTempVariable("");
         /*Patch the data*/
@@ -110,8 +112,8 @@ export default function UserProfile() {
 
                     {editing === "phoneNumber" ?
                         <Input onBlur={() => handleBlur("phoneNumber")} onChange={(e) => setUser(prev => prev ? { ...prev, phoneNumber: e.target.value } : null)}
-                            value={user?.phoneNumber} className='w-fit h-fit text-card-foreground/50 text-sm' /> :
-                        <span className='w-fit h-fit text-card-foreground/50 text-sm'>{user?.documentNumber}</span>
+                            value={user?.phoneNumber} className='w-40 h-fit text-card-foreground/50 text-sm' /> :
+                        <span className='w-fit h-fit text-card-foreground/50 text-sm'>{user?.phoneNumber}</span>
                     }
                 </div>
 
@@ -135,11 +137,10 @@ export default function UserProfile() {
 
 
                 {/* Third Row */}
-
-                <div className='col-span-2 row-span-1 w-full h-full flex flex-col backdrop-blur-xl bg-gradient-to-br from-card/25 to-card/5 border-card/40 shadow-[inset_0_1px_0_0_rgba(255,255,255,0.2)] bg-card/20 border-[0.5px] justify-center items-center rounded-2xl py-1'>
+                <div className='col-span-2 row-span-1 w-full h-full flex flex-col backdrop-blur-xl bg-gradient-to-br from-card/25 to-card/5 border-card/40 shadow-[inset_0_1px_0_0_rgba(255,255,255,0.2)] bg-card/20 border-[0.5px] justify-center items-center rounded-2xl py-1 px-5'>
                     <div className='w-fit h-fit flex flex-row text-card-foreground/50 text-md items-center gap-x-3'>
                         <span>Country</span>
-                        <button onClick={() => console.log("Phone Number add")} className='hover:cursor-pointer w-fit h-fit'>
+                        <button onClick={() => handleEdit("countryCode")} className='hover:cursor-pointer w-fit h-fit'>
                             <Image
                                 src={Edit}
                                 width={12}
@@ -149,13 +150,18 @@ export default function UserProfile() {
                             />
                         </button>
                     </div>
-                    <span className='w-fit h-fit text-card-foreground text-sm'>{user?.countryCode === "IR" ? "Iran" : ""}</span>
+
+                    {editing === "countryCode" ?
+                        <Input onBlur={() => handleBlur("countryCode")} onChange={(e) => setUser(prev => prev ? { ...prev, countryCode: e.target.value } : null)}
+                            value={user?.countryCode} className='w-40 h-fit text-card-foreground text-sm' /> :
+                        <span className='w-fit h-fit text-card-foreground text-sm'>{user?.countryCode === "IR" ? "Iran" : ""}</span>
+                    }
                 </div>
 
-                <div className='col-span-2 row-span-1 w-full h-full flex flex-col backdrop-blur-xl bg-gradient-to-br from-card/25 to-card/5 border-card/40 shadow-[inset_0_1px_0_0_rgba(255,255,255,0.2)] bg-card/20 border-[0.5px] justify-center items-center rounded-2xl py-1'>
+                <div className='col-span-2 row-span-1 w-full h-full flex flex-col backdrop-blur-xl bg-gradient-to-br from-card/25 to-card/5 border-card/40 shadow-[inset_0_1px_0_0_rgba(255,255,255,0.2)] bg-card/20 border-[0.5px] justify-center items-center rounded-2xl py-1 px-5'>
                     <div className='w-fit h-fit flex flex-row text-card-foreground/50 text-md items-center gap-x-3'>
                         <span>State</span>
-                        <button onClick={() => console.log("Phone Number add")} className='hover:cursor-pointer w-fit h-fit'>
+                        <button onClick={() => handleEdit("state")} className='hover:cursor-pointer w-fit h-fit'>
                             <Image
                                 src={Edit}
                                 width={12}
@@ -165,13 +171,18 @@ export default function UserProfile() {
                             />
                         </button>
                     </div>
-                    <span className='w-fit h-fit text-card-foreground text-sm'>{user?.state}</span>
+
+                    {editing === "State" ?
+                        <Input onBlur={() => handleBlur("state")} onChange={(e) => setUser(prev => prev ? { ...prev, state: e.target.value } : null)}
+                            value={user?.state} className='w-40 h-fit text-card-foreground text-sm' /> :
+                        <span className='w-fit h-fit text-card-foreground text-sm'>{user?.state}</span>
+                    }
                 </div>
 
-                <div className='col-span-2 row-span-1 w-full h-full flex flex-col backdrop-blur-xl bg-gradient-to-br from-card/25 to-card/5 border-card/40 shadow-[inset_0_1px_0_0_rgba(255,255,255,0.2)] bg-card/20 border-[0.5px] justify-center items-center rounded-2xl py-1'>
+                <div className='col-span-2 row-span-1 w-full h-full flex flex-col backdrop-blur-xl bg-gradient-to-br from-card/25 to-card/5 border-card/40 shadow-[inset_0_1px_0_0_rgba(255,255,255,0.2)] bg-card/20 border-[0.5px] justify-center items-center rounded-2xl py-1 px-5'>
                     <div className='w-fit h-fit flex flex-row text-card-foreground/50 text-md items-center gap-x-3'>
                         <span>City</span>
-                        <button onClick={() => console.log("Phone Number add")} className='hover:cursor-pointer w-fit h-fit'>
+                        <button onClick={() => handleEdit("city")} className='hover:cursor-pointer w-fit h-fit'>
                             <Image
                                 src={Edit}
                                 width={12}
@@ -181,7 +192,12 @@ export default function UserProfile() {
                             />
                         </button>
                     </div>
-                    <span className='w-fit h-fit text-card-foreground text-sm'>{user?.city}</span>
+
+                    {editing === "city" ?
+                        <Input onBlur={() => handleBlur("city")} onChange={(e) => setUser(prev => prev ? { ...prev, city: e.target.value } : null)}
+                            value={user?.city} className='w-40 h-fit text-card-foreground text-sm' /> :
+                        <span className='w-fit h-fit text-card-foreground text-sm'>{user?.city}</span>
+                    }
                 </div>
 
 
