@@ -304,6 +304,25 @@ exports.Prisma.ActivityLogScalarFieldEnum = {
   createdAt: 'createdAt'
 };
 
+exports.Prisma.TicketScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  subject: 'subject',
+  status: 'status',
+  unreadCount: 'unreadCount',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.TicketMessageScalarFieldEnum = {
+  id: 'id',
+  ticketId: 'ticketId',
+  message: 'message',
+  filesUrl: 'filesUrl',
+  senderRole: 'senderRole',
+  createdAt: 'createdAt'
+};
+
 exports.Prisma.FeeUserScalarFieldEnum = {
   id: 'id',
   userId: 'userId',
@@ -416,6 +435,12 @@ exports.ExchangeStatus = exports.$Enums.ExchangeStatus = {
   CANCELED: 'CANCELED'
 };
 
+exports.TicketStatus = exports.$Enums.TicketStatus = {
+  OPEN: 'OPEN',
+  PENDING: 'PENDING',
+  CLOSED: 'CLOSED'
+};
+
 exports.TransactionKind = exports.$Enums.TransactionKind = {
   DEPOSIT: 'DEPOSIT',
   WITHDRAWAL: 'WITHDRAWAL',
@@ -438,6 +463,8 @@ exports.Prisma.ModelName = {
   Exchange: 'Exchange',
   ExchangeMatch: 'ExchangeMatch',
   ActivityLog: 'ActivityLog',
+  Ticket: 'Ticket',
+  TicketMessage: 'TicketMessage',
   FeeUser: 'FeeUser',
   FeeSetting: 'FeeSetting'
 };

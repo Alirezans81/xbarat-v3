@@ -10,6 +10,7 @@ import {
 } from "@/components/ui/card";
 import { Link } from "@/i18n/navigation";
 import { getFeeUsers } from "@/api/fee-user/action";
+import { getTickets } from "@/api/ticket/action";
 
 export default async function page() {
   try {
@@ -17,6 +18,7 @@ export default async function page() {
     const paymentChannels = await getPaymentChannels();
     const currencyPairs = await getCurrencyPairs();
     const feeUsers = await getFeeUsers();
+    const tickets = await getTickets();
 
     return (
       <div className="w-full">
@@ -78,6 +80,19 @@ export default async function page() {
                 </CardHeader>
                 <CardFooter className="mt-auto">
                   <p className="">{feeUsers.length} users</p>
+                </CardFooter>
+              </Card>
+            </Link>
+            <Link href="/panel-admin/ticket">
+              <Card className="hover:shadow-xl h-44 transition-all duration-300 dark:hover:shadow-secondary/10">
+                <CardHeader>
+                  <CardTitle>Tickets</CardTitle>
+                  <CardDescription>
+                    All {"users'"} problems are here
+                  </CardDescription>
+                </CardHeader>
+                <CardFooter className="mt-auto">
+                  <p className="">{tickets.length} tickets</p>
                 </CardFooter>
               </Card>
             </Link>

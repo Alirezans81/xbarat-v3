@@ -94,6 +94,16 @@ export const userService = {
     return false;
   },
 
+  checkUserIsSupport: async (id: string): Promise<boolean> => {
+    const user = await userService.getById(id);
+
+    if (user && user.role === "SUPPORT") {
+      return true;
+    }
+
+    return false;
+  },
+
   updateUser: userRepository.update,
 
   checkPassword: async (id: string, password: string): Promise<boolean> => {

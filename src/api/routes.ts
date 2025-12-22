@@ -21,5 +21,6 @@ export default function getApiUrl() {
     assign: `${apiDomain}/wallet/assign`,
     "bridge-transfer": `${apiDomain}/bridge-transfer`,
     "fee-user": `${apiDomain}/fee-user`,
+    ticket: `${apiDomain}/ticket`,
   };
 }
