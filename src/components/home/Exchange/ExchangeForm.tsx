@@ -160,7 +160,7 @@ export default function ExchangeForm({
       </div>
 
       <form
-        className={`bg-card dark:bg-accent px-6 py-5 rounded-xl flex flex-col items-center gap-4 transition-all duration-500 shadow-xl ease-in-out ${selectedWallet ? "translate-y-16" : ""
+        className={`bg-card backdrop-blur-sm px-6 py-5 rounded-xl flex flex-col items-center gap-4 transition-all duration-500 shadow-xl ease-in-out ${selectedWallet ? "translate-y-16" : ""
           }`}
         onSubmit={(e) => {
           e.preventDefault();
@@ -308,7 +308,7 @@ export default function ExchangeForm({
           </Button>
         </div>
         <Link
-          href="#tables"
+          href="#latest-table"
           className="text-muted-foreground -mb-2 mt-2 transition-all duration-300 hover:text-foreground cursor-pointer w-fit"
         >
           See the tables.

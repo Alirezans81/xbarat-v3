@@ -5,6 +5,23 @@ export type GetUsersFilters = {
   countryCode?: string;
 };
 
+export type GetUser = {
+  id: string;
+  email: string;
+  phoneNumber: string;
+  fullName: string;
+  state: string;
+  avatarUrl: string;
+  countryCode: string;
+  city: string;
+  documentType: string;
+  documentPhotoUrl: string;
+  documentNumber: string;
+  address: string;
+  postalCode: string;
+  dateOfBirth: string;
+};
+
 export type CreateUser = {
   email: string;
   password: string;

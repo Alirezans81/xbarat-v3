@@ -34,10 +34,9 @@ export default function NavbarActionButton() {
     ? user?.role === "ADMIN"
       ? adminLoggedInNavbarItems
       : user?.role === "PROVIDER"
-      ? providerLoggedInNavbarItems
-      : loggedInNavabarItems
+        ? providerLoggedInNavbarItems
+        : loggedInNavabarItems
     : notLoggedInNavbarItems;
-
   if (isLoggedIn) {
     return (
       <>
