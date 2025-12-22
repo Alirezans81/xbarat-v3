@@ -6,7 +6,6 @@ import { createExchange, getLastExchanges } from "./api";
 import { CreateExchange } from "@/types/front/wallet/exchange";
 import { Exchange } from "@/types/back/wallet/exchange";
 import { CurrencyPair } from "@/types/back/currencyPair";
-import { useCallback } from "react";
 type CreateExchangeProps = {
   exchange: CreateExchange;
 };
@@ -41,7 +40,7 @@ export const useCreateExchange = () => {
 
 type GetExchangesProps = {
   currencyPairId: CurrencyPair["id"];
-  setOrderBooks: (value: (Exchange & { count: Number })[]) => void;
+  setOrderBooks: (value: (Exchange & { count: number })[]) => void;
 };
 
 export const useGetLastExchanges = () => {
