@@ -6,7 +6,7 @@ export default function Profile() {
         <div className='w-full h-screen flex justify-center items-center'>
             <div className='w-11/12 h-11/12 flex flex-row justify-between gap-3'>
                 <div className='w-1/3 h-fit flex flex-col gap-y-3'>
-                    <div className='w-full h-fit'>
+                    <div className='w-full h-fit  container'>
                         <UserProfile />
                     </div>
                     <div className='flex-1 w-full h-full'>
