@@ -38,7 +38,7 @@ export default function ProfileCard({ className }: Props) {
         <section
             className={cn(className)}
         >
-            <Glass>
+            <Glass className="rounded-lg">
                 <Card className="w-full h-full flex flex-col items-center px-3">
 
                     {/* Profile Photo and Edit */}

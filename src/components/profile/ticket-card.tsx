@@ -1,15 +1,81 @@
-import { cn } from "@/lib/front/utils/tailwind"
+"use client"
 
+import { cn } from "@/lib/front/utils/tailwind";
+import Glass from "../ui/glass";
+import { Card } from "../ui/card";
+import { DropdownMenu, DropdownMenuTrigger, DropdownMenuContent, DropdownMenuLabel, DropdownMenuSeparator } from "../ui/dropdown-menu";
+import { DropdownMenuItem } from "@radix-ui/react-dropdown-menu";
+import { Button } from "../ui/button";
+import Image from "next/image";
+import DropdownArrow from "../../../public/Profile/DropdownArrow.svg";
+import { useState } from "react";
+import { Ticket } from "@/types/front/ticket";
+import { Textarea } from "../ui/textarea";
+import { TicketMessage } from "@/types/front/ticket";
 type Props = {
     className?: string
 }
 
 export default function TicketCard({ className }: Props) {
+    const [ticket, setTicket] = useState<Partial<Ticket>>();
+    const [ticketMessage, setTicketMessage] = useState<Partial<TicketMessage>>();
+    const subjects =
+        [
+            "Customer Service: Problem Assign Exchange",
+            "Customer Service: Problem Withdrawal Fee",
+            "Customer Service: Problem Deposit Admin Approve",
+            "Farabuy: Problem Deposit Admin Approve"
+        ]
+    console.log(ticket);
     return (
         <section
             className={cn(className)}
         >
-            TicketCard
-        </section>
+            <Glass className="rounded-lg">
+                <Card className="w-full h-full flex flex-col items-center px-7">
+                    <span className="text-lg w-full text-start">Tickets</span>
+                    <div className="w-full h-full flex flex-col gap-x-3 gap-y-2">
+
+                        {/* Dropdown Subject */}
+                        <div className="w-full h-fit">
+                            <DropdownMenu modal={false}>
+                                <DropdownMenuTrigger asChild>
+                                    <Button className="w-full h-full bg-card rounded-lg  hover:bg-card-context/40 p-0">
+                                        <Glass className="w-full h-full rounded-sm px-3 py-2">
+                                            <div className="w-full h-full flex flex-row justify-between items-center">
+                                                <span className="w-fit h-fit">{ticket?.subject ? ticket.subject : "Subject"}</span>
+                                                <Image src={DropdownArrow} alt="Dropdown Arrow" width={16} height={16} className="w-4 h-4" />
+                                            </div>
+                                        </Glass>
+                                    </Button>
+                                </DropdownMenuTrigger>
+                                <DropdownMenuContent className="w-full h-full">
+                                    <DropdownMenuLabel className="text-lg">Subject</DropdownMenuLabel>
+                                    <DropdownMenuSeparator />
+                                    {subjects.map((subject, index) =>
+                                        <DropdownMenuItem key={index}
+                                            onClick={() =>
+                                                setTicket(prev =>
+                                                    prev ? { ...prev, subject } : { subject }
+                                                )}
+                                            className="w-full px-2 py-1 hover:cursor-pointer hover:bg-card-context/40 rounded-lg">
+                                            {subject}
+                                        </DropdownMenuItem>)}
+                                </DropdownMenuContent>
+                            </DropdownMenu>
+                        </div>
+
+                        {/* Textarea Text */}
+                        <div className="w-full h-40 bg-card rounded-xl">
+                            <Textarea value={ticketMessage?.toString()} className="w-full h-full" placeholder="Enter your Ticket Message..."
+                                onChange={(e) =>
+                                    setTicketMessage(prev =>
+                                        prev ? { ...prev, message } : e.target.value)}
+                            />
+                        </div>
+                    </div>
+                </Card>
+            </Glass>
+        </section >
     )
 }

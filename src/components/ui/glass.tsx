@@ -10,7 +10,7 @@ export default function Glass({ children, className }: GlassProps) {
     return (
         <div
             className={cn(
-                'relative overflow-hidden rounded-2xl',
+                'relative overflow-hidden',
                 className
             )}
         >
