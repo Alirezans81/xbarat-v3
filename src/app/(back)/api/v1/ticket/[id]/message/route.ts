@@ -8,6 +8,8 @@ import {
 import { ticketService } from "@/lib/back/services/ticket.service";
 import { ticketMessageService } from "@/lib/back/services/ticket/ticketMessage.service";
 import { userService } from "@/lib/back/services/user.service";
+import { r2 } from "@/lib/back/r2";
+import { PutObjectCommand } from "@aws-sdk/client-s3";
 
 type Params = {
   params: {
@@ -62,10 +64,31 @@ export async function POST(request: NextRequest, { params }: Params) {
       return UnauthorizedResponse;
     }
 
-    const body = await request.json();
-    const { message, filesUrl } = body;
+    const formData = await request.formData();
 
+    const message = formData.get("message")?.toString();
     if (!message) return MissingFieldsResponse;
+
+    const filesUrl: string[] = [];
+    const files = formData.getAll("files") as File[];
+
+    for (const file of files) {
+      const arrayBuffer = await file.arrayBuffer();
+      const buffer = Buffer.from(arrayBuffer);
+      const fileName = `tickets-${params.id}-${Date.now()}_${file.name}`;
+
+      await r2.send(
+        new PutObjectCommand({
+          Bucket: process.env.R2_BUCKET!,
+          Key: fileName,
+          Body: buffer,
+          ContentType: file.type,
+        })
+      );
+
+      const fileUrl = `${process.env.R2_PUBLIC_URL}/${fileName}`;
+      filesUrl.push(fileUrl);
+    }
 
     const ticketMessage = await ticketMessageService.create({
       ticketId: params.id,
