@@ -1,7 +1,7 @@
 import { getCurrencyPairs } from "@/api/currency-pair/action";
 import { getCurrencies } from "@/api/currency/action";
 import { getWallets } from "@/api/wallet/action";
-import Exchange from "@/components/home/Exchange/exchange";
+import Exchange from "@/components/home/Exchange/Exchange";
 export default async function Home() {
   let currencies;
   let currencyPairs;

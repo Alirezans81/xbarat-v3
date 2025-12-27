@@ -12,6 +12,7 @@ import { useState } from "react";
 import { Ticket } from "@/types/front/ticket";
 import { Textarea } from "../ui/textarea";
 import { TicketMessage } from "@/types/front/ticket";
+import Upload from "../../../public/Profile/Upload.svg";
 type Props = {
     className?: string
 }
@@ -26,7 +27,6 @@ export default function TicketCard({ className }: Props) {
             "Customer Service: Problem Deposit Admin Approve",
             "Farabuy: Problem Deposit Admin Approve"
         ]
-    console.log(ticket);
     return (
         <section
             className={cn(className)}
@@ -66,12 +66,23 @@ export default function TicketCard({ className }: Props) {
                         </div>
 
                         {/* Textarea Text */}
-                        <div className="w-full h-40 bg-card rounded-xl">
+                        <div className="w-full h-fit bg-card rounded-xl">
                             <Textarea value={ticketMessage?.toString()} className="w-full h-full" placeholder="Enter your Ticket Message..."
                                 onChange={(e) =>
-                                    setTicketMessage(prev =>
-                                        prev ? { ...prev, message } : e.target.value)}
+                                    setTicketMessage(prev => prev && { ...prev, message: e.target.value })}
                             />
+                        </div>
+
+                        {/* Submit Area Text */}
+                        <div className="w-full h-fit flex flex-row rounded-xl items-center">
+                            <span className="text-wrap text-start w-7/12 h-fit">Drag and Drop Your Files Here Upload Limit: 5 MB</span>
+                            <Button onClick={() => console.log("Upload File")} className="flex-1 w-fit h-fit" variant={"ghost"}>
+                                <Image src={Upload} alt='upload icon' width={20} height={20} className="w-5 h-5" />
+                            </Button>
+                            <Button className="flex-1 w-fit h-fit" variant={"default"}>
+                                <span>Send</span>
+                            </Button>
+
                         </div>
                     </div>
                 </Card>
