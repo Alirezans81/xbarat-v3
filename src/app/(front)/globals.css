@@ -54,8 +54,8 @@
 :root {
   --radius: 0.75rem;
   --background: oklch(96.416% 0.00011 271.152);
-  --from-background: oklch(12.21% 0 0);
-  --to-background: oklch(27.68% 0 0);
+  --from-background: oklch(87.215% 0.02062 288.954);
+  --to-background: oklch(100% 0.00011 271.152);
   --foreground: oklch(24.943% 0.03768 283.33);
   --card: oklch(1 0 0);
   --card-foreground: oklch(30.195% 0.00359 286.048);
@@ -65,7 +65,7 @@
   --primary-foreground: oklch(0.97 0.014 254.604);
   --secondary: oklch(81.79% 0.171 77.95);
   --secondary-foreground: oklch(0.21 0.006 285.885);
-  --muted: oklch(87.413% 0.01923 285.927);
+  --muted: oklch(78.725% 0.02115 285.85);
   --muted-foreground: oklch(0.552 0.016 285.938);
   --accent: oklch(87.413% 0.01923 285.927);
   --accent-foreground: oklch(0.21 0.006 285.885);

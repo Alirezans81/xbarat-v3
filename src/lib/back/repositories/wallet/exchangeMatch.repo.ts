@@ -102,6 +102,82 @@ export const exchangeMatchRepository = {
     });
   },
 
+  getLastByCurrencyPairId: async (currencyPairId: string) => {
+    return prisma.exchangeMatch.findFirst({
+      where: {
+        fromExchange: {
+          currencyPairId,
+        },
+      },
+      orderBy: {
+        createdAt: "desc",
+      },
+      include: {
+        fromExchange: {
+          select: {
+            currencyPair: {
+              select: {
+                fromCurrency: {
+                  select: {
+                    id: true,
+                    name: true,
+                    symbol: true,
+                  },
+                },
+                toCurrency: {
+                  select: {
+                    id: true,
+                    name: true,
+                    symbol: true,
+                  },
+                },
+              },
+            },
+            user: {
+              select: {
+                id: true,
+                email: true,
+                fullName: true,
+              },
+            },
+            exchangeRate: true,
+          },
+        },
+        toExchange: {
+          select: {
+            currencyPair: {
+              select: {
+                fromCurrency: {
+                  select: {
+                    id: true,
+                    name: true,
+                    symbol: true,
+                  },
+                },
+                toCurrency: {
+                  select: {
+                    id: true,
+                    name: true,
+                    symbol: true,
+                  },
+                },
+              },
+            },
+            user: {
+              select: {
+                id: true,
+                email: true,
+                fullName: true,
+              },
+            },
+            exchangeRate: true,
+          },
+        },
+      },
+      take: 1,
+    });
+  },
+
   findById: async (id: string) => {
     return prisma.exchangeMatch.findUnique({
       where: { id },

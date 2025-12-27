@@ -7,6 +7,8 @@ export const exchangeMatchService = {
 
   getAll: exchangeMatchRepository.getAll,
 
+  getLastByCurrencyPairId: exchangeMatchRepository.getLastByCurrencyPairId,
+
   getById: exchangeMatchRepository.findById,
 
   updateById: exchangeMatchRepository.updateById,

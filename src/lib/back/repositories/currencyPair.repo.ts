@@ -24,12 +24,14 @@ export const currencyPairRepository = {
       include: {
         fromCurrency: {
           select: {
+            id: true,
             code: true,
             name: true,
           },
         },
         toCurrency: {
           select: {
+            id: true,
             code: true,
             name: true,
           },
@@ -54,12 +56,14 @@ export const currencyPairRepository = {
       include: {
         fromCurrency: {
           select: {
+            id: true,
             code: true,
             name: true,
           },
         },
         toCurrency: {
           select: {
+            id: true,
             code: true,
             name: true,
           },
@@ -84,12 +88,14 @@ export const currencyPairRepository = {
       include: {
         fromCurrency: {
           select: {
+            id: true,
             code: true,
             name: true,
           },
         },
         toCurrency: {
           select: {
+            id: true,
             code: true,
             name: true,
           },
