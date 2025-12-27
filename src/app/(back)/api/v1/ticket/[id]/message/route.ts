@@ -6,7 +6,7 @@ import {
   UnauthorizedResponse,
 } from "@/lib/back/utils/globalResponses.utils";
 import { ticketService } from "@/lib/back/services/ticket.service";
-import { ticketMessageService } from "@/lib/back/services/ticketMessage.service";
+import { ticketMessageService } from "@/lib/back/services/ticket/ticketMessage.service";
 import { userService } from "@/lib/back/services/user.service";
 
 type Params = {
@@ -71,6 +71,11 @@ export async function POST(request: NextRequest, { params }: Params) {
       ticketId: params.id,
       message,
       filesUrl,
+      senderRole: userIsAdmin
+        ? "ADMIN"
+        : userIsSupport
+        ? "SUPPORT"
+        : "CUSTOMER",
     });
 
     return NextResponse.json(ticketMessage, { status: 201 });

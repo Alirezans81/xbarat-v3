@@ -146,6 +146,10 @@ export const exchangeRepository = {
     });
   },
 
+  getWatchListData: async (filters?: GetExchangesFilters) => {
+    
+  },
+
   findById: async (id: string) => {
     return prisma.exchange.findUnique({
       where: { id },
