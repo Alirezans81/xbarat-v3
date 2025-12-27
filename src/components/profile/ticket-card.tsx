@@ -13,6 +13,7 @@ import { Ticket } from "@/types/front/ticket";
 import { Textarea } from "../ui/textarea";
 import { TicketMessage } from "@/types/front/ticket";
 import Upload from "../../../public/Profile/Upload.svg";
+import { useCreateTicketMessage, useCreateTicket } from "@/api/ticket/hook";
 type Props = {
     className?: string
 }
@@ -20,13 +21,21 @@ type Props = {
 export default function TicketCard({ className }: Props) {
     const [ticket, setTicket] = useState<Partial<Ticket>>();
     const [ticketMessage, setTicketMessage] = useState<Partial<TicketMessage>>();
-    const subjects =
-        [
-            "Customer Service: Problem Assign Exchange",
-            "Customer Service: Problem Withdrawal Fee",
-            "Customer Service: Problem Deposit Admin Approve",
-            "Farabuy: Problem Deposit Admin Approve"
-        ]
+    const createTicketMessage = useCreateTicketMessage();
+    const createTicket = useCreateTicket();
+
+    const subjects = [
+        "Customer Service: Problem Assign Exchange",
+        "Customer Service: Problem Withdrawal Fee",
+        "Customer Service: Problem Deposit Admin Approve",
+        "Farabuy: Problem Deposit Admin Approve"
+    ]
+    async function handleCreateTicketAndMessage() {
+        if (ticket) {
+            const tick = await createTicket({ ticket: ticket });
+            const temp = await createTicketMessage(tick.ticket_id);
+        }
+    }
     return (
         <section
             className={cn(className)}
@@ -79,10 +88,9 @@ export default function TicketCard({ className }: Props) {
                             <Button onClick={() => console.log("Upload File")} className="flex-1 w-fit h-fit" variant={"ghost"}>
                                 <Image src={Upload} alt='upload icon' width={20} height={20} className="w-5 h-5" />
                             </Button>
-                            <Button className="flex-1 w-fit h-fit" variant={"default"}>
+                            <Button onClick={() => handleCreateTicketAndMessage()} className="flex-1 w-fit h-fit" variant={"default"}>
                                 <span>Send</span>
                             </Button>
-
                         </div>
                     </div>
                 </Card>
