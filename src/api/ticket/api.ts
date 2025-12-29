@@ -20,18 +20,13 @@ export const updateTicketStatus = (
   });
 };
 
-export const createTicketMessage = (
-  token: Token,
-  ticket_message: Partial<TicketMessage>
-) => {
-  return apiFetch<TicketMessage>(
-    api["ticket"] + "/" + ticket_message.ticketId + "/message/",
-    {
-      method: "POST",
-      token,
-      body: ticket_message,
-    }
-  );
+export const createTicketMessage = (token: Token, formData: FormData) => {
+  const ticketId = formData.get("ticketId");
+  return apiFetch<TicketMessage>(api["ticket"] + "/" + ticketId + "/message/", {
+    method: "POST",
+    token,
+    body: formData,
+  });
 };
 
 export const createTicket = (token: Token, ticket: Partial<Ticket>) => {

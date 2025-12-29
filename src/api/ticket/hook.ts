@@ -13,7 +13,7 @@ type UpdateTicketStatusProps = {
 };
 
 type CreateTicketMessageProps = {
-  ticket_message: Partial<TicketMessage>;
+  formData: FormData;
 };
 
 type CreateTicketProps = {
@@ -59,13 +59,13 @@ export const useCreateTicketMessage = () => {
   const { token } = useAuthStore();
 
   const fetch = ({
-    ticket_message,
+    formData,
     onError,
     onSuccess,
     onFinally,
   }: CreateTicketMessageProps & FetchProps) => {
     checkTokenExpiration(async () => {
-      await createTicketMessage(token, ticket_message)
+      await createTicketMessage(token, formData)
         .then((res) => {
           onSuccess?.(res);
         })
@@ -83,6 +83,7 @@ export const useCreateTicketMessage = () => {
 
   return fetch;
 };
+
 export const useCreateTicket = () => {
   const t = useTranslations("ApiErrors");
   const checkTokenExpiration = useCheckTokenExpiration();

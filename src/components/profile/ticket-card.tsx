@@ -8,24 +8,117 @@ import { DropdownMenuItem } from "@radix-ui/react-dropdown-menu";
 import { Button } from "../ui/button";
 import Image from "next/image";
 import DropdownArrow from "../../../public/Profile/DropdownArrow.svg";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef, ChangeEvent } from "react";
 import { Ticket } from "@/types/front/ticket";
 import { Textarea } from "../ui/textarea";
-import { TicketMessage } from "@/types/front/ticket";
 import Upload from "../../../public/Profile/Upload.svg";
 import { useCreateTicketMessage, useCreateTicket } from "@/api/ticket/hook";
 type Props = {
     className?: string
 }
 
+interface TicketMessageState {
+    message: string;
+    ticketId?: string;
+    id?: string;
+    files: File[];
+    filesUrl?: string[];
+}
+
+export const createTicketMessageFormData = (
+    messageData: Partial<TicketMessageState>,
+    ticketId: string
+): FormData => {
+    const formData = new FormData();
+
+    if (messageData.message) {
+        formData.append('message', messageData.message);
+    }
+
+    formData.append('ticketId', ticketId);
+
+    if (messageData.files && messageData.files.length > 0) {
+        messageData.files.forEach((file) => {
+            formData.append('files', file);
+        });
+    }
+
+    if (messageData.id) {
+        formData.append('id', messageData.id);
+    }
+
+    return formData;
+};
+
+
+
+
 export default function TicketCard({ className }: Props) {
 
     const [ticket, setTicket] = useState<Partial<Ticket>>();
-    const [ticketMessage, setTicketMessage] = useState<Partial<TicketMessage>>({
-        ticketId: "", message: "", filesUrl: [""], id: ''
+    const [ticketMessage, setTicketMessage] = useState<TicketMessageState>({
+        message: "",
+        files: [],
     });
     const createTicketMessage = useCreateTicketMessage();
     const createTicket = useCreateTicket();
+
+    const fileInputRef = useRef<HTMLInputElement>(null);
+
+    const handleFileSelect = (e: ChangeEvent<HTMLInputElement>) => {
+        const files = Array.from(e.target.files || []);
+
+        const maxSize = 5 * 1024 * 1024;
+        const validFiles = files.filter(file => file.size <= maxSize);
+
+        if (validFiles.length !== files.length) {
+            console.log("Some files exceed the 5MB limit");
+        }
+
+        setTicketMessage(prev => ({
+            ...prev,
+            files: [...(prev.files || []), ...validFiles]
+        }));
+
+        if (fileInputRef.current) {
+            fileInputRef.current.value = '';
+        }
+    };
+    const handleUploadClick = () => {
+        fileInputRef.current?.click();
+    };
+    const handleDragOver = (e: React.DragEvent) => {
+        e.preventDefault();
+        e.stopPropagation();
+    };
+    const handleDrop = (e: React.DragEvent) => {
+        e.preventDefault();
+        e.stopPropagation();
+
+        const files = Array.from(e.dataTransfer.files || []);
+
+        // Validate file sizes
+        const maxSize = 5 * 1024 * 1024;
+        const validFiles = files.filter(file => file.size <= maxSize);
+
+        if (validFiles.length !== files.length) {
+            toast.error("Some files exceed the 5MB limit");
+        }
+
+        setTicketMessage(prev => ({
+            ...prev,
+            files: [...(prev.files || []), ...validFiles]
+        }));
+    };
+    const removeFile = (index: number) => {
+        setTicketMessage(prev => ({
+            ...prev,
+            files: prev.files?.filter((_, i) => i !== index) || []
+        }));
+    };
+
+
+
 
     const subjects = [
         "Customer Service: Problem Assign Exchange",
@@ -38,19 +131,13 @@ export default function TicketCard({ className }: Props) {
             createTicket({ ticket: ticket, onSuccess: setTicket });
         }
     }
+
     useEffect(() => {
         if (ticket?.id && ticketMessage?.message) {
-            console.log("Ticket has ID, creating message...");
-
-            createTicketMessage({
-                ticket_message: {
-                    ...ticketMessage,
-                    ticketId: ticket.id
-                },
-                onSuccess: setTicketMessage
-            });
+            const formData = createTicketMessageFormData(ticketMessage, ticket.id);
+            createTicketMessage({ formData: formData, onSuccess: setTicketMessage });
         }
-    }, [ticket?.id]);
+    }, [ticket?.id, ticketMessage?.message]);
 
     return (
         <section
@@ -106,11 +193,36 @@ export default function TicketCard({ className }: Props) {
 
                         {/* Submit Area Text */}
                         <div className="w-full h-fit flex flex-row rounded-xl items-center">
-                            <span className="text-wrap text-start w-7/12 h-fit">Drag and Drop Your Files Here Upload Limit: 5 MB</span>
-                            <Button onClick={() => console.log(ticketMessage)} className="flex-1 w-fit h-fit" variant={"ghost"}>
+                            <span className="text-wrap text-start w-7/12 h-fit">
+                                Drag and Drop Your Files Here Upload Limit: 5 MB
+                                {ticketMessage.files.length > 0 && (
+                                    <span className="text-sm text-gray-500 ml-2">
+                                        ({ticketMessage.files.length} file{ticketMessage.files.length !== 1 ? 's' : ''} selected)
+                                    </span>
+                                )}
+                            </span>
+                            <input
+                                type="file"
+                                ref={fileInputRef}
+                                className="hidden"
+                                multiple
+                                accept="image/*,.pdf,.doc,.docx,.txt"
+                                onChange={handleFileSelect}
+                            />
+
+                            <Button
+                                onClick={handleUploadClick}
+                                className="flex-1 w-fit h-fit"
+                                variant={"ghost"}
+                            >
                                 <Image src={Upload} alt='upload icon' width={20} height={20} className="w-5 h-5" />
                             </Button>
-                            <Button onClick={() => handleCreateTicketAndMessage()} className="flex-1 w-fit h-fit" variant={"default"}>
+
+                            <Button
+                                onClick={() => handleCreateTicketAndMessage()}
+                                className="flex-1 w-fit h-fit"
+                                variant={"default"}
+                            >
                                 <span>Send</span>
                             </Button>
                         </div>
