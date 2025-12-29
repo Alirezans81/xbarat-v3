@@ -2,9 +2,14 @@ import { useCheckTokenExpiration } from "@/hooks/use-auth";
 import { useAuthStore } from "@/lib/front/stores/auth";
 import { FetchProps } from "@/types/front/globals";
 import { useTranslations } from "next-intl";
-import { updateTicketStatus, createTicketMessage, createTicket } from "./api";
+import {
+  updateTicketStatus,
+  createTicketMessage,
+  createTicket,
+  getTickets,
+} from "./api";
 import { TicketStatus } from "@/generated/prisma";
-import { TicketMessage, Ticket } from "@/types/front/ticket";
+import { Ticket } from "@/types/front/ticket";
 import { toast } from "sonner";
 
 type UpdateTicketStatusProps = {
@@ -112,5 +117,30 @@ export const useCreateTicket = () => {
     });
   };
 
+  return fetch;
+};
+
+export const useGetTickets = () => {
+  const t = useTranslations("ApiErrors");
+  const checkTokenExpiration = useCheckTokenExpiration();
+  const { token } = useAuthStore();
+
+  const fetch = ({ onError, onSuccess, onFinally }: FetchProps) => {
+    checkTokenExpiration(async () => {
+      await getTickets(token)
+        .then((res) => {
+          onSuccess?.(res);
+        })
+        .catch((err) => {
+          process.env.NEXT_PUBLIC_APP_MODE === "development" &&
+            console.error(err.response);
+          toast.error(t(err.response.data.error.message));
+          onError?.(err);
+        })
+        .finally(() => {
+          onFinally?.();
+        });
+    });
+  };
   return fetch;
 };

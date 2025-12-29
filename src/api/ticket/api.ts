@@ -36,3 +36,7 @@ export const createTicket = (token: Token, ticket: Partial<Ticket>) => {
     body: ticket,
   });
 };
+
+export const getTickets = (token: Token) => {
+  return apiFetch<Ticket[]>(api["ticket"], { method: "GET", token });
+};
