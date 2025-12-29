@@ -11,14 +11,11 @@ import { userService } from "@/lib/back/services/user.service";
 import { r2 } from "@/lib/back/r2";
 import { PutObjectCommand } from "@aws-sdk/client-s3";
 
-type Params = {
-  params: {
-    id: string;
-  };
-};
-
 /* ===================== GET ===================== */
-export async function GET(request: NextRequest, { params }: Params) {
+export async function GET(
+  request: NextRequest,
+  { params }: { params: Promise<{ id: string }> }
+) {
   try {
     const token = request.headers.get("authorization")?.split(" ")[1];
     if (!token) return UnauthorizedResponse;
@@ -26,7 +23,8 @@ export async function GET(request: NextRequest, { params }: Params) {
     const payload = jwtUtils.verify(token);
     if (!payload) return UnauthorizedResponse;
 
-    const ticket = await ticketService.getById(params.id);
+    const { id } = await params;
+    const ticket = await ticketService.getById(id);
     if (!ticket) return UnauthorizedResponse;
 
     const userIsAdmin = await userService.checkUserIsAdmin(payload.id);
@@ -45,7 +43,10 @@ export async function GET(request: NextRequest, { params }: Params) {
 }
 
 /* ===================== POST ===================== */
-export async function POST(request: NextRequest, { params }: Params) {
+export async function POST(
+  request: NextRequest,
+  { params }: { params: Promise<{ id: string }> }
+) {
   try {
     const token = request.headers.get("authorization")?.split(" ")[1];
     if (!token) return UnauthorizedResponse;
@@ -53,7 +54,8 @@ export async function POST(request: NextRequest, { params }: Params) {
     const payload = jwtUtils.verify(token);
     if (!payload) return UnauthorizedResponse;
 
-    const ticket = await ticketService.getById(params.id);
+    const { id } = await params;
+    const ticket = await ticketService.getById(id);
     if (!ticket) return UnauthorizedResponse;
 
     const userIsAdmin = await userService.checkUserIsAdmin(payload.id);
@@ -75,7 +77,7 @@ export async function POST(request: NextRequest, { params }: Params) {
     for (const file of files) {
       const arrayBuffer = await file.arrayBuffer();
       const buffer = Buffer.from(arrayBuffer);
-      const fileName = `tickets-${params.id}-${Date.now()}_${file.name}`;
+      const fileName = `tickets-${id}-${Date.now()}_${file.name}`;
 
       await r2.send(
         new PutObjectCommand({
@@ -91,7 +93,7 @@ export async function POST(request: NextRequest, { params }: Params) {
     }
 
     const ticketMessage = await ticketMessageService.create({
-      ticketId: params.id,
+      ticketId: id,
       message,
       filesUrl,
       senderRole: userIsAdmin
