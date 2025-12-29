@@ -8,7 +8,7 @@ import { DropdownMenuItem } from "@radix-ui/react-dropdown-menu";
 import { Button } from "../ui/button";
 import Image from "next/image";
 import DropdownArrow from "../../../public/Profile/DropdownArrow.svg";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Ticket } from "@/types/front/ticket";
 import { Textarea } from "../ui/textarea";
 import { TicketMessage } from "@/types/front/ticket";
@@ -19,8 +19,11 @@ type Props = {
 }
 
 export default function TicketCard({ className }: Props) {
+
     const [ticket, setTicket] = useState<Partial<Ticket>>();
-    const [ticketMessage, setTicketMessage] = useState<Partial<TicketMessage>>();
+    const [ticketMessage, setTicketMessage] = useState<Partial<TicketMessage>>({
+        ticketId: "", message: "", filesUrl: [""], id: ''
+    });
     const createTicketMessage = useCreateTicketMessage();
     const createTicket = useCreateTicket();
 
@@ -30,12 +33,25 @@ export default function TicketCard({ className }: Props) {
         "Customer Service: Problem Deposit Admin Approve",
         "Farabuy: Problem Deposit Admin Approve"
     ]
-    async function handleCreateTicketAndMessage() {
-        if (ticket) {
-            const tick = await createTicket({ ticket: ticket });
-            const temp = await createTicketMessage(tick.ticket_id);
+    function handleCreateTicketAndMessage() {
+        if (ticket && ticket !== undefined) {
+            createTicket({ ticket: ticket, onSuccess: setTicket });
         }
     }
+    useEffect(() => {
+        if (ticket?.id && ticketMessage?.message) {
+            console.log("Ticket has ID, creating message...");
+
+            createTicketMessage({
+                ticket_message: {
+                    ...ticketMessage,
+                    ticketId: ticket.id
+                },
+                onSuccess: setTicketMessage
+            });
+        }
+    }, [ticket?.id]);
+
     return (
         <section
             className={cn(className)}
@@ -76,8 +92,14 @@ export default function TicketCard({ className }: Props) {
 
                         {/* Textarea Text */}
                         <div className="w-full h-fit bg-card rounded-xl">
-                            <Textarea value={ticketMessage?.toString()} className="w-full h-full" placeholder="Enter your Ticket Message..."
+                            <Textarea value={ticketMessage.message?.toString()} className="w-full h-full" placeholder="Enter your Ticket Message..."
                                 onChange={(e) =>
+                                    setTicketMessage(prev => ({
+                                        ...prev,
+                                        message: e.target.value,
+                                        ticketId: ticket?.id
+                                    }))}
+                                onBlur={(e) =>
                                     setTicketMessage(prev => prev && { ...prev, message: e.target.value })}
                             />
                         </div>
@@ -85,7 +107,7 @@ export default function TicketCard({ className }: Props) {
                         {/* Submit Area Text */}
                         <div className="w-full h-fit flex flex-row rounded-xl items-center">
                             <span className="text-wrap text-start w-7/12 h-fit">Drag and Drop Your Files Here Upload Limit: 5 MB</span>
-                            <Button onClick={() => console.log("Upload File")} className="flex-1 w-fit h-fit" variant={"ghost"}>
+                            <Button onClick={() => console.log(ticketMessage)} className="flex-1 w-fit h-fit" variant={"ghost"}>
                                 <Image src={Upload} alt='upload icon' width={20} height={20} className="w-5 h-5" />
                             </Button>
                             <Button onClick={() => handleCreateTicketAndMessage()} className="flex-1 w-fit h-fit" variant={"default"}>

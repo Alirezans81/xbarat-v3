@@ -13,12 +13,11 @@ type UpdateTicketStatusProps = {
 };
 
 type CreateTicketMessageProps = {
-  ticket_id: string;
-  ticket_message: TicketMessage;
+  ticket_message: Partial<TicketMessage>;
 };
 
 type CreateTicketProps = {
-  ticket: Ticket;
+  ticket: Partial<Ticket>;
 };
 
 export const useUpdateTicketStatus = () => {
@@ -61,13 +60,12 @@ export const useCreateTicketMessage = () => {
 
   const fetch = ({
     ticket_message,
-    ticket_id,
     onError,
     onSuccess,
     onFinally,
   }: CreateTicketMessageProps & FetchProps) => {
     checkTokenExpiration(async () => {
-      await createTicketMessage(token, ticket_id, ticket_message)
+      await createTicketMessage(token, ticket_message)
         .then((res) => {
           onSuccess?.(res);
         })

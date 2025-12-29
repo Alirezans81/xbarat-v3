@@ -22,18 +22,20 @@ export const updateTicketStatus = (
 
 export const createTicketMessage = (
   token: Token,
-  ticket_id: string,
-  ticket_message: TicketMessage
+  ticket_message: Partial<TicketMessage>
 ) => {
-  return apiFetch<TicketMessage>(api["ticket"] + "/" + ticket_id + "message", {
-    method: "POST",
-    token,
-    body: ticket_message,
-  });
+  return apiFetch<TicketMessage>(
+    api["ticket"] + "/" + ticket_message.ticketId + "/message/",
+    {
+      method: "POST",
+      token,
+      body: ticket_message,
+    }
+  );
 };
 
-export const createTicket = (token: Token, ticket: Ticket) => {
-  return apiFetch<TicketMessage>(api["ticket"], {
+export const createTicket = (token: Token, ticket: Partial<Ticket>) => {
+  return apiFetch<Ticket>(api["ticket"], {
     method: "POST",
     token,
     body: ticket,
