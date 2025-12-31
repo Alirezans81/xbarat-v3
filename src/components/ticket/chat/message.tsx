@@ -15,7 +15,7 @@ export default function Message({ data }: Props) {
     >
       <div
         className={`${
-          sentByAdmin ? "bg-input" : "bg-accent"
+          sentByAdmin ? "bg-background" : "bg-accent"
         } rounded-e-2xl rounded-bl-2xl px-5 py-3`}
       >
         {data.message}

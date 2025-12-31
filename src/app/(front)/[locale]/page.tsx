@@ -11,10 +11,15 @@ export default async function Home() {
   try {
     currencies = await getCurrencies();
     currencyPairs = await getCurrencyPairs();
-    wallets = await getWallets();
   } catch (err) {
     console.error("Error fetching data:", err);
     error = true;
+  }
+
+  try {
+    wallets = await getWallets();
+  } catch (err) {
+    console.error("Error fetching data:", err);
   }
 
   if (error) {

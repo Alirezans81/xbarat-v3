@@ -6,7 +6,7 @@ import {
   InputGroupButton,
   InputGroupInput,
 } from "@/components/ui/input-group";
-import { CreateTicketMessage, TicketMessage } from "@/types/front/ticket";
+import { TicketMessage } from "@/types/front/ticket";
 import { SendHorizonal } from "lucide-react";
 import Message from "./chat/message";
 import { Form, FormControl, FormField, FormItem } from "@/components/ui/form";
@@ -14,6 +14,7 @@ import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useCreateTicketMessage } from "@/api/ticket/hook";
+import { useRouter } from "@/i18n/navigation";
 
 const formSchema = z.object({
   message: z.string(),
@@ -24,6 +25,8 @@ interface Props {
   messages: TicketMessage[];
 }
 export default function Chat({ ticket_id, messages }: Props) {
+  const router = useRouter();
+
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -31,11 +34,20 @@ export default function Chat({ ticket_id, messages }: Props) {
     },
   });
 
+  const createTicketMessage = useCreateTicketMessage();
+
   function onSubmit(values: z.infer<typeof formSchema>) {
-    const data: CreateTicketMessage = {
-      ticketId: ticket_id,
-      message: values.message,
-    };
+    const formData = new FormData();
+    formData.append("ticketId", ticket_id);
+    formData.append("message", values.message);
+
+    createTicketMessage({
+      formData,
+      onSuccess() {
+        form.reset();
+        router.refresh();
+      },
+    });
   }
 
   return (

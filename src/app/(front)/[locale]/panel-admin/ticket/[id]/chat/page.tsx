@@ -1,5 +1,5 @@
 import { getTicketMessages } from "@/api/ticket/action";
-import Chat from "@/components/dialog/ticket/chat";
+import Chat from "@/components/ticket/chat";
 import { Link } from "@/i18n/navigation";
 import { ChevronLeft } from "lucide-react";
 
@@ -25,7 +25,7 @@ export default async function page({
             </div>
           </div>
 
-          <Chat messages={messages} />
+          <Chat ticket_id={id} messages={messages} />
         </div>
       </div>
     );
