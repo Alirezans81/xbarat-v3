@@ -2,7 +2,7 @@
 
 import routes from "@/api/routes";
 import { apiFetch } from "@/lib/front/utils/apiFetch";
-import { CurrencyPair } from "@/types/front/currencyPair";
+import { CurrencyPair, WatchList } from "@/types/front/currencyPair";
 
 const api = routes();
 

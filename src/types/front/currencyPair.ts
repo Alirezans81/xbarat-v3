@@ -36,3 +36,10 @@ export type UpdateCurrencyPair = {
   isInverseRate?: boolean;
   isActive?: boolean;
 };
+
+export type WatchList = {
+  currencyPair: CurrencyPair;
+  latest: number;
+  low: number;
+  high: number;
+};

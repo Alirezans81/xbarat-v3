@@ -43,9 +43,9 @@
   --radius-md: calc(var(--radius) - 2px);
   --radius-lg: var(--radius);
   --radius-xl: calc(var(--radius) + 4px);
-  --color-green: oklch(42.38% 0.132 139.57);
+  --color-green: var(--green);
   --color-red: var(--red);
-  --color-wine: oklch(39.09% 0.158 28.93);
+  --color-wine: var(--wine);
 }
 
 :root {
@@ -83,9 +83,9 @@
   --sidebar-accent-foreground: oklch(0.21 0.006 285.885);
   --sidebar-border: oklch(0.92 0.004 286.32);
   --sidebar-ring: oklch(64.34% 0.196 253.02);
-  --green: oklch(42.38% 0.132 139.57);
+  --green: oklch(71.077% 0.1982 138.576);
   --red: oklch(59.22% 0.243 29.23);
-  --wine: oklch(39.09% 0.158 28.93);
+  --wine: oklch(60.229% 0.18163 24.381);
 }
 
 .dark {
@@ -134,4 +134,26 @@
   body {
     @apply bg-background text-foreground;
   }
+}
+
+.fade-container {
+  /* Apply the horizontal mask: Fades in from the left (transparent) 
+       and out to the right (transparent) in this example. */
+  -webkit-mask-image: linear-gradient(
+    to right,
+    transparent 0%,
+    black 20%,
+    black 80%,
+    transparent 100%
+  );
+  mask-image: linear-gradient(
+    to right,
+    transparent 0%,
+    black 20%,
+    black 80%,
+    transparent 100%
+  );
+
+  /* For a fade only on one side (e.g., right side): */
+  /* mask-image: linear-gradient(to right, black 0%, transparent 100%); */
 }

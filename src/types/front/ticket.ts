@@ -31,5 +31,5 @@ export type CreateTicketMessage = {
   ticketId: string;
   message: string;
   filesUrl?: string[];
-  senderRole: UserRole;
+  senderRole?: UserRole;
 };

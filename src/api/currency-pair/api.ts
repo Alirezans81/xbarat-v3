@@ -4,6 +4,7 @@ import {
   CreateCurrencyPair,
   CurrencyPair,
   UpdateCurrencyPair,
+  WatchList,
 } from "@/types/front/currencyPair";
 import { Token } from "@/types/front/globals";
 
@@ -41,4 +42,8 @@ export const deleteCurrencyPair = (token: Token, currencyPair_id: string) => {
     method: "DELETE",
     token,
   });
+};
+
+export const getWatchList = () => {
+  return apiFetch<WatchList[]>(api["watchlist"]);
 };

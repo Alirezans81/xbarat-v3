@@ -1,11 +1,12 @@
 "use client";
+
 import ExchangeForm from "./exchange-form";
 import OrderBook from "./order-book";
 import { Currency } from "@/types/front/currency";
 import { CurrencyPair } from "@/types/front/currencyPair";
 import { Wallet } from "@/types/front/wallet";
 import { useState } from "react";
-import WatchList from "./WatchList";
+import WatchList from "./watch-list";
 
 interface Props {
   currencies: Currency[];

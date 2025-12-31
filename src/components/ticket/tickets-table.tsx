@@ -10,6 +10,8 @@ import {
 import { Ticket } from "@/types/front/ticket";
 import CloseTicketDialog from "../dialog/ticket/close-ticket-dialog";
 import ReopenTicketDialog from "../dialog/ticket/reopen-ticket-dialog";
+import { Link } from "@/i18n/navigation";
+import { Button } from "../ui/button";
 
 interface Props {
   data: Ticket[];
@@ -41,6 +43,9 @@ export default function TicketsTable({ data }: Props) {
             </TableCell>
             <TableCell>{ticket.status}</TableCell>
             <TableCell className="flex justify-end">
+              <Link href={`/panel-admin/ticket/${ticket.id}/chat`}>
+                <Button>Messages</Button>
+              </Link>
               {ticket.status !== "CLOSED" && (
                 <CloseTicketDialog ticket_id={ticket.id} />
               )}

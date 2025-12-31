@@ -53,13 +53,15 @@ export default async function RootLayout({
                 side={rtlLocales.includes(locale) ? "right" : "left"}
               />
               <div className="w-full bg-background">
-                <div className="w-full h-full"
+                <div
+                  className="w-full h-full"
                   style={{
                     backgroundImage: "url('/background.svg')",
                     backgroundRepeat: "no-repeat",
                     backgroundSize: "cover",
                     backgroundPosition: "center",
-                  }}>
+                  }}
+                >
                   <Navbar />
                   <main>{children}</main>
                 </div>

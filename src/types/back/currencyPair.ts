@@ -1,7 +1,11 @@
 import { CurrencyPair as DatabaseCurrencyPair } from "@/generated/prisma";
+import { Currency } from "./currency";
 
 export type CurrencyPair = Omit<DatabaseCurrencyPair, "createdAt"> & {
   createdAt: string;
+} & {
+  fromCurrency: Pick<Currency, "id" | "code" | "name" | "symbol">;
+  toCurrency: Pick<Currency, "id" | "code" | "name" | "symbol">;
 };
 
 export type GetCurrencyPairsFilters = {
@@ -29,4 +33,11 @@ export type UpdateCurrencyPair = {
   rate?: number;
   isInverseRate?: boolean;
   isActive?: boolean;
+};
+
+export type WatchList = {
+  currencyPair: CurrencyPair;
+  latest: number;
+  low: number;
+  high: number;
 };

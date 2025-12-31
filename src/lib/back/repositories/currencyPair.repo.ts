@@ -27,6 +27,7 @@ export const currencyPairRepository = {
             id: true,
             code: true,
             name: true,
+            symbol: true,
           },
         },
         toCurrency: {
@@ -34,6 +35,7 @@ export const currencyPairRepository = {
             id: true,
             code: true,
             name: true,
+            symbol: true,
           },
         },
       },
@@ -59,6 +61,7 @@ export const currencyPairRepository = {
             id: true,
             code: true,
             name: true,
+            symbol: true,
           },
         },
         toCurrency: {
@@ -66,6 +69,7 @@ export const currencyPairRepository = {
             id: true,
             code: true,
             name: true,
+            symbol: true,
           },
         },
       },
@@ -91,6 +95,7 @@ export const currencyPairRepository = {
             id: true,
             code: true,
             name: true,
+            symbol: true,
           },
         },
         toCurrency: {
@@ -98,6 +103,7 @@ export const currencyPairRepository = {
             id: true,
             code: true,
             name: true,
+            symbol: true,
           },
         },
       },

@@ -2,7 +2,6 @@
 
 import { useEffect, useState } from "react";
 import { CurrencyCard } from "./currency-card";
-import { CurrencyItem } from "./types";
 import {
   Carousel,
   CarouselApi,
@@ -11,19 +10,31 @@ import {
   CarouselNext,
   CarouselPrevious,
 } from "@/components/ui/carousel";
-
-export function CurrencyCarousel({ items }: { items: CurrencyItem[] }) {
-  const [active, setActive] = useState(0);
+import { CurrencyPair, WatchList } from "@/types/front/currencyPair";
+interface Props {
+  items: WatchList[];
+  selectedPair: CurrencyPair | null;
+  setSelectedPair: (pair: CurrencyPair | null) => void;
+}
+export function CurrencyCarousel({
+  items,
+  selectedPair,
+  setSelectedPair,
+}: Props) {
+  const [active, setActive] = useState(
+    selectedPair
+      ? items.findIndex((item) => item.currencyPair === selectedPair)
+      : 0
+  );
 
   const [api, setApi] = useState<CarouselApi>();
-
   useEffect(() => {
     if (!api) {
       return;
     }
-
     api.on("select", () => {
-      setActive(api.selectedScrollSnap());
+      const selected = api.selectedScrollSnap();
+      setActive(selected);
     });
   }, [api]);
 
@@ -31,22 +42,48 @@ export function CurrencyCarousel({ items }: { items: CurrencyItem[] }) {
     <Carousel
       opts={{
         align: "center",
-        loop: true,
       }}
       setApi={setApi}
-      className="w-full"
+      className="max-w-full"
     >
-      <CarouselContent>
-        {items.map((item, index) => (
-          <CarouselItem key={index} className="md:basis-1/4 lg:basis-1/5">
-            <div className="py-10">
-              <CurrencyCard item={item} active={index === active} />
-            </div>
-          </CarouselItem>
-        ))}
-      </CarouselContent>
-      <CarouselPrevious />
-      <CarouselNext />
+      <div className="max-w-full">
+        <CarouselContent className="p-7">
+          {items.map((item, index) => (
+            <CarouselItem key={index} className="md:basis-1/3 xl:basis-1/5">
+              <div
+                className={index === items.length - 1 ? "pe-4" : ""}
+                onClick={() => setActive(index)}
+              >
+                <CurrencyCard
+                  item={item}
+                  active={index === active}
+                  selectedPair={selectedPair}
+                  setSelectedPair={setSelectedPair}
+                />
+              </div>
+            </CarouselItem>
+          ))}
+        </CarouselContent>
+      </div>
+
+      <CarouselPrevious
+        disabled={active > 0 ? false : true}
+        onClick={() => {
+          if (active > 0) {
+            setActive(active - 1);
+            api?.scrollTo(active - 1);
+          }
+        }}
+      />
+      <CarouselNext
+        disabled={active < items.length - 1 ? false : true}
+        onClick={() => {
+          if (active < items.length - 1) {
+            setActive(active + 1);
+            api?.scrollTo(active + 1);
+          }
+        }}
+      />
     </Carousel>
   );
 }

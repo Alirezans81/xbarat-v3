@@ -9,8 +9,8 @@ export default async function page() {
     const data = await getCurrencyPairs();
 
     return (
-      <div className="w-full">
-        <div className="container mx-auto px-5 py-8 flex flex-col gap-4">
+      <div className="w-full p-5">
+        <div className="container mx-auto p-5 flex flex-col gap-4 bg-card rounded-2xl">
           <div className="w-full flex justify-between items-center">
             <div className="flex gap-2 items-center">
               <Link href="/panel-admin">

@@ -6,6 +6,7 @@ import {
   createCurrencyPair,
   deleteCurrencyPair,
   getCurrencyPairs,
+  getWatchList,
   updateCurrencyPair,
 } from "./api";
 import { useCheckTokenExpiration } from "@/hooks/use-auth";
@@ -13,6 +14,7 @@ import {
   CreateCurrencyPair,
   CurrencyPair,
   UpdateCurrencyPair,
+  WatchList,
 } from "@/types/front/currencyPair";
 
 type GetCurrenciesProps = {
@@ -148,6 +150,37 @@ export const useDeleteCurrencyPair = () => {
           onFinally?.();
         });
     });
+  };
+
+  return fetch;
+};
+
+type GetWatchListProps = {
+  setWatchList: (value: WatchList[]) => void;
+};
+export const useGetWatchList = () => {
+  const t = useTranslations("ApiErrors");
+
+  const fetch = async ({
+    setWatchList,
+    onError,
+    onSuccess,
+    onFinally,
+  }: GetWatchListProps & FetchProps) => {
+    await getWatchList()
+      .then((res) => {
+        setWatchList(res);
+        onSuccess?.(res);
+      })
+      .catch((err) => {
+        process.env.NEXT_PUBLIC_APP_MODE === "development" &&
+          console.error(err.response);
+        toast.error(t(err.response.data.error.message));
+        onError?.(err);
+      })
+      .finally(() => {
+        onFinally?.();
+      });
   };
 
   return fetch;

@@ -56,6 +56,20 @@ export default function ExchangeForm({
   const SPLIT_INDEX = 4;
 
   useEffect(() => {
+    if (selectedPair) {
+      const foundSource = currencies.find(
+        (e) => e.id === selectedPair.fromCurrency.id
+      );
+      if (foundSource) setSelectedSourceId(foundSource.id);
+
+      const foundTarget = currencies.find(
+        (e) => e.id === selectedPair.toCurrency.id
+      );
+      if (foundTarget) setSelectedTargetId(foundTarget.id);
+    }
+  }, [selectedPair]);
+
+  useEffect(() => {
     if (selectedSourceId && selectedTargetId) {
       const foundCurrencyPair = currencyPairs.find(
         (e) =>

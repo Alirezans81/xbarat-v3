@@ -2,7 +2,7 @@ import routes from "@/api/routes";
 import { TicketStatus } from "@/generated/prisma";
 import { apiFetch } from "@/lib/front/utils/apiFetch";
 import { Token } from "@/types/front/globals";
-import { Ticket } from "@/types/front/ticket";
+import { CreateTicketMessage, Ticket } from "@/types/front/ticket";
 
 const api = routes();
 

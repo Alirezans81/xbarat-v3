@@ -90,7 +90,7 @@ export default function OrderBook({
       id="latest-table"
       className={`w-full h-fit ${
         currencyPair ? "flex" : "hidden"
-      } flex-col mt-24 items-center gap-y-8`}
+      } flex-col mt-12 items-center gap-y-8`}
     >
       <span className="w-fit h-fit text-foreground text-3xl">
         Latest Transactions

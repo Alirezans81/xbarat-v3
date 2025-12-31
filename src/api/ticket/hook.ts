@@ -2,9 +2,10 @@ import { useCheckTokenExpiration } from "@/hooks/use-auth";
 import { useAuthStore } from "@/lib/front/stores/auth";
 import { FetchProps } from "@/types/front/globals";
 import { useTranslations } from "next-intl";
-import { updateTicketStatus } from "./api";
+import { createTicketMessage, updateTicketStatus } from "./api";
 import { TicketStatus } from "@/generated/prisma";
 import { toast } from "sonner";
+import { CreateTicketMessage } from "@/types/front/ticket";
 
 type UpdateTicketStatusProps = {
   ticket_id: string;
