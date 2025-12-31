@@ -13,7 +13,8 @@ import { useState, useEffect, useRef, ChangeEvent } from "react";
 import { Ticket } from "@/types/front/ticket";
 import { Textarea } from "../ui/textarea";
 import Upload from "../../../public/Profile/Upload.svg";
-import { useCreateTicketMessage, useCreateTicket, useGetTickets } from "@/api/ticket/hook";
+import Detail from "../../../public/Profile/detail.svg";
+import { useCreateTicketMessage, useCreateTicket } from "@/api/ticket/hook";
 import {
     Table,
     TableBody,
@@ -23,8 +24,13 @@ import {
     TableHeader,
     TableRow,
 } from "../ui/table";
+import ClosedTicket from "../../../public/Profile/closed-ticket.svg";
+import PendingTicket from "../../../public/Profile/pending-ticket.svg";
+import OpenTicket from "../../../public/Profile/open-ticket.svg";
+
 type Props = {
-    className?: string
+    className?: string;
+    previousTickets: Ticket[];
 }
 
 interface TicketMessageState {
@@ -59,10 +65,221 @@ export const createTicketMessageFormData = (
     return formData;
 };
 
-export default function TicketCard({ className }: Props) {
+export default function TicketCard({ className, previousTickets }: Props) {
 
     const [loading, setLoading] = useState(true);
-    const [previousTickets, setPreviousTickets] = useState<Ticket[]>([]);
+    // const previousTickets = [
+    //     {
+    //         id: 'ae6ec977-161c-4bff-ba73-9477bacdec84',
+    //         userId: '5f4698d4-4297-4ef8-b092-e154ea08e709',
+    //         subject: 'Deposit',
+    //         status: 'OPEN',
+    //         unreadCount: 1,
+    //         createdAt: '2025-12-31T09:50:02.471Z',
+    //         updatedAt: '2025-12-31T09:50:10.359Z',
+    //         messages: [[Object], [Object], [Object], [Object]],
+    //         user: {
+    //             email: 'sinamollazadeh20031381@gmail.com',
+    //             fullName: 'Sina Mollazadeh'
+    //         }
+    //     },
+    //     {
+    //         id: '8d3b47bc-a35e-48d9-b9c9-5d8e09c16303',
+    //         userId: '5f4698d4-4297-4ef8-b092-e154ea08e709',
+    //         subject: 'Exchange',
+    //         status: 'OPEN',
+    //         unreadCount: 0,
+    //         createdAt: '2025-12-31T09:50:09.756Z',
+    //         updatedAt: '2025-12-31T09:50:09.756Z',
+    //         messages: [],
+    //         user: {
+    //             email: 'sinamollazadeh20031381@gmail.com',
+    //             fullName: 'Sina Mollazadeh'
+    //         }
+    //     },
+    //     {
+    //         id: '19a577b3-f938-44c1-a9e3-17428b170d9c',
+    //         userId: '5f4698d4-4297-4ef8-b092-e154ea08e709',
+    //         subject: 'Withdrawal',
+    //         status: 'OPEN',
+    //         unreadCount: 1,
+    //         createdAt: '2025-12-31T09:49:55.807Z',
+    //         updatedAt: '2025-12-31T09:50:02.915Z',
+    //         messages: [[Object]],
+    //         user: {
+    //             email: 'sinamollazadeh20031381@gmail.com',
+    //             fullName: 'Sina Mollazadeh'
+    //         }
+    //     },
+    //     {
+    //         id: '04e85c1b-9b5e-4c1e-883b-d251f4616398',
+    //         userId: '5f4698d4-4297-4ef8-b092-e154ea08e709',
+    //         subject: 'Exchange',
+    //         status: 'OPEN',
+    //         unreadCount: 1,
+    //         createdAt: '2025-12-31T09:49:47.541Z',
+    //         updatedAt: '2025-12-31T09:49:56.547Z',
+    //         messages: [[Object]],
+    //         user: {
+    //             email: 'sinamollazadeh20031381@gmail.com',
+    //             fullName: 'Sina Mollazadeh'
+    //         }
+    //     },
+    //     {
+    //         id: 'c22e15e5-285d-45ed-a81f-36596313eed2',
+    //         userId: '5f4698d4-4297-4ef8-b092-e154ea08e709',
+    //         subject: 'Exchange',
+    //         status: 'OPEN',
+    //         unreadCount: 1,
+    //         createdAt: '2025-12-31T09:49:43.124Z',
+    //         updatedAt: '2025-12-31T09:49:50.280Z',
+    //         messages: [[Object]],
+    //         user: {
+    //             email: 'sinamollazadeh20031381@gmail.com',
+    //             fullName: 'Sina Mollazadeh'
+    //         }
+    //     },
+    //     {
+    //         id: 'ae6ec977-161c-4bff-ba73-9477bacdec84',
+    //         userId: '5f4698d4-4297-4ef8-b092-e154ea08e709',
+    //         subject: 'Deposit',
+    //         status: 'OPEN',
+    //         unreadCount: 1,
+    //         createdAt: '2025-12-31T09:50:02.471Z',
+    //         updatedAt: '2025-12-31T09:50:10.359Z',
+    //         messages: [[Object], [Object], [Object], [Object]],
+    //         user: {
+    //             email: 'sinamollazadeh20031381@gmail.com',
+    //             fullName: 'Sina Mollazadeh'
+    //         }
+    //     },
+    //     {
+    //         id: '8d3b47bc-a35e-48d9-b9c9-5d8e09c16303',
+    //         userId: '5f4698d4-4297-4ef8-b092-e154ea08e709',
+    //         subject: 'Exchange',
+    //         status: 'OPEN',
+    //         unreadCount: 0,
+    //         createdAt: '2025-12-31T09:50:09.756Z',
+    //         updatedAt: '2025-12-31T09:50:09.756Z',
+    //         messages: [],
+    //         user: {
+    //             email: 'sinamollazadeh20031381@gmail.com',
+    //             fullName: 'Sina Mollazadeh'
+    //         }
+    //     },
+    //     {
+    //         id: '19a577b3-f938-44c1-a9e3-17428b170d9c',
+    //         userId: '5f4698d4-4297-4ef8-b092-e154ea08e709',
+    //         subject: 'Withdrawal',
+    //         status: 'OPEN',
+    //         unreadCount: 1,
+    //         createdAt: '2025-12-31T09:49:55.807Z',
+    //         updatedAt: '2025-12-31T09:50:02.915Z',
+    //         messages: [[Object]],
+    //         user: {
+    //             email: 'sinamollazadeh20031381@gmail.com',
+    //             fullName: 'Sina Mollazadeh'
+    //         }
+    //     },
+    //     {
+    //         id: '04e85c1b-9b5e-4c1e-883b-d251f4616398',
+    //         userId: '5f4698d4-4297-4ef8-b092-e154ea08e709',
+    //         subject: 'Exchange',
+    //         status: 'OPEN',
+    //         unreadCount: 1,
+    //         createdAt: '2025-12-31T09:49:47.541Z',
+    //         updatedAt: '2025-12-31T09:49:56.547Z',
+    //         messages: [[Object]],
+    //         user: {
+    //             email: 'sinamollazadeh20031381@gmail.com',
+    //             fullName: 'Sina Mollazadeh'
+    //         }
+    //     },
+    //     {
+    //         id: 'c22e15e5-285d-45ed-a81f-36596313eed2',
+    //         userId: '5f4698d4-4297-4ef8-b092-e154ea08e709',
+    //         subject: 'Exchange',
+    //         status: 'OPEN',
+    //         unreadCount: 1,
+    //         createdAt: '2025-12-31T09:49:43.124Z',
+    //         updatedAt: '2025-12-31T09:49:50.280Z',
+    //         messages: [[Object]],
+    //         user: {
+    //             email: 'sinamollazadeh20031381@gmail.com',
+    //             fullName: 'Sina Mollazadeh'
+    //         }
+    //     },
+    //     {
+    //         id: 'ae6ec977-161c-4bff-ba73-9477bacdec84',
+    //         userId: '5f4698d4-4297-4ef8-b092-e154ea08e709',
+    //         subject: 'Deposit',
+    //         status: 'OPEN',
+    //         unreadCount: 1,
+    //         createdAt: '2025-12-31T09:50:02.471Z',
+    //         updatedAt: '2025-12-31T09:50:10.359Z',
+    //         messages: [[Object], [Object], [Object], [Object]],
+    //         user: {
+    //             email: 'sinamollazadeh20031381@gmail.com',
+    //             fullName: 'Sina Mollazadeh'
+    //         }
+    //     },
+    //     {
+    //         id: '8d3b47bc-a35e-48d9-b9c9-5d8e09c16303',
+    //         userId: '5f4698d4-4297-4ef8-b092-e154ea08e709',
+    //         subject: 'Exchange',
+    //         status: 'OPEN',
+    //         unreadCount: 0,
+    //         createdAt: '2025-12-31T09:50:09.756Z',
+    //         updatedAt: '2025-12-31T09:50:09.756Z',
+    //         messages: [],
+    //         user: {
+    //             email: 'sinamollazadeh20031381@gmail.com',
+    //             fullName: 'Sina Mollazadeh'
+    //         }
+    //     },
+    //     {
+    //         id: '19a577b3-f938-44c1-a9e3-17428b170d9c',
+    //         userId: '5f4698d4-4297-4ef8-b092-e154ea08e709',
+    //         subject: 'Withdrawal',
+    //         status: 'OPEN',
+    //         unreadCount: 1,
+    //         createdAt: '2025-12-31T09:49:55.807Z',
+    //         updatedAt: '2025-12-31T09:50:02.915Z',
+    //         messages: [[Object]],
+    //         user: {
+    //             email: 'sinamollazadeh20031381@gmail.com',
+    //             fullName: 'Sina Mollazadeh'
+    //         }
+    //     },
+    //     {
+    //         id: '04e85c1b-9b5e-4c1e-883b-d251f4616398',
+    //         userId: '5f4698d4-4297-4ef8-b092-e154ea08e709',
+    //         subject: 'Exchange',
+    //         status: 'OPEN',
+    //         unreadCount: 1,
+    //         createdAt: '2025-12-31T09:49:47.541Z',
+    //         updatedAt: '2025-12-31T09:49:56.547Z',
+    //         messages: [[Object]],
+    //         user: {
+    //             email: 'sinamollazadeh20031381@gmail.com',
+    //             fullName: 'Sina Mollazadeh'
+    //         }
+    //     },
+    //     {
+    //         id: 'c22e15e5-285d-45ed-a81f-36596313eed2',
+    //         userId: '5f4698d4-4297-4ef8-b092-e154ea08e709',
+    //         subject: 'Exchange',
+    //         status: 'OPEN',
+    //         unreadCount: 1,
+    //         createdAt: '2025-12-31T09:49:43.124Z',
+    //         updatedAt: '2025-12-31T09:49:50.280Z',
+    //         messages: [[Object]],
+    //         user: {
+    //             email: 'sinamollazadeh20031381@gmail.com',
+    //             fullName: 'Sina Mollazadeh'
+    //         }
+    //     }
+    // ]
     const [ticket, setTicket] = useState<Partial<Ticket>>();
     const [ticketMessage, setTicketMessage] = useState<TicketMessageState>({
         message: "",
@@ -71,7 +288,6 @@ export default function TicketCard({ className }: Props) {
 
     const createTicketMessage = useCreateTicketMessage();
     const createTicket = useCreateTicket();
-    const getTickets = useGetTickets();
     const fileInputRef = useRef<HTMLInputElement>(null);
 
     const handleFileSelect = (e: ChangeEvent<HTMLInputElement>) => {
@@ -98,41 +314,38 @@ export default function TicketCard({ className }: Props) {
     };
 
     const subjects = [
-        "Customer Service: Problem Assign Exchange",
-        "Customer Service: Problem Withdrawal Fee",
-        "Customer Service: Problem Deposit Admin Approve",
-        "Farabuy: Problem Deposit Admin Approve"
+        "Exchange",
+        "Deposit",
+        "Withdrawal",
+        "Profile"
     ]
 
     function handleCreateTicketAndMessage() {
-        if (ticket && ticket !== undefined) {
-            createTicket({ ticket: ticket, onSuccess: setTicket });
-            if (ticket?.id) {
-                const formData = createTicketMessageFormData(ticketMessage, ticket.id);
-                createTicketMessage({ formData: formData, onSuccess: setTicketMessage });
-                toast.info("Ticket is Submitted.");
-                setTicket({});
-                setTicketMessage({
-                    message: "",
-                    files: []
+        if (!ticket) return;
+
+        createTicket({
+            ticket,
+            onSuccess: (createdTicket) => {
+                setTicket(createdTicket);
+
+                const formData = createTicketMessageFormData(
+                    ticketMessage,
+                    createdTicket.id
+                );
+
+                createTicketMessage({
+                    formData,
+                    onSuccess: () => {
+                        toast.info("Ticket is submitted.");
+                        setTicket({});
+                        setTicketMessage({ message: "", files: [] });
+                    },
                 });
-            }
-        }
+            },
+        });
     }
 
-    useEffect(() => {
-        getTickets({
-            onSuccess: (fetchedTickets) => {
-                setPreviousTickets(fetchedTickets);
-                setLoading(false);
-            },
-            onError: (error) => {
-                console.error("Failed to fetch tickets:", error);
-                setLoading(false);
-            }
-        });
-    }, []);
-    console.log(previousTickets)
+
     return (
         <section
             className={cn(className)}
@@ -223,24 +436,47 @@ export default function TicketCard({ className }: Props) {
 
 
                     </div>
-                    <div className="flex-1 w-full h-full">
-                        <Table>
+                    <div className={previousTickets?.length !== 0 ? "flex-1 w-full h-full max-h-72 overflow-y-scroll" : "flex-1 w-full h-full max-h-52 overflow-y-scroll"}>
+                        <Table className="border-separate border-spacing-y-2">
                             <TableCaption>List of all Tickets</TableCaption>
                             <TableHeader>
-                                <TableRow>
-                                    <TableHead className="w-[100px]">Invoice</TableHead>
-                                    <TableHead>Status</TableHead>
-                                    <TableHead>Method</TableHead>
-                                    <TableHead className="text-right">Amount</TableHead>
+                                <TableRow className="w-full flex flex-row">
+                                    <TableHead className="w-1/4 h-fit flex justify-center items-center text-center text-md">Status</TableHead>
+                                    <TableHead className="w-1/4 h-fit flex justify-center items-center text-center text-md">Date & Time</TableHead>
+                                    <TableHead className="w-1/4 h-fit flex justify-center items-center text-center text-md">Subject</TableHead>
+                                    <TableHead className="w-1/12 h-fit flex justify-center items-center text-center text-md">Unread</TableHead>
+                                    <TableHead className="w-1/6 h-fit flex justify-center items-center text-center text-md">Detail</TableHead>
                                 </TableRow>
                             </TableHeader>
                             <TableBody>
                                 {previousTickets?.map((ticket: Ticket, index: number) => (
-                                    <TableRow key={index}>
-                                        <TableCell className="font-medium">{ticket.status}</TableCell>
-                                        <TableCell>{ticket.createdAt}</TableCell>
-                                        <TableCell>{ticket.subject}</TableCell>
-                                        <TableCell className="text-right">{ticket.unreadCount}</TableCell>
+                                    <TableRow key={index} className="w-full flex flex-row mt-2 text-foreground gap-x-2">
+                                        <TableCell className="w-1/4 h-8 bg-card rounded-lg">
+                                            <div className="w-full h-full flex flex-row justify-center items-center text-center p-1 gap-x-1">
+                                                <Image className="w-4 h-4 p-0" width={16} height={16} alt="status" src={ticket.status === "OPEN" ? OpenTicket : ticket.status === "CLOSED" ? ClosedTicket : PendingTicket} />
+                                                <span className={`w-fit text-center h-fit text-md ${ticket.status === "OPEN" ? "text-green" : ticket.status === "PENDING" ? "text-chart-3" : "text-red"}`}>{ticket.status}</span>
+                                            </div>
+                                        </TableCell>
+                                        <TableCell className="w-1/4 h-8 bg-card rounded-lg p-0">
+                                            <div className="w-full h-full flex justify-center items-center text-center">
+                                                <span className="w-fit text-center h-fit text-md">{(ticket.createdAt).split("T")[0]}</span>
+                                            </div>
+                                        </TableCell>
+                                        <TableCell className="w-1/4 h-8 bg-card rounded-lg px-2 py-0">
+                                            <div className="w-full h-full flex justify-center items-center text-center">
+                                                <span className="w-fit text-center h-fit text-sm">{ticket.subject}</span>
+                                            </div>
+                                        </TableCell>
+                                        <TableCell className="w-1/12 h-8 bg-card rounded-lg p-0">
+                                            <div className="w-full h-full flex justify-center items-center text-center">
+                                                <span className="w-fit text-center h-fit text-md">{ticket.unreadCount}</span>
+                                            </div>
+                                        </TableCell>
+                                        <TableCell className="w-1/6 h-fit flex justify-center items-center text-center p-1">
+                                            <Button className="p-0 w-fit h-fit" variant={'ghost'} onClick={() => console.log("Open Detail Modal")}>
+                                                <Image src={Detail} alt="Detail" width={16} height={16} className="w-4 h-4" />
+                                            </Button>
+                                        </TableCell>
                                     </TableRow>
                                 ))}
                             </TableBody>
