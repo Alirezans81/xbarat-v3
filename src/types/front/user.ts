@@ -34,3 +34,15 @@ export type LoginUser = {
   email: string;
   password: string;
 };
+
+export type PutUser = {
+  avatarUrl: string;
+  fullName: string;
+  phoneNumber: string;
+  documentPhotoUrl: string;
+  countryCode: string;
+  state: string;
+  city: string;
+  postalCode: string;
+  address: string;
+};
