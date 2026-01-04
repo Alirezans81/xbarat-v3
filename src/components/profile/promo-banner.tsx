@@ -11,7 +11,7 @@ export default function PromoBanner({ className }: Props) {
       <Glass className="rounded-lg w-full h-full max-h-72">
         <Card className="w-full h-full flex flex-col p-5 justify-start items-start gap-4">
           {/* Header */}
-          <div className="w-full h-fit flex justify-between items-start text-[#3c3c46]">
+          <div className="w-full h-fit flex justify-between items-start text-muted-foreground/75">
             <span className="text-lg">Promo Banner</span>
           </div>
           <span className="w-full h-full flex justify-center items-center text-2xl text-foreground">

@@ -92,7 +92,7 @@ export default function CardsCard({ className, currencies }: Props) {
   return (
     <section className={cn(className)}>
       <Glass className="rounded-lg w-full h-full max-h-72">
-        <Card className="w-full h-full flex flex-col items-center px-7 text-[#3c3c46]">
+        <Card className="w-full h-full flex flex-col items-center px-7 text-muted-foreground/75">
           <span className="text-lg w-full text-start">Cards</span>
 
           {/* First Row Cards and add Card */}

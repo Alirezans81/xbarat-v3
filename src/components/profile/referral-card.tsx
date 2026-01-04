@@ -10,7 +10,7 @@ export default function ReferralCard({ className }: Props) {
   return (
     <section className={cn(className)}>
       <Glass className="rounded-lg w-full h-full">
-        <Card className="w-full h-full flex flex-col p-5 justify-start items-start gap-4 text-[#3c3c46]">
+        <Card className="w-full h-full flex flex-col p-5 justify-start items-start gap-4 text-muted-foreground/75">
           {/* Header */}
           <div className="w-full h-fit flex justify-between items-start">
             <span className="text-lg">Referral</span>

@@ -136,7 +136,7 @@ export default function TicketCard({ className, previousTickets }: Props) {
   return (
     <section className={cn(className)}>
       <Glass className="rounded-lg">
-        <Card className="w-full h-full flex flex-col items-center px-7 text-[#3c3c46]">
+        <Card className="w-full h-full flex flex-col items-center px-7 text-muted-foreground/75">
           <span className="text-lg w-full text-start">Tickets</span>
           <div className="w-full h-full flex flex-col gap-x-3 gap-y-2">
             {/* Dropdown Subject */}

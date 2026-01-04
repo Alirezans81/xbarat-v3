@@ -95,7 +95,7 @@
   --from-background: oklch(21.018% 0.01 276.551);
   --to-background: oklch(34.532% 0.00348 286.056);
   --foreground: oklch(0.985 0 0);
-  --card: oklch(25.031% 0.01128 285.529 / 0.2);
+  --card: oklch(25.031% 0.01128 285.529);
   --card-context:oklch(25.031% 0.01128 285.529);
   --card-foreground: oklch(94.01% 0 0);
   --popover: oklch(0.21 0.006 285.885);

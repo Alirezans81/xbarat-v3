@@ -65,7 +65,7 @@ export default function ProfileCard({ className }: Props) {
   return (
     <section className={cn(className)}>
       <Glass className="rounded-lg">
-        <Card className="w-full h-full flex flex-col items-center px-3 text-[#3c3c46]">
+        <Card className="w-full h-full flex flex-col items-center px-3 text-muted-foreground/75">
           {/* Profile Photo and Edit */}
           <div className="w-fit h-fit relative bg-transparent">
             {/* Profile Photo */}
@@ -127,14 +127,14 @@ export default function ProfileCard({ className }: Props) {
           {/* Grid for user specs */}
           <div className="grid grid-rows-4 grid-cols-12 p-2 gap-2">
             {/* First Row */}
-            <div className="col-span-6 row-span-1 w-full h-full flex flex-col justify-center bg-card rounded-2xl p-2 items-center text-card-context">
+            <div className="col-span-6 row-span-1 w-full h-full flex flex-col justify-center bg-accent/50 rounded-2xl p-2 items-center">
               <span>Email</span>
               <span className="w-full px-2 overflow-x-auto whitespace-nowrap text-center text-sm">
                 {user?.email}
               </span>
             </div>
 
-            <div className="col-span-6 row-span-1 w-full h-full flex flex-col justify-center bg-card rounded-2xl p-2 items-center text-card-context">
+            <div className="col-span-6 row-span-1 w-full h-full flex flex-col justify-center bg-accent/50 rounded-2xl p-2 items-center">
               <div className="w-full h-fit flex flex-row items-center justify-center gap-2">
                 <span className="">Phone Number</span>
                 <Button
@@ -171,21 +171,21 @@ export default function ProfileCard({ className }: Props) {
             </div>
 
             {/* Second Row */}
-            <div className="col-span-4 row-span-1 w-full h-full flex flex-col justify-center bg-card rounded-2xl p-2 items-center text-card-context text-sm">
+            <div className="col-span-4 row-span-1 w-full h-full flex flex-col justify-center bg-accent/50 rounded-2xl p-2 items-center text-sm">
               <span>Date of Birth</span>
-              <span className="w-full px-2 overflow-x-auto whitespace-nowrap text-center text-sm">
+              <span className="w-full px-2 overflow-x-auto whitespace-nowrap text-center text-base text-foreground">
                 {user?.dateOfBirth ? user?.dateOfBirth.toString() : "No Data!"}
               </span>
             </div>
 
-            <div className="col-span-4 row-span-1 w-full h-full flex flex-col justify-center bg-card rounded-2xl p-2 items-center text-card-context text-sm">
-              <span>Document Number</span>
-              <span className="w-full px-2 overflow-x-auto whitespace-nowrap text-center text-sm">
+            <div className="col-span-4 row-span-1 w-full h-full flex flex-col justify-center bg-accent/50 rounded-2xl p-2 items-center text-sm">
+              <span className="text-center">Document Number</span>
+              <span className="w-full px-2 overflow-x-auto whitespace-nowrap text-center text-base text-foreground">
                 {user?.documentNumber ? user?.documentNumber : "No Data!"}
               </span>
             </div>
 
-            <div className="col-span-4 row-span-1 w-full h-full flex flex-col justify-center bg-card rounded-2xl p-2 items-center text-card-context text-sm">
+            <div className="col-span-4 row-span-1 w-full h-full flex flex-col justify-center bg-accent/50 rounded-2xl p-2 items-center text-sm">
               <span>Document</span>
               <Image
                 src={Document}
@@ -197,7 +197,7 @@ export default function ProfileCard({ className }: Props) {
             </div>
 
             {/* Third Row */}
-            <div className="col-span-4 row-span-1 w-full h-full flex flex-col justify-center bg-card rounded-2xl p-2 items-center text-card-context">
+            <div className="col-span-4 row-span-1 w-full h-full flex flex-col justify-center bg-accent/50 rounded-2xl p-2 items-center">
               <div className="w-full h-fit flex flex-row items-center justify-center gap-2">
                 <span>Country</span>
                 <Button
@@ -233,7 +233,7 @@ export default function ProfileCard({ className }: Props) {
               )}
             </div>
 
-            <div className="col-span-4 row-span-1 w-full h-full flex flex-col justify-center bg-card rounded-2xl p-2 items-center text-card-context">
+            <div className="col-span-4 row-span-1 w-full h-full flex flex-col justify-center bg-accent/50 rounded-2xl p-2 items-center">
               <div className="w-full h-fit flex flex-row items-center justify-center gap-2">
                 <span>State</span>
                 <Button
@@ -271,7 +271,7 @@ export default function ProfileCard({ className }: Props) {
               )}
             </div>
 
-            <div className="col-span-4 row-span-1 w-full h-full flex flex-col justify-center bg-card rounded-2xl p-2 items-center text-card-context">
+            <div className="col-span-4 row-span-1 w-full h-full flex flex-col justify-center bg-accent/50 rounded-2xl p-2 items-center">
               <div className="w-full h-fit flex flex-row items-center justify-center gap-2">
                 <span>City</span>
                 <Button
@@ -310,7 +310,7 @@ export default function ProfileCard({ className }: Props) {
             </div>
 
             {/* Fourth Row */}
-            <div className="col-span-4 row-span-1 w-full h-full flex flex-col justify-center bg-card rounded-2xl p-2 items-center text-card-context">
+            <div className="col-span-4 row-span-1 w-full h-full flex flex-col justify-center bg-accent/50 rounded-2xl p-2 items-center">
               <div className="w-full h-fit flex flex-row items-center justify-center gap-2">
                 <span>Postal Code</span>
                 <Button
@@ -348,7 +348,7 @@ export default function ProfileCard({ className }: Props) {
               )}
             </div>
 
-            <div className="col-span-8 row-span-1 w-full h-full flex flex-col justify-center bg-card rounded-2xl p-2 items-center text-card-context">
+            <div className="col-span-8 row-span-1 w-full h-full flex flex-col justify-center bg-accent/50 rounded-2xl p-2 items-center">
               <div className="w-full h-fit flex flex-row items-center justify-center gap-2">
                 <span>Address</span>
                 <Button

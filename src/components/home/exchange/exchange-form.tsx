@@ -140,7 +140,7 @@ export default function ExchangeForm({
   return (
     <Card className="w-fit mx-auto">
       <form
-        className="grid grid-cols-11 gap-y-4 px-6"
+        className="grid grid-cols-11 gap-y-4 px-6 py-2.5"
         onSubmit={(e) => {
           e.preventDefault();
         }}
