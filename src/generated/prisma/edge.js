@@ -451,7 +451,7 @@ const config = {
       "value": "prisma-client-js"
     },
     "output": {
-      "value": "D:\\Programing\\Projects\\Xbarat\\alireza\\xbarat-v3\\src\\generated\\prisma",
+      "value": "/home/sinam/Next/xbarat-v3/src/generated/prisma",
       "fromEnvVar": null
     },
     "config": {
@@ -460,7 +460,7 @@ const config = {
     "binaryTargets": [
       {
         "fromEnvVar": null,
-        "value": "windows",
+        "value": "debian-openssl-3.0.x",
         "native": true
       },
       {
@@ -469,7 +469,7 @@ const config = {
       }
     ],
     "previewFeatures": [],
-    "sourceFilePath": "D:\\Programing\\Projects\\Xbarat\\alireza\\xbarat-v3\\prisma\\schema.prisma",
+    "sourceFilePath": "/home/sinam/Next/xbarat-v3/prisma/schema.prisma",
     "isCustomOutput": true
   },
   "relativeEnvPaths": {
@@ -483,6 +483,7 @@ const config = {
     "db"
   ],
   "activeProvider": "postgresql",
+  "postinstall": false,
   "inlineDatasources": {
     "db": {
       "url": {

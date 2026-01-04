@@ -8,6 +8,7 @@
   --color-from-background: var(--from-background);
   --color-to-background: var(--to-background);
   --color-foreground: var(--foreground);
+  --color-card-context:var(--card-context)
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
   --color-sidebar-ring: var(--sidebar-ring);
@@ -55,6 +56,7 @@
   --to-background: oklch(100% 0.00011 271.152);
   --foreground: oklch(24.943% 0.03768 283.33);
   --card: oklch(1 0 0);
+  --card-context:oklch(1 0 0);
   --card-foreground: oklch(30.195% 0.00359 286.048);
   --popover: oklch(1 0 0);
   --popover-foreground: oklch(0.141 0.005 285.823);
@@ -93,7 +95,8 @@
   --from-background: oklch(21.018% 0.01 276.551);
   --to-background: oklch(34.532% 0.00348 286.056);
   --foreground: oklch(0.985 0 0);
-  --card: oklch(25.031% 0.01128 285.529);
+  --card: oklch(25.031% 0.01128 285.529 / 0.2);
+  --card-context:oklch(25.031% 0.01128 285.529);
   --card-foreground: oklch(94.01% 0 0);
   --popover: oklch(0.21 0.006 285.885);
   --popover-foreground: oklch(78% 0.03121 279.485);

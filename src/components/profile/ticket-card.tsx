@@ -1,10 +1,16 @@
-"use client"
+"use client";
 
 import { cn } from "@/lib/front/utils/tailwind";
 import Glass from "../ui/glass";
 import { toast } from "sonner";
 import { Card } from "../ui/card";
-import { DropdownMenu, DropdownMenuTrigger, DropdownMenuContent, DropdownMenuLabel, DropdownMenuSeparator } from "../ui/dropdown-menu";
+import {
+  DropdownMenu,
+  DropdownMenuTrigger,
+  DropdownMenuContent,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+} from "../ui/dropdown-menu";
 import { DropdownMenuItem } from "@radix-ui/react-dropdown-menu";
 import { Button } from "../ui/button";
 import Image from "next/image";
@@ -13,241 +19,338 @@ import { useState, useEffect, useRef, ChangeEvent } from "react";
 import { Ticket } from "@/types/front/ticket";
 import { Textarea } from "../ui/textarea";
 import Upload from "../../../public/Profile/Upload.svg";
-import { useCreateTicketMessage, useCreateTicket, useGetTickets } from "@/api/ticket/hook";
+import Detail from "../../../public/Profile/detail.svg";
+import { useCreateTicketMessage, useCreateTicket } from "@/api/ticket/hook";
 import {
-    Table,
-    TableBody,
-    TableCaption,
-    TableCell,
-    TableHead,
-    TableHeader,
-    TableRow,
+  Table,
+  TableBody,
+  TableCaption,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
 } from "../ui/table";
+import ClosedTicket from "../../../public/Profile/closed-ticket.svg";
+import PendingTicket from "../../../public/Profile/pending-ticket.svg";
+import OpenTicket from "../../../public/Profile/open-ticket.svg";
+
 type Props = {
-    className?: string
-}
+  className?: string;
+  previousTickets: Ticket[];
+};
 
 interface TicketMessageState {
-    message: string;
-    ticketId?: string;
-    id?: string;
-    files: File[];
-    filesUrl?: string[];
+  message: string;
+  ticketId?: string;
+  id?: string;
+  files: File[];
+  filesUrl?: string[];
 }
 
 export const createTicketMessageFormData = (
-    messageData: Partial<TicketMessageState>,
-    ticketId: string
+  messageData: Partial<TicketMessageState>,
+  ticketId: string
 ): FormData => {
-    const formData = new FormData();
+  const formData = new FormData();
 
-    if (messageData.message) {
-        formData.append('message', messageData.message);
-    }
+  if (messageData.message) {
+    formData.append("message", messageData.message);
+  }
 
-    formData.append('ticketId', ticketId);
+  formData.append("ticketId", ticketId);
 
-    if (messageData.files && messageData.files.length > 0) {
-        messageData.files.forEach((file) => {
-            formData.append('files', file);
-        });
-    }
+  if (messageData.files && messageData.files.length > 0) {
+    messageData.files.forEach((file) => {
+      formData.append("files", file);
+    });
+  }
 
-    if (messageData.id) {
-        formData.append('id', messageData.id);
-    }
-    return formData;
+  if (messageData.id) {
+    formData.append("id", messageData.id);
+  }
+  return formData;
 };
 
-export default function TicketCard({ className }: Props) {
+export default function TicketCard({ className, previousTickets }: Props) {
+  const [loading, setLoading] = useState(true);
+  const [ticket, setTicket] = useState<Partial<Ticket>>();
+  const [ticketMessage, setTicketMessage] = useState<TicketMessageState>({
+    message: "",
+    files: [],
+  });
 
-    const [loading, setLoading] = useState(true);
-    const [previousTickets, setPreviousTickets] = useState<Ticket[]>([]);
-    const [ticket, setTicket] = useState<Partial<Ticket>>();
-    const [ticketMessage, setTicketMessage] = useState<TicketMessageState>({
-        message: "",
-        files: [],
-    });
+  const createTicketMessage = useCreateTicketMessage();
+  const createTicket = useCreateTicket();
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
-    const createTicketMessage = useCreateTicketMessage();
-    const createTicket = useCreateTicket();
-    const getTickets = useGetTickets();
-    const fileInputRef = useRef<HTMLInputElement>(null);
+  const handleFileSelect = (e: ChangeEvent<HTMLInputElement>) => {
+    const files = Array.from(e.target.files || []);
 
-    const handleFileSelect = (e: ChangeEvent<HTMLInputElement>) => {
-        const files = Array.from(e.target.files || []);
+    const maxSize = 5 * 1024 * 1024;
+    const validFiles = files.filter((file) => file.size <= maxSize);
 
-        const maxSize = 5 * 1024 * 1024;
-        const validFiles = files.filter(file => file.size <= maxSize);
-
-        if (validFiles.length !== files.length) {
-            toast.error("Some files exceed the 5MB limit");
-        }
-
-        setTicketMessage(prev => ({
-            ...prev,
-            files: [...(prev.files || []), ...validFiles]
-        }));
-
-        if (fileInputRef.current) {
-            fileInputRef.current.value = '';
-        }
-    };
-    const handleUploadClick = () => {
-        fileInputRef.current?.click();
-    };
-
-    const subjects = [
-        "Customer Service: Problem Assign Exchange",
-        "Customer Service: Problem Withdrawal Fee",
-        "Customer Service: Problem Deposit Admin Approve",
-        "Farabuy: Problem Deposit Admin Approve"
-    ]
-
-    function handleCreateTicketAndMessage() {
-        if (ticket && ticket !== undefined) {
-            createTicket({ ticket: ticket, onSuccess: setTicket });
-            if (ticket?.id) {
-                const formData = createTicketMessageFormData(ticketMessage, ticket.id);
-                createTicketMessage({ formData: formData, onSuccess: setTicketMessage });
-                toast.info("Ticket is Submitted.");
-                setTicket({});
-                setTicketMessage({
-                    message: "",
-                    files: []
-                });
-            }
-        }
+    if (validFiles.length !== files.length) {
+      toast.error("Some files exceed the 5MB limit");
     }
 
-    useEffect(() => {
-        getTickets({
-            onSuccess: (fetchedTickets) => {
-                setPreviousTickets(fetchedTickets);
-                setLoading(false);
-            },
-            onError: (error) => {
-                console.error("Failed to fetch tickets:", error);
-                setLoading(false);
-            }
+    setTicketMessage((prev) => ({
+      ...prev,
+      files: [...(prev.files || []), ...validFiles],
+    }));
+
+    if (fileInputRef.current) {
+      fileInputRef.current.value = "";
+    }
+  };
+  const handleUploadClick = () => {
+    fileInputRef.current?.click();
+  };
+
+  const subjects = ["Exchange", "Deposit", "Withdrawal", "Profile"];
+
+  function handleCreateTicketAndMessage() {
+    if (!ticket) return;
+
+    createTicket({
+      ticket,
+      onSuccess: (createdTicket) => {
+        setTicket(createdTicket);
+
+        const formData = createTicketMessageFormData(
+          ticketMessage,
+          createdTicket.id
+        );
+
+        createTicketMessage({
+          formData,
+          onSuccess: () => {
+            toast.info("Ticket is submitted.");
+            setTicket({});
+            setTicketMessage({ message: "", files: [] });
+          },
         });
-    }, []);
-    console.log(previousTickets)
-    return (
-        <section
-            className={cn(className)}
-        >
-            <Glass className="rounded-lg">
-                <Card className="w-full h-full flex flex-col items-center px-7">
-                    <span className="text-lg w-full text-start">Tickets</span>
-                    <div className="w-full h-full flex flex-col gap-x-3 gap-y-2">
+      },
+    });
+  }
 
-                        {/* Dropdown Subject */}
-                        <div className="w-full h-fit">
-                            <DropdownMenu modal={false}>
-                                <DropdownMenuTrigger asChild>
-                                    <Button className="w-full h-full bg-card rounded-lg  hover:bg-card-context/40 p-0">
-                                        <Glass className="w-full h-full rounded-sm px-3 py-2">
-                                            <div className="w-full h-full flex flex-row justify-between items-center">
-                                                <span className="w-fit h-fit">{ticket?.subject ? ticket.subject : "Subject"}</span>
-                                                <Image src={DropdownArrow} alt="Dropdown Arrow" width={16} height={16} className="w-4 h-4" />
-                                            </div>
-                                        </Glass>
-                                    </Button>
-                                </DropdownMenuTrigger>
-                                <DropdownMenuContent className="w-full h-full">
-                                    <DropdownMenuLabel className="text-lg">Subject</DropdownMenuLabel>
-                                    <DropdownMenuSeparator />
-                                    {subjects.map((subject, index) =>
-                                        <DropdownMenuItem key={index}
-                                            onClick={() =>
-                                                setTicket(prev =>
-                                                    prev ? { ...prev, subject } : { subject }
-                                                )}
-                                            className="w-full px-2 py-1 hover:cursor-pointer hover:bg-card-context/40 rounded-lg">
-                                            {subject}
-                                        </DropdownMenuItem>)}
-                                </DropdownMenuContent>
-                            </DropdownMenu>
-                        </div>
+  return (
+    <section className={cn(className)}>
+      <Glass className="rounded-lg">
+        <Card className="w-full h-full flex flex-col items-center px-7 text-[#3c3c46]">
+          <span className="text-lg w-full text-start">Tickets</span>
+          <div className="w-full h-full flex flex-col gap-x-3 gap-y-2">
+            {/* Dropdown Subject */}
+            <div className="w-full h-fit">
+              <DropdownMenu modal={false}>
+                <DropdownMenuTrigger asChild>
+                  <Button className="w-full h-full bg-card rounded-lg  hover:bg-card-context/40 p-0">
+                    <Glass className="w-full h-full rounded-sm px-3 py-2">
+                      <div className="w-full h-full flex flex-row justify-between items-center">
+                        <span className="w-fit h-fit">
+                          {ticket?.subject ? ticket.subject : "Subject"}
+                        </span>
+                        <Image
+                          src={DropdownArrow}
+                          alt="Dropdown Arrow"
+                          width={16}
+                          height={16}
+                          className="w-4 h-4"
+                        />
+                      </div>
+                    </Glass>
+                  </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent className="w-full h-full">
+                  <DropdownMenuLabel className="text-lg">
+                    Subject
+                  </DropdownMenuLabel>
+                  <DropdownMenuSeparator />
+                  {subjects.map((subject, index) => (
+                    <DropdownMenuItem
+                      key={index}
+                      onClick={() =>
+                        setTicket((prev) =>
+                          prev ? { ...prev, subject } : { subject }
+                        )
+                      }
+                      className="w-full px-2 py-1 hover:cursor-pointer hover:bg-card-context/40 rounded-lg"
+                    >
+                      {subject}
+                    </DropdownMenuItem>
+                  ))}
+                </DropdownMenuContent>
+              </DropdownMenu>
+            </div>
 
-                        {/* Textarea Text */}
-                        <div className="w-full h-fit bg-card rounded-xl">
-                            <Textarea value={ticketMessage.message?.toString()} className="w-full h-full" placeholder="Enter your Ticket Message..."
-                                onChange={(e) =>
-                                    setTicketMessage(prev => ({
-                                        ...prev,
-                                        message: e.target.value,
-                                        ticketId: ticket?.id
-                                    }))}
-                                onBlur={(e) =>
-                                    setTicketMessage(prev => prev && { ...prev, message: e.target.value })}
-                            />
-                        </div>
+            {/* Textarea Text */}
+            <div className="w-full h-full bg-card rounded-xl">
+              <Textarea
+                value={ticketMessage.message?.toString()}
+                className="w-full h-52 text-[#464652]"
+                placeholder="Enter your Ticket Message..."
+                onChange={(e) =>
+                  setTicketMessage((prev) => ({
+                    ...prev,
+                    message: e.target.value,
+                    ticketId: ticket?.id,
+                  }))
+                }
+                onBlur={(e) =>
+                  setTicketMessage(
+                    (prev) => prev && { ...prev, message: e.target.value }
+                  )
+                }
+              />
+            </div>
 
-                        {/* Submit Area Text */}
-                        <div className="w-full h-fit flex flex-row rounded-xl items-center">
-                            <span className="text-wrap text-start w-7/12 h-fit">
-                                Upload Your Files Here Upload Limit: 5 MB
-                                {ticketMessage.files?.length > 0 && (
-                                    <span className="text-sm text-card-context ml-2">
-                                        ({ticketMessage.files.length} file{ticketMessage.files.length !== 1 ? 's' : ''} selected)
-                                    </span>
-                                )}
-                            </span>
-                            <input
-                                type="file"
-                                ref={fileInputRef}
-                                className="hidden"
-                                multiple
-                                accept="image/*,.pdf,.doc,.docx,.txt"
-                                onChange={handleFileSelect}
-                            />
+            {/* Submit Area Text */}
+            <div className="w-full h-fit flex flex-row rounded-xl items-center">
+              <span className="text-wrap text-start w-7/12 h-fit">
+                Upload Your Files Here Upload Limit: 5 MB
+                {ticketMessage.files?.length > 0 && (
+                  <span className="text-sm text-card-context ml-2">
+                    ({ticketMessage.files.length} file
+                    {ticketMessage.files.length !== 1 ? "s" : ""} selected)
+                  </span>
+                )}
+              </span>
+              <input
+                type="file"
+                ref={fileInputRef}
+                className="hidden"
+                multiple
+                accept="image/*,.pdf,.doc,.docx,.txt"
+                onChange={handleFileSelect}
+              />
 
-                            <Button
-                                onClick={handleUploadClick}
-                                className="flex-1 w-fit h-fit"
-                                variant={"ghost"}
-                            >
-                                <Image src={Upload} alt='upload icon' width={20} height={20} className="w-5 h-5" />
-                            </Button>
+              <Button
+                onClick={handleUploadClick}
+                className="flex-1 w-fit h-fit"
+                variant={"ghost"}
+              >
+                <Image
+                  src={Upload}
+                  alt="upload icon"
+                  width={20}
+                  height={20}
+                  className="w-5 h-5"
+                />
+              </Button>
 
-                            <Button
-                                onClick={() => handleCreateTicketAndMessage()}
-                                className="flex-1 w-fit h-fit"
-                                variant={"default"}
-                            >
-                                <span>Send</span>
-                            </Button>
-                        </div>
-
-
-                    </div>
-                    <div className="flex-1 w-full h-full">
-                        <Table>
-                            <TableCaption>List of all Tickets</TableCaption>
-                            <TableHeader>
-                                <TableRow>
-                                    <TableHead className="w-[100px]">Invoice</TableHead>
-                                    <TableHead>Status</TableHead>
-                                    <TableHead>Method</TableHead>
-                                    <TableHead className="text-right">Amount</TableHead>
-                                </TableRow>
-                            </TableHeader>
-                            <TableBody>
-                                {previousTickets?.map((ticket: Ticket, index: number) => (
-                                    <TableRow key={index}>
-                                        <TableCell className="font-medium">{ticket.status}</TableCell>
-                                        <TableCell>{ticket.createdAt}</TableCell>
-                                        <TableCell>{ticket.subject}</TableCell>
-                                        <TableCell className="text-right">{ticket.unreadCount}</TableCell>
-                                    </TableRow>
-                                ))}
-                            </TableBody>
-                        </Table>
-                    </div>
-                </Card>
-            </Glass>
-        </section >
-    )
+              <Button
+                onClick={() => handleCreateTicketAndMessage()}
+                className="flex-1 w-fit h-fit"
+                variant={"default"}
+              >
+                <span>Send</span>
+              </Button>
+            </div>
+          </div>
+          <div
+            className={
+              previousTickets?.length !== 0
+                ? "flex-1 w-full h-full max-h-72 overflow-y-scroll"
+                : "flex-1 w-full h-full max-h-52 overflow-y-scroll"
+            }
+          >
+            <Table className="border-separate border-spacing-y-2">
+              <TableCaption>List of all Tickets</TableCaption>
+              <TableHeader>
+                <TableRow className="w-full flex flex-row">
+                  <TableHead className="w-1/4 h-fit flex justify-center items-center text-center text-md">
+                    Status
+                  </TableHead>
+                  <TableHead className="w-1/4 h-fit flex justify-center items-center text-center text-md">
+                    Date & Time
+                  </TableHead>
+                  <TableHead className="w-1/4 h-fit flex justify-center items-center text-center text-md">
+                    Subject
+                  </TableHead>
+                  <TableHead className="w-1/4 h-fit flex justify-center items-center text-center text-md">
+                    Unread
+                  </TableHead>
+                  {/* <TableHead className="w-1/6 h-fit flex justify-center items-center text-center text-md text-transparent">
+                  .
+                  </TableHead> */}
+                </TableRow>
+              </TableHeader>
+              <TableBody>
+                {previousTickets?.map((ticket: Ticket, index: number) => (
+                  <TableRow
+                    key={index}
+                    className="w-full flex flex-row mt-2 text-foreground gap-x-2"
+                  >
+                    <TableCell className="w-1/4 h-8 bg-card rounded-lg">
+                      <div className="w-full h-full flex flex-row justify-center items-center text-center p-1 gap-x-1">
+                        <Image
+                          className="w-4 h-4 p-0"
+                          width={16}
+                          height={16}
+                          alt="status"
+                          src={
+                            ticket.status === "OPEN"
+                              ? OpenTicket
+                              : ticket.status === "CLOSED"
+                              ? ClosedTicket
+                              : PendingTicket
+                          }
+                        />
+                        <span
+                          className={`w-fit text-center h-fit text-md ${
+                            ticket.status === "OPEN"
+                              ? "text-green"
+                              : ticket.status === "PENDING"
+                              ? "text-chart-3"
+                              : "text-red"
+                          }`}
+                        >
+                          {ticket.status}
+                        </span>
+                      </div>
+                    </TableCell>
+                    <TableCell className="w-1/4 h-8 bg-card rounded-lg p-0">
+                      <div className="w-full h-full flex justify-center items-center text-center">
+                        <span className="w-fit text-center h-fit text-md">
+                          {ticket.createdAt.split("T")[0]}
+                        </span>
+                      </div>
+                    </TableCell>
+                    <TableCell className="w-1/4 h-8 bg-card rounded-lg px-2 py-0">
+                      <div className="w-full h-full flex justify-center items-center text-center">
+                        <span className="w-fit text-center h-fit text-sm">
+                          {ticket.subject}
+                        </span>
+                      </div>
+                    </TableCell>
+                    <TableCell className="w-1/4 h-8 bg-card rounded-lg p-0">
+                      <div className="w-full h-full flex justify-center items-center text-center">
+                        <span className="w-fit text-center h-fit text-md">
+                          {ticket.unreadCount}
+                        </span>
+                      </div>
+                    </TableCell>
+                    {/* <TableCell className="w-1/6 h-fit flex justify-center items-center text-center p-1">
+                      <Button
+                        className="p-0 w-fit h-fit"
+                        variant={"ghost"}
+                        onClick={() => console.log("Open Detail Modal")}
+                      >
+                        <Image
+                          src={Detail}
+                          alt="Detail"
+                          width={16}
+                          height={16}
+                          className="w-4 h-4"
+                        />
+                      </Button>
+                    </TableCell> */}
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </div>
+        </Card>
+      </Glass>
+    </section>
+  );
 }

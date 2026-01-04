@@ -4,7 +4,7 @@ import {
   CurrencyPair,
   WatchList as WatchListType,
 } from "@/types/front/currencyPair";
-import { CurrencyCarousel } from "./watchlist/currency-carousel";
+import { CurrencyCarousel } from "./Watchlist/currency-carousel";
 import { useEffect, useState } from "react";
 import { useGetWatchList } from "@/api/currency-pair/hook";
 import { Spinner } from "@/components/ui/spinner";
