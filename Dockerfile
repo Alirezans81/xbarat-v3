@@ -12,6 +12,7 @@ RUN pnpm install --frozen-lockfile
 COPY . .
 
 RUN npx prisma generate
+RUN npx prisma migrate deploy
 
 RUN pnpm build
 

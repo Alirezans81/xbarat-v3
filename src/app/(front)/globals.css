@@ -8,7 +8,7 @@
   --color-from-background: var(--from-background);
   --color-to-background: var(--to-background);
   --color-foreground: var(--foreground);
-  --color-card-context:var(--card-context)
+  --color-card-context:var(--card-context);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
   --color-sidebar-ring: var(--sidebar-ring);
