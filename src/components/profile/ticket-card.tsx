@@ -14,7 +14,7 @@ import {
 import { DropdownMenuItem } from "@radix-ui/react-dropdown-menu";
 import { Button } from "../ui/button";
 import Image from "next/image";
-import DropdownArrow from "../../../public/Profile/DropdownArrow.svg";
+import DropdownArrow from "../../../public/Common/DropdownArrow.svg";
 import { useState, useEffect, useRef, ChangeEvent } from "react";
 import { Ticket } from "@/types/front/ticket";
 import { Textarea } from "../ui/textarea";
@@ -33,6 +33,7 @@ import {
 import ClosedTicket from "../../../public/Profile/closed-ticket.svg";
 import PendingTicket from "../../../public/Profile/pending-ticket.svg";
 import OpenTicket from "../../../public/Profile/open-ticket.svg";
+import { useTranslations } from "next-intl";
 
 type Props = {
   className?: string;
@@ -132,12 +133,12 @@ export default function TicketCard({ className, previousTickets }: Props) {
       },
     });
   }
-
+  const t = useTranslations("Profile");
   return (
     <section className={cn(className)}>
       <Glass className="rounded-lg">
         <Card className="w-full h-full flex flex-col items-center px-7 text-muted-foreground/75">
-          <span className="text-lg w-full text-start">Tickets</span>
+          <span className="text-lg w-full text-start">{t("tickets")}</span>
           <div className="w-full h-full flex flex-col gap-x-3 gap-y-2">
             {/* Dropdown Subject */}
             <div className="w-full h-fit">
@@ -162,7 +163,7 @@ export default function TicketCard({ className, previousTickets }: Props) {
                 </DropdownMenuTrigger>
                 <DropdownMenuContent className="w-full h-full">
                   <DropdownMenuLabel className="text-lg">
-                    Subject
+                    {t("subject")}
                   </DropdownMenuLabel>
                   <DropdownMenuSeparator />
                   {subjects.map((subject, index) => (
@@ -206,7 +207,7 @@ export default function TicketCard({ className, previousTickets }: Props) {
             {/* Submit Area Text */}
             <div className="w-full h-fit flex flex-row rounded-xl items-center">
               <span className="text-wrap text-start w-7/12 h-fit">
-                Upload Your Files Here Upload Limit: 5 MB
+                {t("upload-limit")}
                 {ticketMessage.files?.length > 0 && (
                   <span className="text-sm text-card-context ml-2">
                     ({ticketMessage.files.length} file
@@ -242,7 +243,7 @@ export default function TicketCard({ className, previousTickets }: Props) {
                 className="flex-1 w-fit h-fit"
                 variant={"default"}
               >
-                <span>Send</span>
+                <span>{t("submit")}</span>
               </Button>
             </div>
           </div>
@@ -254,20 +255,22 @@ export default function TicketCard({ className, previousTickets }: Props) {
             }
           >
             <Table className="border-separate border-spacing-y-2">
-              <TableCaption>List of all Tickets</TableCaption>
+              <TableCaption>
+                {t("list-tickets")}
+              </TableCaption>
               <TableHeader>
                 <TableRow className="w-full flex flex-row">
                   <TableHead className="w-1/4 h-fit flex justify-center items-center text-center text-md">
-                    Status
+                    {t("status")}
                   </TableHead>
                   <TableHead className="w-1/4 h-fit flex justify-center items-center text-center text-md">
-                    Date & Time
+                    {t("date-time")}
                   </TableHead>
                   <TableHead className="w-1/4 h-fit flex justify-center items-center text-center text-md">
-                    Subject
+                    {t("subject")}
                   </TableHead>
                   <TableHead className="w-1/4 h-fit flex justify-center items-center text-center text-md">
-                    Unread
+                    {t("unread")}
                   </TableHead>
                   {/* <TableHead className="w-1/6 h-fit flex justify-center items-center text-center text-md text-transparent">
                   .
@@ -291,18 +294,17 @@ export default function TicketCard({ className, previousTickets }: Props) {
                             ticket.status === "OPEN"
                               ? OpenTicket
                               : ticket.status === "CLOSED"
-                              ? ClosedTicket
-                              : PendingTicket
+                                ? ClosedTicket
+                                : PendingTicket
                           }
                         />
                         <span
-                          className={`w-fit text-center h-fit text-md ${
-                            ticket.status === "OPEN"
-                              ? "text-green"
-                              : ticket.status === "PENDING"
+                          className={`w-fit text-center h-fit text-md ${ticket.status === "OPEN"
+                            ? "text-green"
+                            : ticket.status === "PENDING"
                               ? "text-chart-3"
                               : "text-red"
-                          }`}
+                            }`}
                         >
                           {ticket.status}
                         </span>

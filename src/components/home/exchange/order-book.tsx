@@ -1,3 +1,5 @@
+"use client"
+
 import {
   Table,
   TableBody,
@@ -14,6 +16,7 @@ import { useGetLastExchanges } from "@/api/wallet/exchange/hooks";
 import { CurrencyPair } from "@/types/front/currencyPair";
 import { Exchange } from "@/types/back/wallet/exchange";
 import { Spinner } from "@/components/ui/spinner";
+import { useTranslations } from "next-intl";
 
 interface Props {
   currencyPair: CurrencyPair | null;
@@ -84,16 +87,15 @@ export default function OrderBook({
 
   const fromCurr = currencyPair?.fromCurrency.code;
   const toCurr = currencyPair?.toCurrency.code;
-
+  const t = useTranslations("Exchange");
   return (
     <div
       id="latest-table"
-      className={`w-full h-fit ${
-        currencyPair ? "flex" : "hidden"
-      } flex-col items-center gap-y-8`}
+      className={`w-full h-fit ${currencyPair ? "flex" : "hidden"
+        } flex-col items-center gap-y-8`}
     >
       <span className="w-fit h-fit text-foreground text-3xl">
-        Latest Transactions
+        {t("latest-transaction")}
       </span>
       <div className="w-full h-full flex flex-row gap-x-5 justify-center items-start">
         {/* First Table */}
@@ -103,19 +105,17 @@ export default function OrderBook({
             className={`w-full h-fit rounded-2xl p-3 bg-card backdrop-blur-sm`}
           >
             <Table>
-              <TableCaption>{`List of all ${
-                fromCurr + " -> " + toCurr
-              } Order Books`}</TableCaption>
+              <TableCaption>{t("list-order-books")}</TableCaption>
               <TableHeader>
                 <TableRow>
                   <TableHead className="text-muted text-center">
-                    Quantity
+                    {t("quantity")}
                   </TableHead>
                   <TableHead className="text-muted text-center w-36">
-                    Amount
+                    {t("amount")}
                   </TableHead>
                   <TableHead className="text-muted text-center w-24">
-                    Rate
+                    {t("rate")}
                   </TableHead>
                 </TableRow>
               </TableHeader>
@@ -175,19 +175,17 @@ export default function OrderBook({
             className={`w-full h-fit rounded-2xl p-3 bg-card backdrop-blur-sm`}
           >
             <Table>
-              <TableCaption>{`List of all ${
-                toCurr + " -> " + fromCurr
-              } Order Books`}</TableCaption>
+              <TableCaption>{t("list-order-books")}</TableCaption>
               <TableHeader>
                 <TableRow>
                   <TableHead className="text-muted text-center">
-                    Quantity
+                    {t("quantity")}
                   </TableHead>
                   <TableHead className="text-muted text-center w-36">
-                    Amount
+                    {t("amount")}
                   </TableHead>
                   <TableHead className="text-muted text-center w-24">
-                    Rate
+                    {t("rate")}
                   </TableHead>
                 </TableRow>
               </TableHeader>
@@ -223,7 +221,7 @@ export default function OrderBook({
                           <TableCell className="font-medium text-center bg-transparent">
                             <button
                               onClick={() => {
-                                setRate(order.exchangeRate.toString());
+                                setRate(Number(order.exchangeRate));
                                 scrollToTop();
                               }}
                               className="w-full h-12 flex justify-center items-center rounded-2xl bg-gradient-to-br from-from-background to-to-background shadow-[0_0_12px_-4px] !shadow-green hover:bg-gradient-to-br hover:from-accent hover:to-muted hover:cursor-pointer"

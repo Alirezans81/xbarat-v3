@@ -1,19 +1,44 @@
 import { getWallets } from "@/api/wallet/action";
-import WalletTable from "@/components/wallet/wallet-table";
-
+import Deposit from "@/components/wallet/deposit/deposit";
+import Withdrawal from "@/components/wallet/withdrawal/withdrawal";
+import Transfer from "@/components/wallet/transfer/transfer";
+import Balance from "@/components/wallet/balance/balance";
+import Report from "@/components/wallet/report/report";
+import { getCurrencies } from "@/api/currency/action";
 export default async function Wallet() {
   try {
-    const data = await getWallets();
-
+    const currencies = getCurrencies()
     return (
-      <div className="w-full h-full flex flex-col gap-3 bg-card rounded-xl p-5">
-        <div className="w-full flex justify-between items-center">
-          <div className="flex gap-2 items-center">
-            <span className="text-3xl">Wallet</span>
+      <div className="w-full h-full min-h-11/12">
+        {/* mobile: vertical stack */}
+        <div className="flex sm:hidden">
+          <Deposit className="" currencies={[]} />
+          <Withdrawal className="" />
+          <Transfer className="" />
+          <Balance className="" />
+          <Report className="" />
+        </div>
+
+        {/* tablet: md layout */}
+        <div className="hidden md:flex lg:hidden">
+          <Deposit className="" currencies={[]} />
+          <Withdrawal className="" />
+          <Transfer className="" />
+          <Balance className="" />
+          <Report className="" />
+        </div>
+
+        {/* desktop: lg and bigger layout */}
+        <div className="hidden lg:flex w-full h-full justify-center items-center">
+          <div className="w-fit min-w-10/12 grid grid-cols-3 grid-rows-3 gap-5">
+            <Deposit className="col-span-1 row-span-1" currencies={null} />
+            <Withdrawal className="col-span-1 row-span-1" />
+            <Transfer className="col-span-1 row-span-1" />
+            <Balance className="col-span-1 row-span-2" />
+            <Report className="col-span-2 row-span-2" />
           </div>
         </div>
 
-        <WalletTable data={data} />
       </div>
     );
   } catch (error) {
