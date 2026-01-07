@@ -73,7 +73,7 @@
   "HomePage": {
     "title": "Hello world!",
     "about": "Go to the about page",
-    "slogan": "You Are Enough!"
+    "slogan": "When You Are Enough!"
   },
   "LiquidityPool": {
     "currencies": "CURRENCIES",
@@ -98,7 +98,6 @@
   },
   "Wallet": {
     "Wallet": "Wallet",
-    "currency": "Currency",
     "deposit": "Deposit",
     "amount": "Amount",
     "currencies": "Currencies",
@@ -125,7 +124,7 @@
     "country": "Country",
     "state": "State",
     "city": "City",
-    "postal-code": "Postal Code",
+    "postal-card": "Postal Code",
     "address": "Address",
     "number": "Number",
     "Account": "Account",
