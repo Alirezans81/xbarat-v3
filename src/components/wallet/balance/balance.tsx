@@ -55,7 +55,7 @@ const Balance = ({ className, currencies = [], wallets = [] }: Props) => {
 
     // Total balance for portfolio ratio (for future chart usage)
     const totalBalance = useMemo(() => {
-        return wallets.reduce((acc, w) => acc + (w.balance || 0), 0);
+        return wallets.reduce((acc, w) => acc + (+w.balance || 0), 0);
     }, [wallets]);
 
     return (
@@ -81,7 +81,7 @@ const Balance = ({ className, currencies = [], wallets = [] }: Props) => {
                             </span>
 
                             <span className="text-xl sm:text-2xl font-semibold text-white">
-                                {selectedWallet?.balance ?? 0}{" "}
+                                {+(selectedWallet?.balance ?? 0)}{" "}
                                 {selectedCurrency?.symbol ?? ""}
                             </span>
                         </div>
@@ -109,7 +109,7 @@ const Balance = ({ className, currencies = [], wallets = [] }: Props) => {
 
                                     const percentage =
                                         totalBalance > 0
-                                            ? ((wallet.balance / totalBalance) * 100).toFixed(1)
+                                            ? ((+wallet.balance / totalBalance) * 100).toFixed(1)
                                             : "0";
 
                                     return (
@@ -123,7 +123,7 @@ const Balance = ({ className, currencies = [], wallets = [] }: Props) => {
 
                                             <div className="flex gap-3">
                                                 <span>
-                                                    {wallet.balance} {currency?.symbol ?? ""}
+                                                    {+wallet.balance} {currency?.symbol ?? ""}
                                                 </span>
                                                 <span className="text-muted-foreground text-xs">
                                                     {percentage}%

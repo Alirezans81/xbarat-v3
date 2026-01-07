@@ -1,5 +1,7 @@
 "use client"
 
+"use client"
+
 import {
   Table,
   TableBody,
@@ -102,6 +104,7 @@ export default function OrderBook({
     >
       <span className="w-fit h-fit text-foreground text-3xl">
         {t("latest-transaction")}
+        {t("latest-transaction")}
       </span>
       <div className="w-full h-full flex flex-col-reverse sm:flex-row gap-x-5 justify-center">
         {/* First Table */}
@@ -111,16 +114,19 @@ export default function OrderBook({
             className={`w-full h-fit rounded-2xl p-3 bg-card backdrop-blur-sm`}
           >
             <Table>
-              <TableCaption>{t("list-all-order-books")}</TableCaption>
+              <TableCaption>{t("list-order-books")}</TableCaption>
               <TableHeader>
                 <TableRow>
                   <TableHead className="text-muted text-center">
                     {t("quantity")}
+                    {t("quantity")}
                   </TableHead>
                   <TableHead className="text-muted text-center w-36">
                     {t("amount")}
+                    {t("amount")}
                   </TableHead>
                   <TableHead className="text-muted text-center w-24">
+                    {t("rate")}
                     {t("rate")}
                   </TableHead>
                 </TableRow>
@@ -181,16 +187,19 @@ export default function OrderBook({
             className={`w-full h-fit rounded-2xl p-3 bg-card backdrop-blur-sm`}
           >
             <Table>
-              <TableCaption>{t("list-all-order-books")}</TableCaption>
+              <TableCaption>{t("list-order-books")}</TableCaption>
               <TableHeader>
                 <TableRow>
                   <TableHead className="text-muted text-center">
                     {t("quantity")}
+                    {t("quantity")}
                   </TableHead>
                   <TableHead className="text-muted text-center w-36">
                     {t("amount")}
+                    {t("amount")}
                   </TableHead>
                   <TableHead className="text-muted text-center w-24">
+                    {t("rate")}
                     {t("rate")}
                   </TableHead>
                 </TableRow>

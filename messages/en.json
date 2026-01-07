@@ -14,6 +14,13 @@
     "amount": "Amount",
     "list-all-order-books": "List of all Order Books"
   },
+  "Exchange": {
+    "latest-transaction": "Latest Transaction",
+    "quantity": "Quantity",
+    "rate": "Rate",
+    "amount": "Amount",
+    "list-all-order-books": "List of all Order Books"
+  },
   "LoginSignupDialog": {
     "logIn": "Log In",
     "signUp": "Sign Up",
@@ -66,7 +73,7 @@
   "HomePage": {
     "title": "Hello world!",
     "about": "Go to the about page",
-    "slogan": "You Are Enough!"
+    "slogan": "When You Are Enough!"
   },
   "LiquidityPool": {
     "currencies": "CURRENCIES",
@@ -91,22 +98,8 @@
   },
   "Wallet": {
     "Wallet": "Wallet",
-    "currency": "Currency",
     "deposit": "Deposit",
-    "withdrawal": "Withdrawal",
-    "transfer": "Transfer",
-    "balance": "Balance",
-    "available_balance": "Available Balance",
-    "portfolio": "Portfolio",
-    "amount": "Amount",
-    "user-card": "User Card",
-    "currencies": "Currencies",
-    "submit": "Submit",
-    "payment-channel": "Payment Channel",
-    "payment-channels": "Payment Channels",
-    "report": "Report",
-    "status": "Status",
-    "payment_method": "Payment Method"
+    "amount": "Amount"
   },
   "ApiErrors": {
     "serverError": "An error has occurred, Please try again later.",
@@ -124,7 +117,7 @@
     "country": "Country",
     "state": "State",
     "city": "City",
-    "postal-code": "Postal Code",
+    "postal-card": "Postal Code",
     "address": "Address",
     "number": "Number",
     "Account": "Account",
