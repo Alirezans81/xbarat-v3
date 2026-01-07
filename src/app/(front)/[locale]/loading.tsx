@@ -1,5 +1,3 @@
-import { Skeleton } from "@/components/ui/skeleton";
-import { getTranslations } from "next-intl/server";
 import { Spinner } from "@/components/ui/spinner";
 
 export default async function Loading() {
