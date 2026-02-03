@@ -7,9 +7,16 @@
     "dark": "Dunkel",
     "system": "System"
   },
+  "Exchange": {
+    "latest-transaction": "Letzte Transaktion",
+    "quantity": "Menge",
+    "rate": "Kurs",
+    "amount": "Betrag",
+    "list-all-order-books": "Liste aller Orderbücher"
+  },
   "LoginSignupDialog": {
-    "logIn": "Einloggen",
-    "signUp": "Melden Sie sich an",
+    "logIn": "Anmelden",
+    "signUp": "Registrieren",
     "email": "E-Mail",
     "password": "Passwort",
     "confirmPassword": "Passwort bestätigen",
@@ -19,25 +26,26 @@
     "emailRequired": "E-Mail ist erforderlich",
     "invalidEmail": "Ungültige E-Mail-Adresse",
     "passwordRequired": "Passwort ist erforderlich",
-    "passwordStrength": "Das Passwort muss mindestens 8 Zeichen lang sein und mindestens einen Großbuchstaben, einen Kleinbuchstaben, eine Zahl und ein Sonderzeichen enthalten.",
-    "confirmPasswordRequired": "Passwort bestätigen ist erforderlich",
+    "passwordStrength": "Passwort muss mindestens 8 Zeichen lang sein und mindestens einen Großbuchstaben, einen Kleinbuchstaben, eine Zahl und ein Sonderzeichen enthalten.",
+    "confirmPasswordRequired": "Passwortbestätigung ist erforderlich",
     "passwordsDoNotMatch": "Passwörter stimmen nicht überein",
     "firstNameRequired": "Vorname ist erforderlich",
     "lastNameRequired": "Nachname ist erforderlich",
-    "countryCodeRequired": "Kodland ist erforderlich",
+    "countryCodeRequired": "Ländervorwahl ist erforderlich",
     "phoneNumberRequired": "Telefonnummer ist erforderlich",
     "invalidPhoneNumber": "Ungültige Telefonnummer",
-    "submit": "Einreichen"
+    "submit": "Absenden"
   },
   "Sidebar": {
     "menu": "Menü",
-    "home": "Homepage",
+    "home": "Startseite",
     "wallet": "Wallet",
     "deposit": "Einzahlung",
     "withdrawal": "Auszahlung",
+    "profile": "Profil",
     "report": "Bericht",
-    "dashboard": "Armaturenbrett",
-    "panelAdmin": "Admin-Panel",
+    "dashboard": "Dashboard",
+    "panelAdmin": "Admin-Bereich",
     "liquidityPool": "Liquiditätspool",
     "logout": "Abmelden",
     "socialMedia": "Soziale Medien",
@@ -53,20 +61,21 @@
     "REJECTED": "ABGELEHNT",
     "COMPLETED": "ABGESCHLOSSEN",
     "APPROVED": "GENEHMIGT",
-    "CHECK": "PRÜFEN"
+    "CHECK": "PRÜFUNG"
   },
   "HomePage": {
     "title": "Hallo Welt!",
-    "about": "Zur Infoseite"
+    "about": "Gehe zur Info-Seite",
+    "slogan": "Wenn Du Genug Bist!"
   },
   "LiquidityPool": {
-    "currencies": "Währungen",
-    "loading": "Wird geladen...",
-    "selectCurrency": "Bitte wählen Sie die Währung aus, die Sie bereitstellen möchten.",
+    "currencies": "WÄHRUNGEN",
+    "loading": "Lade...",
+    "selectCurrency": "Wählen Sie die Währung, die Sie bereitstellen!",
     "currencyNotFound": "Währung nicht gefunden!",
     "tableFooter": "Liste der Liquiditätspools.",
     "address": "Adresse",
-    "balance": "Guthaben",
+    "balance": "Saldo",
     "frozen": "Eingefroren",
     "updatedAt": "Aktualisiert am",
     "payments": "Zahlungen",
@@ -80,21 +89,58 @@
     "status": "Status",
     "liquidityPoolNotFound": "Liquiditätspool nicht gefunden"
   },
-  "WalletPage": {
-    "Wallet": "Wallet"
+  "Wallet": {
+    "Wallet": "Wallet",
+    "deposit": "Einzahlung",
+    "amount": "Betrag"
   },
   "ApiErrors": {
     "serverError": "Ein Fehler ist aufgetreten. Bitte versuchen Sie es später erneut.",
-    "wrongEmailPassword": "Falsche E-Mail-Adresse oder falsches Passwort.",
+    "wrongEmailPassword": "Falsche E-Mail oder falsches Passwort.",
     "unauthorized": "Sie sind nicht autorisiert.",
-    "userNotFound": "Benutzer nicht gefunden."
+    "userNotFound": "Benutzer nicht gefunden"
+  },
+  "Profile": {
+    "tickets": "Tickets",
+    "email": "E-Mail",
+    "phone-number": "Telefonnummer",
+    "date-of-birth": "Geburtsdatum",
+    "document-number": "Dokumentennummer",
+    "document": "Dokument",
+    "country": "Land",
+    "state": "Bundesland/Region",
+    "city": "Stadt",
+    "postal-card": "Postleitzahl",
+    "address": "Adresse",
+    "number": "Nummer",
+    "Account": "Konto",
+    "account-number-address": "Kontonummer/Adresse",
+    "type-of-account": "Kontotyp",
+    "cardholders-name": "Karteninhaber Name",
+    "something-went-wrong": "Etwas ist schiefgelaufen!",
+    "referral": "Empfehlung",
+    "coming-soon": "Kommt bald!",
+    "invite-friends-text": "Laden Sie Freunde ein und verdienen Sie Belohnungen, sobald Empfehlungen live gehen.",
+    "currencies": "Währungen",
+    "add-cards": "Karten hinzufügen",
+    "edit": "Bearbeiten",
+    "no-cards": "Sie haben derzeit keine Karten!",
+    "promo-banner": "Promo-Banner",
+    "no-campaign-now": "Wir haben derzeit keine aktiven Kampagnen!",
+    "campaign-notify": "Im Falle einer Kampagne sehen Sie das Banner hier als Erstes!",
+    "subject": "Betreff",
+    "upload-limit": "Laden Sie Ihre Dateien hier hoch. Upload-Limit: 5 MB",
+    "list-tickets": "Liste der Tickets",
+    "status": "Status",
+    "date-time": "Datum & Uhrzeit",
+    "unread": "Ungelesen"
   },
   "Other": {
     "mustLoginAgain": "Ihre Sitzung ist abgelaufen. Bitte melden Sie sich erneut an."
   },
   "Footer": {
     "xbarat": "Xbarat",
-    "slogan": "Wenn du genug bist!",
+    "slogan": "Wenn Du Genug Bist!",
     "instagram": "Instagram",
     "whatsApp": "WhatsApp",
     "telegram": "Telegram",
