@@ -1,20 +1,22 @@
 import { Prisma } from "@/generated/prisma";
 
-export type FilterOptions = {
-  [key: string]: {
-    type: "string" | "number" | "boolean" | "date" | "enum";
-    enumValues?: any[];
-    transform?: (value: any) => any;
-    prismaField?: string;
-  };
+type FilterType = "string" | "number" | "boolean" | "date" | "enum";
+
+type FilterOption = {
+  type: FilterType;
+  enumValues?: readonly string[];
+  transform?: (value: string) => unknown;
+  prismaField?: string;
 };
+
+export type FilterOptions = Record<string, FilterOption>;
 
 export class FilterBuilder {
   static buildWhereInput<T>(
     searchParams: URLSearchParams,
     filterOptions: FilterOptions
   ): Prisma.Args<T, "findMany">["where"] {
-    const where: any = {};
+    const where: Record<string, unknown> = {};
 
     for (const [param, config] of Object.entries(filterOptions)) {
       if (searchParams.has(param)) {
@@ -27,7 +29,7 @@ export class FilterBuilder {
       }
     }
 
-    return where;
+    return where as Prisma.Args<T, "findMany">["where"];
   }
 
   private static transformValue(value: string, config: FilterOptions[string]) {

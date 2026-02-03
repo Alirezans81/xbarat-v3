@@ -5,7 +5,6 @@ import { notFound } from "next/navigation";
 import { hasLocale, NextIntlClientProvider } from "next-intl";
 import { routing } from "@/i18n/routing";
 import Navbar from "@/components/navbar";
-import Footer from "@/components/footer";
 import { getFontByLocale } from "@/fonts/fonts";
 import { SidebarProvider } from "@/components/ui/sidebar";
 import { AppSidebar } from "@/components/app-sidebar";

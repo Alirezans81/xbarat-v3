@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useState } from "react";
+import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -9,26 +9,12 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import Image from "next/image";
 
 interface Props {
   deposit_id: string;
 }
 export default function UploadDepositDocument({ deposit_id }: Props) {
   const [open, setOpen] = useState(false);
-  const [loading, setLoading] = useState(false);
-
-  const documentRef = useRef<HTMLInputElement>(null);
-  const [document, setDocument] = useState<File | undefined>(undefined);
-  const [DocumentError, setDocumentError] = useState("");
-  const validateDocument = (value: File | undefined) => {
-    if (!value) {
-      setDocumentError("Document required!");
-      return false;
-    }
-
-    return true;
-  };
 
   return (
     <Dialog open={open} onOpenChange={(value) => setOpen(value)}>
@@ -42,7 +28,12 @@ export default function UploadDepositDocument({ deposit_id }: Props) {
           <DialogTitle>Upload Document</DialogTitle>
         </DialogHeader>
 
-        <img />
+        <div
+          data-deposit-id={deposit_id}
+          className="text-sm text-muted-foreground"
+        >
+          No document uploaded yet.
+        </div>
       </DialogContent>
     </Dialog>
   );

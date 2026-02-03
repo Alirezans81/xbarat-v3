@@ -8,6 +8,7 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "./ui/tooltip";
+import Image from "next/image";
 
 export default async function Footer() {
   const t = await getTranslations("Footer");
@@ -19,7 +20,7 @@ export default async function Footer() {
           <div className="w-full grid grid-cols-3 gap-[10%] mb-8">
             <div className="col-span-1 flex flex-col gap-3 mb-8">
               <div className="flex items-center gap-1 mb-2">
-                <img alt="" className="w-10 h-10" src="/logo.png" />
+                <Image alt="" className="w-10 h-10" src="/logo.png" />
                 <span className="text-2xl text-secondary">{t("xbarat")}</span>
               </div>
               <span className="font-semibold">{t("slogan") + " 🤝"}</span>
@@ -110,7 +111,7 @@ export default async function Footer() {
                   <Tooltip>
                     <TooltipTrigger>
                       <Link href="/">
-                        <img
+                        <Image
                           alt=""
                           src="/SocialMedia/instagram.svg"
                           className="size-5"
@@ -126,7 +127,7 @@ export default async function Footer() {
                   <Tooltip>
                     <TooltipTrigger>
                       <Link href="/">
-                        <img
+                        <Image
                           alt=""
                           src="/SocialMedia/whatsapp.svg"
                           className="size-5"
@@ -142,7 +143,7 @@ export default async function Footer() {
                   <Tooltip>
                     <TooltipTrigger>
                       <Link href="/">
-                        <img
+                        <Image
                           alt=""
                           src="/SocialMedia/telegram.svg"
                           className="size-5"
@@ -159,7 +160,7 @@ export default async function Footer() {
                     <TooltipTrigger>
                       <Link href="/">
                         <div className="p-1.5 rounded-full bg-black">
-                          <img
+                          <Image
                             alt=""
                             src="/SocialMedia/x.svg"
                             className="size-2.5"

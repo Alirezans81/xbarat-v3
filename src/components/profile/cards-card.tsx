@@ -157,7 +157,7 @@ export default function CardsCard({ className, currencies }: Props) {
               <span />
               <span>Account Number/Address</span>
               <span>Type of Account</span>
-              <span>Cardholder's Name</span>
+              <span>Cardholder&apos;s Name</span>
             </div>
 
             {/* Rows */}

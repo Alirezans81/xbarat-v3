@@ -13,7 +13,6 @@ import { currencyPairService } from "@/lib/back/services/currencyPair.service";
 import { exchangeMatchService } from "@/lib/back/services/wallet/exchangeMatch.service";
 import { walletService } from "@/lib/back/services/wallet.service";
 import { calculateFee } from "@/lib/back/utils/exchange.utils";
-import { feeUserService } from "@/lib/back/services/feeUser.service";
 
 export async function POST(request: NextRequest) {
   try {

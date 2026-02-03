@@ -9,7 +9,10 @@ import { apiFetch } from "@/lib/front/utils/apiFetch";
 
 const api = routes();
 
-export const getTransfers = (token: Token, filters?: any) => {
+export const getTransfers = (
+  token: Token,
+  filters?: { userId?: string }
+) => {
   return apiFetch<Transfer[]>(api["transfer"], {
     method: "GET",
     params: filters,

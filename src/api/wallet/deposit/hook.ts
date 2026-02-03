@@ -1,6 +1,7 @@
 import { FetchProps } from "@/types/front/globals";
 import { toast } from "sonner";
 import { useTranslations } from "next-intl";
+import { useCallback } from "react";
 import { useAuthStore } from "@/lib/front/stores/auth";
 import {
   createDeposit,
@@ -19,6 +20,7 @@ import {
   UpdateDeposit,
   UploadDepositDocument,
 } from "@/types/front/wallet/deposit";
+import { BridgeTransfer } from "@/types/front/bridgeTransfer";
 
 type GetDepositsProps = {
   setDeposits: (value: Deposit[]) => void;
@@ -44,8 +46,9 @@ export const useGetDeposits = () => {
           onSuccess?.(res);
         })
         .catch((err) => {
-          process.env.NEXT_PUBLIC_APP_MODE === "development" &&
+          if (process.env.NEXT_PUBLIC_APP_MODE === "development") {
             console.error(err.response);
+          }
           toast.error(t(err.response.data.error.message));
           onError?.(err);
         })
@@ -79,8 +82,9 @@ export const useCreateDeposit = () => {
           onSuccess?.(res);
         })
         .catch((err) => {
-          process.env.NEXT_PUBLIC_APP_MODE === "development" &&
+          if (process.env.NEXT_PUBLIC_APP_MODE === "development") {
             console.error(err.response);
+          }
           toast.error(t(err.response.data.error.message));
           onError?.(err);
         })
@@ -116,8 +120,9 @@ export const useUpdateDeposit = () => {
           onSuccess?.(res);
         })
         .catch((err) => {
-          process.env.NEXT_PUBLIC_APP_MODE === "development" &&
+          if (process.env.NEXT_PUBLIC_APP_MODE === "development") {
             console.error(err.response);
+          }
           toast.error(t(err.response.data.error.message));
           onError?.(err);
         })
@@ -151,8 +156,9 @@ export const useDeleteDeposit = () => {
           onSuccess?.(res);
         })
         .catch((err) => {
-          process.env.NEXT_PUBLIC_APP_MODE === "development" &&
+          if (process.env.NEXT_PUBLIC_APP_MODE === "development") {
             console.error(err.response);
+          }
           toast.error(t(err.response.data.error.message));
           onError?.(err);
         })
@@ -188,8 +194,9 @@ export const useUploadDepositDocument = () => {
           onSuccess?.(res);
         })
         .catch((err) => {
-          process.env.NEXT_PUBLIC_APP_MODE === "development" &&
+          if (process.env.NEXT_PUBLIC_APP_MODE === "development") {
             console.error(err.response);
+          }
           toast.error(t(err.response.data.error.message));
           onError?.(err);
         })
@@ -204,7 +211,7 @@ export const useUploadDepositDocument = () => {
 
 type GetMatchedDepositBridgeTransfersProps = {
   deposit_id: string;
-  setMatchedBridgeTransfers: (value: any[]) => void;
+  setMatchedBridgeTransfers: (value: BridgeTransfer[]) => void;
 };
 export const useGetMatchedDepositBridgeTransfers = () => {
   const t = useTranslations("ApiErrors");
@@ -212,7 +219,7 @@ export const useGetMatchedDepositBridgeTransfers = () => {
   const checkTokenExpiration = useCheckTokenExpiration();
   const { token } = useAuthStore();
 
-  const fetch = ({
+  const fetch = useCallback(({
     deposit_id,
     setMatchedBridgeTransfers,
     onError,
@@ -226,8 +233,9 @@ export const useGetMatchedDepositBridgeTransfers = () => {
           onSuccess?.(res);
         })
         .catch((err) => {
-          process.env.NEXT_PUBLIC_APP_MODE === "development" &&
+          if (process.env.NEXT_PUBLIC_APP_MODE === "development") {
             console.error(err.response);
+          }
           toast.error(t(err.response.data.error.message));
           onError?.(err);
         })
@@ -235,14 +243,14 @@ export const useGetMatchedDepositBridgeTransfers = () => {
           onFinally?.();
         });
     });
-  };
+  }, [checkTokenExpiration, t, token]);
 
   return fetch;
 };
 
 type GetMatchedLiquidityPoolBridgeTransfersProps = {
   liquidityPool_id: string;
-  setMatchedBridgeTransfers: (value: any[]) => void;
+  setMatchedBridgeTransfers: (value: BridgeTransfer[]) => void;
 };
 export const useGetMatchedLiquidityPoolBridgeTransfers = () => {
   const t = useTranslations("ApiErrors");
@@ -250,7 +258,7 @@ export const useGetMatchedLiquidityPoolBridgeTransfers = () => {
   const checkTokenExpiration = useCheckTokenExpiration();
   const { token } = useAuthStore();
 
-  const fetch = ({
+  const fetch = useCallback(({
     liquidityPool_id,
     setMatchedBridgeTransfers,
     onError,
@@ -264,8 +272,9 @@ export const useGetMatchedLiquidityPoolBridgeTransfers = () => {
           onSuccess?.(res);
         })
         .catch((err) => {
-          process.env.NEXT_PUBLIC_APP_MODE === "development" &&
+          if (process.env.NEXT_PUBLIC_APP_MODE === "development") {
             console.error(err.response);
+          }
           toast.error(t(err.response.data.error.message));
           onError?.(err);
         })
@@ -273,7 +282,7 @@ export const useGetMatchedLiquidityPoolBridgeTransfers = () => {
           onFinally?.();
         });
     });
-  };
+  }, [checkTokenExpiration, t, token]);
 
   return fetch;
 };

@@ -10,10 +10,8 @@ import {
   DialogTrigger,
 } from "../../ui/dialog";
 import { Input } from "../../ui/input";
-import { useCreateCurrency, useGetCurrencies } from "@/api/currency/hook";
+import { useGetCurrencies } from "@/api/currency/hook";
 import { useRouter } from "@/i18n/navigation";
-import { PaymentChannel } from "@/types/front/paymentChannel";
-import { useGetPaymentChannels } from "@/api/payment-channel/hook";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Label } from "@/components/ui/label";
 import { Currency } from "@/types/front/currency";
@@ -26,8 +24,7 @@ import {
 } from "@/components/ui/select";
 import { useCreateCurrencyPair } from "@/api/currency-pair/hook";
 
-interface Props {}
-export default function AddCurrencyPairDialog({}: Props) {
+export default function AddCurrencyPairDialog() {
   const router = useRouter();
 
   const [open, setOpen] = useState(false);
@@ -39,7 +36,7 @@ export default function AddCurrencyPairDialog({}: Props) {
     getCurrencies({
       setCurrencies,
     });
-  }, []);
+  }, [getCurrencies]);
 
   const [fromCurrencyId, setFromCurrencyId] = useState("");
   const [fromCurrencyIdError, setFromCurrencyIdError] = useState("");
@@ -201,6 +198,11 @@ export default function AddCurrencyPairDialog({}: Props) {
               onBlur={(e) => validateRate(+e.target.value)}
               required
             />
+            {rateError && (
+              <span className="block text-sm mt-2 text-chart-5">
+                {rateError}
+              </span>
+            )}
           </div>
           <div className="relative">
             <Input
@@ -215,6 +217,11 @@ export default function AddCurrencyPairDialog({}: Props) {
             <span className="absolute right-4 top-1/2 -translate-y-1/2 text-muted-foreground">
               %
             </span>
+            {feePercentageError && (
+              <span className="block text-sm mt-2 text-chart-5">
+                {feePercentageError}
+              </span>
+            )}
           </div>
           <div>
             <div className="flex flex-col gap-4 bg-card p-3 rounded-md">

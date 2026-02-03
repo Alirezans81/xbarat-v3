@@ -22,8 +22,7 @@ import { useCreateWithdrawal } from "@/api/wallet/withdrawal/hook";
 import { Wallet } from "@/types/front/wallet";
 import { useGetWallets } from "@/api/wallet/hook";
 
-interface Props {}
-export default function AddWithdrawalDialog({}: Props) {
+export default function AddWithdrawalDialog() {
   const router = useRouter();
 
   const [open, setOpen] = useState(false);
@@ -36,7 +35,7 @@ export default function AddWithdrawalDialog({}: Props) {
     getWallets({
       setWallets,
     });
-  }, []);
+  }, [getWallets]);
   const [WalletIdError, setWalletIdError] = useState("");
   const validateWalletId = (value: string) => {
     if (!value) {

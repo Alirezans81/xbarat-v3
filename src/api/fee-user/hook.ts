@@ -27,8 +27,9 @@ export const useCreateFeeUser = () => {
           onSuccess?.(res);
         })
         .catch((err) => {
-          process.env.NEXT_PUBLIC_APP_MODE === "development" &&
+          if (process.env.NEXT_PUBLIC_APP_MODE === "development") {
             console.error(err.response);
+          }
           toast.error(t(err.response.data.error.message));
           onError?.(err);
         })
@@ -62,8 +63,9 @@ export const useDeleteFeeUser = () => {
           onSuccess?.(res);
         })
         .catch((err) => {
-          process.env.NEXT_PUBLIC_APP_MODE === "development" &&
+          if (process.env.NEXT_PUBLIC_APP_MODE === "development") {
             console.error(err.response);
+          }
           toast.error(t(err.response.data.error.message));
           onError?.(err);
         })
@@ -97,8 +99,9 @@ export const useActiveFeeUser = () => {
           onSuccess?.(res);
         })
         .catch((err) => {
-          process.env.NEXT_PUBLIC_APP_MODE === "development" &&
+          if (process.env.NEXT_PUBLIC_APP_MODE === "development") {
             console.error(err.response);
+          }
           toast.error(t(err.response.data.error.message));
           onError?.(err);
         })

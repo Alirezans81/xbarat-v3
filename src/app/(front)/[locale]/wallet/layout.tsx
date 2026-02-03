@@ -3,7 +3,7 @@
 import { Button } from "@/components/ui/button";
 import { Link, usePathname } from "@/i18n/navigation";
 
-export default function layout({
+export default function Layout({
   children,
 }: Readonly<{
   children: React.ReactNode;

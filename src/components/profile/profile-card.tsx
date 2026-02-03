@@ -28,7 +28,9 @@ export default function ProfileCard({ className }: Props) {
 
   function handleEdit(val: keyof User) {
     setEditing(val);
-    user && setTempVariable(user !== null ? user[val] : "");
+    if (user) {
+      setTempVariable(user[val]);
+    }
   }
 
   function handleBlur(field: keyof User) {
@@ -58,8 +60,9 @@ export default function ProfileCard({ className }: Props) {
       },
     });
   }
-  const DisplayName = user?.fullName
+  const DisplayName = (user?.fullName ?? "")
     .split(" ")
+    .filter(Boolean)
     .map((e) => e[0])
     .join("");
   return (

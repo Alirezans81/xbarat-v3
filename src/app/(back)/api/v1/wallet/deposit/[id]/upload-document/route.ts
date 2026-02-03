@@ -29,10 +29,10 @@ export async function POST(
 
     const formData = await request.formData();
 
-    const items: {
-      bridgeTransferId: string;
-      document: File;
-    }[] = [];
+    const items: Array<{
+      bridgeTransferId?: string;
+      document?: File;
+    }> = [];
 
     // parse items[n][field]
     for (const [key, value] of formData.entries()) {
@@ -44,16 +44,28 @@ export async function POST(
       const index = Number(match[1]);
       const field = match[2];
 
-      if (!items[index]) items[index] = {} as any;
-      items[index][field as keyof (typeof items)[0]] = value as any;
+      if (!items[index]) items[index] = {};
+      if (field === "bridgeTransferId" && typeof value === "string") {
+        items[index].bridgeTransferId = value;
+      }
+      if (field === "document" && value instanceof File) {
+        items[index].document = value;
+      }
     }
 
-    if (!items.length) {
+    const validItems = items.filter(
+      (item): item is { bridgeTransferId: string; document: File } =>
+        typeof item.bridgeTransferId === "string" &&
+        item.bridgeTransferId.length > 0 &&
+        item.document instanceof File
+    );
+
+    if (!validItems.length) {
       return NextResponse.json({ error: "noFilesUploaded" }, { status: 400 });
     }
 
     // upload each file
-    for (const item of items) {
+    for (const item of validItems) {
       const file = item.document;
       const arrayBuffer = await file.arrayBuffer();
       const buffer = Buffer.from(arrayBuffer);

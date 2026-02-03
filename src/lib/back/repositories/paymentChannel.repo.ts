@@ -1,4 +1,3 @@
-import { PaymentChannel } from "@/generated/prisma";
 import { prisma } from "../prisma";
 import {
   CreatePaymentChannel,

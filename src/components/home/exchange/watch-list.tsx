@@ -25,7 +25,7 @@ export default function WatchList({ selectedPair, setSelectedPair }: Props) {
         setLoading(false);
       },
     });
-  }, []);
+  }, [getWatchList]);
 
   return (
     <div className="max-w-[87dvw]">

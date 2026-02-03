@@ -451,7 +451,7 @@ const config = {
       "value": "prisma-client-js"
     },
     "output": {
-      "value": "/home/sinam/Next/xbarat-v3/src/generated/prisma",
+      "value": "/media/xbarat-team/482f3a4a-c190-4c23-8e73-8b18876d147b/Products/xbarat-v3/src/generated/prisma",
       "fromEnvVar": null
     },
     "config": {
@@ -469,7 +469,7 @@ const config = {
       }
     ],
     "previewFeatures": [],
-    "sourceFilePath": "/home/sinam/Next/xbarat-v3/prisma/schema.prisma",
+    "sourceFilePath": "/media/xbarat-team/482f3a4a-c190-4c23-8e73-8b18876d147b/Products/xbarat-v3/prisma/schema.prisma",
     "isCustomOutput": true
   },
   "relativeEnvPaths": {

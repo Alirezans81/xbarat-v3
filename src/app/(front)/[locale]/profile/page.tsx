@@ -3,7 +3,6 @@ import ReferralCard from "@/components/profile/referral-card";
 import TicketCard from "@/components/profile/ticket-card";
 import CardsCard from "@/components/profile/cards-card";
 import PromoBanner from "@/components/profile/promo-banner";
-import TicketHistory from "@/components/profile/ticket-history";
 import { getTickets } from "@/api/ticket/action";
 import { getCurrencies } from "@/api/currency/action";
 export default async function Profile() {

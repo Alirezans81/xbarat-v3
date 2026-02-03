@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useState } from "react";
 import { Button } from "../../ui/button";
 import {
   Dialog,
@@ -14,15 +14,6 @@ import { useRouter } from "@/i18n/navigation";
 import { PaymentChannel } from "@/types/front/paymentChannel";
 import { useUpdatePaymentChannel } from "@/api/payment-channel/hook";
 import { Textarea } from "@/components/ui/textarea";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
-import { Currency } from "@/types/front/currency";
-import { useGetCurrencies } from "@/api/currency/hook";
 
 interface Props {
   data: PaymentChannel;
@@ -49,19 +40,6 @@ export default function EditPaymentChannelDialog({ data }: Props) {
   const validateDescription = (value: string) => {
     if (!value) {
       setDescriptionError("Description required!");
-      return false;
-    }
-
-    return true;
-  };
-
-  const logoInputRef = useRef<HTMLInputElement>(null);
-  const [logo, setLogo] = useState<File | null>(null);
-  const [logoUrl, setLogoUrl] = useState("");
-  const [LogoError, setLogoError] = useState("");
-  const validateLogo = (value: File | null) => {
-    if (!value) {
-      setLogoError("Logo required!");
       return false;
     }
 
@@ -132,48 +110,6 @@ export default function EditPaymentChannelDialog({ data }: Props) {
               </span>
             )}
           </div>
-          {/* <div>
-            <Input
-              ref={logoInputRef}
-              type="file"
-              className="hidden"
-              accept="image/*"
-              placeholder="Logo"
-              value={description}
-              onChange={(e) => {
-                if (e.target.files?.length) {
-                  setLogo(e.target.files[0]);
-                  setLogoUrl(URL.createObjectURL(e.target.files[0]));
-                }
-              }}
-              onBlur={(e) =>
-                validateLogo(e.target.files?.length ? e.target.files[0] : null)
-              }
-              required
-            />
-            <div className="w-full bg-card border border-input rounded-lg py-[30%] flex justify-center relative">
-              <img
-                className={`absolute w-full h-full top-0 left-0 rounded-lg opacity-60 z-0 object-contain p-5 ${
-                  logoUrl ? "block" : "hidden"
-                }`}
-                src={logoUrl}
-              />
-              <Button
-                type="button"
-                variant="outline"
-                className="z-10 !bg-background"
-                onClick={() => logoInputRef.current?.click()}
-              >
-                <Upload />
-                Upload Logo
-              </Button>
-            </div>
-            {LogoError && (
-              <span className="block text-sm mt-2 text-chart-5">
-                {LogoError}
-              </span>
-            )}
-          </div> */}
           <div className="mt-4">
             <Button
               type="submit"

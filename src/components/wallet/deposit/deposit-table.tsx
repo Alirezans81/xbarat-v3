@@ -1,7 +1,6 @@
 "use client";
 
 import DeleteDepositDialog from "@/components/dialog/wallet/deposit/delete-deposit-dialog";
-import EditDepositDialog from "@/components/dialog/wallet/deposit/edit-deposit-dialog";
 import UploadDepositDocument from "@/components/dialog/wallet/deposit/upload-deposit-document";
 import {
   Table,

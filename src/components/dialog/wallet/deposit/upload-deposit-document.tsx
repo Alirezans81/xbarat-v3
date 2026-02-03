@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Button } from "../../../ui/button";
 import {
   Dialog,
@@ -17,6 +17,7 @@ import {
 } from "@/api/wallet/deposit/hook";
 import { BridgeTransfer } from "@/types/front/bridgeTransfer";
 import { Spinner } from "@/components/ui/spinner";
+import Image from "next/image";
 
 interface Props {
   deposit_id: string;
@@ -29,7 +30,7 @@ export default function UploadDepositDocument({ deposit_id }: Props) {
   const [loading, setLoading] = useState(false);
 
   const [documents, setDocuments] = useState<Record<string, File | undefined>>(
-    {}
+    {},
   );
   const [errors, setErrors] = useState<Record<string, string>>({});
 
@@ -58,20 +59,22 @@ export default function UploadDepositDocument({ deposit_id }: Props) {
   >([]);
   const [matchedBridgeTransfersLoading, setMatchedBridgeTransfersLoading] =
     useState(false);
-  const getMatchedDepositBridgeTransfers = useGetMatchedDepositBridgeTransfers();
+  const getMatchedDepositBridgeTransfers =
+    useGetMatchedDepositBridgeTransfers();
 
-  useEffect(() => {
-    if (open) {
-      setMatchedBridgeTransfersLoading(true);
-      getMatchedDepositBridgeTransfers({
-        deposit_id,
-        setMatchedBridgeTransfers,
-        onFinally() {
-          setMatchedBridgeTransfersLoading(false);
-        },
-      });
-    }
-  }, [open]);
+  const handleOpenChange = (nextOpen: boolean) => {
+    setOpen(nextOpen);
+    if (!nextOpen) return;
+
+    setMatchedBridgeTransfersLoading(true);
+    getMatchedDepositBridgeTransfers({
+      deposit_id,
+      setMatchedBridgeTransfers,
+      onFinally() {
+        setMatchedBridgeTransfersLoading(false);
+      },
+    });
+  };
 
   const uploadDepositDocument = useUploadDepositDocument();
 
@@ -84,7 +87,7 @@ export default function UploadDepositDocument({ deposit_id }: Props) {
 
     const data: { documents: { bridgeTransferId: string; document: File }[] } =
       { documents: [] };
-    matchedBridgeTransfers.forEach((transfer, index) => {
+    matchedBridgeTransfers.forEach((transfer) => {
       data.documents.push({
         bridgeTransferId: transfer.id,
         document: documents[transfer.id]!,
@@ -105,7 +108,7 @@ export default function UploadDepositDocument({ deposit_id }: Props) {
   };
 
   return (
-    <Dialog open={open} onOpenChange={setOpen}>
+    <Dialog open={open} onOpenChange={handleOpenChange}>
       <DialogTrigger asChild>
         <div>
           <Button className="text-white">Upload Documents</Button>
@@ -192,12 +195,15 @@ export default function UploadDepositDocument({ deposit_id }: Props) {
                       onChange={(e) =>
                         handleFileChange(
                           transfer.id,
-                          e.target.files?.length ? e.target.files[0] : undefined
+                          e.target.files?.length
+                            ? e.target.files[0]
+                            : undefined,
                         )
                       }
                     />
                     {documents[transfer.id] && (
-                      <img
+                      <Image
+                        alt={"document-" + transfer.id}
                         src={URL.createObjectURL(documents[transfer.id]!)}
                         className="rounded-lg rounded-t-none mx-auto w-full max-h-52 object-cover border border-input"
                         width={200}

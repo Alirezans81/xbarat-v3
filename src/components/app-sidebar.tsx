@@ -27,6 +27,7 @@ import {
   notLoggedInNavbarItems,
   providerLoggedInNavbarItems,
 } from "@/constants/globals";
+import Image from "next/image";
 
 interface Props {
   side?: "right" | "left";
@@ -71,10 +72,12 @@ export function AppSidebar({ side }: Props) {
               <TooltipProvider>
                 <Tooltip>
                   <TooltipTrigger onClick={() => {}}>
-                    <img
-                      alt=""
+                    <Image
+                      alt="Instagram"
                       src="/SocialMedia/instagram.svg"
                       className="size-5"
+                      width={20}
+                      height={20}
                     />
                   </TooltipTrigger>
                   <TooltipContent>
@@ -85,10 +88,12 @@ export function AppSidebar({ side }: Props) {
               <TooltipProvider>
                 <Tooltip>
                   <TooltipTrigger onClick={() => {}}>
-                    <img
-                      alt=""
+                    <Image
+                      alt="WhatsApp"
                       src="/SocialMedia/whatsapp.svg"
                       className="size-5"
+                      width={20}
+                      height={20}
                     />
                   </TooltipTrigger>
                   <TooltipContent>
@@ -99,10 +104,12 @@ export function AppSidebar({ side }: Props) {
               <TooltipProvider>
                 <Tooltip>
                   <TooltipTrigger onClick={() => {}}>
-                    <img
-                      alt=""
+                    <Image
+                      alt="Telegram"
                       src="/SocialMedia/telegram.svg"
                       className="size-5"
+                      width={20}
+                      height={20}
                     />
                   </TooltipTrigger>
                   <TooltipContent>
@@ -114,10 +121,12 @@ export function AppSidebar({ side }: Props) {
                 <Tooltip>
                   <TooltipTrigger onClick={() => {}}>
                     <div className="p-1.5 rounded-full bg-black">
-                      <img
-                        alt=""
+                      <Image
+                        alt="X"
                         src="/SocialMedia/x.svg"
                         className="size-2.5"
+                        width={10}
+                        height={10}
                       />
                     </div>
                   </TooltipTrigger>

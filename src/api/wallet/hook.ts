@@ -3,7 +3,6 @@ import { toast } from "sonner";
 import { useTranslations } from "next-intl";
 import { useAuthStore } from "@/lib/front/stores/auth";
 import { getWallets } from "./api";
-import { useCheckTokenExpiration } from "@/hooks/use-auth";
 import { Wallet } from "@/types/front/wallet";
 
 type GetWalletsProps = {
@@ -26,8 +25,9 @@ export const useGetWallets = () => {
         onSuccess?.(res);
       })
       .catch((err) => {
-        process.env.NEXT_PUBLIC_APP_MODE === "development" &&
+        if (process.env.NEXT_PUBLIC_APP_MODE === "development") {
           console.error(err.response);
+        }
         toast.error(t(err.response.data.error.message));
         onError?.(err);
       })

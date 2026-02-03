@@ -2,11 +2,9 @@
 
 import { DepositDataTable } from "./deposit/deposit-data-table";
 import { depositColumns } from "./deposit/deposit-columns";
-import { getDeposits } from "@/api/wallet/deposit/action";
 import { WithdrawalDataTable } from "./withdrawal/withdrawal-data-table";
 import { withdrawalColumns } from "./withdrawal/withdrawal-columns";
-import { getWithdrawals } from "@/api/wallet/withdrawal/action";
-import { getLiquidityPools } from "@/api/liquidity-pool/action";
+ 
 import { LiquidityPoolDataTable } from "./liquidity-pool/liquidity-pool-data-table";
 import { liquidityPoolColumns } from "./liquidity-pool/liquidity-pool-columns";
 import { Button } from "@/components/ui/button";
@@ -32,7 +30,7 @@ import { useGetPaymentChannels } from "@/api/payment-channel/hook";
 import { useAssign } from "@/api/wallet/assign/hook";
 import { toast } from "sonner";
 
-export default function page() {
+export default function Page() {
   const [loading, setLoading] = useState(false);
 
   const [currencies, setCurrencies] = useState<Currency[]>([]);
@@ -51,6 +49,7 @@ export default function page() {
   const getLiquidityPools = useGetLiquidityPools();
 
   useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setLoading(true);
     getCurrencies({
       setCurrencies,
@@ -58,15 +57,11 @@ export default function page() {
         setLoading(false);
       },
     });
-  }, []);
+  }, [getCurrencies]);
 
   useEffect(() => {
     if (selectedCurrencyId) {
-      setDeposits([]);
-      setWithdrawals([]);
-      setLiquidityPools([]);
-      setSelectedPaymentChannelId("");
-
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       setLoading(true);
       getPaymentChannels({
         setPaymentChannels,
@@ -78,10 +73,11 @@ export default function page() {
         },
       });
     }
-  }, [selectedCurrencyId]);
+  }, [selectedCurrencyId, getPaymentChannels]);
 
   useEffect(() => {
     if (selectedPaymentChannelId) {
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       setLoading(true);
       getDeposits({
         setDeposits,
@@ -120,7 +116,13 @@ export default function page() {
         },
       });
     }
-  }, [selectedPaymentChannelId]);
+  }, [
+    selectedPaymentChannelId,
+    selectedCurrencyId,
+    getDeposits,
+    getWithdrawals,
+    getLiquidityPools,
+  ]);
 
   const [selectedDeposits, setSelectedDeposits] = useState<Deposit[]>([]);
   const [selectedWithdrawals, setSelectedWithdrawals] = useState<Withdrawal[]>(
@@ -189,11 +191,14 @@ export default function page() {
       </div>
       <div className="col-span-2 flex items-center justify-between">
         <div className="flex items-center gap-3">
-          <Select
+            <Select
             value={selectedCurrencyId}
             onValueChange={(value) => {
               setSelectedCurrencyId(value);
               setSelectedPaymentChannelId("");
+              setDeposits([]);
+              setWithdrawals([]);
+              setLiquidityPools([]);
             }}
           >
             <SelectTrigger className="min-w-[8rem]">
@@ -201,7 +206,9 @@ export default function page() {
             </SelectTrigger>
             <SelectContent>
               {currencies.map((currency) => (
-                <SelectItem value={currency.id}>{currency.code}</SelectItem>
+                <SelectItem key={currency.id} value={currency.id}>
+                  {currency.code}
+                </SelectItem>
               ))}
             </SelectContent>
           </Select>
@@ -214,7 +221,7 @@ export default function page() {
             </SelectTrigger>
             <SelectContent>
               {paymentChannels.map((paymentChannel) => (
-                <SelectItem value={paymentChannel.id}>
+                <SelectItem key={paymentChannel.id} value={paymentChannel.id}>
                   {paymentChannel.name}
                 </SelectItem>
               ))}

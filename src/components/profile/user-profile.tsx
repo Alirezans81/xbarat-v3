@@ -1,11 +1,9 @@
 "use client"
 
-import React from 'react';
 import Image from 'next/image';
 import userProfileCircle from "../../../public/User_cicrle_duotone.png";
 import UploadPhotoIcon from "../../../public/Profile/UploadPhoto.png";
 import Edit from "../../../public/Profile/Edit.png";
-import Copy from "../../../public/Common/Copy.png";
 import Document from "../../../public/Profile/Document.png";
 import LogOut from "../../../public/Profile/LogOut.png";
 import { useState } from 'react';
@@ -14,23 +12,20 @@ import { useAuthStore } from '@/lib/front/stores/auth';
 import { User } from '@/generated/prisma';
 import { Card, CardHeader } from '../ui/card';
 
-type SafeUser = Omit<User, 'passwordHash' | 'deletedAt' | 'isDeleted' | 'updatedAt' | 'role' | 'isEmailVerified' | 'isPhoneVerified' | 'documentType' | 'kycStatus' | 'language' | 'createdAt'>;
-
 export default function UserProfile() {
 
     const { user, setUser } = useAuthStore();
     const [editing, setEditing] = useState<string>("");
-    const [tempVariable, setTempVariable] = useState<Date | boolean | string | null>("");
     // const [userData, setUserData] = useState<SafeUser | null>(user);
     function handleEdit(val: keyof User) {
         setEditing(val);
-        user && setTempVariable(user !== null ? user[val] : "");
-
+        if (!user) {
+            return;
+        }
     }
 
-    function handleBlur(val: keyof User) {
+    function handleBlur() {
         setEditing("");
-        setTempVariable("");
         /*Patch the data*/
     }
 
@@ -94,7 +89,7 @@ export default function UserProfile() {
                     </div>
 
                     {editing === "phoneNumber" ?
-                        <Input onBlur={() => handleBlur("phoneNumber")}
+                        <Input onBlur={() => handleBlur()}
                             onChange={(e) =>
                                 setUser(user ? {
                                     ...user,
@@ -141,7 +136,7 @@ export default function UserProfile() {
                     </div>
 
                     {editing === "countryCode" ?
-                        <Input onBlur={() => handleBlur("countryCode")} onChange={(e) =>
+                        <Input onBlur={() => handleBlur()} onChange={(e) =>
                             setUser(user ? {
                                 ...user,
                                 countryCode: e.target.value
@@ -167,7 +162,7 @@ export default function UserProfile() {
                     </div>
 
                     {editing === "State" ?
-                        <Input onBlur={() => handleBlur("state")} onChange={(e) =>
+                        <Input onBlur={() => handleBlur()} onChange={(e) =>
                             setUser(user ? {
                                 ...user,
                                 state: e.target.value
@@ -193,7 +188,7 @@ export default function UserProfile() {
                     </div>
 
                     {editing === "city" ?
-                        <Input onBlur={() => handleBlur("city")} onChange={(e) =>
+                        <Input onBlur={() => handleBlur()} onChange={(e) =>
                             setUser(user ? {
                                 ...user,
                                 city: e.target.value

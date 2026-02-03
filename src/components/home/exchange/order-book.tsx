@@ -7,7 +7,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { addComma } from "@/lib/front/utils/number";
 import { useGetLastExchanges } from "@/api/wallet/exchange/hooks";
 
@@ -44,11 +44,11 @@ export default function OrderBook({
   const getOrders = useGetLastExchanges();
   const getReverseOrders = useGetLastExchanges();
 
-  const resetOrderBooks = () => {
+  const resetOrderBooks = useCallback(() => {
     setOrderBooks([]);
     setReverseOrderBooks([]);
-  };
-  const fetchOrderBooks = async () => {
+  }, []);
+  const fetchOrderBooks = useCallback(async () => {
     if (currencyPair) {
       try {
         setLoading(true);
@@ -77,10 +77,10 @@ export default function OrderBook({
     } else {
       resetOrderBooks();
     }
-  };
+  }, [currencyPair, currencyPairs, getOrders, getReverseOrders, resetOrderBooks]);
   useEffect(() => {
     fetchOrderBooks();
-  }, [currencyPair]);
+  }, [fetchOrderBooks]);
 
   const fromCurr = currencyPair?.fromCurrency.code;
   const toCurr = currencyPair?.toCurrency.code;
@@ -223,7 +223,7 @@ export default function OrderBook({
                           <TableCell className="font-medium text-center bg-transparent">
                             <button
                               onClick={() => {
-                                setRate(order.exchangeRate.toString());
+                                setRate((+order.exchangeRate));
                                 scrollToTop();
                               }}
                               className="w-full h-12 flex justify-center items-center rounded-2xl bg-gradient-to-br from-from-background to-to-background shadow-[0_0_12px_-4px] !shadow-green hover:bg-gradient-to-br hover:from-accent hover:to-muted hover:cursor-pointer"

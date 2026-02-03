@@ -44,7 +44,7 @@ export default function AddDepositDialog({
     getWallets({
       setWallets,
     });
-  }, []);
+  }, [getWallets]);
   const [WalletIdError, setWalletIdError] = useState("");
   const validateWalletId = (value: string) => {
     if (!value) {

@@ -20,7 +20,7 @@ import { CurrencyPair } from "@/types/front/currencyPair";
 import { Wallet } from "@/types/front/wallet";
 import { ChevronDown } from "lucide-react";
 import Image from "next/image";
-import { useEffect, useState } from "react";
+import { useMemo, useState } from "react";
 
 interface Props {
   rate: number | undefined;
@@ -40,101 +40,90 @@ export default function ExchangeForm({
   selectedPair,
   setSelectedPair,
 }: Props) {
-  const [selectedSourceId, setSelectedSourceId] = useState("");
+  const [draftSourceId, setDraftSourceId] = useState(
+    selectedPair?.fromCurrency.id ?? ""
+  );
   const [sourcesPopoverOpen, setSourcesPopoverOpen] = useState(false);
 
-  const [selectedTargetId, setSelectedTargetId] = useState("");
+  const [draftTargetId, setDraftTargetId] = useState(
+    selectedPair?.toCurrency.id ?? ""
+  );
   const [targetsPopoverOpen, setTargetsPopoverOpen] = useState(false);
+
+  const selectedSourceId = selectedPair?.fromCurrency.id ?? draftSourceId;
+  const selectedTargetId = selectedPair?.toCurrency.id ?? draftTargetId;
 
   const selectedSource = currencies.find((e) => e.id === selectedSourceId);
   const selectedTarget = currencies.find((e) => e.id === selectedTargetId);
   const foundWallet = wallets.find((e) => e.currencyId === selectedSourceId);
 
-  const [sourceAmount, setSourceAmount] = useState<number>();
-  const [targetAmount, setTargetAmount] = useState<number>();
+  const [amount, setAmount] = useState<number>();
+  const [lastEdited, setLastEdited] = useState<"source" | "target">("source");
 
   const SPLIT_INDEX = 4;
 
-  useEffect(() => {
-    if (selectedPair) {
-      const foundSource = currencies.find(
-        (e) => e.id === selectedPair.fromCurrency.id
-      );
-      if (foundSource) setSelectedSourceId(foundSource.id);
-
-      const foundTarget = currencies.find(
-        (e) => e.id === selectedPair.toCurrency.id
-      );
-      if (foundTarget) setSelectedTargetId(foundTarget.id);
-    }
-  }, [selectedPair]);
-
-  useEffect(() => {
-    if (selectedSourceId && selectedTargetId) {
+  const syncSelectedPair = (nextSourceId: string, nextTargetId: string) => {
+    if (nextSourceId && nextTargetId) {
       const foundCurrencyPair = currencyPairs.find(
         (e) =>
-          e.fromCurrencyId === selectedSourceId &&
-          e.toCurrencyId === selectedTargetId
+          e.fromCurrencyId === nextSourceId &&
+          e.toCurrencyId === nextTargetId
       );
 
       if (foundCurrencyPair) {
         setSelectedPair(foundCurrencyPair);
+        return;
       }
-    } else {
-      setSelectedPair(null);
     }
-  }, [selectedSourceId, selectedTargetId]);
 
-  const handleRateChange = (newRate: number) => {
-    if (selectedPair && sourceAmount && selectedTarget && newRate) {
-      if (selectedPair.isInverseRate) {
-        setTargetAmount(+sourceAmount * +newRate);
-      } else {
-        setTargetAmount(
-          roundDown(+sourceAmount / +newRate, selectedTarget.decimals)
-        );
-      }
-    }
+    setSelectedPair(null);
   };
-  useEffect(() => {
-    if (rate) {
-      handleRateChange(rate);
+
+  const { sourceAmount, targetAmount } = useMemo(() => {
+    if (!selectedPair || !rate || !amount) {
+      return {
+        sourceAmount: lastEdited === "source" ? amount : undefined,
+        targetAmount: lastEdited === "target" ? amount : undefined,
+      };
     }
-  }, [rate]);
+
+    if (lastEdited === "source") {
+      const computedTarget = selectedPair.isInverseRate
+        ? amount * rate
+        : selectedTarget
+          ? roundDown(amount / rate, selectedTarget.decimals)
+          : undefined;
+      return { sourceAmount: amount, targetAmount: computedTarget };
+    }
+
+    const computedSource = selectedPair.isInverseRate
+      ? selectedSource
+        ? roundDown(amount / rate, selectedSource.decimals)
+        : undefined
+      : amount * rate;
+    return { sourceAmount: computedSource, targetAmount: amount };
+  }, [amount, lastEdited, rate, selectedPair, selectedSource, selectedTarget]);
 
   const handleSourceAmountChange = (newSourceAmount: number) => {
-    setSourceAmount(newSourceAmount);
-    if (selectedPair && newSourceAmount && selectedTarget && rate) {
-      if (selectedPair.isInverseRate) {
-        setTargetAmount(+newSourceAmount * +rate);
-      } else {
-        setTargetAmount(
-          roundDown(+newSourceAmount / +rate, selectedTarget.decimals)
-        );
-      }
-    }
+    setLastEdited("source");
+    setAmount(newSourceAmount);
   };
 
   const handleTargetAmountChange = (newTargetAmount: number) => {
-    setTargetAmount(newTargetAmount);
-    if (selectedPair && newTargetAmount && selectedSource && rate) {
-      if (selectedPair.isInverseRate) {
-        setSourceAmount(
-          roundDown(+newTargetAmount / +rate, selectedSource.decimals)
-        );
-      } else {
-        setSourceAmount(+newTargetAmount * +rate);
-      }
-    }
+    setLastEdited("target");
+    setAmount(newTargetAmount);
   };
 
   const handleSwitch = () => {
     const oldSourceId = selectedSourceId;
-    setSelectedSourceId(selectedTargetId);
-    setSelectedTargetId(oldSourceId);
-    const oldSourceAmount = sourceAmount;
-    setSourceAmount(targetAmount);
-    setTargetAmount(oldSourceAmount);
+    setDraftSourceId(selectedTargetId);
+    setDraftTargetId(oldSourceId);
+    syncSelectedPair(selectedTargetId, oldSourceId);
+    if (lastEdited === "source") {
+      setAmount(targetAmount);
+    } else {
+      setAmount(sourceAmount);
+    }
   };
 
   return (
@@ -150,7 +139,10 @@ export default function ExchangeForm({
             type="single"
             spacing={2}
             value={selectedSourceId}
-            onValueChange={(value) => setSelectedSourceId(value)}
+            onValueChange={(value) => {
+              setDraftSourceId(value);
+              syncSelectedPair(value, selectedTargetId);
+            }}
           >
             {currencies.slice(0, SPLIT_INDEX).map((currency) => (
               <ToggleGroupItem
@@ -186,7 +178,10 @@ export default function ExchangeForm({
                   type="single"
                   spacing={2}
                   value={selectedSourceId}
-                  onValueChange={(value) => setSelectedSourceId(value)}
+                  onValueChange={(value) => {
+                    setDraftSourceId(value);
+                    syncSelectedPair(value, selectedTargetId);
+                  }}
                   className="grid grid-cols-2"
                 >
                   {currencies
@@ -213,7 +208,10 @@ export default function ExchangeForm({
             type="single"
             spacing={2}
             value={selectedTargetId}
-            onValueChange={(value) => setSelectedTargetId(value)}
+            onValueChange={(value) => {
+              setDraftTargetId(value);
+              syncSelectedPair(selectedSourceId, value);
+            }}
           >
             {currencies.slice(0, SPLIT_INDEX).map((currency) => (
               <ToggleGroupItem
@@ -249,7 +247,10 @@ export default function ExchangeForm({
                   type="single"
                   spacing={2}
                   value={selectedTargetId}
-                  onValueChange={(value) => setSelectedTargetId(value)}
+                  onValueChange={(value) => {
+                    setDraftTargetId(value);
+                    syncSelectedPair(selectedSourceId, value);
+                  }}
                   className="grid grid-cols-2"
                 >
                   {currencies
