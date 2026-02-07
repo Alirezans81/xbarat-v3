@@ -21,7 +21,6 @@ type GetPaymentChannelsProps = {
   filters?: GetPaymentChannelsFilters;
 };
 export const useGetPaymentChannels = () => {
-  7;
   const t = useTranslations("ApiErrors");
 
   const checkTokenExpiration = useCheckTokenExpiration();

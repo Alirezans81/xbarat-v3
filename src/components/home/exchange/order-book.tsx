@@ -105,7 +105,7 @@ export default function OrderBook({
             className={`w-full h-fit rounded-2xl p-3 bg-card backdrop-blur-sm`}
           >
             <Table>
-              <TableCaption>{t("list-order-books")}</TableCaption>
+              <TableCaption>{t("list-all-order-books")}</TableCaption>
               <TableHeader>
                 <TableRow>
                   <TableHead className="text-muted text-center">
@@ -175,7 +175,7 @@ export default function OrderBook({
             className={`w-full h-fit rounded-2xl p-3 bg-card backdrop-blur-sm`}
           >
             <Table>
-              <TableCaption>{t("list-order-books")}</TableCaption>
+              <TableCaption>{t("list-all-order-books")}</TableCaption>
               <TableHeader>
                 <TableRow>
                   <TableHead className="text-muted text-center">
