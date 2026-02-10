@@ -37,10 +37,11 @@ export default function EditCurrencyPairDialog({ data }: Props) {
   const getCurrencies = useGetCurrencies();
   const [currencies, setCurrencies] = useState<Currency[]>([]);
   useEffect(() => {
+    if (!open) return;
     getCurrencies({
       setCurrencies,
     });
-  }, [getCurrencies]);
+  }, [getCurrencies, open]);
 
   const [fromCurrencyId, setFromCurrencyId] = useState(data.fromCurrencyId);
   const [fromCurrencyIdError, setFromCurrencyIdError] = useState("");

@@ -82,7 +82,7 @@ export default function UploadLiquidityPoolDocument({
               accept="image/*"
               onChange={(e) =>
                 setDocument(
-                  e.target.files?.length ? e.target.files[0] : undefined
+                  e.target.files?.length ? e.target.files[0] : undefined,
                 )
               }
               required

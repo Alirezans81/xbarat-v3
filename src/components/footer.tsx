@@ -20,7 +20,13 @@ export default async function Footer() {
           <div className="w-full grid grid-cols-3 gap-[10%] mb-8">
             <div className="col-span-1 flex flex-col gap-3 mb-8">
               <div className="flex items-center gap-1 mb-2">
-                <Image alt="" className="w-10 h-10" src="/logo.png" />
+                <Image
+                  width={512}
+                  height={512}
+                  alt=""
+                  className="w-10 h-10"
+                  src="/logo.png"
+                />
                 <span className="text-2xl text-secondary">{t("xbarat")}</span>
               </div>
               <span className="font-semibold">{t("slogan") + " 🤝"}</span>
@@ -112,6 +118,8 @@ export default async function Footer() {
                     <TooltipTrigger>
                       <Link href="/">
                         <Image
+                          width={20}
+                          height={20}
                           alt=""
                           src="/SocialMedia/instagram.svg"
                           className="size-5"
@@ -128,6 +136,8 @@ export default async function Footer() {
                     <TooltipTrigger>
                       <Link href="/">
                         <Image
+                          width={20}
+                          height={20}
                           alt=""
                           src="/SocialMedia/whatsapp.svg"
                           className="size-5"
@@ -144,6 +154,8 @@ export default async function Footer() {
                     <TooltipTrigger>
                       <Link href="/">
                         <Image
+                          width={20}
+                          height={20}
                           alt=""
                           src="/SocialMedia/telegram.svg"
                           className="size-5"
@@ -161,6 +173,8 @@ export default async function Footer() {
                       <Link href="/">
                         <div className="p-1.5 rounded-full bg-black">
                           <Image
+                            width={20}
+                            height={20}
                             alt=""
                             src="/SocialMedia/x.svg"
                             className="size-2.5"

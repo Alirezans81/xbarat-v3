@@ -1,4 +1,5 @@
 import { FetchProps } from "@/types/front/globals";
+import { useCallback } from "react";
 import { toast } from "sonner";
 import { useTranslations } from "next-intl";
 import { useAuthStore } from "@/lib/front/stores/auth";
@@ -28,31 +29,34 @@ export const useGetLiquidityPools = () => {
   const checkTokenExpiration = useCheckTokenExpiration();
   const { token } = useAuthStore();
 
-  const fetch = ({
-    setLiquidityPools,
-    filters,
-    onError,
-    onSuccess,
-    onFinally,
-  }: GetLiquidityPoolsProps & FetchProps) => {
-    checkTokenExpiration(async () => {
-      await getLiquidityPools(token, filters)
-        .then((res) => {
-          setLiquidityPools(res);
-          onSuccess?.(res);
-        })
-        .catch((err) => {
-          if (process.env.NEXT_PUBLIC_APP_MODE === "development") {
-            console.error(err.response);
-          }
-          toast.error(t(err.response.data.error.message));
-          onError?.(err);
-        })
-        .finally(() => {
-          onFinally?.();
-        });
-    });
-  };
+  const fetch = useCallback(
+    ({
+      setLiquidityPools,
+      filters,
+      onError,
+      onSuccess,
+      onFinally,
+    }: GetLiquidityPoolsProps & FetchProps) => {
+      checkTokenExpiration(async () => {
+        await getLiquidityPools(token, filters)
+          .then((res) => {
+            setLiquidityPools(res);
+            onSuccess?.(res);
+          })
+          .catch((err) => {
+            if (process.env.NEXT_PUBLIC_APP_MODE === "development") {
+              console.error(err.response);
+            }
+            toast.error(t(err.response.data.error.message));
+            onError?.(err);
+          })
+          .finally(() => {
+            onFinally?.();
+          });
+      });
+    },
+    [checkTokenExpiration, t, token]
+  );
 
   return fetch;
 };

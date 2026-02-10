@@ -24,7 +24,7 @@ export function CurrencyCarousel({
   const [active, setActive] = useState(
     selectedPair
       ? items.findIndex((item) => item.currencyPair === selectedPair)
-      : 0
+      : 0,
   );
 
   const [api, setApi] = useState<CarouselApi>();
@@ -44,12 +44,15 @@ export function CurrencyCarousel({
         align: "center",
       }}
       setApi={setApi}
-      className="max-w-full"
+      className=""
     >
-      <div className="max-w-full">
+      <div className="">
         <CarouselContent className="p-7">
           {items.map((item, index) => (
-            <CarouselItem key={index} className="md:basis-1/3 xl:basis-1/5">
+            <CarouselItem
+              key={index}
+              className="md:basis-1/2 lg:basis-1/3 xl:basis-1/5"
+            >
               <div
                 className={index === items.length - 1 ? "pe-4" : ""}
                 onClick={() => setActive(index)}

@@ -1,4 +1,5 @@
 import { FetchProps } from "@/types/front/globals";
+import { useCallback } from "react";
 import { toast } from "sonner";
 import { useTranslations } from "next-intl";
 import { useAuthStore } from "@/lib/front/stores/auth";
@@ -27,31 +28,34 @@ export const useGetTransfers = () => {
   const checkTokenExpiration = useCheckTokenExpiration();
   const { token } = useAuthStore();
 
-  const fetch = ({
-    filters,
-    setTransfers,
-    onError,
-    onSuccess,
-    onFinally,
-  }: GetTransfersProps & FetchProps) => {
-    checkTokenExpiration(async () => {
-      await getTransfers(token, filters)
-        .then((res) => {
-          setTransfers(res);
-          onSuccess?.(res);
-        })
-        .catch((err) => {
-          if (process.env.NEXT_PUBLIC_APP_MODE === "development") {
-            console.error(err.response);
-          }
-          toast.error(t(err.response.data.error.message));
-          onError?.(err);
-        })
-        .finally(() => {
-          onFinally?.();
-        });
-    });
-  };
+  const fetch = useCallback(
+    ({
+      filters,
+      setTransfers,
+      onError,
+      onSuccess,
+      onFinally,
+    }: GetTransfersProps & FetchProps) => {
+      checkTokenExpiration(async () => {
+        await getTransfers(token, filters)
+          .then((res) => {
+            setTransfers(res);
+            onSuccess?.(res);
+          })
+          .catch((err) => {
+            if (process.env.NEXT_PUBLIC_APP_MODE === "development") {
+              console.error(err.response);
+            }
+            toast.error(t(err.response.data.error.message));
+            onError?.(err);
+          })
+          .finally(() => {
+            onFinally?.();
+          });
+      });
+    },
+    [checkTokenExpiration, t, token]
+  );
 
   return fetch;
 };

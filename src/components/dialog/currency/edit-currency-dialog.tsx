@@ -77,10 +77,11 @@ export default function EditCurrencyDialog({ data }: Props) {
   );
   const getPaymentChannels = useGetPaymentChannels();
   useEffect(() => {
+    if (!open) return;
     getPaymentChannels({
       setPaymentChannels,
     });
-  }, [getPaymentChannels]);
+  }, [getPaymentChannels, open]);
 
   const updateCurrency = useUpdateCurrency();
 

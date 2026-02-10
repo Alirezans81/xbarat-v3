@@ -14,6 +14,7 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
+import { useBreakpointValue } from "@/hooks/use-breakpoint";
 import { addComma, roundDown } from "@/lib/front/utils/number";
 import { Currency } from "@/types/front/currency";
 import { CurrencyPair } from "@/types/front/currencyPair";
@@ -41,12 +42,12 @@ export default function ExchangeForm({
   setSelectedPair,
 }: Props) {
   const [draftSourceId, setDraftSourceId] = useState(
-    selectedPair?.fromCurrency.id ?? ""
+    selectedPair?.fromCurrency.id ?? "",
   );
   const [sourcesPopoverOpen, setSourcesPopoverOpen] = useState(false);
 
   const [draftTargetId, setDraftTargetId] = useState(
-    selectedPair?.toCurrency.id ?? ""
+    selectedPair?.toCurrency.id ?? "",
   );
   const [targetsPopoverOpen, setTargetsPopoverOpen] = useState(false);
 
@@ -60,14 +61,13 @@ export default function ExchangeForm({
   const [amount, setAmount] = useState<number>();
   const [lastEdited, setLastEdited] = useState<"source" | "target">("source");
 
-  const SPLIT_INDEX = 4;
+  const SPLIT_INDEX = useBreakpointValue({ base: 2, sm: 3, md: 4, xl: 5 });
 
   const syncSelectedPair = (nextSourceId: string, nextTargetId: string) => {
     if (nextSourceId && nextTargetId) {
       const foundCurrencyPair = currencyPairs.find(
         (e) =>
-          e.fromCurrencyId === nextSourceId &&
-          e.toCurrencyId === nextTargetId
+          e.fromCurrencyId === nextSourceId && e.toCurrencyId === nextTargetId,
       );
 
       if (foundCurrencyPair) {
@@ -134,7 +134,7 @@ export default function ExchangeForm({
           e.preventDefault();
         }}
       >
-        <div className="col-span-5 flex flex-col gap-2">
+        <div className="col-span-5 flex gap-2 overflow-visible">
           <ToggleGroup
             type="single"
             spacing={2}
@@ -149,7 +149,7 @@ export default function ExchangeForm({
                 key={currency.id}
                 variant="outline"
                 value={currency.id}
-                className="w-16 border-muted hover:cursor-pointer"
+                className="w-14 sm:w-16 border-muted hover:cursor-pointer"
                 disabled={selectedTargetId === currency.id}
               >
                 {currency.code}
@@ -191,7 +191,7 @@ export default function ExchangeForm({
                         key={currency.id}
                         variant="outline"
                         value={currency.id}
-                        className="w-16 border-muted hover:cursor-pointer col-span-1"
+                        className="w-14 sm:w-16 border-muted hover:cursor-pointer col-span-1"
                         disabled={selectedTargetId === currency.id}
                       >
                         {currency.code}
@@ -203,7 +203,7 @@ export default function ExchangeForm({
           )}
         </div>
         <div className="col-span-1 flex flex-col gap-2" />
-        <div className="col-span-5 flex flex-col gap-2">
+        <div className="col-span-5 flex gap-2 overflow-visible">
           <ToggleGroup
             type="single"
             spacing={2}
@@ -218,7 +218,7 @@ export default function ExchangeForm({
                 key={currency.id}
                 variant="outline"
                 value={currency.id}
-                className="w-16 border-muted hover:cursor-pointer"
+                className="w-14 sm:w-16 border-muted hover:cursor-pointer"
                 disabled={selectedSourceId === currency.id}
               >
                 {currency.code}
@@ -260,7 +260,7 @@ export default function ExchangeForm({
                         key={currency.id}
                         variant="outline"
                         value={currency.id}
-                        className="w-16 border-muted hover:cursor-pointer col-span-1"
+                        className="w-14 sm:w-16 border-muted hover:cursor-pointer col-span-1"
                         disabled={selectedSourceId === currency.id}
                       >
                         {currency.code}
@@ -275,7 +275,7 @@ export default function ExchangeForm({
           <InputGroup className="!py-5">
             <InputGroupInput
               placeholder="Source"
-              className="!text-lg"
+              className="md:text-lg"
               type="number"
               inputMode="decimal"
               value={sourceAmount}
@@ -321,7 +321,7 @@ export default function ExchangeForm({
         <div className="col-span-5 flex flex-col gap-2">
           <Input
             placeholder="Target"
-            className="!text-lg !py-5"
+            className="md:text-lg !py-5"
             type="number"
             inputMode="decimal"
             value={targetAmount}
@@ -331,7 +331,7 @@ export default function ExchangeForm({
         <div className="col-span-5 flex flex-col gap-2">
           <Input
             placeholder="Rate"
-            className="!text-lg !py-5"
+            className="md:text-lg !py-5"
             type="number"
             inputMode="decimal"
             value={rate}
@@ -342,7 +342,7 @@ export default function ExchangeForm({
         <div className="col-span-5 flex flex-col gap-2">
           <Button
             type="submit"
-            className="w-full !py-5 !text-lg"
+            className="w-full !py-5 md:text-lg"
             disabled={
               !selectedSourceId ||
               !selectedTargetId ||

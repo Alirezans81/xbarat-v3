@@ -24,28 +24,31 @@ type GetCurrenciesProps = {
 export const useGetCurrencyPairs = () => {
   const t = useTranslations("ApiErrors");
 
-  const fetch = async ({
-    setCurrencyPairs,
-    onError,
-    onSuccess,
-    onFinally,
-  }: GetCurrenciesProps & FetchProps) => {
-    await getCurrencyPairs()
-      .then((res) => {
-        setCurrencyPairs(res);
-        onSuccess?.(res);
-      })
-      .catch((err) => {
-        if (process.env.NEXT_PUBLIC_APP_MODE === "development") {
-          console.error(err.response);
-        }
-        toast.error(t(err.response.data.error.message));
-        onError?.(err);
-      })
-      .finally(() => {
-        onFinally?.();
-      });
-  };
+  const fetch = useCallback(
+    async ({
+      setCurrencyPairs,
+      onError,
+      onSuccess,
+      onFinally,
+    }: GetCurrenciesProps & FetchProps) => {
+      await getCurrencyPairs()
+        .then((res) => {
+          setCurrencyPairs(res);
+          onSuccess?.(res);
+        })
+        .catch((err) => {
+          if (process.env.NEXT_PUBLIC_APP_MODE === "development") {
+            console.error(err.response);
+          }
+          toast.error(t(err.response.data.error.message));
+          onError?.(err);
+        })
+        .finally(() => {
+          onFinally?.();
+        });
+    },
+    [t]
+  );
 
   return fetch;
 };

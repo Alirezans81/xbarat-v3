@@ -32,10 +32,11 @@ export default function AddWithdrawalDialog() {
   const [wallets, setWallets] = useState<Wallet[]>([]);
   const getWallets = useGetWallets();
   useEffect(() => {
+    if (!open) return;
     getWallets({
       setWallets,
     });
-  }, [getWallets]);
+  }, [getWallets, open]);
   const [WalletIdError, setWalletIdError] = useState("");
   const validateWalletId = (value: string) => {
     if (!value) {

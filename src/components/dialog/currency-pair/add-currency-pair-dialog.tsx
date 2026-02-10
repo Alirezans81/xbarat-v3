@@ -33,10 +33,11 @@ export default function AddCurrencyPairDialog() {
   const getCurrencies = useGetCurrencies();
   const [currencies, setCurrencies] = useState<Currency[]>([]);
   useEffect(() => {
+    if (!open) return;
     getCurrencies({
       setCurrencies,
     });
-  }, [getCurrencies]);
+  }, [getCurrencies, open]);
 
   const [fromCurrencyId, setFromCurrencyId] = useState("");
   const [fromCurrencyIdError, setFromCurrencyIdError] = useState("");

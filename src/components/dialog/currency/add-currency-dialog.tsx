@@ -71,10 +71,11 @@ export default function AddCurrencyDialog() {
   const [selectedChannels, setSelectedChannels] = useState<string[]>([]);
   const getPaymentChannels = useGetPaymentChannels();
   useEffect(() => {
+    if (!open) return;
     getPaymentChannels({
       setPaymentChannels,
     });
-  }, [getPaymentChannels]);
+  }, [getPaymentChannels, open]);
 
   const createCurrency = useCreateCurrency();
 

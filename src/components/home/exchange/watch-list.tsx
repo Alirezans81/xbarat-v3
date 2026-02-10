@@ -28,9 +28,11 @@ export default function WatchList({ selectedPair, setSelectedPair }: Props) {
   }, [getWatchList]);
 
   return (
-    <div className="max-w-[87dvw]">
+    <div className="px-10">
       {loading ? (
-        <Spinner className="w-10 h-10 text-primary mx-auto" />
+        <div className="h-88 flex justify-center items-center">
+          <Spinner className="w-10 h-10 text-primary mx-auto" />
+        </div>
       ) : (
         <CurrencyCarousel
           items={watchList}

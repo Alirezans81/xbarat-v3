@@ -32,31 +32,34 @@ export const useGetDeposits = () => {
   const checkTokenExpiration = useCheckTokenExpiration();
   const { token } = useAuthStore();
 
-  const fetch = ({
-    filters,
-    setDeposits,
-    onError,
-    onSuccess,
-    onFinally,
-  }: GetDepositsProps & FetchProps) => {
-    checkTokenExpiration(async () => {
-      await getDeposits(token, filters)
-        .then((res) => {
-          setDeposits(res);
-          onSuccess?.(res);
-        })
-        .catch((err) => {
-          if (process.env.NEXT_PUBLIC_APP_MODE === "development") {
-            console.error(err.response);
-          }
-          toast.error(t(err.response.data.error.message));
-          onError?.(err);
-        })
-        .finally(() => {
-          onFinally?.();
-        });
-    });
-  };
+  const fetch = useCallback(
+    ({
+      filters,
+      setDeposits,
+      onError,
+      onSuccess,
+      onFinally,
+    }: GetDepositsProps & FetchProps) => {
+      checkTokenExpiration(async () => {
+        await getDeposits(token, filters)
+          .then((res) => {
+            setDeposits(res);
+            onSuccess?.(res);
+          })
+          .catch((err) => {
+            if (process.env.NEXT_PUBLIC_APP_MODE === "development") {
+              console.error(err.response);
+            }
+            toast.error(t(err.response.data.error.message));
+            onError?.(err);
+          })
+          .finally(() => {
+            onFinally?.();
+          });
+      });
+    },
+    [checkTokenExpiration, t, token]
+  );
 
   return fetch;
 };
