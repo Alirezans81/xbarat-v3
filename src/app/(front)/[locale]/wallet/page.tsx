@@ -8,23 +8,24 @@ import { getCurrencies } from "@/api/currency/action";
 export default async function Wallet() {
   try {
     const currencies = await getCurrencies();
+    const wallets = await getWallets();
     return (
       <div className="w-full h-full min-h-11/12">
         {/* mobile: vertical stack */}
         <div className="flex sm:hidden">
-          <Deposit className="" currencies={[]} />
-          <Withdrawal className="" />
-          <Transfer className="" />
-          <Balance className="" />
+          <Deposit className="" currencies={currencies} />
+          <Withdrawal className="" currencies={currencies} />
+          <Transfer className="" currencies={currencies} />
+          <Balance className="" currencies={currencies} wallets={wallets} />
           <Report className="" />
         </div>
 
         {/* tablet: md layout */}
         <div className="hidden md:flex lg:hidden">
-          <Deposit className="" currencies={[]} />
-          <Withdrawal className="" />
-          <Transfer className="" />
-          <Balance className="" />
+          <Deposit className="" currencies={currencies} />
+          <Withdrawal className="" currencies={currencies} />
+          <Transfer className="" currencies={currencies} />
+          <Balance className="" currencies={currencies} wallets={wallets} />
           <Report className="" />
         </div>
 
@@ -32,9 +33,9 @@ export default async function Wallet() {
         <div className="hidden lg:flex w-full h-full justify-center items-center">
           <div className="w-fit min-w-10/12 max-w-11/12 grid grid-cols-3 grid-rows-3 gap-5">
             <Deposit className="col-span-1 row-span-1" currencies={currencies} />
-            <Withdrawal className="col-span-1 row-span-1" />
-            <Transfer className="col-span-1 row-span-1" />
-            <Balance className="col-span-1 row-span-2" />
+            <Withdrawal className="col-span-1 row-span-1" currencies={currencies} />
+            <Transfer className="col-span-1 row-span-1" currencies={currencies} />
+            <Balance className="col-span-1 row-span-2" currencies={currencies} wallets={wallets} />
             <Report className="col-span-2 row-span-2" />
           </div>
         </div>

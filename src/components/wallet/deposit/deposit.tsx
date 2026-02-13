@@ -98,17 +98,19 @@ const Deposit = ({ className, currencies }: Props) => {
     }, []);
 
     useEffect(() => {
-        setLoading(true);
-        getPaymentChannels({
-            setPaymentChannels,
-            filters: {
-                currencyId: currency?.id,
-            },
-            onFinally() {
-                setLoading(false);
-            },
-        });
-    }, [currency])
+        if (currency) {
+            setLoading(true);
+            getPaymentChannels({
+                setPaymentChannels,
+                filters: {
+                    currencyId: currency?.id,
+                },
+                onFinally() {
+                    setLoading(false);
+                },
+            });
+        }
+    }, [currency]);
 
     return (
         <section className={cn(className)}>
