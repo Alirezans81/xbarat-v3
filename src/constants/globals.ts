@@ -21,11 +21,11 @@ export const notLoggedInNavbarItems = [
     url: "/",
     icon: Home,
   },
-  {
-    title: "dashboard",
-    url: "/dashboard",
-    icon: LayoutDashboard,
-  },
+  // {
+  //   title: "dashboard",
+  //   url: "/dashboard",
+  //   icon: LayoutDashboard,
+  // },
 ];
 export const loggedInNavabarItems = [
   {
@@ -38,21 +38,21 @@ export const loggedInNavabarItems = [
     url: "/wallet",
     icon: Wallet,
   },
-  {
-    title: "report",
-    url: "/report",
-    icon: FileStack,
-  },
-  {
-    title: "dashboard",
-    url: "/dashboard",
-    icon: LayoutDashboard,
-  },
-  {
-    title: "profile",
-    url: "/profile",
-    icon: User,
-  },
+  // {
+  //   title: "report",
+  //   url: "/report",
+  //   icon: FileStack,
+  // },
+  // {
+  //   title: "dashboard",
+  //   url: "/dashboard",
+  //   icon: LayoutDashboard,
+  // },
+  // {
+  //   title: "profile",
+  //   url: "/profile",
+  //   icon: User,
+  // },
 ];
 export const adminLoggedInNavbarItems = [
   {
@@ -70,16 +70,16 @@ export const adminLoggedInNavbarItems = [
     url: "/wallet",
     icon: Wallet,
   },
-  {
-    title: "report",
-    url: "/report",
-    icon: FileStack,
-  },
-  {
-    title: "dashboard",
-    url: "/dashboard",
-    icon: LayoutDashboard,
-  },
+  // {
+  //   title: "report",
+  //   url: "/report",
+  //   icon: FileStack,
+  // },
+  // {
+  //   title: "dashboard",
+  //   url: "/dashboard",
+  //   icon: LayoutDashboard,
+  // },
 ];
 export const providerLoggedInNavbarItems = [
   {
