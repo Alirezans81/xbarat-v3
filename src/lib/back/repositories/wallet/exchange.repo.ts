@@ -3,6 +3,7 @@ import {
   CreateExchange,
   GetExchangesFilters,
   UpdateExchange,
+  AggregatedExchange,
 } from "@/types/back/wallet/exchange";
 
 export const exchangeRepository = {
@@ -38,7 +39,9 @@ export const exchangeRepository = {
     });
   },
 
-  getLast: async (filters?: GetExchangesFilters) => {
+  getLast: async (
+    filters?: GetExchangesFilters,
+  ): Promise<AggregatedExchange[]> => {
     const groupedExchanges = await prisma.exchange.groupBy({
       where: {
         ...(filters?.userId && { userId: filters.userId }),
