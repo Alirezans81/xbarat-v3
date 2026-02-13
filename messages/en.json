@@ -103,7 +103,10 @@
     "currencies": "Currencies",
     "submit": "Submit",
     "payment-channel": "Payment Channel",
-    "payment-channels": "Payment Channels"
+    "payment-channels": "Payment Channels",
+    "report": "Report",
+    "status": "Status",
+    "payment_method": "Payment Method"
   },
   "ApiErrors": {
     "serverError": "An error has occurred, Please try again later.",
