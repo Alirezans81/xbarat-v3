@@ -9,7 +9,7 @@ import {
 } from "@/components/ui/select";
 import { TicketStatus } from "@/generated/prisma";
 import { useRouter } from "@/i18n/navigation";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 interface Props {
   default_ticket_status?: TicketStatus;
@@ -20,11 +20,6 @@ export default function TicketFilters({ default_ticket_status }: Props) {
   );
 
   const router = useRouter();
-  useEffect(() => {
-    if (status) {
-      router.push(`/panel-admin/ticket?status=${status}`);
-    }
-  }, [status]);
 
   return (
     <div className="flex gap-2">
@@ -32,6 +27,7 @@ export default function TicketFilters({ default_ticket_status }: Props) {
         value={status}
         onValueChange={(value: TicketStatus) => {
           setStatus(value);
+          router.push(`/panel-admin/ticket?status=${value}`);
         }}
       >
         <SelectTrigger>

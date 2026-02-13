@@ -3,7 +3,8 @@ import Link from "next/link";
 import { ThemeToggle } from "./theme-toggle";
 import LocaleToggle from "./locale-toggle";
 import NavbarButton from "./navbar/navbar-action-button";
-import { SidebarTrigger } from "./ui/sidebar";
+import Image from "next/image";
+import SidebarButton from "./sidebar-button";
 
 export default async function Navbar() {
   const t = await getTranslations("Navbar");
@@ -12,11 +13,15 @@ export default async function Navbar() {
     <header className="w-full bg-transparent backdrop-blur-2xl shadow-lg shadow-muted-foreground/10 dark:shadow-secondary/10 transition-all duration-300 hover:shadow-none">
       <nav className="container mx-auto py-3 px-5 flex items-center justify-between">
         <div className="flex items-center gap-3">
-          <div className="sm:hidden flex justify-center items-center">
-            <SidebarTrigger size="icon" className="" />
-          </div>
+          <SidebarButton />
           <Link href="/" className="flex items-center gap-1">
-            <img alt="" className="w-10 h-10" src="/logo.png" />
+            <Image
+              width={512}
+              height={512}
+              alt=""
+              className="w-10 h-10"
+              src="/logo.png"
+            />
             <span className="text-2xl text-secondary">{t("xbarat")}</span>
           </Link>
         </div>

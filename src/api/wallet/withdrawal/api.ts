@@ -3,13 +3,17 @@ import { apiFetch } from "@/lib/front/utils/apiFetch";
 import { Token } from "@/types/front/globals";
 import {
   CreateWithdrawal,
+  GetWithdrawalsFilters,
   UpdateWithdrawal,
   Withdrawal,
 } from "@/types/front/wallet/withdrawal";
 
 const api = routes();
 
-export const getWithdrawals = (token: Token, filters?: any) => {
+export const getWithdrawals = (
+  token: Token,
+  filters?: GetWithdrawalsFilters
+) => {
   return apiFetch<Withdrawal[]>(api["withdrawal"], {
     method: "GET",
     params: filters,

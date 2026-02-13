@@ -1,7 +1,4 @@
 import { NextRequest, NextResponse } from "next/server";
-import fs from "fs";
-import path from "path";
-import { depositService } from "@/lib/back/services/wallet/deposit.service";
 import {
   ServerErrorResponse,
   UnauthorizedResponse,

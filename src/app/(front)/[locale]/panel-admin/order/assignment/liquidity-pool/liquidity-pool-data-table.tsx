@@ -32,6 +32,7 @@ export function LiquidityPoolDataTable<TData, TValue>({
 }: DataTableProps<TData, TValue>) {
   const [rowSelection, setRowSelection] = useState<Record<string, boolean>>({});
 
+  // eslint-disable-next-line react-hooks/incompatible-library
   const table = useReactTable({
     data,
     columns,

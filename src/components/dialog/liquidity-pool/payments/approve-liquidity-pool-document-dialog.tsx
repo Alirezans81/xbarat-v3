@@ -11,6 +11,7 @@ import {
 } from "../../../ui/dialog";
 import { useRouter } from "@/i18n/navigation";
 import { useApproveLiquidityPoolDocument } from "@/api/liquidity-pool/hook";
+import Image from "next/image";
 
 interface Props {
   liquidityPool_id: string;
@@ -33,6 +34,7 @@ export default function ApproveLiquidityPoolDocument({
     documents.map(() => false)
   );
   useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setIsApprovedDocuments(documents.map(() => false));
   }, [documents]);
 
@@ -83,16 +85,17 @@ export default function ApproveLiquidityPoolDocument({
           </span>
           {documents.map((document, index) => (
             <div
-              key={index}
+              key={document.bridgeTransferId}
               className="flex flex-col border border-input rounded-lg overflow-hidden"
             >
               <div className="w-full flex justify-between items-center px-4 py-3 bg-accent rounded-none">
                 <span>Amount:</span>
                 <span>{(+document.amount).toLocaleString()}</span>
               </div>
-              <img
+              <Image
                 alt="Uploaded Document"
                 src={document.documentUrl}
+                unoptimized
                 className="w-full opacity-100 bg-accent/50"
                 width={512}
                 height={512}

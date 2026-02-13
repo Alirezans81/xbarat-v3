@@ -13,8 +13,7 @@ import { Input } from "../../ui/input";
 import { useRouter } from "@/i18n/navigation";
 import { useCreateFeeUser } from "@/api/fee-user/hook";
 
-interface Props {}
-export default function AddFeeUserDialog({}: Props) {
+export default function AddFeeUserDialog() {
   const router = useRouter();
 
   const [open, setOpen] = useState(false);

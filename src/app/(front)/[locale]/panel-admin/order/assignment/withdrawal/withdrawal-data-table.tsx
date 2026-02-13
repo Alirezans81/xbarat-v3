@@ -32,6 +32,7 @@ export function WithdrawalDataTable<TData, TValue>({
 }: DataTableProps<TData, TValue>) {
   const [rowSelection, setRowSelection] = useState<Record<string, boolean>>({});
 
+  // eslint-disable-next-line react-hooks/incompatible-library
   const table = useReactTable({
     data,
     columns,
@@ -44,14 +45,14 @@ export function WithdrawalDataTable<TData, TValue>({
   });
 
   useEffect(() => {
-      if (onRowSelectionChange) {
-        const selectedRows = table
-          .getRowModel()
-          .rows.filter((row) => rowSelection[row.id])
-          .map((row) => row.original);
-        onRowSelectionChange(selectedRows);
-      }
-    }, [rowSelection, onRowSelectionChange, table]);
+    if (onRowSelectionChange) {
+      const selectedRows = table
+        .getRowModel()
+        .rows.filter((row) => rowSelection[row.id])
+        .map((row) => row.original);
+      onRowSelectionChange(selectedRows);
+    }
+  }, [rowSelection, onRowSelectionChange, table]);
 
   return (
     <div className="rounded-md border">

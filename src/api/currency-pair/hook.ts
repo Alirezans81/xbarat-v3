@@ -1,6 +1,7 @@
 import { FetchProps } from "@/types/front/globals";
 import { toast } from "sonner";
 import { useTranslations } from "next-intl";
+import { useCallback } from "react";
 import { useAuthStore } from "@/lib/front/stores/auth";
 import {
   createCurrencyPair,
@@ -23,27 +24,31 @@ type GetCurrenciesProps = {
 export const useGetCurrencyPairs = () => {
   const t = useTranslations("ApiErrors");
 
-  const fetch = async ({
-    setCurrencyPairs,
-    onError,
-    onSuccess,
-    onFinally,
-  }: GetCurrenciesProps & FetchProps) => {
-    await getCurrencyPairs()
-      .then((res) => {
-        setCurrencyPairs(res);
-        onSuccess?.(res);
-      })
-      .catch((err) => {
-        process.env.NEXT_PUBLIC_APP_MODE === "development" &&
-          console.error(err.response);
-        toast.error(t(err.response.data.error.message));
-        onError?.(err);
-      })
-      .finally(() => {
-        onFinally?.();
-      });
-  };
+  const fetch = useCallback(
+    async ({
+      setCurrencyPairs,
+      onError,
+      onSuccess,
+      onFinally,
+    }: GetCurrenciesProps & FetchProps) => {
+      await getCurrencyPairs()
+        .then((res) => {
+          setCurrencyPairs(res);
+          onSuccess?.(res);
+        })
+        .catch((err) => {
+          if (process.env.NEXT_PUBLIC_APP_MODE === "development") {
+            console.error(err.response);
+          }
+          toast.error(t(err.response.data.error.message));
+          onError?.(err);
+        })
+        .finally(() => {
+          onFinally?.();
+        });
+    },
+    [t]
+  );
 
   return fetch;
 };
@@ -69,8 +74,9 @@ export const useCreateCurrencyPair = () => {
           onSuccess?.(res);
         })
         .catch((err) => {
-          process.env.NEXT_PUBLIC_APP_MODE === "development" &&
+          if (process.env.NEXT_PUBLIC_APP_MODE === "development") {
             console.error(err.response);
+          }
           toast.error(t(err.response.data.error.message));
           onError?.(err);
         })
@@ -106,8 +112,9 @@ export const useUpdateCurrencyPair = () => {
           onSuccess?.(res);
         })
         .catch((err) => {
-          process.env.NEXT_PUBLIC_APP_MODE === "development" &&
+          if (process.env.NEXT_PUBLIC_APP_MODE === "development") {
             console.error(err.response);
+          }
           toast.error(t(err.response.data.error.message));
           onError?.(err);
         })
@@ -141,8 +148,9 @@ export const useDeleteCurrencyPair = () => {
           onSuccess?.(res);
         })
         .catch((err) => {
-          process.env.NEXT_PUBLIC_APP_MODE === "development" &&
+          if (process.env.NEXT_PUBLIC_APP_MODE === "development") {
             console.error(err.response);
+          }
           toast.error(t(err.response.data.error.message));
           onError?.(err);
         })
@@ -161,7 +169,7 @@ type GetWatchListProps = {
 export const useGetWatchList = () => {
   const t = useTranslations("ApiErrors");
 
-  const fetch = async ({
+  const fetch = useCallback(async ({
     setWatchList,
     onError,
     onSuccess,
@@ -173,15 +181,16 @@ export const useGetWatchList = () => {
         onSuccess?.(res);
       })
       .catch((err) => {
-        process.env.NEXT_PUBLIC_APP_MODE === "development" &&
+        if (process.env.NEXT_PUBLIC_APP_MODE === "development") {
           console.error(err.response);
+        }
         toast.error(t(err.response.data.error.message));
         onError?.(err);
       })
       .finally(() => {
         onFinally?.();
       });
-  };
+  }, [t]);
 
   return fetch;
 };

@@ -17,8 +17,7 @@ import { useGetPaymentChannels } from "@/api/payment-channel/hook";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Label } from "@/components/ui/label";
 
-interface Props {}
-export default function AddCurrencyDialog({}: Props) {
+export default function AddCurrencyDialog() {
   const router = useRouter();
 
   const [open, setOpen] = useState(false);
@@ -72,10 +71,11 @@ export default function AddCurrencyDialog({}: Props) {
   const [selectedChannels, setSelectedChannels] = useState<string[]>([]);
   const getPaymentChannels = useGetPaymentChannels();
   useEffect(() => {
+    if (!open) return;
     getPaymentChannels({
       setPaymentChannels,
     });
-  }, []);
+  }, [getPaymentChannels, open]);
 
   const createCurrency = useCreateCurrency();
 
@@ -185,9 +185,8 @@ export default function AddCurrencyDialog({}: Props) {
               </span>
               <div className="flex flex-wrap gap-4">
                 {paymentChannels.map((channel) => (
-                  <div className="flex items-center gap-2">
+                  <div key={channel.id} className="flex items-center gap-2">
                     <Checkbox
-                      key={channel.id}
                       value={channel.id}
                       checked={selectedChannels.includes(channel.id)}
                       onCheckedChange={(value) => {

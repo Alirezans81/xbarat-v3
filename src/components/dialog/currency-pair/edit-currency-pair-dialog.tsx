@@ -37,10 +37,11 @@ export default function EditCurrencyPairDialog({ data }: Props) {
   const getCurrencies = useGetCurrencies();
   const [currencies, setCurrencies] = useState<Currency[]>([]);
   useEffect(() => {
+    if (!open) return;
     getCurrencies({
       setCurrencies,
     });
-  }, []);
+  }, [getCurrencies, open]);
 
   const [fromCurrencyId, setFromCurrencyId] = useState(data.fromCurrencyId);
   const [fromCurrencyIdError, setFromCurrencyIdError] = useState("");
@@ -203,6 +204,11 @@ export default function EditCurrencyPairDialog({ data }: Props) {
               onBlur={(e) => validateRate(+e.target.value)}
               required
             />
+            {rateError && (
+              <span className="block text-sm mt-2 text-chart-5">
+                {rateError}
+              </span>
+            )}
           </div>
           <div className="relative">
             <Input
@@ -217,6 +223,11 @@ export default function EditCurrencyPairDialog({ data }: Props) {
             <span className="absolute right-4 top-1/2 -translate-y-1/2 text-muted-foreground">
               %
             </span>
+            {feePercentageError && (
+              <span className="block text-sm mt-2 text-chart-5">
+                {feePercentageError}
+              </span>
+            )}
           </div>
           <div>
             <div className="flex flex-col gap-4 bg-card p-3 rounded-md">

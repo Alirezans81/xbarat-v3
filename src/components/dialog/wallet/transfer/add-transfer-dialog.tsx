@@ -10,13 +10,10 @@ import {
   DialogTrigger,
 } from "../../../ui/dialog";
 import { Input } from "../../../ui/input";
-import { useRouter } from "@/i18n/navigation";
 
-interface Props {}
-export default function AddTransferDialog({}: Props) {
-  const router = useRouter();
-
+export default function AddTransferDialog() {
   const [open, setOpen] = useState(false);
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [loading, setLoading] = useState(false);
 
   const [name, setName] = useState("");

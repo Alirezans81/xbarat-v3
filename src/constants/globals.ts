@@ -1,13 +1,11 @@
 import {
-  BanknoteArrowDown,
-  BanknoteArrowUp,
   FileStack,
   Home,
   LayoutDashboard,
   MonitorCog,
   Wallet,
   WavesLadder,
-  User,
+  User
 } from "lucide-react";
 import { CountryCode } from "../types/front/globals";
 

@@ -21,6 +21,7 @@ export const liquidityPoolService = {
       }
 
       return liquidityPoolRepository.deleteById(id);
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     } catch (error) {
       throw new Error("unauthorized");
     }

@@ -15,64 +15,48 @@ export default function Layout({
       <div className="container mx-auto px-5 py-8 grid grid-cols-12 gap-6">
         <div className="col-span-3 bg-card rounded-xl flex flex-col gap-2 px-6 py-4">
           <span className="text-sm text-muted-foreground">PAGES</span>
-          <Link href="/panel-admin/order/assignment">
+          <Link href="/wallet">
             <Button
-              variant={
-                pathname !== "/panel-admin/order/assignment"
-                  ? "outline"
-                  : "default"
-              }
+              variant={pathname !== "/wallet" ? "outline" : "default"}
               className="w-full justify-start"
             >
-              Assignment
+              Overview
             </Button>
           </Link>
-          <Link href="/panel-admin/order/deposit">
+          <Link href="/wallet/deposit">
             <Button
-              variant={
-                pathname !== "/panel-admin/order/deposit"
-                  ? "outline"
-                  : "default"
-              }
+              variant={pathname !== "/wallet/deposit" ? "outline" : "default"}
               className="w-full justify-start"
             >
               Deposit
             </Button>
           </Link>
-          <Link href="/panel-admin/order/withdrawal">
+          <Link href="/wallet/exchange">
+            <Button
+              variant={pathname !== "/wallet/exchange" ? "outline" : "default"}
+              className="w-full justify-start"
+            >
+              Exchange
+            </Button>
+          </Link>
+          <Link href="/wallet/withdrawal">
             <Button
               variant={
-                pathname !== "/panel-admin/order/withdrawal"
-                  ? "outline"
-                  : "default"
+                pathname !== "/wallet/withdrawal" ? "outline" : "default"
               }
               className="w-full justify-start"
             >
               Withdrawal
             </Button>
           </Link>
-          <Link href="/panel-admin/order/transfer">
+          {/* <Link href="/wallet/transfer">
             <Button
-              variant={
-                pathname !== "/panel-admin/order/transfer"
-                  ? "outline"
-                  : "default"
-              }
+              variant={pathname !== "/wallet/transfer" ? "outline" : "default"}
               className="w-full justify-start"
             >
               Transfer
             </Button>
-          </Link>
-          <Link href="/panel-admin/order/refund">
-            <Button
-              variant={
-                pathname !== "/panel-admin/order/refund" ? "outline" : "default"
-              }
-              className="w-full justify-start"
-            >
-              Refund
-            </Button>
-          </Link>
+          </Link> */}
         </div>
         <div className="col-span-9">{children}</div>
       </div>

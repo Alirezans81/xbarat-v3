@@ -3,13 +3,17 @@ import { apiFetch } from "@/lib/front/utils/apiFetch";
 import { Token } from "@/types/front/globals";
 import {
   CreateLiquidityPool,
+  GetLiquidityPoolsFilters,
   LiquidityPool,
   UpdateLiquidityPool,
 } from "@/types/front/liquidityPool";
 
 const api = routes();
 
-export const getLiquidityPools = (token: Token, filters?: any) => {
+export const getLiquidityPools = (
+  token: Token,
+  filters?: GetLiquidityPoolsFilters
+) => {
   return apiFetch<LiquidityPool[]>(api["liquidity-pool"], {
     params: filters,
     token,

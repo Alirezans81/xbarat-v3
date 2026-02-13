@@ -36,7 +36,7 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql;
 
-CREATE TRIGGER trigger_create_wallets_on_user
+CREATE OR REPLACE TRIGGER trigger_create_wallets_on_user
 AFTER INSERT ON "User"
 FOR EACH ROW
 EXECUTE FUNCTION create_wallets_for_new_user();
@@ -76,7 +76,7 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql;
 
-CREATE TRIGGER trigger_create_wallets_on_currency
+CREATE OR REPLACE TRIGGER trigger_create_wallets_on_currency
 AFTER INSERT ON "Currency"
 FOR EACH ROW
 EXECUTE FUNCTION create_wallets_for_new_currency();
@@ -119,7 +119,7 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql;
 
-CREATE TRIGGER deposit_completed_trigger
+CREATE OR REPLACE TRIGGER deposit_completed_trigger
 AFTER UPDATE OF status ON "Deposit"
 FOR EACH ROW
 EXECUTE FUNCTION update_balances_on_deposit();
@@ -166,7 +166,7 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql;
 
-CREATE TRIGGER update_balances_on_create_withdrawal_trigger
+CREATE OR REPLACE TRIGGER update_balances_on_create_withdrawal_trigger
 BEFORE INSERT ON "Withdrawal"
 FOR EACH ROW
 EXECUTE FUNCTION update_balances_on_create_withdrawal();
@@ -191,7 +191,7 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql;
 
-CREATE TRIGGER update_balances_on_delete_withdrawal_trigger
+CREATE OR REPLACE TRIGGER update_balances_on_delete_withdrawal_trigger
 AFTER DELETE ON "Withdrawal"
 FOR EACH ROW
 EXECUTE FUNCTION update_balances_on_delete_withdrawal();
@@ -239,7 +239,7 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql;
 
-CREATE TRIGGER withdrawal_completed_trigger
+CREATE OR REPLACE TRIGGER withdrawal_completed_trigger
 AFTER UPDATE OF status ON "Withdrawal"
 FOR EACH ROW
 EXECUTE FUNCTION update_balances_on_withdrawal();
@@ -305,7 +305,7 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql;
 
-CREATE TRIGGER trigger_wallet_on_update
+CREATE OR REPLACE TRIGGER trigger_wallet_on_update
 BEFORE INSERT ON "Exchange"
 FOR EACH ROW
 EXECUTE FUNCTION wallet_update_on_create_exchange();
@@ -360,7 +360,7 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql;
 
-CREATE TRIGGER trigger_wallet_on_exchange_change_remaining_amount
+CREATE OR REPLACE TRIGGER trigger_wallet_on_exchange_change_remaining_amount
 AFTER UPDATE OF "remainingAmount" ON "Exchange"
 FOR EACH ROW
 EXECUTE FUNCTION wallet_update_on_exchange_change_remaining_amount();
@@ -426,7 +426,7 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql;
 
-CREATE TRIGGER trigger_wallet_on_exchange_status_change
+CREATE OR REPLACE TRIGGER trigger_wallet_on_exchange_status_change
 AFTER UPDATE OF status ON "Exchange"
 FOR EACH ROW
 EXECUTE FUNCTION wallet_handle_exchange_status_change();

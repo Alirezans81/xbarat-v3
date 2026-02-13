@@ -13,6 +13,7 @@ import { Input } from "../../../ui/input";
 import { useRouter } from "@/i18n/navigation";
 import { useUploadLiquidityPoolDocument } from "@/api/liquidity-pool/hook";
 import { Upload } from "lucide-react";
+import Image from "next/image";
 
 interface Props {
   liquidityPool_id: string;
@@ -81,7 +82,7 @@ export default function UploadLiquidityPoolDocument({
               accept="image/*"
               onChange={(e) =>
                 setDocument(
-                  e.target.files?.length ? e.target.files[0] : undefined
+                  e.target.files?.length ? e.target.files[0] : undefined,
                 )
               }
               required
@@ -89,9 +90,10 @@ export default function UploadLiquidityPoolDocument({
 
             <div className="w-full relative">
               {document ? (
-                <img
+                <Image
                   alt="Uploaded Document"
                   src={URL.createObjectURL(document)}
+                  unoptimized
                   className="w-full opacity-100 bg-accent rounded-2xl"
                   width={512}
                   height={512}

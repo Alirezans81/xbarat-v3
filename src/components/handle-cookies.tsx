@@ -11,11 +11,12 @@ export default function HandleCookies() {
   const deleteCookie = useDeleteCookie();
 
   useEffect(() => {
-    token.value
-      ? setCookie("token", JSON.stringify(token))
-      : deleteCookie("token");
-    user ? setCookie("user", JSON.stringify(user)) : deleteCookie("user");
-  }, [token, user]);
+    if (token.value) setCookie("token", JSON.stringify(token));
+    else deleteCookie("token");
+
+    if (user) setCookie("user", JSON.stringify(user));
+    else deleteCookie("user");
+  }, [deleteCookie, setCookie, token, user]);
 
   return <></>;
 }

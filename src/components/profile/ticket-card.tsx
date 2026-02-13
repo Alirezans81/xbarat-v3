@@ -19,7 +19,6 @@ import { useState, useEffect, useRef, ChangeEvent } from "react";
 import { Ticket } from "@/types/front/ticket";
 import { Textarea } from "../ui/textarea";
 import Upload from "../../../public/Profile/Upload.svg";
-import Detail from "../../../public/Profile/detail.svg";
 import { useCreateTicketMessage, useCreateTicket } from "@/api/ticket/hook";
 import {
   Table,
@@ -73,7 +72,6 @@ export const createTicketMessageFormData = (
 };
 
 export default function TicketCard({ className, previousTickets }: Props) {
-  const [loading, setLoading] = useState(true);
   const [ticket, setTicket] = useState<Partial<Ticket>>();
   const [ticketMessage, setTicketMessage] = useState<TicketMessageState>({
     message: "",

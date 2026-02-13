@@ -22,7 +22,7 @@ export default function Exchange({
   const [rate, setRate] = useState<number>();
 
   return (
-    <div className="flex flex-col gap-4 h-full">
+    <div className="w-screen px-5 sm:px-10 flex flex-col gap-4 h-full">
       <ExchangeForm
         rate={rate}
         setRate={setRate}

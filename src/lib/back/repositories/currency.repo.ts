@@ -79,9 +79,9 @@ export const currencyRepository = {
       where: { id },
       data: {
         ...restData,
-        paymentChannels: data.paymentChannelIds
+        paymentChannels: paymentChannelIds
           ? {
-              set: data.paymentChannelIds.map((id) => ({ id })),
+              set: paymentChannelIds.map((id) => ({ id })),
             }
           : undefined,
       },

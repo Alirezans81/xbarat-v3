@@ -56,7 +56,7 @@ export default function DeleteCurrencyDialog({ currency_id }: Props) {
             currency and remove the data from servers.
           </AlertDialogDescription>
           <AlertDialogDescription className="text-destructive">
-            This also cause deleting all users' wallets, connected to the
+            This also cause deleting all users&apos; wallets, connected to the
             currency.
           </AlertDialogDescription>
         </AlertDialogHeader>

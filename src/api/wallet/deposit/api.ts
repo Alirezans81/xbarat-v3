@@ -4,13 +4,15 @@ import { Token } from "@/types/front/globals";
 import {
   CreateDeposit,
   Deposit,
+  GetDepositsFilters,
   UpdateDeposit,
   UploadDepositDocument,
 } from "@/types/front/wallet/deposit";
+import { BridgeTransfer } from "@/types/front/bridgeTransfer";
 
 const api = routes();
 
-export const getDeposits = (token: Token, filters?: any) => {
+export const getDeposits = (token: Token, filters?: GetDepositsFilters) => {
   return apiFetch<Deposit[]>(api["deposit"], {
     method: "GET",
     params: filters,
@@ -63,7 +65,7 @@ export const getMatchedDepositBridgeTransfers = (
   token: Token,
   deposit_id: string
 ) => {
-  return apiFetch<any[]>(
+  return apiFetch<BridgeTransfer[]>(
     api["deposit"] + "/" + deposit_id + "/matched-bridge-transfers",
     {
       method: "GET",
@@ -76,7 +78,7 @@ export const getMatchedLiquidityPoolBridgeTransfers = (
   token: Token,
   liquidityPool_id: string
 ) => {
-  return apiFetch<any[]>(
+  return apiFetch<BridgeTransfer[]>(
     api["liquidity-pool"] +
       "/" +
       liquidityPool_id +

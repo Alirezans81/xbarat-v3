@@ -3,13 +3,17 @@ import { apiFetch } from "@/lib/front/utils/apiFetch";
 import { Token } from "@/types/front/globals";
 import {
   CreatePaymentChannel,
+  GetPaymentChannelsFilters,
   PaymentChannel,
   UpdatePaymentChannel,
 } from "@/types/front/paymentChannel";
 
 const api = routes();
 
-export const getPaymentChannels = (token: Token, filters?: any) => {
+export const getPaymentChannels = (
+  token: Token,
+  filters?: GetPaymentChannelsFilters
+) => {
   return apiFetch<PaymentChannel[]>(api["payment-channel"], {
     params: filters,
     token,

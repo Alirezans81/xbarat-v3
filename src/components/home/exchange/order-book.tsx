@@ -9,7 +9,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { addComma } from "@/lib/front/utils/number";
 import { useGetLastExchanges } from "@/api/wallet/exchange/hooks";
 
@@ -47,11 +47,11 @@ export default function OrderBook({
   const getOrders = useGetLastExchanges();
   const getReverseOrders = useGetLastExchanges();
 
-  const resetOrderBooks = () => {
+  const resetOrderBooks = useCallback(() => {
     setOrderBooks([]);
     setReverseOrderBooks([]);
-  };
-  const fetchOrderBooks = async () => {
+  }, []);
+  const fetchOrderBooks = useCallback(async () => {
     if (currencyPair) {
       try {
         setLoading(true);
@@ -80,10 +80,10 @@ export default function OrderBook({
     } else {
       resetOrderBooks();
     }
-  };
+  }, [currencyPair, currencyPairs, getOrders, getReverseOrders, resetOrderBooks]);
   useEffect(() => {
     fetchOrderBooks();
-  }, [currencyPair]);
+  }, [fetchOrderBooks]);
 
   const fromCurr = currencyPair?.fromCurrency.code;
   const toCurr = currencyPair?.toCurrency.code;
@@ -97,9 +97,9 @@ export default function OrderBook({
       <span className="w-fit h-fit text-foreground text-3xl">
         {t("latest-transaction")}
       </span>
-      <div className="w-full h-full flex flex-row gap-x-5 justify-center items-start">
+      <div className="w-full h-full flex flex-col-reverse sm:flex-row gap-x-5 justify-center items-center">
         {/* First Table */}
-        <div className="w-fit h-fit flex flex-col gap-y-4">
+        <div className="w-fit h-fit flex flex-col gap-y-4 !mt-5 sm:mt-0">
           <span className="text-wine flex justify-center text-3xl">Sell</span>
           <div
             className={`w-full h-fit rounded-2xl p-3 bg-card backdrop-blur-sm`}

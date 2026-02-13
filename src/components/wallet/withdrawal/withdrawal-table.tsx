@@ -1,7 +1,6 @@
 "use client";
 
 import DeleteWithdrawalDialog from "@/components/dialog/wallet/withdrawal/delete-withdrawal-dialog";
-import EditWithdrawalDialog from "@/components/dialog/wallet/withdrawal/edit-withdrawal-dialog";
 import ApproveWithdrawalDocument from "@/components/dialog/wallet/withdrawal/approve-withdrawal-document";
 import {
   Table,

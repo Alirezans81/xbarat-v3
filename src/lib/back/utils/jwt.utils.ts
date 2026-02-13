@@ -10,6 +10,7 @@ export const jwtUtils = {
   verify: (token: string) => {
     try {
       return jwt.verify(token, JWT_SECRET) as { id: string };
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     } catch (err) {
       return null;
     }

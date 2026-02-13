@@ -14,13 +14,14 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
+import { useBreakpointValue } from "@/hooks/use-breakpoint";
 import { addComma, roundDown } from "@/lib/front/utils/number";
 import { Currency } from "@/types/front/currency";
 import { CurrencyPair } from "@/types/front/currencyPair";
 import { Wallet } from "@/types/front/wallet";
 import { ChevronDown } from "lucide-react";
 import Image from "next/image";
-import { useEffect, useState } from "react";
+import { useMemo, useState } from "react";
 
 interface Props {
   rate: number | undefined;
@@ -40,101 +41,89 @@ export default function ExchangeForm({
   selectedPair,
   setSelectedPair,
 }: Props) {
-  const [selectedSourceId, setSelectedSourceId] = useState("");
+  const [draftSourceId, setDraftSourceId] = useState(
+    selectedPair?.fromCurrency.id ?? "",
+  );
   const [sourcesPopoverOpen, setSourcesPopoverOpen] = useState(false);
 
-  const [selectedTargetId, setSelectedTargetId] = useState("");
+  const [draftTargetId, setDraftTargetId] = useState(
+    selectedPair?.toCurrency.id ?? "",
+  );
   const [targetsPopoverOpen, setTargetsPopoverOpen] = useState(false);
+
+  const selectedSourceId = selectedPair?.fromCurrency.id ?? draftSourceId;
+  const selectedTargetId = selectedPair?.toCurrency.id ?? draftTargetId;
 
   const selectedSource = currencies.find((e) => e.id === selectedSourceId);
   const selectedTarget = currencies.find((e) => e.id === selectedTargetId);
   const foundWallet = wallets.find((e) => e.currencyId === selectedSourceId);
 
-  const [sourceAmount, setSourceAmount] = useState<number>();
-  const [targetAmount, setTargetAmount] = useState<number>();
+  const [amount, setAmount] = useState<number>();
+  const [lastEdited, setLastEdited] = useState<"source" | "target">("source");
 
-  const SPLIT_INDEX = 4;
+  const SPLIT_INDEX = useBreakpointValue({ base: 2, sm: 3, md: 4, xl: 5 });
 
-  useEffect(() => {
-    if (selectedPair) {
-      const foundSource = currencies.find(
-        (e) => e.id === selectedPair.fromCurrency.id
-      );
-      if (foundSource) setSelectedSourceId(foundSource.id);
-
-      const foundTarget = currencies.find(
-        (e) => e.id === selectedPair.toCurrency.id
-      );
-      if (foundTarget) setSelectedTargetId(foundTarget.id);
-    }
-  }, [selectedPair]);
-
-  useEffect(() => {
-    if (selectedSourceId && selectedTargetId) {
+  const syncSelectedPair = (nextSourceId: string, nextTargetId: string) => {
+    if (nextSourceId && nextTargetId) {
       const foundCurrencyPair = currencyPairs.find(
         (e) =>
-          e.fromCurrencyId === selectedSourceId &&
-          e.toCurrencyId === selectedTargetId
+          e.fromCurrencyId === nextSourceId && e.toCurrencyId === nextTargetId,
       );
 
       if (foundCurrencyPair) {
         setSelectedPair(foundCurrencyPair);
+        return;
       }
-    } else {
-      setSelectedPair(null);
     }
-  }, [selectedSourceId, selectedTargetId]);
 
-  const handleRateChange = (newRate: number) => {
-    if (selectedPair && sourceAmount && selectedTarget && newRate) {
-      if (selectedPair.isInverseRate) {
-        setTargetAmount(+sourceAmount * +newRate);
-      } else {
-        setTargetAmount(
-          roundDown(+sourceAmount / +newRate, selectedTarget.decimals)
-        );
-      }
-    }
+    setSelectedPair(null);
   };
-  useEffect(() => {
-    if (rate) {
-      handleRateChange(rate);
+
+  const { sourceAmount, targetAmount } = useMemo(() => {
+    if (!selectedPair || !rate || !amount) {
+      return {
+        sourceAmount: lastEdited === "source" ? amount : undefined,
+        targetAmount: lastEdited === "target" ? amount : undefined,
+      };
     }
-  }, [rate]);
+
+    if (lastEdited === "source") {
+      const computedTarget = selectedPair.isInverseRate
+        ? amount * rate
+        : selectedTarget
+          ? roundDown(amount / rate, selectedTarget.decimals)
+          : undefined;
+      return { sourceAmount: amount, targetAmount: computedTarget };
+    }
+
+    const computedSource = selectedPair.isInverseRate
+      ? selectedSource
+        ? roundDown(amount / rate, selectedSource.decimals)
+        : undefined
+      : amount * rate;
+    return { sourceAmount: computedSource, targetAmount: amount };
+  }, [amount, lastEdited, rate, selectedPair, selectedSource, selectedTarget]);
 
   const handleSourceAmountChange = (newSourceAmount: number) => {
-    setSourceAmount(newSourceAmount);
-    if (selectedPair && newSourceAmount && selectedTarget && rate) {
-      if (selectedPair.isInverseRate) {
-        setTargetAmount(+newSourceAmount * +rate);
-      } else {
-        setTargetAmount(
-          roundDown(+newSourceAmount / +rate, selectedTarget.decimals)
-        );
-      }
-    }
+    setLastEdited("source");
+    setAmount(newSourceAmount);
   };
 
   const handleTargetAmountChange = (newTargetAmount: number) => {
-    setTargetAmount(newTargetAmount);
-    if (selectedPair && newTargetAmount && selectedSource && rate) {
-      if (selectedPair.isInverseRate) {
-        setSourceAmount(
-          roundDown(+newTargetAmount / +rate, selectedSource.decimals)
-        );
-      } else {
-        setSourceAmount(+newTargetAmount * +rate);
-      }
-    }
+    setLastEdited("target");
+    setAmount(newTargetAmount);
   };
 
   const handleSwitch = () => {
     const oldSourceId = selectedSourceId;
-    setSelectedSourceId(selectedTargetId);
-    setSelectedTargetId(oldSourceId);
-    const oldSourceAmount = sourceAmount;
-    setSourceAmount(targetAmount);
-    setTargetAmount(oldSourceAmount);
+    setDraftSourceId(selectedTargetId);
+    setDraftTargetId(oldSourceId);
+    syncSelectedPair(selectedTargetId, oldSourceId);
+    if (lastEdited === "source") {
+      setAmount(targetAmount);
+    } else {
+      setAmount(sourceAmount);
+    }
   };
 
   return (
@@ -145,19 +134,22 @@ export default function ExchangeForm({
           e.preventDefault();
         }}
       >
-        <div className="col-span-5 flex flex-col gap-2">
+        <div className="col-span-5 flex gap-2 overflow-visible">
           <ToggleGroup
             type="single"
             spacing={2}
             value={selectedSourceId}
-            onValueChange={(value) => setSelectedSourceId(value)}
+            onValueChange={(value) => {
+              setDraftSourceId(value);
+              syncSelectedPair(value, selectedTargetId);
+            }}
           >
             {currencies.slice(0, SPLIT_INDEX).map((currency) => (
               <ToggleGroupItem
                 key={currency.id}
                 variant="outline"
                 value={currency.id}
-                className="w-16 border-muted hover:cursor-pointer"
+                className="w-14 sm:w-16 border-muted hover:cursor-pointer"
                 disabled={selectedTargetId === currency.id}
               >
                 {currency.code}
@@ -186,7 +178,10 @@ export default function ExchangeForm({
                   type="single"
                   spacing={2}
                   value={selectedSourceId}
-                  onValueChange={(value) => setSelectedSourceId(value)}
+                  onValueChange={(value) => {
+                    setDraftSourceId(value);
+                    syncSelectedPair(value, selectedTargetId);
+                  }}
                   className="grid grid-cols-2"
                 >
                   {currencies
@@ -196,7 +191,7 @@ export default function ExchangeForm({
                         key={currency.id}
                         variant="outline"
                         value={currency.id}
-                        className="w-16 border-muted hover:cursor-pointer col-span-1"
+                        className="w-14 sm:w-16 border-muted hover:cursor-pointer col-span-1"
                         disabled={selectedTargetId === currency.id}
                       >
                         {currency.code}
@@ -208,19 +203,22 @@ export default function ExchangeForm({
           )}
         </div>
         <div className="col-span-1 flex flex-col gap-2" />
-        <div className="col-span-5 flex flex-col gap-2">
+        <div className="col-span-5 flex gap-2 overflow-visible">
           <ToggleGroup
             type="single"
             spacing={2}
             value={selectedTargetId}
-            onValueChange={(value) => setSelectedTargetId(value)}
+            onValueChange={(value) => {
+              setDraftTargetId(value);
+              syncSelectedPair(selectedSourceId, value);
+            }}
           >
             {currencies.slice(0, SPLIT_INDEX).map((currency) => (
               <ToggleGroupItem
                 key={currency.id}
                 variant="outline"
                 value={currency.id}
-                className="w-16 border-muted hover:cursor-pointer"
+                className="w-14 sm:w-16 border-muted hover:cursor-pointer"
                 disabled={selectedSourceId === currency.id}
               >
                 {currency.code}
@@ -249,7 +247,10 @@ export default function ExchangeForm({
                   type="single"
                   spacing={2}
                   value={selectedTargetId}
-                  onValueChange={(value) => setSelectedTargetId(value)}
+                  onValueChange={(value) => {
+                    setDraftTargetId(value);
+                    syncSelectedPair(selectedSourceId, value);
+                  }}
                   className="grid grid-cols-2"
                 >
                   {currencies
@@ -259,7 +260,7 @@ export default function ExchangeForm({
                         key={currency.id}
                         variant="outline"
                         value={currency.id}
-                        className="w-16 border-muted hover:cursor-pointer col-span-1"
+                        className="w-14 sm:w-16 border-muted hover:cursor-pointer col-span-1"
                         disabled={selectedSourceId === currency.id}
                       >
                         {currency.code}
@@ -274,7 +275,7 @@ export default function ExchangeForm({
           <InputGroup className="!py-5">
             <InputGroupInput
               placeholder="Source"
-              className="!text-lg"
+              className="md:text-lg"
               type="number"
               inputMode="decimal"
               value={sourceAmount}
@@ -320,7 +321,7 @@ export default function ExchangeForm({
         <div className="col-span-5 flex flex-col gap-2">
           <Input
             placeholder="Target"
-            className="!text-lg !py-5"
+            className="md:text-lg !py-5"
             type="number"
             inputMode="decimal"
             value={targetAmount}
@@ -330,7 +331,7 @@ export default function ExchangeForm({
         <div className="col-span-5 flex flex-col gap-2">
           <Input
             placeholder="Rate"
-            className="!text-lg !py-5"
+            className="md:text-lg !py-5"
             type="number"
             inputMode="decimal"
             value={rate}
@@ -341,7 +342,7 @@ export default function ExchangeForm({
         <div className="col-span-5 flex flex-col gap-2">
           <Button
             type="submit"
-            className="w-full !py-5 !text-lg"
+            className="w-full !py-5 md:text-lg"
             disabled={
               !selectedSourceId ||
               !selectedTargetId ||

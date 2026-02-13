@@ -2,6 +2,7 @@ import { useCheckTokenExpiration } from "@/hooks/use-auth";
 import { useAuthStore } from "@/lib/front/stores/auth";
 import { FetchProps } from "@/types/front/globals";
 import { useTranslations } from "next-intl";
+import { useCallback } from "react";
 import {
   updateTicketStatus,
   createTicketMessage,
@@ -44,8 +45,9 @@ export const useUpdateTicketStatus = () => {
           onSuccess?.(res);
         })
         .catch((err) => {
-          process.env.NEXT_PUBLIC_APP_MODE === "development" &&
+          if (process.env.NEXT_PUBLIC_APP_MODE === "development") {
             console.error(err.response);
+          }
           toast.error(t(err.response.data.error.message));
           onError?.(err);
         })
@@ -75,8 +77,9 @@ export const useCreateTicketMessage = () => {
           onSuccess?.(res);
         })
         .catch((err) => {
-          process.env.NEXT_PUBLIC_APP_MODE === "development" &&
+          if (process.env.NEXT_PUBLIC_APP_MODE === "development") {
             console.error(err.response);
+          }
           toast.error(t(err.response.data.error.message));
           onError?.(err);
         })
@@ -106,8 +109,9 @@ export const useCreateTicket = () => {
           onSuccess?.(res);
         })
         .catch((err) => {
-          process.env.NEXT_PUBLIC_APP_MODE === "development" &&
+          if (process.env.NEXT_PUBLIC_APP_MODE === "development") {
             console.error(err.response);
+          }
           toast.error(t(err.response.data.error.message));
           onError?.(err);
         })
@@ -125,22 +129,26 @@ export const useGetTickets = () => {
   const checkTokenExpiration = useCheckTokenExpiration();
   const { token } = useAuthStore();
 
-  const fetch = ({ onError, onSuccess, onFinally }: FetchProps) => {
-    checkTokenExpiration(async () => {
-      await getTickets(token)
-        .then((res) => {
-          onSuccess?.(res);
-        })
-        .catch((err) => {
-          process.env.NEXT_PUBLIC_APP_MODE === "development" &&
-            console.error(err.response);
-          toast.error(t(err.response.data.error.message));
-          onError?.(err);
-        })
-        .finally(() => {
-          onFinally?.();
-        });
-    });
-  };
+  const fetch = useCallback(
+    ({ onError, onSuccess, onFinally }: FetchProps) => {
+      checkTokenExpiration(async () => {
+        await getTickets(token)
+          .then((res) => {
+            onSuccess?.(res);
+          })
+          .catch((err) => {
+            if (process.env.NEXT_PUBLIC_APP_MODE === "development") {
+              console.error(err.response);
+            }
+            toast.error(t(err.response.data.error.message));
+            onError?.(err);
+          })
+          .finally(() => {
+            onFinally?.();
+          });
+      });
+    },
+    [checkTokenExpiration, t, token]
+  );
   return fetch;
 };

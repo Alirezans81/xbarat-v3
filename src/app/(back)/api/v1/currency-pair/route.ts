@@ -8,7 +8,7 @@ import {
 import { jwtUtils } from "@/lib/back/utils/jwt.utils";
 import { NextRequest, NextResponse } from "next/server";
 
-export async function GET(_request: NextRequest) {
+export async function GET() {
   try {
     const currencyPairs = await currencyPairService.getAll();
     return NextResponse.json(currencyPairs, { status: 200 });

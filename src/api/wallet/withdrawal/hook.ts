@@ -1,4 +1,5 @@
 import { FetchProps } from "@/types/front/globals";
+import { useCallback } from "react";
 import { toast } from "sonner";
 import { useTranslations } from "next-intl";
 import { useAuthStore } from "@/lib/front/stores/auth";
@@ -27,30 +28,34 @@ export const useGetWithdrawals = () => {
   const checkTokenExpiration = useCheckTokenExpiration();
   const { token } = useAuthStore();
 
-  const fetch = ({
-    filters,
-    setWithdrawals,
-    onError,
-    onSuccess,
-    onFinally,
-  }: GetWithdrawalsProps & FetchProps) => {
-    checkTokenExpiration(async () => {
-      await getWithdrawals(token, filters)
-        .then((res) => {
-          setWithdrawals(res);
-          onSuccess?.(res);
-        })
-        .catch((err) => {
-          process.env.NEXT_PUBLIC_APP_MODE === "development" &&
-            console.error(err.response);
-          toast.error(t(err.response.data.error.message));
-          onError?.(err);
-        })
-        .finally(() => {
-          onFinally?.();
-        });
-    });
-  };
+  const fetch = useCallback(
+    ({
+      filters,
+      setWithdrawals,
+      onError,
+      onSuccess,
+      onFinally,
+    }: GetWithdrawalsProps & FetchProps) => {
+      checkTokenExpiration(async () => {
+        await getWithdrawals(token, filters)
+          .then((res) => {
+            setWithdrawals(res);
+            onSuccess?.(res);
+          })
+          .catch((err) => {
+            if (process.env.NEXT_PUBLIC_APP_MODE === "development") {
+              console.error(err.response);
+            }
+            toast.error(t(err.response.data.error.message));
+            onError?.(err);
+          })
+          .finally(() => {
+            onFinally?.();
+          });
+      });
+    },
+    [checkTokenExpiration, t, token]
+  );
 
   return fetch;
 };
@@ -76,8 +81,9 @@ export const useCreateWithdrawal = () => {
           onSuccess?.(res);
         })
         .catch((err) => {
-          process.env.NEXT_PUBLIC_APP_MODE === "development" &&
+          if (process.env.NEXT_PUBLIC_APP_MODE === "development") {
             console.error(err.response);
+          }
           toast.error(t(err.response.data.error.message));
           onError?.(err);
         })
@@ -113,8 +119,9 @@ export const useUpdateWithdrawal = () => {
           onSuccess?.(res);
         })
         .catch((err) => {
-          process.env.NEXT_PUBLIC_APP_MODE === "development" &&
+          if (process.env.NEXT_PUBLIC_APP_MODE === "development") {
             console.error(err.response);
+          }
           toast.error(t(err.response.data.error.message));
           onError?.(err);
         })
@@ -148,8 +155,9 @@ export const useDeleteWithdrawal = () => {
           onSuccess?.(res);
         })
         .catch((err) => {
-          process.env.NEXT_PUBLIC_APP_MODE === "development" &&
+          if (process.env.NEXT_PUBLIC_APP_MODE === "development") {
             console.error(err.response);
+          }
           toast.error(t(err.response.data.error.message));
           onError?.(err);
         })
@@ -183,8 +191,9 @@ export const useApproveWithdrawalDocument = () => {
           onSuccess?.(res);
         })
         .catch((err) => {
-          process.env.NEXT_PUBLIC_APP_MODE === "development" &&
+          if (process.env.NEXT_PUBLIC_APP_MODE === "development") {
             console.error(err.response);
+          }
           toast.error(t(err.response.data.error.message));
           onError?.(err);
         })

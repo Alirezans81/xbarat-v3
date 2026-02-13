@@ -10,7 +10,7 @@ import {
   DialogTrigger,
 } from "../../ui/dialog";
 import { Input } from "../../ui/input";
-import { useCreateCurrency, useUpdateCurrency } from "@/api/currency/hook";
+import { useUpdateCurrency } from "@/api/currency/hook";
 import { useRouter } from "@/i18n/navigation";
 import { Currency } from "@/types/front/currency";
 import { useGetPaymentChannels } from "@/api/payment-channel/hook";
@@ -77,10 +77,11 @@ export default function EditCurrencyDialog({ data }: Props) {
   );
   const getPaymentChannels = useGetPaymentChannels();
   useEffect(() => {
+    if (!open) return;
     getPaymentChannels({
       setPaymentChannels,
     });
-  }, []);
+  }, [getPaymentChannels, open]);
 
   const updateCurrency = useUpdateCurrency();
 
@@ -191,9 +192,8 @@ export default function EditCurrencyDialog({ data }: Props) {
               </span>
               <div className="flex flex-wrap gap-4">
                 {paymentChannels.map((channel) => (
-                  <div className="flex items-center gap-2">
+                  <div key={channel.id} className="flex items-center gap-2">
                     <Checkbox
-                      key={channel.id}
                       value={channel.id}
                       checked={selectedChannels.includes(channel.id)}
                       onCheckedChange={(value) => {

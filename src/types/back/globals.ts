@@ -45,7 +45,7 @@ export type CountryCode = {
 };
 
 export type FetchProps = {
-  onError?: (error: any) => void;
-  onSuccess?: (data: any) => void;
+  onError?: (error: unknown) => void;
+  onSuccess?: (data: unknown) => void;
   onFinally?: () => void;
 };
