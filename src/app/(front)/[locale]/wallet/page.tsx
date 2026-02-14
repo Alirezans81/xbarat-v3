@@ -6,8 +6,7 @@ import Balance from "@/components/wallet/balance/balance";
 import Report from "@/components/wallet/report/report";
 import MobileComponentModalOpener from "@/components/wallet/mobile-component-model-opener";
 import { getCurrencies } from "@/api/currency/action";
-import Glass from "@/components/ui/glass";
-import { Button } from "@/components/ui/button";
+
 export default async function Wallet() {
   try {
     const currencies = await getCurrencies();

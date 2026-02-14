@@ -3,7 +3,6 @@
 import React from 'react'
 import { cn } from '@/lib/front/utils/tailwind'
 import { useTranslations } from "next-intl";
-import { PaymentChannel } from '@/types/front/paymentChannel';
 import Image from 'next/image';
 import DepositIcon from "../../../../public/Wallet/deposit.svg";
 import Glass from '@/components/ui/glass';
