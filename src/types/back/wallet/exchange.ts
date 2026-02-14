@@ -4,6 +4,7 @@ import {
   User,
 } from "@/generated/prisma";
 import { Currency } from "../currency";
+import { Decimal } from "@prisma/client/runtime/library";
 
 export type Exchange = Omit<
   DatabaseExchange,
@@ -47,4 +48,19 @@ export type UpdateExchange = {
   matchedAmount?: number;
   feePercentage?: number;
   status?: ExchangeStatus;
+};
+
+export type AggregatedExchange = {
+  exchangeRate: Decimal;
+  count: number;
+  fromAmount: number | Decimal;
+  latestCreatedAt: Date | null;
+  currencyPair:
+    | {
+        id: string;
+        isInverseRate: boolean;
+        fromCurrency: Pick<Currency, "id" | "code" | "symbol">;
+        toCurrency: Pick<Currency, "id" | "code" | "symbol">;
+      }
+    | undefined;
 };

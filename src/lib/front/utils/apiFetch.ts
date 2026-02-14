@@ -3,7 +3,7 @@ import { Token } from "@/types/front/globals";
 export interface ApiFetchOptions {
   method?: "GET" | "POST" | "PUT" | "DELETE";
   headers?: Record<string, string>;
-  body?: BodyInit;
+  body?: BodyInit | Record<string, unknown>;
   params?: Record<string, string | number>;
   token?: Token;
   cache?: RequestCache;

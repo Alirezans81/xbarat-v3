@@ -149,7 +149,7 @@ export default function Page() {
         toast.success("Successfully assigned!");
       },
       onError(error) {
-        toast.error(error.message);
+        toast.error("Failed to assign: " + JSON.stringify(error));
       },
     });
   };

@@ -113,11 +113,13 @@ export default function TicketCard({ className, previousTickets }: Props) {
     createTicket({
       ticket,
       onSuccess: (createdTicket) => {
-        setTicket(createdTicket);
+        const ParsedCreatedTicket = createdTicket as Ticket;
+
+        setTicket(ParsedCreatedTicket);
 
         const formData = createTicketMessageFormData(
           ticketMessage,
-          createdTicket.id
+          ParsedCreatedTicket.id
         );
 
         createTicketMessage({

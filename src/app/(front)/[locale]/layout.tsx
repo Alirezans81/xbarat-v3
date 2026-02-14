@@ -51,7 +51,7 @@ export default async function RootLayout({
               <AppSidebar
                 side={rtlLocales.includes(locale) ? "right" : "left"}
               />
-              <div className="w-full bg-background">
+              <div className="w-full bg-background overflow-x-hidden">
                 <div
                   className="w-full h-full flex flex-col"
                   style={{

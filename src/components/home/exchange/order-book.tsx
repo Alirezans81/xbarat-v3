@@ -99,7 +99,7 @@ export default function OrderBook({
       </span>
       <div className="w-full h-full flex flex-col-reverse sm:flex-row gap-x-5 justify-center items-center">
         {/* First Table */}
-        <div className="w-fit h-fit flex flex-col gap-y-4 !mt-5 sm:mt-0">
+        <div className="w-fit h-fit flex flex-col gap-y-4 mt-5 sm:mt-0">
           <span className="text-wine flex justify-center text-3xl">Sell</span>
           <div
             className={`w-full h-fit rounded-2xl p-3 bg-card backdrop-blur-sm`}

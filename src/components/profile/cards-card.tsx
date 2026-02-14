@@ -67,10 +67,9 @@ export function saveCards(cards: CardsByCurrency) {
 
 export default function CardsCard({ className, currencies }: Props) {
   const [currency, setCurrency] = useState<Currency>();
-  const [cardsByCurrency, setCardsByCurrency] = useState<CardsByCurrency>(
-    loadCards()
-  );
-  const cards = currency ? cardsByCurrency[currency.code] ?? [] : [];
+  const [cardsByCurrency, setCardsByCurrency] =
+    useState<CardsByCurrency>(loadCards());
+  const cards = currency ? (cardsByCurrency[currency.code] ?? []) : [];
 
   function addCard(newCard: Omit<UserCard, "id">) {
     if (!currency) return;
@@ -229,7 +228,7 @@ export default function CardsCard({ className, currencies }: Props) {
           onDelete={() => {
             if (!currency) return;
             const updated = cardsByCurrency[currency.code].filter(
-              (c) => c.id !== editingCard.id
+              (c) => c.id !== editingCard.id,
             );
             setCardsByCurrency({
               ...cardsByCurrency,
@@ -241,7 +240,7 @@ export default function CardsCard({ className, currencies }: Props) {
           onDeactivate={() => {
             if (!currency) return;
             const updated = cardsByCurrency[currency.code].filter(
-              (c) => c.id !== editingCard.id
+              (c) => c.id !== editingCard.id,
             );
             setCardsByCurrency({
               ...cardsByCurrency,
