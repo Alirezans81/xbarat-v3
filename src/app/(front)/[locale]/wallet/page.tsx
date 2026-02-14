@@ -5,10 +5,12 @@ import Transfer from "@/components/wallet/transfer/transfer";
 import Balance from "@/components/wallet/balance/balance";
 import Report from "@/components/wallet/report/report";
 import { getCurrencies } from "@/api/currency/action";
+import { getPaymentChannels } from "@/api/payment-channel/action";
 export default async function Wallet() {
   try {
     const currencies = await getCurrencies();
     const wallets = await getWallets();
+    const allPaymentChannels = await getPaymentChannels();
     return (
       <div className="w-full h-full min-h-11/12">
         {/* mobile: vertical stack */}

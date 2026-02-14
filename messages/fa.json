@@ -1,6 +1,6 @@
 {
   "Navbar": {
-    "xbarat": "ایکس بارات"
+    "xbarat": "Xbarat"
   },
   "ThemeToggle": {
     "light": "روشن",
@@ -12,11 +12,11 @@
     "quantity": "مقدار",
     "rate": "نرخ",
     "amount": "مبلغ",
-    "list-all-order-books": "لیست تمامی دفترهای سفارش"
+    "list-all-order-books": "لیست تمام دفتر سفارش‌ها"
   },
   "LoginSignupDialog": {
     "logIn": "ورود",
-    "signUp": "ثبت نام",
+    "signUp": "ثبت‌نام",
     "email": "ایمیل",
     "password": "رمز عبور",
     "confirmPassword": "تأیید رمز عبور",
@@ -26,7 +26,7 @@
     "emailRequired": "ایمیل الزامی است",
     "invalidEmail": "آدرس ایمیل نامعتبر است",
     "passwordRequired": "رمز عبور الزامی است",
-    "passwordStrength": "رمز عبور باید حداقل ۸ کاراکتر داشته و شامل حداقل یک حرف بزرگ، یک حرف کوچک، یک عدد و یک کاراکتر خاص باشد.",
+    "passwordStrength": "رمز عبور باید حداقل ۸ کاراکتر و شامل یک حرف بزرگ، یک حرف کوچک، یک عدد و یک کاراکتر خاص باشد.",
     "confirmPasswordRequired": "تأیید رمز عبور الزامی است",
     "passwordsDoNotMatch": "رمزهای عبور مطابقت ندارند",
     "firstNameRequired": "نام الزامی است",
@@ -45,14 +45,14 @@
     "profile": "پروفایل",
     "report": "گزارش",
     "dashboard": "داشبورد",
-    "panelAdmin": "پنل ادمین",
+    "panelAdmin": "پنل مدیریت",
     "liquidityPool": "استخر نقدینگی",
     "logout": "خروج",
     "socialMedia": "شبکه‌های اجتماعی",
     "instagram": "اینستاگرام",
-    "whatsApp": "واتس‌اپ",
+    "whatsApp": "واتساپ",
     "telegram": "تلگرام",
-    "x": "ایکس"
+    "x": "X"
   },
   "Status": {
     "PENDING": "در انتظار",
@@ -65,18 +65,18 @@
   },
   "HomePage": {
     "title": "سلام دنیا!",
-    "about": "برو به صفحه درباره ما",
-    "slogan": "وقتی تو کافی هستی!"
+    "about": "رفتن به صفحه درباره ما",
+    "slogan": "وقتی خودت کافی هستی!"
   },
   "LiquidityPool": {
     "currencies": "ارزها",
     "loading": "در حال بارگذاری...",
     "selectCurrency": "ارزی که ارائه می‌دهید را انتخاب کنید!",
-    "currencyNotFound": "ارز یافت نشد!",
+    "currencyNotFound": "ارز پیدا نشد!",
     "tableFooter": "لیست استخرهای نقدینگی.",
     "address": "آدرس",
     "balance": "موجودی",
-    "frozen": "مسدود شده",
+    "frozen": "مسدود",
     "updatedAt": "آخرین بروزرسانی",
     "payments": "پرداخت‌ها",
     "paymentTableFooter": "لیست پرداخت‌ها.",
@@ -91,13 +91,27 @@
   },
   "Wallet": {
     "Wallet": "کیف پول",
+    "currency": "ارز",
     "deposit": "واریز",
-    "amount": "مبلغ"
+    "withdrawal": "برداشت",
+    "transfer": "انتقال",
+    "balance": "موجودی",
+    "available_balance": "موجودی قابل برداشت",
+    "portfolio": "پرتفوی",
+    "amount": "مبلغ",
+    "user-card": "کارت کاربر",
+    "currencies": "ارزها",
+    "submit": "ارسال",
+    "payment-channel": "کانال پرداخت",
+    "payment-channels": "کانال‌های پرداخت",
+    "report": "گزارش",
+    "status": "وضعیت",
+    "payment_method": "روش پرداخت"
   },
   "ApiErrors": {
-    "serverError": "خطایی رخ داده است، لطفاً بعداً دوباره تلاش کنید.",
+    "serverError": "خطایی رخ داده است. لطفاً بعداً دوباره تلاش کنید.",
     "wrongEmailPassword": "ایمیل یا رمز عبور اشتباه است.",
-    "unauthorized": "شما مجاز نیستید.",
+    "unauthorized": "دسترسی غیرمجاز است.",
     "userNotFound": "کاربر یافت نشد"
   },
   "Profile": {
@@ -118,32 +132,32 @@
     "type-of-account": "نوع حساب",
     "cardholders-name": "نام دارنده کارت",
     "something-went-wrong": "مشکلی پیش آمده است!",
-    "referral": "معرف",
-    "coming-soon": "به زودی!",
-    "invite-friends-text": "دوستان خود را دعوت کنید و پس از فعال شدن سیستم معرف، پاداش دریافت کنید.",
+    "referral": "دعوت",
+    "coming-soon": "به‌زودی!",
+    "invite-friends-text": "دوستان خود را دعوت کنید و پس از فعال شدن سیستم دعوت، پاداش بگیرید.",
     "currencies": "ارزها",
-    "add-cards": "افزودن کارت‌ها",
+    "add-cards": "افزودن کارت",
     "edit": "ویرایش",
-    "no-cards": "شما در حال حاضر هیچ کارتی ندارید!",
+    "no-cards": "در حال حاضر هیچ کارتی ندارید!",
     "promo-banner": "بنر تبلیغاتی",
-    "no-campaign-now": "ما در حال حاضر هیچ کمپین فعالی نداریم!",
-    "campaign-notify": "در صورت راه‌اندازی کمپین، اولین جایی که این بنر را می‌بینید اینجا خواهد بود!",
+    "no-campaign-now": "در حال حاضر هیچ کمپین فعالی نداریم!",
+    "campaign-notify": "در صورت برگزاری کمپین، ابتدا بنر آن را اینجا مشاهده خواهید کرد!",
     "subject": "موضوع",
-    "upload-limit": "فایل‌های خود را اینجا آپلود کنید. محدودیت آپلود: ۵ مگابایت",
+    "upload-limit": "فایل‌های خود را اینجا بارگذاری کنید. محدودیت: ۵ مگابایت",
     "list-tickets": "لیست تیکت‌ها",
     "status": "وضعیت",
     "date-time": "تاریخ و زمان",
-    "unread": "خوانده نشده"
+    "unread": "خوانده‌نشده"
   },
   "Other": {
     "mustLoginAgain": "نشست شما منقضی شده است. لطفاً دوباره وارد شوید."
   },
   "Footer": {
-    "xbarat": "ایکس بارات",
-    "slogan": "وقتی تو کافی هستی!",
+    "xbarat": "Xbarat",
+    "slogan": "وقتی خودت کافی هستی!",
     "instagram": "اینستاگرام",
-    "whatsApp": "واتس‌اپ",
+    "whatsApp": "واتساپ",
     "telegram": "تلگرام",
-    "x": "ایکس"
+    "x": "X"
   }
 }

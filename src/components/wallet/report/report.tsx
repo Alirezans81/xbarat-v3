@@ -25,14 +25,13 @@ import { Currency } from "@/types/front/currency";
 type Props = {
     className?: string;
     currencies: Currency[];
-    paymentChannels: { id: string; name: string }[];
 };
 
 const Report = ({
     className,
     currencies,
-    paymentChannels,
 }: Props) => {
+    const paymentChannels = [{ id: "ashcbakcnbsamcb", name: "Rial Shaba", description: "Rial Shaba" }, { id: "kejchgakeycakeucak", name: "Paypal", description: "Paypal Payment Channel" }, { id: "o8273do8ygcuaysac", name: "Currency Exchange", description: "Local Exchange" }]
     const t = useTranslations("Wallet");
     const getDeposits = useGetDeposits();
 

@@ -3,7 +3,7 @@
 import React from 'react'
 import { cn } from '@/lib/front/utils/tailwind'
 import { useTranslations } from "next-intl";
-
+import { PaymentChannel } from '@/types/front/paymentChannel';
 import Image from 'next/image';
 import DepositIcon from "../../../../public/Wallet/deposit.svg";
 import Glass from '@/components/ui/glass';
@@ -11,10 +11,6 @@ import { Card } from '@/components/ui/card';
 import { DropdownMenu, DropdownMenuItem, DropdownMenuContent, DropdownMenuTrigger, DropdownMenuLabel, DropdownMenuSeparator } from '@/components/ui/dropdown-menu';
 import { Button } from '@/components/ui/button';
 import { Currency } from '@/types/front/currency';
-type Props = {
-    className: string;
-    currencies: Currency[] | null
-}
 import { useCreateDeposit } from '@/api/wallet/deposit/hook';
 import { useGetWallets } from '@/api/wallet/hook';
 import { useState, useEffect } from 'react';
@@ -22,8 +18,13 @@ import DropdownArrow from "../../../../public/Common/DropdownArrow.svg";
 import { Input } from '@/components/ui/input';
 import { removeComma, addComma } from '@/lib/front/utils/number';
 import { Wallet } from "@/types/front/wallet";
-import { PaymentChannel } from '@/types/front/paymentChannel';
-import { useGetPaymentChannels } from '@/api/payment-channel/hook';
+
+
+type Props = {
+    className: string;
+    currencies: Currency[] | null;
+}
+
 const Deposit = ({ className, currencies }: Props) => {
     const t = useTranslations("Wallet");
     const [currency, setCurrency] = useState<Currency | null>(null);
@@ -31,13 +32,12 @@ const Deposit = ({ className, currencies }: Props) => {
     const [displayAmount, setDisplayAmount] = useState<string>("");
     const [loading, setLoading] = useState(false);
     const [AmountError, setAmountError] = useState("");
-    const [paymentChannels, setPaymentChannels] = useState<PaymentChannel[]>([]);
     const [paymentChannel, setPaymentChannel] = useState<PaymentChannel>();
+    const [paymentChannels, setPaymentChannels] = useState<PaymentChannel[]>();
     const [paymentChannelIdError, setPaymentChannelIdError] = useState("");
     const [wallets, setWallets] = useState<Wallet[]>([]);
     const [walletId, setWalletId] = useState("");
     const createDeposit = useCreateDeposit();
-    const getPaymentChannels = useGetPaymentChannels();
     const getWallets = useGetWallets();
     const validateAmount = (value: string) => {
         if (!value) {
