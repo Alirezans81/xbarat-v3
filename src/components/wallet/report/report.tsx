@@ -65,8 +65,8 @@ const Report = ({
 
     return (
         <section className={cn("w-full p-4 sm:p-6", className)}>
-            <Glass className="rounded-2xl">
-                <Card className="p-6 flex flex-col gap-6 border-none shadow-none">
+            <Glass className="rounded-2xl w-full h-full">
+                <Card className="p-6 flex flex-col gap-6 border-none shadow-none w-full h-full">
 
                     <h2 className="text-lg font-semibold">{t("report")}</h2>
 
