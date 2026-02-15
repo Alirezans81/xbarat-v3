@@ -21,11 +21,19 @@ export default function WatchList({ selectedPair, setSelectedPair }: Props) {
   useEffect(() => {
     getWatchList({
       setWatchList,
+      onSuccess(data) {
+        const found = (data as WatchListType[])[0];
+        if (found) {
+          setSelectedPair(found.currencyPair);
+        }
+      },
       onFinally() {
         setLoading(false);
       },
     });
-  }, [getWatchList]);
+  }, [getWatchList, setSelectedPair]);
+
+  console.log(selectedPair)
 
   return (
     <div className="px-10">

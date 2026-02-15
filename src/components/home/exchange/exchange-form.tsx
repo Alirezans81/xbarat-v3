@@ -91,29 +91,50 @@ export default function ExchangeForm({
     setSelectedPair(null);
   };
 
-  const { sourceAmount, targetAmount } = useMemo(() => {
+  const { sourceAmount, targetAmount, fee } = useMemo(() => {
     if (!selectedPair || !rate || !amount) {
       return {
         sourceAmount: lastEdited === "source" ? amount : undefined,
         targetAmount: lastEdited === "target" ? amount : undefined,
+        fee: 0,
       };
     }
 
+    const feePercentage = +selectedPair.feePercentage / 100;
+
     if (lastEdited === "source") {
+      const computedFee = amount * feePercentage;
+      const netSourceAmount = Math.max(amount - computedFee, 0);
       const computedTarget = !selectedPair.isInverseRate
-        ? amount * rate
+        ? netSourceAmount * rate
         : selectedTarget
-          ? roundDown(amount / rate, selectedTarget.decimals)
+          ? roundDown(netSourceAmount / rate, selectedTarget.decimals)
           : undefined;
-      return { sourceAmount: amount, targetAmount: computedTarget };
+      return {
+        sourceAmount: amount,
+        targetAmount: computedTarget,
+        fee: computedFee,
+      };
     }
 
-    const computedSource = !selectedPair.isInverseRate
+    const netSourceAmount = !selectedPair.isInverseRate
       ? selectedSource
         ? roundDown(amount / rate, selectedSource.decimals)
         : undefined
       : amount * rate;
-    return { sourceAmount: computedSource, targetAmount: amount };
+    const sourceAmountWithFee =
+      netSourceAmount && feePercentage < 1
+        ? netSourceAmount / (1 - feePercentage)
+        : undefined;
+    const computedFee = sourceAmountWithFee
+      ? sourceAmountWithFee * feePercentage
+      : 0;
+
+    return {
+      sourceAmount: sourceAmountWithFee,
+      targetAmount: amount,
+      fee: computedFee,
+    };
   }, [amount, lastEdited, rate, selectedPair, selectedSource, selectedTarget]);
 
   const handleSourceAmountChange = (newSourceAmount: number) => {
@@ -358,13 +379,25 @@ export default function ExchangeForm({
           </InputGroup>
 
           {selectedSource && foundWallet && (
-            <span className="text-sm">
-              Available Balance:{" "}
-              <span className="text-secondary">
-                {selectedSource.symbol}
-                {addComma(foundWallet.balance || 0)}
+            <div className="w-full flex justify-between items-center text-sm">
+              <span>
+                Balance:{" "}
+                <span className="text-secondary">
+                  {selectedSource.symbol}
+                  {addComma(foundWallet.balance || 0)}
+                </span>
+                {"  "}
               </span>
-            </span>
+              {sourceAmount && (
+                <span>
+                  Fee:{" "}
+                  <span className="text-red">
+                    {selectedSource.symbol}
+                    {addComma(fee)}
+                  </span>
+                </span>
+              )}
+            </div>
           )}
         </div>
         <div className="col-span-1 flex flex-col gap-2">
@@ -444,7 +477,7 @@ export default function ExchangeForm({
             href="/#latest-table"
             className="transition-all duration-200 text-muted-foreground hover:text-foreground"
           >
-            See other rates
+            ⇩See other rates.
           </Link>
         </CardFooter>
       )}

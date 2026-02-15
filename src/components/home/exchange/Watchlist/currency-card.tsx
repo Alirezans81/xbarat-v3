@@ -33,7 +33,7 @@ export function CurrencyCard({
               <Button
                 size="sm"
                 variant="outline"
-                className="rounded-full text-xs me-0.5 !bg-accent !text-foreground hover:cursor-default"
+                className="rounded-full text-xs me-0.5 !bg-accent !border-muted !text-foreground hover:cursor-default"
               >
                 Selected
               </Button>
