@@ -23,26 +23,13 @@ export async function POST(request: NextRequest) {
     if (!payload) return UnauthorizedResponse;
 
     const body = await request.json();
-    const {
-      currencyPairId,
-      fromAmount,
-      remainingAmount,
-      toAmount,
-      exchangeRate,
-    } = body;
+    const { currencyPairId, fromAmount, toAmount, exchangeRate } = body;
 
-    if (
-      !currencyPairId ||
-      !fromAmount ||
-      !remainingAmount ||
-      !toAmount ||
-      !exchangeRate
-    )
+    if (!currencyPairId || !fromAmount || !toAmount || !exchangeRate)
       return MissingFieldsResponse;
 
-    const selectedCurrencyPair = await currencyPairService.getById(
-      currencyPairId
-    );
+    const selectedCurrencyPair =
+      await currencyPairService.getById(currencyPairId);
 
     const fee = selectedCurrencyPair
       ? calculateFee(+fromAmount, +selectedCurrencyPair.feePercentage)
@@ -52,7 +39,7 @@ export async function POST(request: NextRequest) {
       userId: payload.id,
       currencyPairId,
       fromAmount,
-      remainingAmount,
+      remainingAmount: fromAmount,
       toAmount,
       exchangeRate,
       fee,
@@ -79,8 +66,8 @@ export async function POST(request: NextRequest) {
               ? sortedExchanges[0]
               : null
             : +sortedExchanges[0].exchangeRate >= +exchangeRate
-            ? sortedExchanges[0]
-            : null
+              ? sortedExchanges[0]
+              : null
           : null;
         if (foundMatch) {
           const toRemainingAmount = foundMatch.currencyPair.isInverseRate
@@ -88,8 +75,8 @@ export async function POST(request: NextRequest) {
             : +foundMatch.remainingAmount * +foundMatch.exchangeRate;
 
           const fromMatchedAmount = Math.min(
-            remainingAmount,
-            toRemainingAmount
+            fromAmount,
+            toRemainingAmount,
           );
           const toMatchedAmount = exchange.currencyPair.isInverseRate
             ? +fromMatchedAmount / +exchangeRate
@@ -113,7 +100,7 @@ export async function POST(request: NextRequest) {
           await walletService.updateByUserIdAndCurrencyId(
             exchange.userId,
             exchange.currencyPair.toCurrency.id,
-            {}
+            {},
           );
 
           let foundMatchStatus: ExchangeStatus = "PARTIAL";

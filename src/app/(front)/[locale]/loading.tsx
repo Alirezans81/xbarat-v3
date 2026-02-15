@@ -6,7 +6,7 @@ export default function Loading() {
     <div className="w-full flex flex-col">
       <div className="w-full flex flex-col justify-center items-center gap-8 py-20 container mx-auto px-5">
         <span className="capitalize text-5xl xl:text-6xl font-bold text-center">
-          when you are enough!
+          You Are Enough!
         </span>
         <Skeleton
           className={`w-full h-43 md:h-49 lg:h-43 lg:w-210 rounded-xl`}

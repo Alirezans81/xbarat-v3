@@ -1,7 +1,9 @@
 "use client";
 
+import { useCreateExchange } from "@/api/wallet/exchange/hooks";
+import NotEnoughBalanceDialog from "@/components/dialog/home/not-enough-balance-dialog";
 import { Button } from "@/components/ui/button";
-import { Card } from "@/components/ui/card";
+import { Card, CardFooter } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import {
   InputGroup,
@@ -13,8 +15,12 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
+import { Spinner } from "@/components/ui/spinner";
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
 import { useBreakpointValue } from "@/hooks/use-breakpoint";
+import { Link, useRouter } from "@/i18n/navigation";
+import { useAuthStore } from "@/lib/front/stores/auth";
+import { useLoginSignupDialogStore } from "@/lib/front/stores/dialog";
 import { addComma, roundDown } from "@/lib/front/utils/number";
 import { Currency } from "@/types/front/currency";
 import { CurrencyPair } from "@/types/front/currencyPair";
@@ -22,6 +28,7 @@ import { Wallet } from "@/types/front/wallet";
 import { ChevronDown } from "lucide-react";
 import Image from "next/image";
 import { useMemo, useState } from "react";
+import { toast } from "sonner";
 
 interface Props {
   rate: number | undefined;
@@ -41,6 +48,11 @@ export default function ExchangeForm({
   selectedPair,
   setSelectedPair,
 }: Props) {
+  const { isLoggedIn } = useAuthStore();
+  const { setOpen: setLoginSignupDialogOpen } = useLoginSignupDialogStore();
+
+  const [notEnoughBalanceDialog, setNotEnoughBalanceDialog] = useState(false);
+
   const [draftSourceId, setDraftSourceId] = useState(
     selectedPair?.fromCurrency.id ?? "",
   );
@@ -88,7 +100,7 @@ export default function ExchangeForm({
     }
 
     if (lastEdited === "source") {
-      const computedTarget = selectedPair.isInverseRate
+      const computedTarget = !selectedPair.isInverseRate
         ? amount * rate
         : selectedTarget
           ? roundDown(amount / rate, selectedTarget.decimals)
@@ -96,7 +108,7 @@ export default function ExchangeForm({
       return { sourceAmount: amount, targetAmount: computedTarget };
     }
 
-    const computedSource = selectedPair.isInverseRate
+    const computedSource = !selectedPair.isInverseRate
       ? selectedSource
         ? roundDown(amount / rate, selectedSource.decimals)
         : undefined
@@ -126,12 +138,58 @@ export default function ExchangeForm({
     }
   };
 
+  const [loading, setLoading] = useState(false);
+  const router = useRouter();
+  const createExchange = useCreateExchange();
+  const handleSubmit = () => {
+    if (selectedPair && sourceAmount && targetAmount && rate) {
+      setLoading(true);
+      createExchange({
+        exchange: {
+          currencyPairId: selectedPair.id,
+          fromAmount: sourceAmount,
+          toAmount: targetAmount,
+          exchangeRate: rate,
+        },
+        onSuccess() {
+          toast.success("Your exchange submitted successfully.");
+          router.replace("/#latest-table");
+        },
+        onError() {
+          toast.error("Something went wrong.");
+        },
+        onFinally() {
+          setLoading(false);
+        },
+      });
+    }
+  };
+
   return (
     <Card className="w-fit mx-auto">
+      <NotEnoughBalanceDialog
+        open={notEnoughBalanceDialog}
+        setOpen={setNotEnoughBalanceDialog}
+      />
       <form
         className="grid grid-cols-11 gap-y-4 px-6 py-2.5"
         onSubmit={(e) => {
           e.preventDefault();
+
+          if (!isLoggedIn) {
+            toast.error("First you must log in to your account.");
+            setLoginSignupDialogOpen(true);
+            return;
+          }
+
+          if (sourceAmount) {
+            if (!foundWallet?.balance || +foundWallet.balance < sourceAmount) {
+              setNotEnoughBalanceDialog(true);
+              return;
+            }
+          }
+
+          handleSubmit();
         }}
       >
         <div className="col-span-5 flex gap-2 overflow-visible">
@@ -149,8 +207,8 @@ export default function ExchangeForm({
                 key={currency.id}
                 variant="outline"
                 value={currency.id}
-                className="w-14 sm:w-16 border-muted hover:cursor-pointer"
                 disabled={selectedTargetId === currency.id}
+                className={`w-14 sm:w-16 ${selectedSourceId === currency.id ? "!bg-primary" : "border-muted"} hover:cursor-pointer `}
               >
                 {currency.code}
               </ToggleGroupItem>
@@ -163,6 +221,7 @@ export default function ExchangeForm({
             >
               <PopoverTrigger>
                 <Button
+                  type="button"
                   variant="outline"
                   className="!px-1 !bg-transparent !border-muted"
                 >
@@ -191,7 +250,7 @@ export default function ExchangeForm({
                         key={currency.id}
                         variant="outline"
                         value={currency.id}
-                        className="w-14 sm:w-16 border-muted hover:cursor-pointer col-span-1"
+                        className={`w-14 sm:w-16 ${selectedSourceId === currency.id ? "!bg-primary" : "border-muted"} hover:cursor-pointer col-span-1`}
                         disabled={selectedTargetId === currency.id}
                       >
                         {currency.code}
@@ -218,7 +277,7 @@ export default function ExchangeForm({
                 key={currency.id}
                 variant="outline"
                 value={currency.id}
-                className="w-14 sm:w-16 border-muted hover:cursor-pointer"
+                className={`w-14 sm:w-16 ${selectedTargetId === currency.id ? "!bg-primary" : "border-muted"} hover:cursor-pointer `}
                 disabled={selectedSourceId === currency.id}
               >
                 {currency.code}
@@ -232,6 +291,7 @@ export default function ExchangeForm({
             >
               <PopoverTrigger>
                 <Button
+                  type="button"
                   variant="outline"
                   className="!px-1 !bg-transparent !border-muted"
                 >
@@ -260,7 +320,7 @@ export default function ExchangeForm({
                         key={currency.id}
                         variant="outline"
                         value={currency.id}
-                        className="w-14 sm:w-16 border-muted hover:cursor-pointer col-span-1"
+                        className={`w-14 sm:w-16 ${selectedTargetId === currency.id ? "!bg-primary" : "border-muted"} hover:cursor-pointer col-span-1`}
                         disabled={selectedSourceId === currency.id}
                       >
                         {currency.code}
@@ -286,6 +346,7 @@ export default function ExchangeForm({
                 <Button
                   type="button"
                   variant="ghost"
+                  className="-me-1"
                   onClick={() =>
                     handleSourceAmountChange(+foundWallet.balance || 0)
                   }
@@ -297,10 +358,12 @@ export default function ExchangeForm({
           </InputGroup>
 
           {selectedSource && foundWallet && (
-            <span className="text-sm text-secondary">
-              Available Balance: {selectedSource.symbol}
-              {""}
-              {addComma(foundWallet.balance || 0)}
+            <span className="text-sm">
+              Available Balance:{" "}
+              <span className="text-secondary">
+                {selectedSource.symbol}
+                {addComma(foundWallet.balance || 0)}
+              </span>
             </span>
           )}
         </div>
@@ -337,6 +400,18 @@ export default function ExchangeForm({
             value={rate}
             onChange={(e) => setRate(+e.currentTarget.value)}
           />
+          {selectedPair && (
+            <span className="text-sm">
+              Current Rate:{" "}
+              <button
+                type="button"
+                className="text-secondary cursor-pointer"
+                onClick={() => setRate(+selectedPair.rate)}
+              >
+                {+selectedPair.rate}
+              </button>{" "}
+            </span>
+          )}
         </div>
         <div className="col-span-1 flex flex-col gap-2" />
         <div className="col-span-5 flex flex-col gap-2">
@@ -348,13 +423,31 @@ export default function ExchangeForm({
               !selectedTargetId ||
               !sourceAmount ||
               !targetAmount ||
-              !rate
+              !rate ||
+              loading
             }
           >
-            Exchange
+            {loading ? (
+              <>
+                <Spinner />
+                <span>Loading...</span>
+              </>
+            ) : (
+              <span>Exchange</span>
+            )}
           </Button>
         </div>
       </form>
+      {selectedPair && (
+        <CardFooter className="flex flex-col items-center">
+          <Link
+            href="/#latest-table"
+            className="transition-all duration-200 text-muted-foreground hover:text-foreground"
+          >
+            See other rates
+          </Link>
+        </CardFooter>
+      )}
     </Card>
   );
 }

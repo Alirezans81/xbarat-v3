@@ -36,7 +36,7 @@ export default async function Home() {
     return (
       <div className="w-full flex flex-col justify-center items-center gap-8 py-20 container mx-auto px-5">
         <span className="capitalize text-5xl xl:text-6xl font-bold text-center">
-          when you are enough!
+          You Are Enough!
         </span>
         <Exchange
           currencies={currencies}

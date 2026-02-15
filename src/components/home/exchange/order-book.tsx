@@ -60,7 +60,7 @@ export default function OrderBook({
         const reverseCurrencyPair = currencyPairs?.find(
           (pair) =>
             pair.fromCurrencyId === currencyPair?.toCurrencyId &&
-            pair.toCurrencyId === currencyPair?.fromCurrencyId
+            pair.toCurrencyId === currencyPair?.fromCurrencyId,
         );
 
         if (reverseCurrencyPair) {
@@ -77,7 +77,13 @@ export default function OrderBook({
     } else {
       resetOrderBooks();
     }
-  }, [currencyPair, currencyPairs, getOrders, getReverseOrders, resetOrderBooks]);
+  }, [
+    currencyPair,
+    currencyPairs,
+    getOrders,
+    getReverseOrders,
+    resetOrderBooks,
+  ]);
   useEffect(() => {
     fetchOrderBooks();
   }, [fetchOrderBooks]);
@@ -133,7 +139,7 @@ export default function OrderBook({
                     .sort(
                       (a, b) =>
                         parseFloat(a.exchangeRate.toString()) -
-                        parseFloat(b.exchangeRate.toString())
+                        parseFloat(b.exchangeRate.toString()),
                     )
                     .map(
                       (order: Exchange & { count: number }, index: number) => (
@@ -160,7 +166,7 @@ export default function OrderBook({
                             </button>
                           </TableCell>
                         </TableRow>
-                      )
+                      ),
                     )
                 )}
               </TableBody>
@@ -205,7 +211,7 @@ export default function OrderBook({
                     .sort(
                       (a, b) =>
                         parseFloat(a.exchangeRate.toString()) -
-                        parseFloat(b.exchangeRate.toString())
+                        parseFloat(b.exchangeRate.toString()),
                     )
                     .map(
                       (order: Exchange & { count: number }, index: number) => (
@@ -223,7 +229,7 @@ export default function OrderBook({
                           <TableCell className="font-medium text-center bg-transparent">
                             <button
                               onClick={() => {
-                                setRate((+order.exchangeRate));
+                                setRate(+order.exchangeRate);
                                 scrollToTop();
                               }}
                               className="w-full h-12 flex justify-center items-center rounded-2xl bg-gradient-to-br from-from-background to-to-background shadow-[0_0_12px_-4px] !shadow-green hover:bg-gradient-to-br hover:from-accent hover:to-muted hover:cursor-pointer"
@@ -232,7 +238,7 @@ export default function OrderBook({
                             </button>
                           </TableCell>
                         </TableRow>
-                      )
+                      ),
                     )
                 )}
               </TableBody>
