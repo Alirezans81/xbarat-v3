@@ -56,7 +56,7 @@ export default async function RootLayout({
               </div>
               <div className="w-full bg-background overflow-x-hidden">
                 <div
-                  className="w-full h-full flex flex-col"
+                  className="w-full h-full flex flex-col pb-20 sm:pb-0"
                   style={{
                     backgroundImage: "url('/background.svg')",
                     backgroundRepeat: "no-repeat",
