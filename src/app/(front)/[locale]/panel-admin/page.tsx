@@ -100,6 +100,7 @@ export default async function page() {
         </div>
       </div>
     );
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   } catch (error) {
     return <div>Error loading data</div>;
   }
