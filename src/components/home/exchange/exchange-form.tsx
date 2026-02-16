@@ -240,7 +240,7 @@ export default function ExchangeForm({
               open={sourcesPopoverOpen}
               onOpenChange={(value) => setSourcesPopoverOpen(value)}
             >
-              <PopoverTrigger>
+              <PopoverTrigger asChild>
                 <Button
                   type="button"
                   variant="outline"
@@ -310,7 +310,7 @@ export default function ExchangeForm({
               open={targetsPopoverOpen}
               onOpenChange={(value) => setTargetsPopoverOpen(value)}
             >
-              <PopoverTrigger>
+              <PopoverTrigger asChild>
                 <Button
                   type="button"
                   variant="outline"
