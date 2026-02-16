@@ -81,7 +81,7 @@ export default function LoginSignupDialog() {
   };
   const validateConfirmPassword = (
     password: string,
-    confirmPassword: string
+    confirmPassword: string,
   ) => {
     if (!confirmPassword) {
       setConfirmPasswordError(t("confirmPasswordRequired"));
@@ -126,7 +126,7 @@ export default function LoginSignupDialog() {
   const validatePhoneNumber = (phone: string, countryCode: string) => {
     const phoneNumber = parsePhoneNumberFromString(
       phone,
-      countryCode as CountryCode
+      countryCode as CountryCode,
     );
 
     if (!phoneNumber) {
@@ -231,8 +231,8 @@ export default function LoginSignupDialog() {
             {mode === "login"
               ? t("logIn")
               : mode === "signup"
-              ? t("signUp")
-              : ""}
+                ? t("signUp")
+                : ""}
           </DialogTitle>
         </DialogHeader>
 
@@ -243,7 +243,10 @@ export default function LoginSignupDialog() {
                 type="email"
                 placeholder={t("email")}
                 value={email}
-                onChange={(e) => setEmail(e.target.value)}
+                onChange={(e) => {
+                  setEmail(e.target.value);
+                  validateEmail(e.target.value);
+                }}
                 onBlur={(e) => validateEmail(e.target.value)}
                 required
               />
@@ -289,7 +292,10 @@ export default function LoginSignupDialog() {
                 type="email"
                 placeholder={t("email")}
                 value={email}
-                onChange={(e) => setEmail(e.target.value)}
+                onChange={(e) => {
+                  setEmail(e.target.value);
+                  validateEmail(e.target.value);
+                }}
                 onBlur={(e) => validateEmail(e.target.value)}
                 required
               />
@@ -304,7 +310,10 @@ export default function LoginSignupDialog() {
                 type="password"
                 placeholder={t("password")}
                 value={password}
-                onChange={(e) => setPassword(e.target.value)}
+                onChange={(e) => {
+                  setPassword(e.target.value);
+                  validatePassword(e.target.value);
+                }}
                 onBlur={(e) => validatePassword(e.target.value)}
                 required
               />
@@ -319,7 +328,10 @@ export default function LoginSignupDialog() {
                 type="password"
                 placeholder={t("confirmPassword")}
                 value={confirmPassword}
-                onChange={(e) => setConfirmPassword(e.target.value)}
+                onChange={(e) => {
+                  setConfirmPassword(e.target.value);
+                  validateConfirmPassword(password, e.currentTarget.value);
+                }}
                 onKeyDown={(e) =>
                   validateConfirmPassword(password, e.currentTarget.value)
                 }
@@ -337,7 +349,10 @@ export default function LoginSignupDialog() {
                   type="text"
                   placeholder={t("firstName")}
                   value={firstName}
-                  onChange={(e) => setFirstName(e.target.value)}
+                  onChange={(e) => {
+                    setFirstName(e.target.value);
+                    validateFirstName(e.target.value);
+                  }}
                   onBlur={(e) => validateFirstName(e.target.value)}
                   required
                 />
@@ -352,7 +367,10 @@ export default function LoginSignupDialog() {
                   type="text"
                   placeholder={t("lastName")}
                   value={lastName}
-                  onChange={(e) => setLastName(e.target.value)}
+                  onChange={(e) => {
+                    setLastName(e.target.value);
+                    validateLastName(e.target.value);
+                  }}
                   onBlur={(e) => validateLastName(e.target.value)}
                   required
                 />
@@ -388,7 +406,10 @@ export default function LoginSignupDialog() {
                   type="tel"
                   placeholder={t("phoneNumber")}
                   value={phoneNumber}
-                  onChange={(e) => setPhoneNumber(e.target.value)}
+                  onChange={(e) => {
+                    setPhoneNumber(e.target.value);
+                    validatePhoneNumber(e.target.value, countryCode);
+                  }}
                   onBlur={(e) =>
                     validatePhoneNumber(e.target.value, countryCode)
                   }
