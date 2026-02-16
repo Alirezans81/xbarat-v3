@@ -18,10 +18,10 @@ export const createUser = (user: CreateUser) => {
   });
 };
 
-export const getUser = (token: Token, user_id: string) => {
+export const getUser = (token: Token) => {
   return apiFetch<GetUser>(api["user"], {
     method: "GET",
-    body: user_id,
+    token,
   });
 };
 

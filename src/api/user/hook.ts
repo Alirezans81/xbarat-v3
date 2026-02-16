@@ -13,7 +13,6 @@ type CreateUserProps = {
 };
 type GetUserProps = {
   setUser: (value: GetUser) => void;
-  user_id: string;
 };
 export const useGetUser = () => {
   const t = useTranslations("ApiErrors");
@@ -24,13 +23,12 @@ export const useGetUser = () => {
   const fetch = useCallback(
     ({
       setUser,
-      user_id,
       onError,
       onSuccess,
       onFinally,
     }: GetUserProps & FetchProps) => {
       checkTokenExpiration(async () => {
-        await getUser(token, user_id)
+        await getUser(token)
           .then((res) => {
             setUser(res);
             onSuccess?.(res);
