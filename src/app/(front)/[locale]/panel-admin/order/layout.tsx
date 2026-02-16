@@ -27,7 +27,7 @@ export default function Layout({
               Assignment
             </Button>
           </Link>
-          <Link href="/panel-admin/order/deposit">
+          {/* <Link href="/panel-admin/order/deposit">
             <Button
               variant={
                 pathname !== "/panel-admin/order/deposit"
@@ -72,9 +72,9 @@ export default function Layout({
             >
               Refund
             </Button>
-          </Link>
+          </Link> */}
         </div>
-        <div className="col-span-9">{children}</div>
+        <div className="col-span-9 bg-card p-5 rounded-2xl">{children}</div>
       </div>
     </div>
   );

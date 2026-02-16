@@ -25,7 +25,7 @@ import { addComma, roundDown } from "@/lib/front/utils/number";
 import { Currency } from "@/types/front/currency";
 import { CurrencyPair } from "@/types/front/currencyPair";
 import { Wallet } from "@/types/front/wallet";
-import { ChevronDown } from "lucide-react";
+import { ChevronDown, ChevronsDown } from "lucide-react";
 import Image from "next/image";
 import { useMemo, useState } from "react";
 import { toast } from "sonner";
@@ -229,7 +229,7 @@ export default function ExchangeForm({
                 variant="outline"
                 value={currency.id}
                 disabled={selectedTargetId === currency.id}
-                className={`w-14 sm:w-16 ${selectedSourceId === currency.id ? "!bg-primary" : "border-muted"} hover:cursor-pointer `}
+                className={`w-14 sm:w-16 ${selectedSourceId === currency.id ? "!bg-primary !border-primary" : "border-muted"} hover:cursor-pointer `}
               >
                 {currency.code}
               </ToggleGroupItem>
@@ -271,7 +271,7 @@ export default function ExchangeForm({
                         key={currency.id}
                         variant="outline"
                         value={currency.id}
-                        className={`w-14 sm:w-16 ${selectedSourceId === currency.id ? "!bg-primary" : "border-muted"} hover:cursor-pointer col-span-1`}
+                        className={`w-14 sm:w-16 ${selectedSourceId === currency.id ? "!bg-primary !border-primary" : "border-muted"} hover:cursor-pointer col-span-1`}
                         disabled={selectedTargetId === currency.id}
                       >
                         {currency.code}
@@ -298,7 +298,7 @@ export default function ExchangeForm({
                 key={currency.id}
                 variant="outline"
                 value={currency.id}
-                className={`w-14 sm:w-16 ${selectedTargetId === currency.id ? "!bg-primary" : "border-muted"} hover:cursor-pointer `}
+                className={`w-14 sm:w-16 ${selectedTargetId === currency.id ? "!bg-primary !border-primary" : "border-muted"} hover:cursor-pointer `}
                 disabled={selectedSourceId === currency.id}
               >
                 {currency.code}
@@ -341,7 +341,7 @@ export default function ExchangeForm({
                         key={currency.id}
                         variant="outline"
                         value={currency.id}
-                        className={`w-14 sm:w-16 ${selectedTargetId === currency.id ? "!bg-primary" : "border-muted"} hover:cursor-pointer col-span-1`}
+                        className={`w-14 sm:w-16 ${selectedTargetId === currency.id ? "!bg-primary !border-primary" : "border-muted"} hover:cursor-pointer col-span-1`}
                         disabled={selectedSourceId === currency.id}
                       >
                         {currency.code}
@@ -402,6 +402,7 @@ export default function ExchangeForm({
         </div>
         <div className="col-span-1 flex flex-col gap-2">
           <Button
+            type="button"
             variant="link"
             onClick={handleSwitch}
             className="!py-5 !px-0 opacity-50 hover:opacity-100"
@@ -475,9 +476,10 @@ export default function ExchangeForm({
         <CardFooter className="flex flex-col items-center">
           <Link
             href="/#latest-table"
-            className="transition-all duration-200 text-muted-foreground hover:text-foreground"
+            className="transition-all duration-200 text-muted-foreground hover:text-foreground flex items-center gap-0.5"
           >
-            ⇩See other rates.
+            <ChevronsDown size={16} />
+            <span>See other rates.</span>
           </Link>
         </CardFooter>
       )}

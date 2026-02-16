@@ -11,6 +11,7 @@ import { AppSidebar } from "@/components/app-sidebar";
 import { Toaster } from "@/components/ui/sonner";
 import HandleCookies from "@/components/handle-cookies";
 import { rtlLocales } from "@/lib/front/constants";
+import Footer from "@/components/footer";
 
 export const metadata: Metadata = {
   title: "Xbarat | Exchange/Transfer Fiat Money",
@@ -63,6 +64,7 @@ export default async function RootLayout({
                 >
                   <Navbar />
                   <main>{children}</main>
+                  <Footer />
                 </div>
               </div>
             </SidebarProvider>
