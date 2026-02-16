@@ -11,7 +11,6 @@ export default async function Wallet() {
   try {
     const currencies = await getCurrencies();
     const wallets = await getWallets();
-    const allPaymentChannels = await getPaymentChannels();
     return (
       <div className="w-full h-full min-h-11/12">
         {/* mobile: vertical stack */}

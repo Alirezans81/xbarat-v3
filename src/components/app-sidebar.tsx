@@ -77,7 +77,7 @@ export function AppSidebar({ side }: Props) {
             <SidebarGroupContent className="w-full flex items-center gap-3 px-1.5">
               <TooltipProvider>
                 <Tooltip>
-                  <TooltipTrigger onClick={() => { }}>
+                  <TooltipTrigger onClick={() => {}}>
                     <Image
                       alt="Instagram"
                       src="/SocialMedia/instagram.svg"
@@ -93,7 +93,7 @@ export function AppSidebar({ side }: Props) {
               </TooltipProvider>
               <TooltipProvider>
                 <Tooltip>
-                  <TooltipTrigger onClick={() => { }}>
+                  <TooltipTrigger onClick={() => {}}>
                     <Image
                       alt="WhatsApp"
                       src="/SocialMedia/whatsapp.svg"
@@ -109,7 +109,7 @@ export function AppSidebar({ side }: Props) {
               </TooltipProvider>
               <TooltipProvider>
                 <Tooltip>
-                  <TooltipTrigger onClick={() => { }}>
+                  <TooltipTrigger onClick={() => {}}>
                     <Image
                       alt="Telegram"
                       src="/SocialMedia/telegram.svg"
@@ -125,7 +125,7 @@ export function AppSidebar({ side }: Props) {
               </TooltipProvider>
               <TooltipProvider>
                 <Tooltip>
-                  <TooltipTrigger onClick={() => { }}>
+                  <TooltipTrigger onClick={() => {}}>
                     <div className="p-1.5 rounded-full bg-black">
                       <Image
                         alt="X"
@@ -174,10 +174,11 @@ export function AppMobileNavbar() {
                 <li key={`mobile-${item.title}`} className="min-w-0">
                   <Link
                     href={item.url}
-                    className={`flex min-w-0 flex-col items-center justify-center gap-1 rounded-md px-2 py-1.5 text-[11px] transition-colors ${isActive
-                      ? "text-primary"
-                      : "text-muted-foreground hover:text-foreground"
-                      }`}
+                    className={`flex min-w-0 flex-col items-center justify-center gap-1 rounded-md px-2 py-1.5 text-[11px] transition-colors ${
+                      isActive
+                        ? "text-primary"
+                        : "text-muted-foreground hover:text-foreground"
+                    }`}
                   >
                     <item.icon className="size-4" />
                     <span className="truncate">{t(item.title)}</span>
