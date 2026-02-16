@@ -54,7 +54,7 @@ export default async function RootLayout({
               />
               <div className="w-full bg-background overflow-x-hidden">
                 <div
-                  className="w-full h-full"
+                  className="w-full h-full flex flex-col"
                   style={{
                     backgroundImage: "url('/background.svg')",
                     backgroundRepeat: "no-repeat",
@@ -63,8 +63,10 @@ export default async function RootLayout({
                   }}
                 >
                   <Navbar />
-                  <main>{children}</main>
-                  <Footer />
+                  <main className="h-full">{children}</main>
+                  <div className="w-full mt-auto">
+                    <Footer />
+                  </div>
                 </div>
               </div>
             </SidebarProvider>

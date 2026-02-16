@@ -5,29 +5,54 @@ import {
   GetCurrenciesFilters,
   UpdateCurrency,
 } from "@/types/front/currency";
+import { randomUUID } from "crypto";
 
 export const currencyRepository = {
   create: async (data: CreateCurrency) => {
-    return await prisma.currency.create({
-      data: {
-        code: data.code,
-        name: data.name,
-        symbol: data.symbol,
-        decimals: data.decimals ?? 2,
-        paymentChannels: data.paymentChannelIds
-          ? {
-              connect: data.paymentChannelIds.map((id) => ({ id })),
-            }
-          : undefined,
-      },
-      include: {
-        paymentChannels: {
-          select: {
-            id: true,
-            name: true,
+    return await prisma.$transaction(async (tx) => {
+      const currency = await tx.currency.create({
+        data: {
+          code: data.code,
+          name: data.name,
+          symbol: data.symbol,
+          decimals: data.decimals ?? 2,
+          paymentChannels: data.paymentChannelIds
+            ? {
+                connect: data.paymentChannelIds.map((id) => ({ id })),
+              }
+            : undefined,
+        },
+        include: {
+          paymentChannels: {
+            select: {
+              id: true,
+              name: true,
+            },
           },
         },
-      },
+      });
+
+      const users = await tx.user.findMany({
+        select: { id: true },
+      });
+
+      if (users.length > 0) {
+        const now = new Date();
+        await tx.wallet.createMany({
+          data: users.map((user) => ({
+            id: randomUUID(),
+            userId: user.id,
+            currencyId: currency.id,
+            balance: 0,
+            frozen: 0,
+            createdAt: now,
+            updatedAt: now,
+          })),
+          skipDuplicates: true,
+        });
+      }
+
+      return currency;
     });
   },
 

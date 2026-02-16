@@ -101,7 +101,6 @@ export default async function page() {
       </div>
     );
   } catch (error) {
-    console.log(error);
     return <div>Error loading data</div>;
   }
 }

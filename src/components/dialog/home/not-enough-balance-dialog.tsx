@@ -26,7 +26,7 @@ export default function NotEnoughBalanceDialog({ open, setOpen }: Props) {
         <AlertDialogHeader>
           <AlertDialogTitle>Not enough balance!</AlertDialogTitle>
           <AlertDialogDescription>
-            You don't have enough balance of this currency. You need to deposit
+            You {"don't"} have enough balance of this currency. You need to deposit
             through the wallet page.
           </AlertDialogDescription>
         </AlertDialogHeader>

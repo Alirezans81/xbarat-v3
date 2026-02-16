@@ -62,9 +62,50 @@ export const depositRepository = {
   },
 
   updateById: async (id: string, newValue: UpdateDeposit) => {
-    return prisma.deposit.update({
-      where: { id },
-      data: newValue,
+    return prisma.$transaction(async (tx) => {
+      const previous = await tx.deposit.findUnique({
+        where: { id },
+      });
+      if (!previous) {
+        throw new Error("depositNotFound");
+      }
+
+      const updated = await tx.deposit.update({
+        where: { id },
+        data: newValue,
+      });
+
+      if (
+        updated.status === "COMPLETED" &&
+        previous.status !== "COMPLETED"
+      ) {
+        await tx.wallet.update({
+          where: { id: updated.walletId },
+          data: {
+            balance: {
+              increment: updated.amount,
+            },
+          },
+        });
+
+        const bridgeTransfer = await tx.bridgeTransfer.findFirst({
+          where: { depositId: updated.id },
+          select: { liquidityPoolId: true },
+        });
+
+        if (bridgeTransfer?.liquidityPoolId) {
+          await tx.liquidityPool.update({
+            where: { id: bridgeTransfer.liquidityPoolId },
+            data: {
+              balance: {
+                increment: updated.amount,
+              },
+            },
+          });
+        }
+      }
+
+      return updated;
     });
   },
 

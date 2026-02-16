@@ -11,7 +11,6 @@ import { GetExchangesFilters } from "@/types/back/wallet/exchange";
 import { NextRequest, NextResponse } from "next/server";
 import { currencyPairService } from "@/lib/back/services/currencyPair.service";
 import { exchangeMatchService } from "@/lib/back/services/wallet/exchangeMatch.service";
-import { walletService } from "@/lib/back/services/wallet.service";
 import { calculateFee } from "@/lib/back/utils/exchange.utils";
 
 export async function POST(request: NextRequest) {
@@ -97,11 +96,6 @@ export async function POST(request: NextRequest) {
             remainingAmount: +exchange.remainingAmount - +fromMatchedAmount,
             matchedAmount: +exchange.matchedAmount + +fromMatchedAmount,
           });
-          await walletService.updateByUserIdAndCurrencyId(
-            exchange.userId,
-            exchange.currencyPair.toCurrency.id,
-            {},
-          );
 
           let foundMatchStatus: ExchangeStatus = "PARTIAL";
           if (+foundMatch.remainingAmount - +toMatchedAmount === 0)

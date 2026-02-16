@@ -33,8 +33,6 @@ export default function WatchList({ selectedPair, setSelectedPair }: Props) {
     });
   }, [getWatchList, setSelectedPair]);
 
-  console.log(selectedPair)
-
   return (
     <div className="px-10">
       {loading ? (

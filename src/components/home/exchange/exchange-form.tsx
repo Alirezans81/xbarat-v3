@@ -442,7 +442,7 @@ export default function ExchangeForm({
                 className="text-secondary cursor-pointer"
                 onClick={() => setRate(+selectedPair.rate)}
               >
-                {+selectedPair.rate}
+                {addComma(+selectedPair.rate)}
               </button>{" "}
             </span>
           )}
