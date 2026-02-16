@@ -203,7 +203,7 @@ export default function ProfileCard({ className }: Props) {
 
             {/* Third Row */}
             <div className="col-span-4 row-span-1 w-full h-full flex flex-col justify-center bg-accent/50 rounded-2xl p-2 items-center">
-              <div className="w-full h-fit flex flex-row items-center justify-center gap-2">
+              <div className="w-full h-fit flex flex-row items-center justify-center gap-0 lg:gap-2">
                 <span>{t('country')}</span>
                 <Button
                   onClick={() => setEditing("countryCode")}

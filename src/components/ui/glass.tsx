@@ -9,30 +9,32 @@ type GlassProps = {
 export default function Glass({ children, className }: GlassProps) {
   return (
     <div className={cn("relative overflow-hidden", className)}>
-      {/* Glass layer */}
+      {/* Base frosted layer */}
       <div
         className="
-                    absolute inset-0 z-0
-                    bg-[linear-gradient(-45deg,
-                        rgba(255,255,255,0.18),
-                        rgba(255,255,255,0.05)
-                    )]
-                    backdrop-blur-[16px]
-                    shadow-[0_20px_60px_rgba(0,0,0,0.4)]
-                    border border-white/10
+          absolute inset-0 z-0
+          border border-white/12
+          bg-[linear-gradient(165deg,rgba(0,0,0,0.14)_0%,rgba(10,10,10,0.08)_48%,rgba(60,60,60,0.14)_100%)]
+          backdrop-blur-sm
+          shadow-[0_14px_36px_rgba(0,0,0,0.28)]
         "
       />
 
-      {/* Dispersion highlight */}
+      {/* Inner soft capsule glow inspired by the SVG center pill */}
       <div
         className="
           pointer-events-none
           absolute inset-0 z-0
-          bg-[radial-gradient(circle_at_30%_20%,
-            rgba(255,0,128,0.15),
-            transparent_40%
-          )]
-          opacity-50
+          bg-[radial-gradient(58%_82%_at_50%_36%,rgba(50,50,50,0.36)_0%,rgba(30,30,30,0.22)_38%,rgba(10,10,10,0.08)_68%,transparent_100%)]
+        "
+      />
+
+      {/* Top sheen + subtle edge contrast for glass depth */}
+      <div
+        className="
+          pointer-events-none
+          absolute inset-0 z-0
+          bg-[linear-gradient(180deg,rgba(155,155,155,0.2)_0%,rgba(100,100,100,0.08)_16%,transparent_48%,rgba(35,35,35,0.18)_100%)]
         "
       />
 

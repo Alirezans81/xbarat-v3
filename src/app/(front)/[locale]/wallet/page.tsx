@@ -5,16 +5,25 @@ import Transfer from "@/components/wallet/transfer/transfer";
 import Balance from "@/components/wallet/balance/balance";
 import Report from "@/components/wallet/report/report";
 import { getCurrencies } from "@/api/currency/action";
-import { getPaymentChannels } from "@/api/payment-channel/action";
+import Glass from "@/components/ui/glass";
+import { Button } from "@/components/ui/button";
 export default async function Wallet() {
   try {
     const currencies = await getCurrencies();
     const wallets = await getWallets();
-    const allPaymentChannels = await getPaymentChannels();
     return (
       <div className="w-full h-full min-h-11/12">
         {/* mobile: vertical stack */}
-        <div className="flex sm:hidden">
+        <div className="flex sm:hidden flex-col w-full h-full justify-center items-center pt-10 gap-y-5 px-5">
+          <Glass className="w-full h-full rounded-lg bg-green/15 py-2">
+            <Button className="w-full h-full flex justify-center bac items-center text-green font-bold text-xl" variant={"ghost"}>Deposit</Button>
+          </Glass>
+          <Glass className="w-full h-full rounded-lg bg-red/15 py-2">
+            <Button className="w-full h-full flex justify-center items-center text-red font-bold text-xl" variant={"ghost"}>Withdrawal</Button>
+          </Glass>
+          <Glass className="w-full h-full rounded-lg bg-muted/30 py-2">
+            <Button className="w-full h-full flex justify-center items-center text-muted font-bold text-xl" variant={"ghost"}>Transfer</Button>
+          </Glass>
           <Deposit className="" currencies={currencies} />
           <Withdrawal className="" currencies={currencies} />
           <Transfer className="" currencies={currencies} />
