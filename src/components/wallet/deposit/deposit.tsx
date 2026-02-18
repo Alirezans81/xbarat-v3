@@ -24,6 +24,10 @@ type Props = {
     className: string;
     currencies: Currency[] | null;
 }
+type PaymentChannelCurrency = {
+    id: string;
+    name: string;
+}
 
 const Deposit = ({ className, currencies }: Props) => {
     const t = useTranslations("Wallet");
@@ -32,9 +36,7 @@ const Deposit = ({ className, currencies }: Props) => {
     const [displayAmount, setDisplayAmount] = useState<string>("");
     const [loading, setLoading] = useState(false);
     const [AmountError, setAmountError] = useState("");
-    const [paymentChannel, setPaymentChannel] = useState<PaymentChannel>();
-    const [paymentChannels, setPaymentChannels] = useState<PaymentChannel[]>();
-    const [paymentChannelIdError, setPaymentChannelIdError] = useState("");
+    const [paymentChannel, setPaymentChannel] = useState<PaymentChannelCurrency>();
     const [wallets, setWallets] = useState<Wallet[]>([]);
     const [walletId, setWalletId] = useState("");
     const createDeposit = useCreateDeposit();
@@ -56,14 +58,7 @@ const Deposit = ({ className, currencies }: Props) => {
         const formattedValue = addComma(rawValue);
         setDisplayAmount(formattedValue);
     };
-    const validatePaymentChannelId = (value: string) => {
-        if (!value) {
-            setPaymentChannelIdError("Payment Channel required!");
-            return false;
-        }
-        setAmountError("");
-        return true;
-    };
+
 
     const findWallet = (): Wallet | null => {
         return wallets.find((e) => e.currencyId === currency?.id) || null;
@@ -71,16 +66,17 @@ const Deposit = ({ className, currencies }: Props) => {
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
+
         const walletFound = findWallet();
-        if (walletFound !== undefined && walletFound) {
-            setWalletId(walletFound.id);
-        }
+        // if (walletFound !== undefined && walletFound) {
+        //     setWalletId()
+        // }
         setLoading(true);
-        if (paymentChannel && validatePaymentChannelId(paymentChannel.id) && walletId && validateAmount(amount.toString())) {
+        if (paymentChannel && walletFound && validateAmount(amount.toString())) {
             createDeposit({
                 deposit: {
                     amount: +amount,
-                    walletId: walletId,
+                    walletId: walletFound.id,
                     paymentChannelId: paymentChannel?.id,
                 }
             });
@@ -97,21 +93,7 @@ const Deposit = ({ className, currencies }: Props) => {
         });
     }, []);
 
-    useEffect(() => {
-        if (currency) {
-            setLoading(true);
-            getPaymentChannels({
-                setPaymentChannels,
-                filters: {
-                    currencyId: currency?.id,
-                },
-                onFinally() {
-                    setLoading(false);
-                },
-            });
-        }
-    }, [currency]);
-
+    console.log(wallets);
     return (
         <section className={cn(className)}>
             <Glass className='rounded-lg'>
@@ -196,7 +178,7 @@ const Deposit = ({ className, currencies }: Props) => {
                                         {t("payment-channels")}
                                     </DropdownMenuLabel>
                                     <DropdownMenuSeparator />
-                                    {paymentChannels?.map((payChannel, index) => (
+                                    {currency?.paymentChannels.map((payChannel, index) => (
                                         <DropdownMenuItem
                                             key={index}
                                             onClick={() => setPaymentChannel(payChannel)}
@@ -210,7 +192,7 @@ const Deposit = ({ className, currencies }: Props) => {
                         </div>
                     </div>
 
-                    <Button onClick={() => handleSubmit} className='w-3/4 rounded-sm text-md'>{t("submit")}</Button>
+                    <Button onClick={handleSubmit} className='w-3/4 rounded-sm text-md'>{t("submit")}</Button>
 
                 </Card>
             </Glass>

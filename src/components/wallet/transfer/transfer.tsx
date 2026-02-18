@@ -24,6 +24,11 @@ import { removeComma, addComma } from '@/lib/front/utils/number';
 import { Wallet } from "@/types/front/wallet";
 import { PaymentChannel } from '@/types/front/paymentChannel';
 import { useGetPaymentChannels } from '@/api/payment-channel/hook';
+
+type PaymentChannelCurrency = {
+    id: string;
+    name: string;
+};
 const Transfer = ({ className, currencies }: Props) => {
     const t = useTranslations("Wallet");
     const [currency, setCurrency] = useState<Currency | null>(null);
@@ -31,6 +36,7 @@ const Transfer = ({ className, currencies }: Props) => {
     const [displayAmount, setDisplayAmount] = useState<string>("");
     const [loading, setLoading] = useState(false);
     const [AmountError, setAmountError] = useState("");
+    const [paymentChannel, setPaymentChannel] = useState<PaymentChannelCurrency>();
     const [wallets, setWallets] = useState<Wallet[]>([]);
     const [walletId, setWalletId] = useState("");
     const createTransfer = useCreateTransfer();
@@ -64,15 +70,14 @@ const Transfer = ({ className, currencies }: Props) => {
             setWalletId(walletFound.id);
         }
         setLoading(true);
-        if (walletId && validateAmount(amount.toString())) {
-            console.log("Transfer");
-            // createTransfer({
-            //     deposit: {
-            //         amount: +amount,
-            //         walletId: walletId,
-            //         paymentChannelId: paymentChannel?.id,
-            //     }
-            // });
+        if (paymentChannel && walletId && validateAmount(amount.toString())) {
+            createTransfer({
+                transfer: {
+                    amount: +amount,
+                    walletId: walletId,
+                    paymentChannelId: paymentChannel?.id,
+                }
+            });
         };
     };
 
@@ -85,21 +90,6 @@ const Transfer = ({ className, currencies }: Props) => {
             }
         });
     }, []);
-
-    // useEffect(() => {
-    //     if (currency) {
-    //         setLoading(true);
-    //         getPaymentChannels({
-    //             setPaymentChannels,
-    //             filters: {
-    //                 currencyId: currency?.id,
-    //             },
-    //             onFinally() {
-    //                 setLoading(false);
-    //             },
-    //         });
-    //     }
-    // }, [currency]);
 
     return (
         <section className={cn(className)}>
@@ -159,6 +149,44 @@ const Transfer = ({ className, currencies }: Props) => {
                             </div>
                         </Card>
 
+                        {/* Payment Channel */}
+                        <div className='col-span-2 row-span-1 w-full h-full'>
+                            <DropdownMenu modal={false}>
+                                <DropdownMenuTrigger asChild>
+                                    <Button className="w-full h-full rounded-lg bg-card hover:bg-card-context/40 px-0 py-1">
+                                        <Glass className="w-full h-full rounded-sm">
+                                            <div className="w-full h-full flex flex-row justify-between items-center px-3 bg-accent/50">
+                                                <span className="w-fit h-fit">
+                                                    {paymentChannel ? paymentChannel.name : "Payment Channel"}
+                                                </span>
+                                                <Image
+                                                    src={DropdownArrow}
+                                                    alt="Dropdown Arrow"
+                                                    width={16}
+                                                    height={16}
+                                                    className="w-4 h-4"
+                                                />
+                                            </div>
+                                        </Glass>
+                                    </Button>
+                                </DropdownMenuTrigger>
+                                <DropdownMenuContent className="w-full h-full">
+                                    <DropdownMenuLabel className="text-lg">
+                                        {t("payment-channels")}
+                                    </DropdownMenuLabel>
+                                    <DropdownMenuSeparator />
+                                    {currency?.paymentChannels.map((payChannel, index) => (
+                                        <DropdownMenuItem
+                                            key={index}
+                                            onClick={() => setPaymentChannel(payChannel)}
+                                            className="w-full px-2 py-1 hover:cursor-pointer hover:bg-card-context/40 rounded-lg"
+                                        >
+                                            {payChannel.name}
+                                        </DropdownMenuItem>
+                                    ))}
+                                </DropdownMenuContent>
+                            </DropdownMenu>
+                        </div>
                     </div>
 
                     <Button onClick={() => handleSubmit} className='w-3/4 rounded-sm text-md'>{t("submit")}</Button>

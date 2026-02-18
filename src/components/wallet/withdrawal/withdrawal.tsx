@@ -23,7 +23,7 @@ import Cookies from 'js-cookie';
 type Props = {
     className: string;
     currencies: Currency[] | null
-}
+};
 type UserCard = {
     id: string;
     account_type: string;
@@ -32,7 +32,10 @@ type UserCard = {
     bank_name: string;
     is_Default: boolean;
 };
-
+type PaymentChannelCurrency = {
+    id: string;
+    name: string;
+};
 type CardsByCurrency = {
     [currencyCode: string]: UserCard[];
 };
@@ -59,13 +62,10 @@ const Withdrawal = ({ className, currencies }: Props) => {
     const [displayAmount, setDisplayAmount] = useState<string>("");
     const [loading, setLoading] = useState(false);
     const [AmountError, setAmountError] = useState("");
-    const [paymentChannels, setPaymentChannels] = useState<PaymentChannel[]>([]);
-    const [paymentChannel, setPaymentChannel] = useState<PaymentChannel>();
-    const [paymentChannelIdError, setPaymentChannelIdError] = useState("");
+    const [paymentChannel, setPaymentChannel] = useState<PaymentChannelCurrency>();
     const [wallets, setWallets] = useState<Wallet[]>([]);
     const [walletId, setWalletId] = useState("");
     const createWithdrawal = useCreateWithdrawal();
-    const getPaymentChannels = useGetPaymentChannels();
     const getWallets = useGetWallets();
     const userCards = loadCards();
     const [selectedCard, setSelectedCard] = useState<UserCard | null>();
@@ -86,37 +86,9 @@ const Withdrawal = ({ className, currencies }: Props) => {
         const formattedValue = addComma(rawValue);
         setDisplayAmount(formattedValue);
     };
-    const validatePaymentChannelId = (value: string) => {
-        if (!value) {
-            setPaymentChannelIdError("Payment Channel required!");
-            return false;
-        }
-        setAmountError("");
-        return true;
-    };
 
     const findWallet = (): Wallet | null => {
         return wallets.find((e) => e.currencyId === currency?.id) || null;
-    };
-
-    const handleSubmit = (e: React.FormEvent) => {
-        e.preventDefault();
-        const walletFound = findWallet();
-        if (walletFound !== undefined && walletFound) {
-            setWalletId(walletFound.id);
-        }
-        setLoading(true);
-        if (paymentChannel && validatePaymentChannelId(paymentChannel.id) && walletId && validateAmount(amount.toString())) {
-            createWithdrawal({
-                withdrawal: {
-                    amount: +amount,
-                    walletId: walletId,
-                    paymentChannelId: paymentChannel?.id,
-                    receiverAddress: "ascs",
-                    addressOwnerName: "aslc"
-                }
-            });
-        };
     };
 
     useEffect(() => {
@@ -129,20 +101,23 @@ const Withdrawal = ({ className, currencies }: Props) => {
         });
     }, []);
 
-    useEffect(() => {
-        if (currency) {
-            setLoading(true);
-            getPaymentChannels({
-                setPaymentChannels,
-                filters: {
-                    currencyId: currency?.id,
-                },
-                onFinally() {
-                    setLoading(false);
-                },
+    const handleSubmit = (e: React.FormEvent) => {
+        e.preventDefault();
+        const walletFound = findWallet();
+        setLoading(true);
+        if (paymentChannel && walletFound && validateAmount(amount.toString()) && selectedCard) {
+            createWithdrawal({
+                withdrawal: {
+                    amount: +amount,
+                    walletId: walletFound.id,
+                    paymentChannelId: paymentChannel?.id,
+                    receiverAddress: selectedCard?.account_number,
+                    addressOwnerName: selectedCard?.account_name,
+                }
             });
-        }
-    }, [currency]);
+        };
+    };
+
     return (
         <section className={cn(className)}>
             <Glass className='rounded-lg'>
@@ -227,7 +202,7 @@ const Withdrawal = ({ className, currencies }: Props) => {
                                         {t("payment-channels")}
                                     </DropdownMenuLabel>
                                     <DropdownMenuSeparator />
-                                    {paymentChannels?.map((payChannel, index) => (
+                                    {currency?.paymentChannels?.map((payChannel, index) => (
                                         <DropdownMenuItem
                                             key={index}
                                             onClick={() => setPaymentChannel(payChannel)}
@@ -281,7 +256,7 @@ const Withdrawal = ({ className, currencies }: Props) => {
                         </div>
                     </div>
 
-                    <Button onClick={() => handleSubmit} className='w-3/4 rounded-sm text-md'>{t("submit")}</Button>
+                    <Button onClick={handleSubmit} className='w-3/4 rounded-sm text-md'>{t("submit")}</Button>
 
                 </Card>
             </Glass>
@@ -289,4 +264,4 @@ const Withdrawal = ({ className, currencies }: Props) => {
     )
 }
 
-export default Withdrawal
+export default Withdrawal;

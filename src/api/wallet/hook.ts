@@ -37,7 +37,7 @@ export const useGetWallets = () => {
           onFinally?.();
         });
     },
-    [t, token]
+    [t, token],
   );
 
   return fetch;

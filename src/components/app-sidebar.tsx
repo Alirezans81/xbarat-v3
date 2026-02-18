@@ -159,7 +159,6 @@ export function AppMobileNavbar() {
   const pathname = usePathname();
   const t = useTranslations("Sidebar");
   const items = useSidebarItems();
-  console.log(items);
   return (
     <nav className="sm:hidden fixed bottom-0 inset-x-0 z-40 p-0 bg-transparent">
       <div className="w-full h-full flex justify-center items-center p-3">
