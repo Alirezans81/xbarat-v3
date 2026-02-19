@@ -2,6 +2,7 @@
 
 import { Withdrawal } from "@/types/front/wallet/withdrawal";
 import { ColumnDef } from "@tanstack/react-table";
+import QuickTicketDialog from "@/components/dialog/ticket/quick-ticket-dialog";
 
 export const withdrawalColumns: ColumnDef<Withdrawal>[] = [
   {
@@ -23,5 +24,18 @@ export const withdrawalColumns: ColumnDef<Withdrawal>[] = [
   {
     accessorKey: "status",
     header: "Status",
+  },
+  {
+    id: "actions",
+    header: "Actions",
+    cell: ({ row }) => {
+      const user = row.original.user;
+      return (
+        <QuickTicketDialog
+          userEmail={user.email}
+          userName={user.fullName}
+        />
+      );
+    },
   },
 ];
