@@ -33,6 +33,7 @@ export async function POST(request: NextRequest) {
     const fee = selectedCurrencyPair
       ? calculateFee(+fromAmount, +selectedCurrencyPair.feePercentage)
       : 0;
+    const userIsProvider = await userService.checkUserIsProvider(payload.id);
 
     const exchange = await exchangeService.create({
       userId: payload.id,
@@ -42,6 +43,7 @@ export async function POST(request: NextRequest) {
       toAmount,
       exchangeRate,
       fee,
+      fundingSource: userIsProvider ? "LIQUIDITY_POOL" : "WALLET",
     });
 
     // Check for exchange match

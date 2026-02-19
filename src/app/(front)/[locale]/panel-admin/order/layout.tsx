@@ -27,7 +27,7 @@ export default function Layout({
               Assignment
             </Button>
           </Link>
-          {/* <Link href="/panel-admin/order/deposit">
+          <Link href="/panel-admin/order/deposit">
             <Button
               variant={
                 pathname !== "/panel-admin/order/deposit"
@@ -51,7 +51,7 @@ export default function Layout({
               Withdrawal
             </Button>
           </Link>
-          <Link href="/panel-admin/order/transfer">
+          {/* <Link href="/panel-admin/order/transfer">
             <Button
               variant={
                 pathname !== "/panel-admin/order/transfer"

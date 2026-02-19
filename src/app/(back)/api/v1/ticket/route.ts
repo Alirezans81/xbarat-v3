@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { jwtUtils } from "@/lib/back/utils/jwt.utils";
 import {
   MissingFieldsResponse,
+  NotFoundResponse,
   ServerErrorResponse,
   UnauthorizedResponse,
 } from "@/lib/back/utils/globalResponses.utils";
@@ -53,12 +54,29 @@ export async function POST(request: NextRequest) {
     if (!payload) return UnauthorizedResponse;
 
     const body = await request.json();
-    const { subject } = body;
+    const { subject, email, userId } = body;
 
     if (!subject) return MissingFieldsResponse;
 
+    const userIsAdmin = await userService.checkUserIsAdmin(payload.id);
+    const userIsSupport = await userService.checkUserIsSupport(payload.id);
+
+    let ticketUserId = payload.id;
+
+    if (userIsAdmin || userIsSupport) {
+      if (email) {
+        const foundUser = await userService.getUserByEmail(email);
+        if (!foundUser) return NotFoundResponse;
+        ticketUserId = foundUser.id;
+      } else if (userId) {
+        ticketUserId = userId;
+      }
+    } else if (email || userId) {
+      return UnauthorizedResponse;
+    }
+
     const ticket = await ticketService.create({
-      userId: payload.id,
+      userId: ticketUserId,
       subject,
     });
 

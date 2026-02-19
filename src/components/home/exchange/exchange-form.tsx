@@ -1,6 +1,7 @@
 "use client";
 
 import { useCreateExchange } from "@/api/wallet/exchange/hooks";
+import { useGetLiquidityPools } from "@/api/liquidity-pool/hook";
 import NotEnoughBalanceDialog from "@/components/dialog/home/not-enough-balance-dialog";
 import { Button } from "@/components/ui/button";
 import { Card, CardFooter } from "@/components/ui/card";
@@ -25,9 +26,10 @@ import { addComma, roundDown } from "@/lib/front/utils/number";
 import { Currency } from "@/types/front/currency";
 import { CurrencyPair } from "@/types/front/currencyPair";
 import { Wallet } from "@/types/front/wallet";
+import { LiquidityPool } from "@/types/front/liquidityPool";
 import { ChevronDown, ChevronsDown } from "lucide-react";
 import Image from "next/image";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { toast } from "sonner";
 
 interface Props {
@@ -48,10 +50,12 @@ export default function ExchangeForm({
   selectedPair,
   setSelectedPair,
 }: Props) {
-  const { isLoggedIn } = useAuthStore();
+  const { isLoggedIn, user } = useAuthStore();
   const { setOpen: setLoginSignupDialogOpen } = useLoginSignupDialogStore();
+  const isProvider = user?.role === "PROVIDER";
 
   const [notEnoughBalanceDialog, setNotEnoughBalanceDialog] = useState(false);
+  const [liquidityPools, setLiquidityPools] = useState<LiquidityPool[]>([]);
 
   const [draftSourceId, setDraftSourceId] = useState(
     selectedPair?.fromCurrency.id ?? "",
@@ -69,11 +73,32 @@ export default function ExchangeForm({
   const selectedSource = currencies.find((e) => e.id === selectedSourceId);
   const selectedTarget = currencies.find((e) => e.id === selectedTargetId);
   const foundWallet = wallets.find((e) => e.currencyId === selectedSourceId);
+  const getLiquidityPools = useGetLiquidityPools();
 
   const [amount, setAmount] = useState<number>();
   const [lastEdited, setLastEdited] = useState<"source" | "target">("source");
 
   const SPLIT_INDEX = useBreakpointValue({ base: 2, sm: 3, md: 4, xl: 5 });
+
+  useEffect(() => {
+    if (!isLoggedIn || !isProvider || !selectedSourceId) return;
+
+    getLiquidityPools({
+      setLiquidityPools,
+      filters: { currencyId: selectedSourceId },
+      onError() {
+        setLiquidityPools([]);
+      },
+    });
+  }, [getLiquidityPools, isLoggedIn, isProvider, selectedSourceId]);
+
+  const sourceAvailableBalance = useMemo(() => {
+    if (isProvider) {
+      return liquidityPools.reduce((sum, pool) => sum + +pool.balance, 0);
+    }
+
+    return +(foundWallet?.balance ?? 0);
+  }, [foundWallet?.balance, isProvider, liquidityPools]);
 
   const syncSelectedPair = (nextSourceId: string, nextTargetId: string) => {
     if (nextSourceId && nextTargetId) {
@@ -174,7 +199,7 @@ export default function ExchangeForm({
         },
         onSuccess() {
           toast.success("Your exchange submitted successfully.");
-          router.replace("/#latest-table");
+          router.push("/#latest-table");
         },
         onError() {
           toast.error("Something went wrong.");
@@ -204,7 +229,7 @@ export default function ExchangeForm({
           }
 
           if (sourceAmount) {
-            if (!foundWallet?.balance || +foundWallet.balance < sourceAmount) {
+            if (sourceAvailableBalance < sourceAmount) {
               setNotEnoughBalanceDialog(true);
               return;
             }
@@ -363,13 +388,13 @@ export default function ExchangeForm({
               onChange={(e) => handleSourceAmountChange(+e.currentTarget.value)}
             />
             <InputGroupAddon align="inline-end">
-              {foundWallet && (
+              {(isProvider || foundWallet) && (
                 <Button
                   type="button"
                   variant="ghost"
                   className="-me-1"
                   onClick={() =>
-                    handleSourceAmountChange(+foundWallet.balance || 0)
+                    handleSourceAmountChange(sourceAvailableBalance)
                   }
                 >
                   Max
@@ -378,13 +403,13 @@ export default function ExchangeForm({
             </InputGroupAddon>
           </InputGroup>
 
-          {selectedSource && foundWallet && (
+          {selectedSource && (isProvider || foundWallet) && (
             <div className="w-full flex justify-between items-center text-sm">
               <span>
                 Balance:{" "}
                 <span className="text-secondary">
                   {selectedSource.symbol}
-                  {addComma(foundWallet.balance || 0)}
+                  {addComma(sourceAvailableBalance)}
                 </span>
                 {"  "}
               </span>

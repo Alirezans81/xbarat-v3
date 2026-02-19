@@ -92,19 +92,19 @@ export const providerLoggedInNavbarItems = [
     url: "/liquidity-pool",
     icon: WavesLadder,
   },
-  {
-    title: "wallet",
-    url: "/wallet",
-    icon: Wallet,
-  },
-  {
-    title: "report",
-    url: "/report",
-    icon: FileStack,
-  },
-  {
-    title: "dashboard",
-    url: "/dashboard",
-    icon: LayoutDashboard,
-  },
+  // {
+  //   title: "wallet",
+  //   url: "/wallet",
+  //   icon: Wallet,
+  // },
+  // {
+  //   title: "report",
+  //   url: "/report",
+  //   icon: FileStack,
+  // },
+  // {
+  //   title: "dashboard",
+  //   url: "/dashboard",
+  //   icon: LayoutDashboard,
+  // },
 ];
