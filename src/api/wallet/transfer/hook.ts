@@ -12,15 +12,14 @@ import {
 import { useCheckTokenExpiration } from "@/hooks/use-auth";
 import {
   CreateTransfer,
+  GetTransfersFilters,
   UpdateTransfer,
   Transfer,
 } from "@/types/front/wallet/transfer";
 
 type GetTransfersProps = {
   setTransfers: (value: Transfer[]) => void;
-  filters?: {
-    userId: string;
-  };
+  filters?: GetTransfersFilters;
 };
 export const useGetTransfers = () => {
   const t = useTranslations("ApiErrors");

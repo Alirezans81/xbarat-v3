@@ -20,9 +20,6 @@ export default async function Wallet() {
             className={"w-full h-fit flex flex-col justify-center items-center gap-y-3"}
             currencies={currencies}
           />
-          {/* <Deposit className="" currencies={currencies} />
-          <Withdrawal className="" currencies={currencies} />
-          <Transfer className="" currencies={currencies} /> */}
           <Balance className="" currencies={currencies} wallets={wallets} />
           <Report className="" currencies={currencies} />
         </div>
