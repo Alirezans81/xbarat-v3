@@ -1,7 +1,10 @@
 "use client";
 
+import { useCreateExchange } from "@/api/wallet/exchange/hooks";
+import { useGetLiquidityPools } from "@/api/liquidity-pool/hook";
+import NotEnoughBalanceDialog from "@/components/dialog/home/not-enough-balance-dialog";
 import { Button } from "@/components/ui/button";
-import { Card } from "@/components/ui/card";
+import { Card, CardFooter } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import {
   InputGroup,
@@ -13,15 +16,21 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
+import { Spinner } from "@/components/ui/spinner";
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
 import { useBreakpointValue } from "@/hooks/use-breakpoint";
+import { Link, useRouter } from "@/i18n/navigation";
+import { useAuthStore } from "@/lib/front/stores/auth";
+import { useLoginSignupDialogStore } from "@/lib/front/stores/dialog";
 import { addComma, roundDown } from "@/lib/front/utils/number";
 import { Currency } from "@/types/front/currency";
 import { CurrencyPair } from "@/types/front/currencyPair";
 import { Wallet } from "@/types/front/wallet";
-import { ChevronDown } from "lucide-react";
+import { LiquidityPool } from "@/types/front/liquidityPool";
+import { ChevronDown, ChevronsDown } from "lucide-react";
 import Image from "next/image";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
+import { toast } from "sonner";
 
 interface Props {
   rate: number | undefined;
@@ -41,6 +50,13 @@ export default function ExchangeForm({
   selectedPair,
   setSelectedPair,
 }: Props) {
+  const { isLoggedIn, user } = useAuthStore();
+  const { setOpen: setLoginSignupDialogOpen } = useLoginSignupDialogStore();
+  const isProvider = user?.role === "PROVIDER";
+
+  const [notEnoughBalanceDialog, setNotEnoughBalanceDialog] = useState(false);
+  const [liquidityPools, setLiquidityPools] = useState<LiquidityPool[]>([]);
+
   const [draftSourceId, setDraftSourceId] = useState(
     selectedPair?.fromCurrency.id ?? "",
   );
@@ -57,11 +73,32 @@ export default function ExchangeForm({
   const selectedSource = currencies.find((e) => e.id === selectedSourceId);
   const selectedTarget = currencies.find((e) => e.id === selectedTargetId);
   const foundWallet = wallets.find((e) => e.currencyId === selectedSourceId);
+  const getLiquidityPools = useGetLiquidityPools();
 
   const [amount, setAmount] = useState<number>();
   const [lastEdited, setLastEdited] = useState<"source" | "target">("source");
 
   const SPLIT_INDEX = useBreakpointValue({ base: 2, sm: 3, md: 4, xl: 5 });
+
+  useEffect(() => {
+    if (!isLoggedIn || !isProvider || !selectedSourceId) return;
+
+    getLiquidityPools({
+      setLiquidityPools,
+      filters: { currencyId: selectedSourceId },
+      onError() {
+        setLiquidityPools([]);
+      },
+    });
+  }, [getLiquidityPools, isLoggedIn, isProvider, selectedSourceId]);
+
+  const sourceAvailableBalance = useMemo(() => {
+    if (isProvider) {
+      return liquidityPools.reduce((sum, pool) => sum + +pool.balance, 0);
+    }
+
+    return +(foundWallet?.balance ?? 0);
+  }, [foundWallet?.balance, isProvider, liquidityPools]);
 
   const syncSelectedPair = (nextSourceId: string, nextTargetId: string) => {
     if (nextSourceId && nextTargetId) {
@@ -79,29 +116,50 @@ export default function ExchangeForm({
     setSelectedPair(null);
   };
 
-  const { sourceAmount, targetAmount } = useMemo(() => {
+  const { sourceAmount, targetAmount, fee } = useMemo(() => {
     if (!selectedPair || !rate || !amount) {
       return {
         sourceAmount: lastEdited === "source" ? amount : undefined,
         targetAmount: lastEdited === "target" ? amount : undefined,
+        fee: 0,
       };
     }
 
+    const feePercentage = +selectedPair.feePercentage / 100;
+
     if (lastEdited === "source") {
-      const computedTarget = selectedPair.isInverseRate
-        ? amount * rate
+      const computedFee = amount * feePercentage;
+      const netSourceAmount = Math.max(amount - computedFee, 0);
+      const computedTarget = !selectedPair.isInverseRate
+        ? netSourceAmount * rate
         : selectedTarget
-          ? roundDown(amount / rate, selectedTarget.decimals)
+          ? roundDown(netSourceAmount / rate, selectedTarget.decimals)
           : undefined;
-      return { sourceAmount: amount, targetAmount: computedTarget };
+      return {
+        sourceAmount: amount,
+        targetAmount: computedTarget,
+        fee: computedFee,
+      };
     }
 
-    const computedSource = selectedPair.isInverseRate
+    const netSourceAmount = !selectedPair.isInverseRate
       ? selectedSource
         ? roundDown(amount / rate, selectedSource.decimals)
         : undefined
       : amount * rate;
-    return { sourceAmount: computedSource, targetAmount: amount };
+    const sourceAmountWithFee =
+      netSourceAmount && feePercentage < 1
+        ? netSourceAmount / (1 - feePercentage)
+        : undefined;
+    const computedFee = sourceAmountWithFee
+      ? sourceAmountWithFee * feePercentage
+      : 0;
+
+    return {
+      sourceAmount: sourceAmountWithFee,
+      targetAmount: amount,
+      fee: computedFee,
+    };
   }, [amount, lastEdited, rate, selectedPair, selectedSource, selectedTarget]);
 
   const handleSourceAmountChange = (newSourceAmount: number) => {
@@ -126,12 +184,58 @@ export default function ExchangeForm({
     }
   };
 
+  const [loading, setLoading] = useState(false);
+  const router = useRouter();
+  const createExchange = useCreateExchange();
+  const handleSubmit = () => {
+    if (selectedPair && sourceAmount && targetAmount && rate) {
+      setLoading(true);
+      createExchange({
+        exchange: {
+          currencyPairId: selectedPair.id,
+          fromAmount: sourceAmount,
+          toAmount: targetAmount,
+          exchangeRate: rate,
+        },
+        onSuccess() {
+          toast.success("Your exchange submitted successfully.");
+          router.push("/#latest-table");
+        },
+        onError() {
+          toast.error("Something went wrong.");
+        },
+        onFinally() {
+          setLoading(false);
+        },
+      });
+    }
+  };
+
   return (
     <Card className="w-fit mx-auto">
+      <NotEnoughBalanceDialog
+        open={notEnoughBalanceDialog}
+        setOpen={setNotEnoughBalanceDialog}
+      />
       <form
         className="grid grid-cols-11 gap-y-4 px-6 py-2.5"
         onSubmit={(e) => {
           e.preventDefault();
+
+          if (!isLoggedIn) {
+            toast.error("First you must log in to your account.");
+            setLoginSignupDialogOpen(true);
+            return;
+          }
+
+          if (sourceAmount) {
+            if (sourceAvailableBalance < sourceAmount) {
+              setNotEnoughBalanceDialog(true);
+              return;
+            }
+          }
+
+          handleSubmit();
         }}
       >
         <div className="col-span-5 flex gap-2 overflow-visible">
@@ -149,8 +253,8 @@ export default function ExchangeForm({
                 key={currency.id}
                 variant="outline"
                 value={currency.id}
-                className="w-14 sm:w-16 border-muted hover:cursor-pointer"
                 disabled={selectedTargetId === currency.id}
+                className={`w-14 sm:w-16 ${selectedSourceId === currency.id ? "!bg-primary !border-primary" : "border-muted"} hover:cursor-pointer `}
               >
                 {currency.code}
               </ToggleGroupItem>
@@ -161,8 +265,9 @@ export default function ExchangeForm({
               open={sourcesPopoverOpen}
               onOpenChange={(value) => setSourcesPopoverOpen(value)}
             >
-              <PopoverTrigger>
+              <PopoverTrigger asChild>
                 <Button
+                  type="button"
                   variant="outline"
                   className="!px-1 !bg-transparent !border-muted"
                 >
@@ -191,7 +296,7 @@ export default function ExchangeForm({
                         key={currency.id}
                         variant="outline"
                         value={currency.id}
-                        className="w-14 sm:w-16 border-muted hover:cursor-pointer col-span-1"
+                        className={`w-14 sm:w-16 ${selectedSourceId === currency.id ? "!bg-primary !border-primary" : "border-muted"} hover:cursor-pointer col-span-1`}
                         disabled={selectedTargetId === currency.id}
                       >
                         {currency.code}
@@ -218,7 +323,7 @@ export default function ExchangeForm({
                 key={currency.id}
                 variant="outline"
                 value={currency.id}
-                className="w-14 sm:w-16 border-muted hover:cursor-pointer"
+                className={`w-14 sm:w-16 ${selectedTargetId === currency.id ? "!bg-primary !border-primary" : "border-muted"} hover:cursor-pointer `}
                 disabled={selectedSourceId === currency.id}
               >
                 {currency.code}
@@ -230,8 +335,9 @@ export default function ExchangeForm({
               open={targetsPopoverOpen}
               onOpenChange={(value) => setTargetsPopoverOpen(value)}
             >
-              <PopoverTrigger>
+              <PopoverTrigger asChild>
                 <Button
+                  type="button"
                   variant="outline"
                   className="!px-1 !bg-transparent !border-muted"
                 >
@@ -260,7 +366,7 @@ export default function ExchangeForm({
                         key={currency.id}
                         variant="outline"
                         value={currency.id}
-                        className="w-14 sm:w-16 border-muted hover:cursor-pointer col-span-1"
+                        className={`w-14 sm:w-16 ${selectedTargetId === currency.id ? "!bg-primary !border-primary" : "border-muted"} hover:cursor-pointer col-span-1`}
                         disabled={selectedSourceId === currency.id}
                       >
                         {currency.code}
@@ -282,12 +388,13 @@ export default function ExchangeForm({
               onChange={(e) => handleSourceAmountChange(+e.currentTarget.value)}
             />
             <InputGroupAddon align="inline-end">
-              {foundWallet && (
+              {(isProvider || foundWallet) && (
                 <Button
                   type="button"
                   variant="ghost"
+                  className="-me-1"
                   onClick={() =>
-                    handleSourceAmountChange(+foundWallet.balance || 0)
+                    handleSourceAmountChange(sourceAvailableBalance)
                   }
                 >
                   Max
@@ -296,16 +403,31 @@ export default function ExchangeForm({
             </InputGroupAddon>
           </InputGroup>
 
-          {selectedSource && foundWallet && (
-            <span className="text-sm text-secondary">
-              Available Balance: {selectedSource.symbol}
-              {""}
-              {addComma(foundWallet.balance || 0)}
-            </span>
+          {selectedSource && (isProvider || foundWallet) && (
+            <div className="w-full flex justify-between items-center text-sm">
+              <span>
+                Balance:{" "}
+                <span className="text-secondary">
+                  {selectedSource.symbol}
+                  {addComma(sourceAvailableBalance)}
+                </span>
+                {"  "}
+              </span>
+              {sourceAmount && (
+                <span>
+                  Fee:{" "}
+                  <span className="text-red">
+                    {selectedSource.symbol}
+                    {addComma(fee)}
+                  </span>
+                </span>
+              )}
+            </div>
           )}
         </div>
         <div className="col-span-1 flex flex-col gap-2">
           <Button
+            type="button"
             variant="link"
             onClick={handleSwitch}
             className="!py-5 !px-0 opacity-50 hover:opacity-100"
@@ -337,6 +459,18 @@ export default function ExchangeForm({
             value={rate}
             onChange={(e) => setRate(+e.currentTarget.value)}
           />
+          {selectedPair && (
+            <span className="text-sm">
+              Current Rate:{" "}
+              <button
+                type="button"
+                className="text-secondary cursor-pointer"
+                onClick={() => setRate(+selectedPair.rate)}
+              >
+                {addComma(+selectedPair.rate)}
+              </button>{" "}
+            </span>
+          )}
         </div>
         <div className="col-span-1 flex flex-col gap-2" />
         <div className="col-span-5 flex flex-col gap-2">
@@ -348,13 +482,32 @@ export default function ExchangeForm({
               !selectedTargetId ||
               !sourceAmount ||
               !targetAmount ||
-              !rate
+              !rate ||
+              loading
             }
           >
-            Exchange
+            {loading ? (
+              <>
+                <Spinner />
+                <span>Loading...</span>
+              </>
+            ) : (
+              <span>Exchange</span>
+            )}
           </Button>
         </div>
       </form>
+      {selectedPair && (
+        <CardFooter className="flex flex-col items-center">
+          <Link
+            href="/#latest-table"
+            className="transition-all duration-200 text-muted-foreground hover:text-foreground flex items-center gap-0.5"
+          >
+            <ChevronsDown size={16} />
+            <span>See other rates.</span>
+          </Link>
+        </CardFooter>
+      )}
     </Card>
   );
 }

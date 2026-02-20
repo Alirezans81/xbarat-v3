@@ -63,7 +63,7 @@ export default function OrderBook({
         const reverseCurrencyPair = currencyPairs?.find(
           (pair) =>
             pair.fromCurrencyId === currencyPair?.toCurrencyId &&
-            pair.toCurrencyId === currencyPair?.fromCurrencyId
+            pair.toCurrencyId === currencyPair?.fromCurrencyId,
         );
 
         if (reverseCurrencyPair) {
@@ -80,7 +80,13 @@ export default function OrderBook({
     } else {
       resetOrderBooks();
     }
-  }, [currencyPair, currencyPairs, getOrders, getReverseOrders, resetOrderBooks]);
+  }, [
+    currencyPair,
+    currencyPairs,
+    getOrders,
+    getReverseOrders,
+    resetOrderBooks,
+  ]);
   useEffect(() => {
     fetchOrderBooks();
   }, [fetchOrderBooks]);
@@ -97,9 +103,9 @@ export default function OrderBook({
       <span className="w-fit h-fit text-foreground text-3xl">
         {t("latest-transaction")}
       </span>
-      <div className="w-full h-full flex flex-col-reverse sm:flex-row gap-x-5 justify-center items-center">
+      <div className="w-full h-full flex flex-col-reverse sm:flex-row gap-x-5 justify-center">
         {/* First Table */}
-        <div className="w-fit h-fit flex flex-col gap-y-4 mt-5 sm:mt-0">
+        <div className="w-fit h-fit flex flex-col gap-y-4 mx-auto sm:mx-0 mt-5 sm:mt-0">
           <span className="text-wine flex justify-center text-3xl">Sell</span>
           <div
             className={`w-full h-fit rounded-2xl p-3 bg-card backdrop-blur-sm`}
@@ -133,7 +139,7 @@ export default function OrderBook({
                     .sort(
                       (a, b) =>
                         parseFloat(a.exchangeRate.toString()) -
-                        parseFloat(b.exchangeRate.toString())
+                        parseFloat(b.exchangeRate.toString()),
                     )
                     .map(
                       (order: Exchange & { count: number }, index: number) => (
@@ -160,7 +166,7 @@ export default function OrderBook({
                             </button>
                           </TableCell>
                         </TableRow>
-                      )
+                      ),
                     )
                 )}
               </TableBody>
@@ -169,7 +175,7 @@ export default function OrderBook({
         </div>
 
         {/* Second Table */}
-        <div className="w-fit h-fit flex flex-col gap-y-4">
+        <div className="w-fit h-fit flex flex-col gap-y-4 mx-auto sm:mx-0">
           <span className="text-green flex justify-center text-3xl">Buy</span>
           <div
             className={`w-full h-fit rounded-2xl p-3 bg-card backdrop-blur-sm`}
@@ -203,7 +209,7 @@ export default function OrderBook({
                     .sort(
                       (a, b) =>
                         parseFloat(a.exchangeRate.toString()) -
-                        parseFloat(b.exchangeRate.toString())
+                        parseFloat(b.exchangeRate.toString()),
                     )
                     .map(
                       (order: Exchange & { count: number }, index: number) => (
@@ -230,7 +236,7 @@ export default function OrderBook({
                             </button>
                           </TableCell>
                         </TableRow>
-                      )
+                      ),
                     )
                 )}
               </TableBody>

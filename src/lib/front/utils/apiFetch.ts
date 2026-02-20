@@ -9,6 +9,35 @@ export interface ApiFetchOptions {
   cache?: RequestCache;
 }
 
+type ApiErrorData = {
+  message?: string;
+  error?: {
+    message?: string;
+  };
+  [key: string]: unknown;
+};
+
+export class ApiFetchError extends Error {
+  response: {
+    status: number;
+    data: ApiErrorData;
+  };
+
+  constructor(status: number, data: ApiErrorData) {
+    const message = data.error?.message ?? data.message ?? fallbackErrorMessage(status);
+    super(message);
+    this.name = "ApiFetchError";
+    this.response = { status, data };
+  }
+}
+
+function fallbackErrorMessage(status: number) {
+  if (status === 400) return "badRequest";
+  if (status === 401) return "unauthorized";
+  if (status === 404) return "notFound";
+  return "serverError";
+}
+
 export async function apiFetch<T>(
   endpoint: string,
   options: ApiFetchOptions = {}
@@ -54,17 +83,42 @@ export async function apiFetch<T>(
     finalBody = body;
   }
 
-  const res = await fetch(url.toString(), {
-    method,
-    headers: allHeaders,
-    body: finalBody,
-    cache,
-  });
+  let res: Response;
+  try {
+    res = await fetch(url.toString(), {
+      method,
+      headers: allHeaders,
+      body: finalBody,
+      cache,
+    });
+  } catch (error) {
+    throw new ApiFetchError(0, {
+      error: { message: "serverError" },
+      message: error instanceof Error ? error.message : "networkError",
+    });
+  }
 
   // ---------- هندل پاسخ ----------
   if (!res.ok) {
-    const text = await res.text();
-    throw new Error(`API Error ${res.status}: ${text}`);
+    let data: ApiErrorData = {};
+
+    try {
+      data = (await res.json()) as ApiErrorData;
+    } catch {
+      const text = await res.text();
+      if (text) {
+        data = { message: text };
+      }
+    }
+
+    const message = data.error?.message ?? data.message ?? fallbackErrorMessage(res.status);
+    if (!data.error) {
+      data.error = { message };
+    } else if (!data.error.message) {
+      data.error.message = message;
+    }
+
+    throw new ApiFetchError(res.status, data);
   }
 
   // اگه response خالی بود (204 مثلاً)، json نخوان

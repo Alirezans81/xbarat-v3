@@ -31,10 +31,8 @@ export type GetExchangesFilters = {
 export type CreateExchange = {
   currencyPairId: string;
   fromAmount: number;
-  remainingAmount: number;
   toAmount: number;
   exchangeRate: number;
-  fee: number;
 };
 
 export type UpdateExchange = {

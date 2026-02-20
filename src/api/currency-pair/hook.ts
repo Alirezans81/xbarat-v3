@@ -47,7 +47,7 @@ export const useGetCurrencyPairs = () => {
           onFinally?.();
         });
     },
-    [t]
+    [t],
   );
 
   return fetch;
@@ -169,28 +169,31 @@ type GetWatchListProps = {
 export const useGetWatchList = () => {
   const t = useTranslations("ApiErrors");
 
-  const fetch = useCallback(async ({
-    setWatchList,
-    onError,
-    onSuccess,
-    onFinally,
-  }: GetWatchListProps & FetchProps) => {
-    await getWatchList()
-      .then((res) => {
-        setWatchList(res);
-        onSuccess?.(res);
-      })
-      .catch((err) => {
-        if (process.env.NEXT_PUBLIC_APP_MODE === "development") {
-          console.error(err.response);
-        }
-        toast.error(t(err.response.data.error.message));
-        onError?.(err);
-      })
-      .finally(() => {
-        onFinally?.();
-      });
-  }, [t]);
+  const fetch = useCallback(
+    async ({
+      setWatchList,
+      onError,
+      onSuccess,
+      onFinally,
+    }: GetWatchListProps & FetchProps) => {
+      await getWatchList()
+        .then((res) => {
+          setWatchList(res);
+          onSuccess?.(res);
+        })
+        .catch((err) => {
+          if (process.env.NEXT_PUBLIC_APP_MODE === "development") {
+            console.error(err.response);
+          }
+          toast.error(t(err.response.data.error.message));
+          onError?.(err);
+        })
+        .finally(() => {
+          onFinally?.();
+        });
+    },
+    [t],
+  );
 
   return fetch;
 };

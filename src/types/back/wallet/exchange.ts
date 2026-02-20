@@ -41,6 +41,7 @@ export type CreateExchange = {
   toAmount: number;
   exchangeRate: number;
   fee: number;
+  fundingSource?: "WALLET" | "LIQUIDITY_POOL";
 };
 
 export type UpdateExchange = {

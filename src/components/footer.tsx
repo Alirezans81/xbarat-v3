@@ -17,9 +17,9 @@ export default async function Footer() {
     <footer className="w-full bg-card">
       <div className="container mx-auto pb-4 pt-6 px-5">
         <div className="w-full flex flex-col gap-4">
-          <div className="w-full grid grid-cols-3 gap-[10%] mb-8">
-            <div className="col-span-1 flex flex-col gap-3 mb-8">
-              <div className="flex items-center gap-1 mb-2">
+          <div className="w-full grid grid-cols-4 gap-y-6 sm:gap-y-0 mb-8">
+            <div className="col-span-4 sm:col-span-1 grid grid-cols-2 gap-2 sm:gap-0 lg:gap-3 items-center sm:items-start">
+              <div className="col-span-2 flex justify-center sm:justify-start items-center gap-1 mb-2">
                 <Image
                   width={512}
                   height={512}
@@ -29,19 +29,20 @@ export default async function Footer() {
                 />
                 <span className="text-2xl text-secondary">{t("xbarat")}</span>
               </div>
-              <span className="font-semibold">{t("slogan") + " 🤝"}</span>
-              <span className="text-muted-foreground transition-all duration-300 hover:text-foreground text-sm">
+              <span className="col-span-2 font-semibold mx-auto sm:mx-0 sm:-mt-5 lg:-mt-0">
+                {t("slogan") + " 🤝"}
+              </span>
+              <span className="col-span-2 text-center sm:text-start text-muted-foreground transition-all duration-300 hover:text-foreground text-sm sm:-mt-5 lg:-mt-0">
                 +98 3514 4234
               </span>
-              <span className="text-muted-foreground transition-all duration-300 hover:text-foreground text-sm">
+              <span className="col-span-2 text-center sm:text-start text-muted-foreground transition-all duration-300 hover:text-foreground text-sm sm:-mt-5 lg:-mt-0">
                 xbarat.team@gmail.com
               </span>
-              <span className="text-muted-foreground transition-all duration-300 hover:text-foreground text-sm">
-                Copyright © 2025 xbarat.com
-              </span>
             </div>
-            <div className="col-span-1 flex justify-center gap-[50%]">
-              <div className="flex flex-col gap-2.5">
+            <div className="col-span-4 block sm:hidden h-0.25 rounded-full bg-muted-foreground/30" />
+
+            <div className="col-span-2 sm:col-span-1 flex sm:ps-5">
+              <div className="flex flex-col gap-2.5 mx-auto items-center sm:mx-0 sm:items-start">
                 <span className="text-sm mb-1.5 font-semibold">Pages</span>
                 <Link
                   href="/"
@@ -55,32 +56,11 @@ export default async function Footer() {
                 >
                   Wallet
                 </Link>
-                <Link
-                  href="/"
-                  className="text-muted-foreground transition-all duration-300 hover:text-foreground text-sm "
-                >
-                  Deposit
-                </Link>
-                <Link
-                  href="/"
-                  className="text-muted-foreground transition-all duration-300 hover:text-foreground text-sm "
-                >
-                  Withdrawal
-                </Link>
-                <Link
-                  href="/"
-                  className="text-muted-foreground transition-all duration-300 hover:text-foreground text-sm "
-                >
-                  Report
-                </Link>
-                <Link
-                  href="/"
-                  className="text-muted-foreground transition-all duration-300 hover:text-foreground text-sm "
-                >
-                  Dashboard
-                </Link>
               </div>
-              <div className="flex flex-col gap-2.5">
+            </div>
+
+            <div className="col-span-2 sm:col-span-1 flex">
+              <div className="flex flex-col gap-2.5 mx-auto items-center sm:mx-0 sm:items-start">
                 <span className="text-sm mb-1.5 font-semibold">Services</span>
                 <Link
                   href="/"
@@ -102,15 +82,19 @@ export default async function Footer() {
                 </Link>
               </div>
             </div>
-            <div className="col-span-1 flex flex-col gap-4">
+            <div className="col-span-4 block sm:hidden h-0.25 rounded-full bg-muted-foreground/30" />
+
+            <div className="col-span-4 sm:col-span-1 flex flex-col items-center sm:items-start gap-4">
               <span className="text-xl font-semibold">Newsletter</span>
-              <span className="text-muted-foreground text-sm">
+              <span className="text-muted-foreground text-sm text-center sm:text-start">
                 Subscribe our newsletter to get more free design course and
                 resource.
               </span>
-              <div className="flex gap-2">
-                <Input placeholder="Enter your email" />
-                <Button className="text-white">Submit</Button>
+              <div className="flex flex-col lg:flex-row gap-2">
+                <Input disabled placeholder="Enter your email" />
+                <Button disabled className="text-white">
+                  Coming Soon...
+                </Button>
               </div>
               <div className="flex gap-4">
                 <TooltipProvider>

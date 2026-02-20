@@ -51,7 +51,7 @@ export default function Layout({
               Withdrawal
             </Button>
           </Link>
-          <Link href="/panel-admin/order/transfer">
+          {/* <Link href="/panel-admin/order/transfer">
             <Button
               variant={
                 pathname !== "/panel-admin/order/transfer"
@@ -72,9 +72,9 @@ export default function Layout({
             >
               Refund
             </Button>
-          </Link>
+          </Link> */}
         </div>
-        <div className="col-span-9">{children}</div>
+        <div className="col-span-9 bg-card p-5 rounded-2xl">{children}</div>
       </div>
     </div>
   );

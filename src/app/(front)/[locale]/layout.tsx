@@ -11,6 +11,7 @@ import { AppMobileNavbar, AppSidebar } from "@/components/app-sidebar";
 import { Toaster } from "@/components/ui/sonner";
 import HandleCookies from "@/components/handle-cookies";
 import { rtlLocales } from "@/lib/front/constants";
+import Footer from "@/components/footer";
 
 export const metadata: Metadata = {
   title: "Xbarat | Exchange/Transfer Fiat Money",
@@ -55,7 +56,7 @@ export default async function RootLayout({
               </div>
               <div className="w-full bg-background overflow-x-hidden">
                 <div
-                  className="w-full h-full flex flex-col pb-20 sm:pb-0"
+                  className="w-full h-full flex flex-col"
                   style={{
                     backgroundImage: "url('/background.svg')",
                     backgroundRepeat: "no-repeat",
@@ -64,7 +65,10 @@ export default async function RootLayout({
                   }}
                 >
                   <Navbar />
-                  <main className="flex-1 w-full h-full">{children}</main>
+                  <main className="h-full">{children}</main>
+                  <div className="w-full mt-auto">
+                    <Footer />
+                  </div>
                 </div>
               </div>
               <AppMobileNavbar />

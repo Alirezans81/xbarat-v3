@@ -8,8 +8,35 @@ import {
 
 export const withdrawalRepository = {
   create: async (data: CreateWithdrawal) => {
-    return prisma.withdrawal.create({
-      data,
+    return prisma.$transaction(async (tx) => {
+      const wallet = await tx.wallet.findUnique({
+        where: { id: data.walletId },
+        select: { balance: true },
+      });
+
+      if (!wallet) {
+        throw new Error("walletNotFound");
+      }
+
+      if (+wallet.balance < data.amount) {
+        throw new Error("insufficientBalance");
+      }
+
+      await tx.wallet.update({
+        where: { id: data.walletId },
+        data: {
+          balance: {
+            decrement: data.amount,
+          },
+          frozen: {
+            increment: data.amount,
+          },
+        },
+      });
+
+      return tx.withdrawal.create({
+        data,
+      });
     });
   },
 
@@ -31,6 +58,7 @@ export const withdrawalRepository = {
         user: {
           select: {
             fullName: true,
+            email: true,
           },
         },
         wallet: {
@@ -71,15 +99,103 @@ export const withdrawalRepository = {
 
   updateById: async (
     id: string,
-    newValue: UpdateWithdrawal
+    newValue: UpdateWithdrawal,
   ): Promise<Withdrawal> => {
-    return prisma.withdrawal.update({
-      where: { id },
-      data: newValue,
+    return prisma.$transaction(async (tx) => {
+      const previous = await tx.withdrawal.findUnique({
+        where: { id },
+      });
+      if (!previous) {
+        throw new Error("withdrawalNotFound");
+      }
+
+      const updated = await tx.withdrawal.update({
+        where: { id },
+        data: newValue,
+      });
+
+      if (updated.status === "COMPLETED" && previous.status !== "COMPLETED") {
+        const wallet = await tx.wallet.findUnique({
+          where: { id: updated.walletId },
+          select: { frozen: true },
+        });
+
+        await tx.wallet.update({
+          where: { id: updated.walletId },
+          data: {
+            frozen: Math.max(0, +(wallet?.frozen ?? 0) - +updated.amount),
+          },
+        });
+
+        const bridgeTransfer = await tx.bridgeTransfer.findFirst({
+          where: { withdrawalId: updated.id },
+          select: { liquidityPoolId: true },
+        });
+
+        if (bridgeTransfer?.liquidityPoolId) {
+          const liquidityPool = await tx.liquidityPool.findUnique({
+            where: { id: bridgeTransfer.liquidityPoolId },
+            select: { frozen: true },
+          });
+
+          await tx.liquidityPool.update({
+            where: { id: bridgeTransfer.liquidityPoolId },
+            data: {
+              frozen: Math.max(
+                0,
+                +(liquidityPool?.frozen ?? 0) - +updated.amount,
+              ),
+            },
+          });
+        }
+      }
+
+      if (
+        ["FAILED", "REJECTED"].includes(updated.status) &&
+        !["FAILED", "REJECTED"].includes(previous.status)
+      ) {
+        const wallet = await tx.wallet.findUnique({
+          where: { id: updated.walletId },
+          select: { frozen: true },
+        });
+
+        await tx.wallet.update({
+          where: { id: updated.walletId },
+          data: {
+            balance: {
+              increment: updated.amount,
+            },
+            frozen: Math.max(0, +(wallet?.frozen ?? 0) - +updated.amount),
+          },
+        });
+      }
+
+      return updated;
     });
   },
 
   deleteById: async (id: string) => {
-    return prisma.withdrawal.delete({ where: { id } });
+    return prisma.$transaction(async (tx) => {
+      const deleted = await tx.withdrawal.delete({ where: { id } });
+
+      if (deleted.status !== "COMPLETED") {
+        const wallet = await tx.wallet.findUnique({
+          where: { id: deleted.walletId },
+          select: { frozen: true },
+        });
+
+        await tx.wallet.update({
+          where: { id: deleted.walletId },
+          data: {
+            balance: {
+              increment: deleted.amount,
+            },
+            frozen: Math.max(0, +(wallet?.frozen ?? 0) - +deleted.amount),
+          },
+        });
+      }
+
+      return deleted;
+    });
   },
 };

@@ -33,8 +33,6 @@ export async function POST(request: NextRequest) {
           );
         if (!ownsBridgeTransfer) return UnauthorizedResponse;
 
-        console.log();
-
         const newBridgeTransfer = await bridgeTransferService.updateById(
           bridgeTransferId,
           {

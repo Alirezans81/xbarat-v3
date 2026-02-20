@@ -8,9 +8,10 @@ import {
   createTicketMessage,
   createTicket,
   getTickets,
+  createAdminTicket,
 } from "./api";
 import { TicketStatus } from "@/generated/prisma";
-import { Ticket } from "@/types/front/ticket";
+import { CreateAdminTicket, Ticket } from "@/types/front/ticket";
 import { toast } from "sonner";
 
 type UpdateTicketStatusProps = {
@@ -24,6 +25,10 @@ type CreateTicketMessageProps = {
 
 type CreateTicketProps = {
   ticket: Partial<Ticket>;
+};
+
+type CreateAdminTicketProps = {
+  ticket: CreateAdminTicket;
 };
 
 export const useUpdateTicketStatus = () => {
@@ -124,6 +129,38 @@ export const useCreateTicket = () => {
   return fetch;
 };
 
+export const useCreateAdminTicket = () => {
+  const t = useTranslations("ApiErrors");
+  const checkTokenExpiration = useCheckTokenExpiration();
+  const { token } = useAuthStore();
+
+  const fetch = ({
+    ticket,
+    onError,
+    onSuccess,
+    onFinally,
+  }: CreateAdminTicketProps & FetchProps) => {
+    checkTokenExpiration(async () => {
+      await createAdminTicket(token, ticket)
+        .then((res) => {
+          onSuccess?.(res);
+        })
+        .catch((err) => {
+          if (process.env.NEXT_PUBLIC_APP_MODE === "development") {
+            console.error(err.response);
+          }
+          toast.error(t(err.response.data.error.message));
+          onError?.(err);
+        })
+        .finally(() => {
+          onFinally?.();
+        });
+    });
+  };
+
+  return fetch;
+};
+
 export const useGetTickets = () => {
   const t = useTranslations("ApiErrors");
   const checkTokenExpiration = useCheckTokenExpiration();
@@ -148,7 +185,7 @@ export const useGetTickets = () => {
           });
       });
     },
-    [checkTokenExpiration, t, token]
+    [checkTokenExpiration, t, token],
   );
   return fetch;
 };

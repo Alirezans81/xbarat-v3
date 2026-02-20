@@ -4,7 +4,7 @@ import { DepositDataTable } from "./deposit/deposit-data-table";
 import { depositColumns } from "./deposit/deposit-columns";
 import { WithdrawalDataTable } from "./withdrawal/withdrawal-data-table";
 import { withdrawalColumns } from "./withdrawal/withdrawal-columns";
- 
+
 import { LiquidityPoolDataTable } from "./liquidity-pool/liquidity-pool-data-table";
 import { liquidityPoolColumns } from "./liquidity-pool/liquidity-pool-columns";
 import { Button } from "@/components/ui/button";
@@ -29,8 +29,11 @@ import { PaymentChannel } from "@/types/front/paymentChannel";
 import { useGetPaymentChannels } from "@/api/payment-channel/hook";
 import { useAssign } from "@/api/wallet/assign/hook";
 import { toast } from "sonner";
+import { useRouter } from "@/i18n/navigation";
 
 export default function Page() {
+  const router = useRouter();
+
   const [loading, setLoading] = useState(false);
 
   const [currencies, setCurrencies] = useState<Currency[]>([]);
@@ -126,7 +129,7 @@ export default function Page() {
 
   const [selectedDeposits, setSelectedDeposits] = useState<Deposit[]>([]);
   const [selectedWithdrawals, setSelectedWithdrawals] = useState<Withdrawal[]>(
-    []
+    [],
   );
   const [selectedLiquidityPools, setSelectedLiquidityPools] = useState<
     LiquidityPool[]
@@ -147,6 +150,7 @@ export default function Page() {
         setSelectedLiquidityPools([]);
 
         toast.success("Successfully assigned!");
+        router.refresh();
       },
       onError(error) {
         toast.error("Failed to assign: " + JSON.stringify(error));
@@ -191,7 +195,7 @@ export default function Page() {
       </div>
       <div className="col-span-2 flex items-center justify-between">
         <div className="flex items-center gap-3">
-            <Select
+          <Select
             value={selectedCurrencyId}
             onValueChange={(value) => {
               setSelectedCurrencyId(value);
@@ -238,9 +242,7 @@ export default function Page() {
               </span>
             </div>
           </div>
-          <Button onClick={handleAssign}>
-            Assign
-          </Button>
+          <Button onClick={handleAssign}>Assign</Button>
         </div>
       </div>
     </div>

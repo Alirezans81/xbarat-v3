@@ -5,6 +5,7 @@ import { TicketStatus } from "@/generated/prisma";
 import { Link } from "@/i18n/navigation";
 import { GetTicketsFilters } from "@/types/back/ticket";
 import { ChevronLeft } from "lucide-react";
+import CreateTicketDialog from "@/components/dialog/ticket/create-ticket-dialog";
 
 export default async function page({
   searchParams,
@@ -30,7 +31,10 @@ export default async function page({
               <span className="text-3xl">Tickets</span>
             </div>
 
-            <TicketFilters default_ticket_status={status} />
+            <div className="flex gap-2 items-center">
+              <TicketFilters default_ticket_status={status} />
+              <CreateTicketDialog />
+            </div>
           </div>
 
           <TicketsTable data={data} />

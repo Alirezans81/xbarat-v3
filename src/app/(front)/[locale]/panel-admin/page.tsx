@@ -61,17 +61,6 @@ export default async function page() {
                 </CardFooter>
               </Card>
             </Link>
-            <Link href="/panel-admin/order">
-              <Card className="hover:shadow-xl h-44 transition-all duration-300 dark:hover:shadow-secondary/10">
-                <CardHeader>
-                  <CardTitle>Orders</CardTitle>
-                  <CardDescription>
-                    All Orders, including: Deposits, Withdrawals, Transfer and
-                    Refunds
-                  </CardDescription>
-                </CardHeader>
-              </Card>
-            </Link>
             <Link href="/panel-admin/fee-user">
               <Card className="hover:shadow-xl h-44 transition-all duration-300 dark:hover:shadow-secondary/10">
                 <CardHeader>
@@ -96,12 +85,23 @@ export default async function page() {
                 </CardFooter>
               </Card>
             </Link>
+            <Link href="/panel-admin/order">
+              <Card className="hover:shadow-xl h-44 transition-all duration-300 dark:hover:shadow-secondary/10">
+                <CardHeader>
+                  <CardTitle>Orders</CardTitle>
+                  <CardDescription>
+                    All Orders, including: Deposits, Withdrawals, Transfer and
+                    Refunds
+                  </CardDescription>
+                </CardHeader>
+              </Card>
+            </Link>
           </div>
         </div>
       </div>
     );
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
   } catch (error) {
-    console.log(error);
     return <div>Error loading data</div>;
   }
 }

@@ -11,7 +11,6 @@ import { GetExchangesFilters } from "@/types/back/wallet/exchange";
 import { NextRequest, NextResponse } from "next/server";
 import { currencyPairService } from "@/lib/back/services/currencyPair.service";
 import { exchangeMatchService } from "@/lib/back/services/wallet/exchangeMatch.service";
-import { walletService } from "@/lib/back/services/wallet.service";
 import { calculateFee } from "@/lib/back/utils/exchange.utils";
 
 export async function POST(request: NextRequest) {
@@ -23,39 +22,28 @@ export async function POST(request: NextRequest) {
     if (!payload) return UnauthorizedResponse;
 
     const body = await request.json();
-    const {
-      currencyPairId,
-      fromAmount,
-      remainingAmount,
-      toAmount,
-      exchangeRate,
-    } = body;
+    const { currencyPairId, fromAmount, toAmount, exchangeRate } = body;
 
-    if (
-      !currencyPairId ||
-      !fromAmount ||
-      !remainingAmount ||
-      !toAmount ||
-      !exchangeRate
-    )
+    if (!currencyPairId || !fromAmount || !toAmount || !exchangeRate)
       return MissingFieldsResponse;
 
-    const selectedCurrencyPair = await currencyPairService.getById(
-      currencyPairId
-    );
+    const selectedCurrencyPair =
+      await currencyPairService.getById(currencyPairId);
 
     const fee = selectedCurrencyPair
       ? calculateFee(+fromAmount, +selectedCurrencyPair.feePercentage)
       : 0;
+    const userIsProvider = await userService.checkUserIsProvider(payload.id);
 
     const exchange = await exchangeService.create({
       userId: payload.id,
       currencyPairId,
       fromAmount,
-      remainingAmount,
+      remainingAmount: fromAmount,
       toAmount,
       exchangeRate,
       fee,
+      fundingSource: userIsProvider ? "LIQUIDITY_POOL" : "WALLET",
     });
 
     // Check for exchange match
@@ -79,8 +67,8 @@ export async function POST(request: NextRequest) {
               ? sortedExchanges[0]
               : null
             : +sortedExchanges[0].exchangeRate >= +exchangeRate
-            ? sortedExchanges[0]
-            : null
+              ? sortedExchanges[0]
+              : null
           : null;
         if (foundMatch) {
           const toRemainingAmount = foundMatch.currencyPair.isInverseRate
@@ -88,8 +76,8 @@ export async function POST(request: NextRequest) {
             : +foundMatch.remainingAmount * +foundMatch.exchangeRate;
 
           const fromMatchedAmount = Math.min(
-            remainingAmount,
-            toRemainingAmount
+            fromAmount,
+            toRemainingAmount,
           );
           const toMatchedAmount = exchange.currencyPair.isInverseRate
             ? +fromMatchedAmount / +exchangeRate
@@ -110,11 +98,6 @@ export async function POST(request: NextRequest) {
             remainingAmount: +exchange.remainingAmount - +fromMatchedAmount,
             matchedAmount: +exchange.matchedAmount + +fromMatchedAmount,
           });
-          await walletService.updateByUserIdAndCurrencyId(
-            exchange.userId,
-            exchange.currencyPair.toCurrency.id,
-            {}
-          );
 
           let foundMatchStatus: ExchangeStatus = "PARTIAL";
           if (+foundMatch.remainingAmount - +toMatchedAmount === 0)

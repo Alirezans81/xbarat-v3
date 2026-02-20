@@ -27,6 +27,11 @@ export type CreateTicket = {
   subject: string;
 };
 
+export type CreateAdminTicket = {
+  email: string;
+  subject: string;
+};
+
 export type CreateTicketMessage = {
   ticketId: string;
   message: string;
