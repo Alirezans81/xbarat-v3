@@ -17,7 +17,7 @@ export default function TopbarMenu() {
   if (isLoggedIn) {
     return (
       <NavigationMenu>
-        <NavigationMenuList className="space-x-3 text-muted-foreground">
+        <NavigationMenuList className="space-x-4 text-muted-foreground">
           <NavigationMenuItem>
             <NavigationMenuLink href="/" asChild className="px-4">
               <Link
@@ -57,16 +57,16 @@ export default function TopbarMenu() {
               </NavigationMenuLink>
             </NavigationMenuItem>
           )}
-          {/* <NavigationMenuItem>
-            <NavigationMenuLink href="/dashboard" asChild className="px-4">
+          <NavigationMenuItem>
+            <NavigationMenuLink href="/profile" asChild className="px-4">
               <Link
-                href="/dashboard"
-                className={pathname === "/dashboard" ? "text-foreground" : ""}
+                href="/profile"
+                className={pathname === "/profile" ? "text-foreground" : ""}
               >
-                Dashboard
+                Profile
               </Link>
             </NavigationMenuLink>
-          </NavigationMenuItem> */}
+          </NavigationMenuItem>
         </NavigationMenuList>
       </NavigationMenu>
     );

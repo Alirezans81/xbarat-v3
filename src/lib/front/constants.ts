@@ -1,1 +1,1 @@
-export const rtlLocales: string[] = ["fa"];
+export const rtlLocales: string[] = ["fa", "ar", "af"];

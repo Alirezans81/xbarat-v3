@@ -1,11 +1,8 @@
 import {
-  FileStack,
-  Home,
-  LayoutDashboard,
-  MonitorCog,
+  Home, MonitorCog,
   Wallet,
   WavesLadder,
-  User,
+  User
 } from "lucide-react";
 import { CountryCode } from "../types/front/globals";
 

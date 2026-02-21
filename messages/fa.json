@@ -1,6 +1,6 @@
 {
   "Navbar": {
-    "xbarat": "Xbarat"
+    "xbarat": "ایکس‌برات"
   },
   "ThemeToggle": {
     "light": "روشن",
@@ -12,23 +12,23 @@
     "quantity": "مقدار",
     "rate": "نرخ",
     "amount": "مبلغ",
-    "list-all-order-books": "لیست تمام دفتر سفارش‌ها"
+    "list-all-order-books": "لیست تمام سفارش‌ها"
   },
   "LoginSignupDialog": {
     "logIn": "ورود",
     "signUp": "ثبت‌نام",
     "email": "ایمیل",
     "password": "رمز عبور",
-    "confirmPassword": "تأیید رمز عبور",
+    "confirmPassword": "تکرار رمز عبور",
     "firstName": "نام",
     "lastName": "نام خانوادگی",
     "phoneNumber": "شماره تلفن",
     "emailRequired": "ایمیل الزامی است",
     "invalidEmail": "آدرس ایمیل نامعتبر است",
     "passwordRequired": "رمز عبور الزامی است",
-    "passwordStrength": "رمز عبور باید حداقل ۸ کاراکتر و شامل یک حرف بزرگ، یک حرف کوچک، یک عدد و یک کاراکتر خاص باشد.",
-    "confirmPasswordRequired": "تأیید رمز عبور الزامی است",
-    "passwordsDoNotMatch": "رمزهای عبور مطابقت ندارند",
+    "passwordStrength": "رمز عبور باید حداقل ۸ کاراکتر و شامل حداقل یک حرف بزرگ، یک حرف کوچک، یک عدد و یک کاراکتر خاص باشد.",
+    "confirmPasswordRequired": "تکرار رمز عبور الزامی است",
+    "passwordsDoNotMatch": "رمز عبور و تکرار آن مطابقت ندارند",
     "firstNameRequired": "نام الزامی است",
     "lastNameRequired": "نام خانوادگی الزامی است",
     "countryCodeRequired": "کد کشور الزامی است",
@@ -43,43 +43,43 @@
     "deposit": "واریز",
     "withdrawal": "برداشت",
     "profile": "پروفایل",
-    "report": "گزارش",
+    "report": "گزارشات",
     "dashboard": "داشبورد",
     "panelAdmin": "پنل مدیریت",
     "liquidityPool": "استخر نقدینگی",
     "logout": "خروج",
     "socialMedia": "شبکه‌های اجتماعی",
     "instagram": "اینستاگرام",
-    "whatsApp": "واتساپ",
+    "whatsApp": "واتس‌اپ",
     "telegram": "تلگرام",
-    "x": "X"
+    "x": "ایکس"
   },
   "Status": {
     "PENDING": "در انتظار",
-    "PAYMENT": "پرداخت",
+    "PAYMENT": "در انتظار پرداخت",
     "FAILED": "ناموفق",
     "REJECTED": "رد شده",
     "COMPLETED": "تکمیل شده",
-    "APPROVED": "تأیید شده",
-    "CHECK": "بررسی"
+    "APPROVED": "تایید شده",
+    "CHECK": "در حال بررسی"
   },
   "HomePage": {
     "title": "سلام دنیا!",
-    "about": "رفتن به صفحه درباره ما",
-    "slogan": "وقتی خودت کافی هستی!"
+    "about": "برو به صفحه درباره ما",
+    "slogan": "تو به اندازه کافی هستی!"
   },
   "LiquidityPool": {
     "currencies": "ارزها",
     "loading": "در حال بارگذاری...",
-    "selectCurrency": "ارزی که ارائه می‌دهید را انتخاب کنید!",
-    "currencyNotFound": "ارز پیدا نشد!",
-    "tableFooter": "لیست استخرهای نقدینگی.",
+    "selectCurrency": "ارز مورد نظر خود را انتخاب کنید!",
+    "currencyNotFound": "ارز مورد نظر یافت نشد!",
+    "tableFooter": "لیست استخرهای نقدینگی",
     "address": "آدرس",
     "balance": "موجودی",
-    "frozen": "مسدود",
-    "updatedAt": "آخرین بروزرسانی",
+    "frozen": "مسدود شده",
+    "updatedAt": "آخرین به‌روزرسانی",
     "payments": "پرداخت‌ها",
-    "paymentTableFooter": "لیست پرداخت‌ها.",
+    "paymentTableFooter": "لیست پرداخت‌ها",
     "type": "نوع",
     "deposit": "واریز",
     "withdrawal": "برداشت",
@@ -91,27 +91,20 @@
   },
   "Wallet": {
     "Wallet": "کیف پول",
-    "currency": "ارز",
     "deposit": "واریز",
-    "withdrawal": "برداشت",
-    "transfer": "انتقال",
-    "balance": "موجودی",
-    "available_balance": "موجودی قابل برداشت",
-    "portfolio": "پرتفوی",
     "amount": "مبلغ",
-    "user-card": "کارت کاربر",
     "currencies": "ارزها",
     "submit": "ارسال",
-    "payment-channel": "کانال پرداخت",
-    "payment-channels": "کانال‌های پرداخت",
+    "payment-channel": "درگاه پرداخت",
+    "payment-channels": "درگاه‌های پرداخت",
     "report": "گزارش",
     "status": "وضعیت",
     "payment_method": "روش پرداخت"
   },
   "ApiErrors": {
-    "serverError": "خطایی رخ داده است. لطفاً بعداً دوباره تلاش کنید.",
+    "serverError": "خطایی رخ داده است، لطفاً دوباره تلاش کنید.",
     "wrongEmailPassword": "ایمیل یا رمز عبور اشتباه است.",
-    "unauthorized": "دسترسی غیرمجاز است.",
+    "unauthorized": "شما دسترسی غیرمجاز دارید.",
     "userNotFound": "کاربر یافت نشد"
   },
   "Profile": {
@@ -124,40 +117,40 @@
     "country": "کشور",
     "state": "استان",
     "city": "شهر",
-    "postal-card": "کد پستی",
+    "postal-code": "کد پستی",
     "address": "آدرس",
-    "number": "شماره",
+    "number": "پلاک",
     "Account": "حساب",
     "account-number-address": "شماره حساب/آدرس",
     "type-of-account": "نوع حساب",
     "cardholders-name": "نام دارنده کارت",
-    "something-went-wrong": "مشکلی پیش آمده است!",
-    "referral": "دعوت",
-    "coming-soon": "به‌زودی!",
-    "invite-friends-text": "دوستان خود را دعوت کنید و پس از فعال شدن سیستم دعوت، پاداش بگیرید.",
+    "something-went-wrong": "مشکلی پیش آمد!",
+    "referral": "دعوت از دوستان",
+    "coming-soon": "به زودی!",
+    "invite-friends-text": "دوستان خود را دعوت کنید و پس از فعال شدن، پاداش بگیرید.",
     "currencies": "ارزها",
     "add-cards": "افزودن کارت",
     "edit": "ویرایش",
-    "no-cards": "در حال حاضر هیچ کارتی ندارید!",
+    "no-cards": "شما در حال حاضر هیچ کارتی ندارید!",
     "promo-banner": "بنر تبلیغاتی",
     "no-campaign-now": "در حال حاضر هیچ کمپین فعالی نداریم!",
-    "campaign-notify": "در صورت برگزاری کمپین، ابتدا بنر آن را اینجا مشاهده خواهید کرد!",
+    "campaign-notify": "در صورت برگزاری کمپین، بنر آن را اولین بار اینجا خواهید دید!",
     "subject": "موضوع",
-    "upload-limit": "فایل‌های خود را اینجا بارگذاری کنید. محدودیت: ۵ مگابایت",
+    "upload-limit": "فایل‌های خود را آپلود کنید. محدودیت آپلود: ۵ مگابایت",
     "list-tickets": "لیست تیکت‌ها",
     "status": "وضعیت",
-    "date-time": "تاریخ و زمان",
-    "unread": "خوانده‌نشده"
+    "date-time": "تاریخ و ساعت",
+    "unread": "خوانده نشده"
   },
   "Other": {
     "mustLoginAgain": "نشست شما منقضی شده است. لطفاً دوباره وارد شوید."
   },
   "Footer": {
-    "xbarat": "Xbarat",
-    "slogan": "وقتی خودت کافی هستی!",
+    "xbarat": "ایکس‌برات",
+    "slogan": "تو به اندازه کافی هستی!",
     "instagram": "اینستاگرام",
-    "whatsApp": "واتساپ",
+    "whatsApp": "واتس‌اپ",
     "telegram": "تلگرام",
-    "x": "X"
+    "x": "ایکس"
   }
 }

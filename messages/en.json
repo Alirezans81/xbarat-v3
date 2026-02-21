@@ -14,13 +14,6 @@
     "amount": "Amount",
     "list-all-order-books": "List of all Order Books"
   },
-  "Exchange": {
-    "latest-transaction": "Latest Transaction",
-    "quantity": "Quantity",
-    "rate": "Rate",
-    "amount": "Amount",
-    "list-all-order-books": "List of all Order Books"
-  },
   "LoginSignupDialog": {
     "logIn": "Log In",
     "signUp": "Sign Up",
