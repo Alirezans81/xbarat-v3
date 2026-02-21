@@ -51,12 +51,12 @@ export default async function Wallet() {
 
       {/* desktop: lg and bigger layout */}
       <div className="hidden lg:flex w-full h-full justify-center items-center">
-        <div className="w-fit min-w-10/12 max-w-11/12 min-h-10/12 max-h-11/12 grid grid-cols-3 grid-rows-3 gap-5">
-          <Deposit className="col-span-1 row-span-1" currencies={currencies} />
-          <Withdrawal className="col-span-1 row-span-1" currencies={currencies} />
-          <Transfer className="col-span-1 row-span-1" currencies={currencies} />
-          <Balance className="col-span-1 row-span-2" currencies={currencies} wallets={wallets} />
-          <Report className="col-span-2 row-span-2" currencies={currencies} />
+        <div className="w-fit min-w-10/12 max-w-11/12 min-h-10/12 max-h-11/12 grid grid-cols-3 grid-rows-3 gap-3">
+          <Deposit className="w-full h-full col-span-1 row-span-1" currencies={currencies} />
+          <Withdrawal className="w-full h-full col-span-1 row-span-1" currencies={currencies} />
+          <Transfer className="w-full h-full col-span-1 row-span-1" currencies={currencies} />
+          <Balance className="w-full h-full col-span-1 row-span-2" currencies={currencies} wallets={wallets} />
+          <Report className="w-full h-full col-span-2 row-span-2" currencies={currencies} />
         </div>
       </div>
 

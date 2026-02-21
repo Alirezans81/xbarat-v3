@@ -51,9 +51,9 @@ const Balance = ({ className, currencies = [], wallets = [] }: Props) => {
     }, [wallets]);
 
     return (
-        <section className={cn("w-full h-full p-4 sm:p-6", className)}>
-            <Glass className="rounded-2xl p-0">
-                <Card className="w-full h-full px-4 py-5 sm:px-6 sm:py-6 flex flex-col gap-8 border-none shadow-none">
+        <section className={cn(className)}>
+            <Glass className="rounded-lg p-0">
+                <Card className="w-full h-full px-4 py-5 sm:px-6 sm:py-6 flex flex-col gap-8">
 
                     {/* Header */}
                     <span className="text-accent-foreground text-lg font-medium">

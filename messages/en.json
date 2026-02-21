@@ -92,14 +92,27 @@
   "Wallet": {
     "Wallet": "Wallet",
     "deposit": "Deposit",
+    "withdrawal": "Withdrawal",
+    "transfer": "Transfer",
     "amount": "Amount",
+    "balance": "Balance",
+    "currency": "Currency",
+    "subject": "Subject",
+    "date": "Date",
+    "details": "Details",
+    "no-reports-found": "No Reports Found...",
+    "loading": "Loading...",
     "currencies": "Currencies",
     "submit": "Submit",
     "payment-channel": "Payment Channel",
     "payment-channels": "Payment Channels",
     "report": "Report",
     "status": "Status",
-    "payment_method": "Payment Method"
+    "payment_method": "Payment Method",
+    "user-card": "User Card",
+
+    "error-amount-requiered": "Amount required!",
+    "error-amount-invalid": "Amount is Incorrect! Enter Numbers only."
   },
   "ApiErrors": {
     "serverError": "An error has occurred, Please try again later.",

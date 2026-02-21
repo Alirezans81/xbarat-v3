@@ -19,7 +19,7 @@ import { removeComma, addComma } from '@/lib/front/utils/number';
 import { Wallet } from "@/types/front/wallet";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import LoadingIndicator from "@/components/ui/loading-indicator";
-
+import { toast } from 'sonner';
 
 type Props = {
     className: string;
@@ -37,13 +37,17 @@ const Deposit = ({ className, currencies }: Props) => {
     const [displayAmount, setDisplayAmount] = useState<string>("");
     const [loading, setLoading] = useState(true);
     const [AmountError, setAmountError] = useState("");
-    const [paymentChannel, setPaymentChannel] = useState<PaymentChannelCurrency>();
+    const [paymentChannel, setPaymentChannel] = useState<PaymentChannelCurrency | null>();
     const [wallets, setWallets] = useState<Wallet[]>([]);
     const createDeposit = useCreateDeposit();
     const getWallets = useGetWallets();
     const validateAmount = (value: string) => {
         if (!value) {
-            setAmountError("Amount required!");
+            setAmountError(t("error-amount-requiered"));
+            return false;
+        }
+        else if (+value === 0 || isNaN(+value)) {
+            setAmountError(t("error-amount-invalid"));
             return false;
         }
 
@@ -76,7 +80,19 @@ const Deposit = ({ className, currencies }: Props) => {
                     amount: +amount,
                     walletId: walletFound.id,
                     paymentChannelId: paymentChannel?.id,
-                }
+                },
+                onSuccess() {
+                    toast.success("Your Deposit Was Made Succesfully!")
+                },
+                onError() {
+                    toast.error("Something went Wrong!");
+                },
+                onFinally() {
+                    setAmount(0);
+                    setDisplayAmount("0");
+                    setPaymentChannel(null);
+                    setCurrency(null);
+                },
             });
         };
     };
@@ -92,7 +108,7 @@ const Deposit = ({ className, currencies }: Props) => {
 
     return (
         <section className={cn(className)}>
-            <Glass className='rounded-lg'>
+            <Glass className='rounded-lg p-0'>
 
                 <Card className='w-full h-full px-4 flex flex-col items-center'>
 
@@ -161,6 +177,7 @@ const Deposit = ({ className, currencies }: Props) => {
                                             </PopoverContent>
                                         </Popover>
                                     )}
+
                                 </span>
                                 <Input className='w-fit' onChange={handleAmountChange} value={displayAmount} />
                             </div>
@@ -174,7 +191,7 @@ const Deposit = ({ className, currencies }: Props) => {
                                         <Glass className="w-full h-full rounded-sm">
                                             <div className="w-full h-full flex flex-row justify-between items-center px-3 bg-accent/50">
                                                 <span className="w-fit h-fit">
-                                                    {paymentChannel ? paymentChannel.name : "Payment Channel"}
+                                                    {paymentChannel ? paymentChannel.name : t("payment-channel")}
                                                 </span>
                                                 <Image
                                                     src={DropdownArrow}
@@ -212,6 +229,7 @@ const Deposit = ({ className, currencies }: Props) => {
 
                 </Card>
             </Glass>
+
         </section >
     )
 }

@@ -149,11 +149,11 @@ const Report = ({ className, currencies }: Props) => {
 
     const withGuard =
       <T,>(setter: React.Dispatch<React.SetStateAction<T[]>>) =>
-      (value: T[]) => {
-        if (active && currentRequest === requestRef.current) {
-          setter(value);
-        }
-      };
+        (value: T[]) => {
+          if (active && currentRequest === requestRef.current) {
+            setter(value);
+          }
+        };
 
     const jobs: Promise<void>[] = [
       new Promise((resolve) => {
@@ -316,9 +316,9 @@ const Report = ({ className, currencies }: Props) => {
 
 
   return (
-    <section className={cn("w-full h-full p-4 sm:p-6", className)}>
+    <section className={cn(className)}>
       <Glass className="rounded-2xl w-full h-full">
-        <Card className="p-4 md:p-6 flex flex-col gap-6 border-none shadow-none w-full h-full">
+        <Card className="p-4 md:p-6 flex flex-col gap-6 w-full h-full">
           <h2 className="text-lg font-semibold">{t("report")}</h2>
 
           <div className="flex flex-col md:flex-row gap-4 w-full">
@@ -445,21 +445,21 @@ const Report = ({ className, currencies }: Props) => {
           <div className="flex flex-col gap-3">
             <div className="hidden md:grid grid-cols-[1.1fr_1.9fr_1.3fr_0.9fr_auto] gap-3 px-2 text-sm text-gray-400">
               <div>{t("status")}</div>
-              <div>Subject</div>
+              <div>{t("subject")}</div>
               <div>{t("payment_method")}</div>
-              <div>Date</div>
-              <div>Details</div>
+              <div>{t("date")}</div>
+              <div>{t("details")}</div>
             </div>
 
-            {loading && <div className="text-sm text-gray-400">Loading...</div>}
+            {loading && <div className="text-sm text-gray-400">{t("loading")}</div>}
             {!loading && rows.length === 0 && (
-              <div className="text-sm text-gray-400">No reports found.</div>
+              <div className="text-sm text-gray-400">{t("no-reports-found")}</div>
             )}
 
             {!loading && rows.length > 0 && (
               <>
-                <div className="hidden md:flex flex-col gap-3">{rows.map((row) => renderRow(row))}</div>
-                <div className="md:hidden flex flex-col gap-2">
+                <div className="hidden md:flex flex-col gap-3 h-72 overflow-y-scroll pb-10">{rows.map((row) => renderRow(row))}</div>
+                <div className="md:hidden flex flex-col gap-3 h-72 overflow-y-scroll pb-10">
                   {rows.map((row) => (
                     <div key={`mobile-${row.type}-${row.id}`} className="scale-[0.88] origin-top">
                       {renderRow(row)}
