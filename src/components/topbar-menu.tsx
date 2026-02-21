@@ -8,9 +8,11 @@ import {
 } from "@/components/ui/navigation-menu";
 import { Link, usePathname } from "@/i18n/navigation";
 import { useAuthStore } from "@/lib/front/stores/auth";
+import { useTranslations } from "next-intl";
 
 export default function TopbarMenu() {
   const pathname = usePathname();
+  const t = useTranslations("Sidebar");
 
   const { isLoggedIn, user } = useAuthStore();
 
@@ -24,7 +26,7 @@ export default function TopbarMenu() {
                 href="/"
                 className={pathname === "/" ? "text-foreground" : ""}
               >
-                Home
+                {t("home")}
               </Link>
             </NavigationMenuLink>
           </NavigationMenuItem>
@@ -41,7 +43,7 @@ export default function TopbarMenu() {
                     pathname === "/liquidity-pool" ? "text-foreground" : ""
                   }
                 >
-                  Liquidity Pool
+                  {t("liquidityPool")}
                 </Link>
               </NavigationMenuLink>
             </NavigationMenuItem>
@@ -52,7 +54,7 @@ export default function TopbarMenu() {
                   href="/wallet"
                   className={pathname === "/wallet" ? "text-foreground" : ""}
                 >
-                  Wallet
+                  {t("wallet")}
                 </Link>
               </NavigationMenuLink>
             </NavigationMenuItem>
@@ -63,7 +65,7 @@ export default function TopbarMenu() {
                 href="/profile"
                 className={pathname === "/profile" ? "text-foreground" : ""}
               >
-                Profile
+                {t("profile")}
               </Link>
             </NavigationMenuLink>
           </NavigationMenuItem>
