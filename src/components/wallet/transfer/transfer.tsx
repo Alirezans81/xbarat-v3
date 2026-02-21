@@ -22,8 +22,8 @@ import DropdownArrow from "../../../../public/Common/DropdownArrow.svg";
 import { Input } from '@/components/ui/input';
 import { removeComma, addComma } from '@/lib/front/utils/number';
 import { Wallet } from "@/types/front/wallet";
-import { PaymentChannel } from '@/types/front/paymentChannel';
-import { useGetPaymentChannels } from '@/api/payment-channel/hook';
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
+import LoadingIndicator from "@/components/ui/loading-indicator";
 
 type PaymentChannelCurrency = {
     id: string;
@@ -34,11 +34,10 @@ const Transfer = ({ className, currencies }: Props) => {
     const [currency, setCurrency] = useState<Currency | null>(null);
     const [amount, setAmount] = useState<number>(0);
     const [displayAmount, setDisplayAmount] = useState<string>("");
-    const [loading, setLoading] = useState(false);
+    const [loading, setLoading] = useState(true);
     const [AmountError, setAmountError] = useState("");
     const [paymentChannel, setPaymentChannel] = useState<PaymentChannelCurrency>();
     const [wallets, setWallets] = useState<Wallet[]>([]);
-    const [walletId, setWalletId] = useState("");
     const createTransfer = useCreateTransfer();
     const getWallets = useGetWallets();
     const validateAmount = (value: string) => {
@@ -51,6 +50,7 @@ const Transfer = ({ className, currencies }: Props) => {
     };
     const handleAmountChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const inputValue = e.target.value;
+        setAmountError("");
 
         const rawValue = removeComma(inputValue);
         setAmount(rawValue);
@@ -66,15 +66,11 @@ const Transfer = ({ className, currencies }: Props) => {
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
         const walletFound = findWallet();
-        if (walletFound !== undefined && walletFound) {
-            setWalletId(walletFound.id);
-        }
-        setLoading(true);
-        if (paymentChannel && walletId && validateAmount(amount.toString())) {
+        if (paymentChannel && walletFound && validateAmount(amount.toString())) {
             createTransfer({
                 transfer: {
                     amount: +amount,
-                    walletId: walletId,
+                    walletId: walletFound.id,
                     paymentChannelId: paymentChannel?.id,
                 }
             });
@@ -82,14 +78,13 @@ const Transfer = ({ className, currencies }: Props) => {
     };
 
     useEffect(() => {
-        setLoading(true);
         getWallets({
             setWallets,
             onFinally() {
                 setLoading(false);
             }
         });
-    }, []);
+    }, [getWallets]);
 
     return (
         <section className={cn(className)}>
@@ -144,7 +139,25 @@ const Transfer = ({ className, currencies }: Props) => {
                         {/* Amount Input */}
                         <Card className='col-span-1 row-span-1 w-full h-full p-0 rounded-sm'>
                             <div className='w-full h-full flex flex-row items-center justify-between gap-x-2 px-2 py-1'>
-                                <span className='text-sm'>{t("amount")}</span>
+                                <span className='text-sm flex items-center gap-1'>
+                                    {t("amount")}
+                                    {AmountError && (
+                                        <Popover open={Boolean(AmountError)}>
+                                            <PopoverTrigger asChild>
+                                                <button
+                                                    type="button"
+                                                    aria-label="Amount validation error"
+                                                    className="text-red text-xs font-semibold"
+                                                >
+                                                    !
+                                                </button>
+                                            </PopoverTrigger>
+                                            <PopoverContent className="w-fit max-w-56 py-2 px-3 text-sm text-red">
+                                                {AmountError}
+                                            </PopoverContent>
+                                        </Popover>
+                                    )}
+                                </span>
                                 <Input className='w-fit' onChange={handleAmountChange} value={displayAmount} />
                             </div>
                         </Card>
@@ -189,7 +202,9 @@ const Transfer = ({ className, currencies }: Props) => {
                         </div>
                     </div>
 
-                    <Button onClick={() => handleSubmit} className='w-3/4 rounded-sm text-md'>{t("submit")}</Button>
+                    {loading && <LoadingIndicator className="mt-3 self-start" />}
+
+                    <Button onClick={handleSubmit} className='w-3/4 rounded-sm text-md'>{t("submit")}</Button>
 
                 </Card>
             </Glass>

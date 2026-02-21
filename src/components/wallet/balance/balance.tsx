@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect, useMemo } from "react";
+import React, { useState, useMemo } from "react";
 import { cn } from "@/lib/front/utils/tailwind";
 import Glass from "@/components/ui/glass";
 import { useTranslations } from "next-intl";
@@ -19,27 +19,19 @@ const Balance = ({ className, currencies = [], wallets = [] }: Props) => {
     const t = useTranslations("Wallet");
 
     const [selectedIndex, setSelectedIndex] = useState(0);
-    const [selectedCurrency, setSelectedCurrency] =
-        useState<Currency | null>(null);
-    const [selectedWallet, setSelectedWallet] =
-        useState<Wallet | null>(null);
+    const normalizedIndex = currencies.length
+        ? selectedIndex % currencies.length
+        : 0;
 
-    // Update selected currency + wallet when index changes
-    useEffect(() => {
-        if (!currencies.length) {
-            setSelectedCurrency(null);
-            setSelectedWallet(null);
-            return;
-        }
+    const selectedCurrency = useMemo(() => {
+        if (!currencies.length) return null;
+        return currencies[normalizedIndex] ?? null;
+    }, [currencies, normalizedIndex]);
 
-        const currency = currencies[selectedIndex];
-        setSelectedCurrency(currency);
-
-        const wallet =
-            wallets.find((w) => w.currencyId === currency?.id) || null;
-
-        setSelectedWallet(wallet);
-    }, [selectedIndex, currencies, wallets]);
+    const selectedWallet = useMemo(() => {
+        if (!selectedCurrency) return null;
+        return wallets.find((w) => w.currencyId === selectedCurrency.id) ?? null;
+    }, [wallets, selectedCurrency]);
 
     const handleNext = () => {
         if (!currencies.length) return;

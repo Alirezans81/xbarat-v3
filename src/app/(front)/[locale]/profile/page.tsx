@@ -6,45 +6,49 @@ import PromoBanner from "@/components/profile/promo-banner";
 import { getTickets } from "@/api/ticket/action";
 import { getCurrencies } from "@/api/currency/action";
 export default async function Profile() {
-  try {
-    const tickets = await getTickets();
-    const currencies = await getCurrencies();
+  const [ticketsResult, currenciesResult] = await Promise.allSettled([
+    getTickets(),
+    getCurrencies(),
+  ]);
 
-    return (
-      <div className="w-full h-full flex justify-center items-center">
-        {/* mobile: vertical stack */}
-        <div className="flex flex-col gap-4 sm:hidden p-3">
-          <PromoBanner />
-          <ProfileCard />
-          <CardsCard currencies={currencies} />
-          <ReferralCard />
-          <TicketCard previousTickets={tickets} />
-        </div>
+  if (ticketsResult.status === "rejected" || currenciesResult.status === "rejected") {
+    return <div>Something went wrong!</div>;
+  }
 
-        {/* tablet: md layout */}
-        <div className="hidden sm:grid md:grid lg:hidden grid-cols-2 gap-4">
-          <ProfileCard className="col-span-2" />
-          <ReferralCard className="col-span-2 w-full h-full" />
-          <TicketCard previousTickets={tickets} />
-          <CardsCard className="col-span-2" currencies={currencies} />
-          <PromoBanner className="col-span-2" />
-        </div>
+  const tickets = ticketsResult.value;
+  const currencies = currenciesResult.value;
 
-        {/* desktop: lga and bigger layout */}
-        <div className="hidden lg:grid grid-cols-12 gap-3 grid-rows-12 p-3">
-          <ProfileCard className="col-span-4 row-span-7" />
-          <ReferralCard className="col-span-4 row-span-7 w-full h-full" />
-          <TicketCard
-            className="col-span-4 row-span-12"
-            previousTickets={tickets}
-          />
-          <CardsCard className="col-span-4 row-span-5" currencies={currencies} />
-          <PromoBanner className="col-span-4 row-span-5" />
-        </div>
+  return (
+    <div className="w-full h-full flex justify-center items-center">
+      {/* mobile: vertical stack */}
+      <div className="flex flex-col gap-4 sm:hidden p-3">
+        <PromoBanner />
+        <ProfileCard />
+        <CardsCard currencies={currencies} />
+        <ReferralCard />
+        <TicketCard previousTickets={tickets} />
       </div>
-    )
-  }
-  catch (error) {
-    return (<div>Something went wrong!</div>);
-  }
+
+      {/* tablet: md layout */}
+      <div className="hidden sm:grid md:grid lg:hidden grid-cols-2 gap-4">
+        <ProfileCard className="col-span-2" />
+        <ReferralCard className="col-span-2 w-full h-full" />
+        <TicketCard previousTickets={tickets} />
+        <CardsCard className="col-span-2" currencies={currencies} />
+        <PromoBanner className="col-span-2" />
+      </div>
+
+      {/* desktop: lga and bigger layout */}
+      <div className="hidden lg:grid grid-cols-12 gap-3 grid-rows-12 p-3">
+        <ProfileCard className="col-span-4 row-span-7" />
+        <ReferralCard className="col-span-4 row-span-7 w-full h-full" />
+        <TicketCard
+          className="col-span-4 row-span-12"
+          previousTickets={tickets}
+        />
+        <CardsCard className="col-span-4 row-span-5" currencies={currencies} />
+        <PromoBanner className="col-span-4 row-span-5" />
+      </div>
+    </div>
+  );
 }

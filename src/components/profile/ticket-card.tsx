@@ -15,7 +15,7 @@ import { DropdownMenuItem } from "@radix-ui/react-dropdown-menu";
 import { Button } from "../ui/button";
 import Image from "next/image";
 import DropdownArrow from "../../../public/Common/DropdownArrow.svg";
-import { useState, useEffect, useRef, ChangeEvent } from "react";
+import { useState, useRef, ChangeEvent } from "react";
 import { Ticket } from "@/types/front/ticket";
 import { Textarea } from "../ui/textarea";
 import Upload from "../../../public/Profile/Upload.svg";
