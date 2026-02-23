@@ -33,7 +33,7 @@ type Props = {
   currencies: Currency[];
 };
 
-type TransactionType = "ALL" | "DEPOSIT" | "WITHDRAWAL" | "EXCHANGE" | "TRANSFER";
+type TransactionType = "all" | "deposit" | "withdrawal" | "exchange" | "transfer";
 
 type ReportRow = {
   id: string;
@@ -45,18 +45,19 @@ type ReportRow = {
 };
 
 const TYPE_OPTIONS: TransactionType[] = [
-  "ALL",
-  "DEPOSIT",
-  "WITHDRAWAL",
-  "EXCHANGE",
-  "TRANSFER",
+  "all",
+  "deposit",
+  "withdrawal",
+  "exchange",
+  "transfer",
 ];
 
-const TYPE_CLASS_MAP: Record<Exclude<TransactionType, "ALL">, string> = {
-  DEPOSIT: "text-green",
-  WITHDRAWAL: "text-red",
-  EXCHANGE: "text-primary",
-  TRANSFER: "text-muted",
+const TYPE_CLASS_MAP: Record<TransactionType, string> = {
+  all: "text-accent",
+  deposit: "text-green",
+  withdrawal: "text-red",
+  exchange: "text-primary",
+  transfer: "text-muted",
 };
 
 const formatNumber = (value: unknown) => {
@@ -88,8 +89,8 @@ const Report = ({ className, currencies }: Props) => {
   const [loading, setLoading] = useState(false);
   const [rows, setRows] = useState<ReportRow[]>([]);
 
-  const [typeFilter, setTypeFilter] = useState<TransactionType>("ALL");
-  const [typeDraft, setTypeDraft] = useState<TransactionType>("ALL");
+  const [typeFilter, setTypeFilter] = useState<TransactionType>("all");
+  const [typeDraft, setTypeDraft] = useState<TransactionType>("all");
   const [currency, setCurrency] = useState<Currency | null>(null);
   const [currencyDraft, setCurrencyDraft] = useState<Currency | null>(null);
   const [paymentChannel, setPaymentChannel] = useState<{ id: string; name: string } | null>(
@@ -221,7 +222,7 @@ const Report = ({ className, currencies }: Props) => {
       )
       .map((item) => ({
         id: item.id,
-        type: "DEPOSIT",
+        type: "deposit",
         subject: `${formatNumber(item.amount)} ${item.wallet.currency.code}`,
         paymentMethod: item.paymentChannel?.name || "-",
         date: formatDate(item.createdAt),
@@ -236,7 +237,7 @@ const Report = ({ className, currencies }: Props) => {
       )
       .map((item) => ({
         id: item.id,
-        type: "WITHDRAWAL",
+        type: "withdrawal",
         subject: `${formatNumber(item.amount)} ${item.wallet.currency.code}`,
         paymentMethod: item.paymentChannel?.name || "-",
         date: formatDate(item.createdAt),
@@ -252,7 +253,7 @@ const Report = ({ className, currencies }: Props) => {
       )
       .map((item) => ({
         id: item.id,
-        type: "EXCHANGE",
+        type: "exchange",
         subject: `${formatNumber(item.fromAmount)} ${item.currencyPair.fromCurrency.code} to ${formatNumber(item.toAmount)} ${item.currencyPair.toCurrency.code}`,
         paymentMethod: "-",
         date: formatDate(item.createdAt),
@@ -263,7 +264,7 @@ const Report = ({ className, currencies }: Props) => {
       .filter((item) => matchesCurrency(item.wallet.currency.code) && !selectedPaymentChannelName)
       .map((item) => ({
         id: item.id,
-        type: "TRANSFER",
+        type: "transfer",
         subject: `${formatNumber(item.amount)} ${item.wallet.currency.code}`,
         paymentMethod: "Wallet",
         date: formatDate(item.createdAt),
@@ -272,7 +273,7 @@ const Report = ({ className, currencies }: Props) => {
 
     const allRows = [...depositRows, ...withdrawalRows, ...exchangeRows, ...transferRows];
     const filteredRows =
-      typeFilter === "ALL" ? allRows : allRows.filter((row) => row.type === typeFilter);
+      typeFilter === "all" ? allRows : allRows.filter((row) => row.type === typeFilter);
 
     setRows(
       filteredRows.sort(
@@ -292,25 +293,25 @@ const Report = ({ className, currencies }: Props) => {
   const renderRow = (row: ReportRow) => (
     <div
       key={`${row.type}-${row.id}`}
-      className="grid grid-cols-[1.1fr_1.9fr_1.3fr_0.9fr_auto] gap-3 items-center"
+      className="w-full flex flex-row gap-3 items-center"
     >
-      <div className="h-10 rounded-xl border border-white/20 bg-white/[0.03] px-3 flex items-center justify-center">
+      <div className="w-1/6 h-10 rounded-xl border border-white/20 bg-white/[0.03] px-3 flex items-center justify-center">
         <span className={cn("text-lg font-medium", TYPE_CLASS_MAP[row.type])}>
-          {row.type.charAt(0) + row.type.slice(1).toLowerCase()}
+          {t(row.type.charAt(0) + row.type.slice(1).toLowerCase())}
         </span>
       </div>
-      <div className="h-10 rounded-xl border border-white/20 bg-white/[0.03] px-3 flex items-center justify-center text-lg text-gray-200 truncate">
+      <div className="w-1/3 h-10 rounded-xl border border-white/20 bg-white/[0.03] px-3 flex items-center justify-center text-lg text-gray-200 truncate">
         {row.subject}
       </div>
-      <div className="h-10 rounded-xl border border-white/20 bg-white/[0.03] px-3 flex items-center justify-center text-lg text-gray-200 truncate">
+      <div className="w-1/4 h-10 rounded-xl border border-white/20 bg-white/[0.03] px-3 flex items-center justify-center text-lg text-gray-200 truncate">
         {row.paymentMethod}
       </div>
-      <div className="h-10 rounded-xl border border-white/20 bg-white/[0.03] px-3 flex items-center justify-center text-base text-gray-300">
+      <div className="w-1/6 h-10 rounded-xl border border-white/20 bg-white/[0.03] px-3 flex items-center justify-center text-base text-gray-300">
         {row.date}
       </div>
-      <button type="button" className="text-[#0665ff] hover:text-[#2b7bff] transition-colors">
+      <Button variant={"ghost"} className="w-1/12 flex justify-center text-[#0665ff] hover:text-[#2b7bff] transition-colors">
         <FileText size={18} />
-      </button>
+      </Button>
     </div>
   );
 
@@ -336,7 +337,7 @@ const Report = ({ className, currencies }: Props) => {
                 <Button className="w-full md:w-[180px] h-10 rounded-lg bg-card hover:bg-card-context/40 px-0 py-1">
                   <Glass className="w-full h-full rounded-sm">
                     <div className="w-full h-full flex justify-between items-center px-3 bg-accent/50">
-                      <span>{typeDraft}</span>
+                      <span>{t(typeDraft)}</span>
                       <Image src={DropdownArrow} alt="Dropdown Arrow" width={16} height={16} />
                     </div>
                   </Glass>
@@ -347,7 +348,7 @@ const Report = ({ className, currencies }: Props) => {
                 <DropdownMenuSeparator />
                 {TYPE_OPTIONS.map((value) => (
                   <DropdownMenuItem
-                    key={value}
+                    key={t(value)}
                     onClick={() => setTypeDraft(value)}
                     className="hover:bg-card-context/40 rounded-lg"
                   >
@@ -384,7 +385,7 @@ const Report = ({ className, currencies }: Props) => {
                   onClick={() => setCurrencyDraft(null)}
                   className="hover:bg-card-context/40 rounded-lg"
                 >
-                  ALL
+                  {t("All")}
                 </DropdownMenuItem>
                 {currencies.map((item) => (
                   <DropdownMenuItem
@@ -443,12 +444,12 @@ const Report = ({ className, currencies }: Props) => {
           </div>
 
           <div className="flex flex-col gap-3">
-            <div className="hidden md:grid grid-cols-[1.1fr_1.9fr_1.3fr_0.9fr_auto] gap-3 px-2 text-sm text-gray-400">
-              <div>{t("status")}</div>
-              <div>{t("subject")}</div>
-              <div>{t("payment_method")}</div>
-              <div>{t("date")}</div>
-              <div>{t("details")}</div>
+            <div className="hidden md:flex flex-row gap-3   text-sm text-gray-400 w-full">
+              <span className="flex justify-center w-1/6">{t("type")}</span>
+              <span className="flex justify-center w-1/3">{t("amount")}</span>
+              <span className="flex justify-center w-1/4">{t("payment_method")}</span>
+              <span className="flex justify-center w-1/6">{t("date")}</span>
+              <span className="flex justify-center w-1/12">{t("details")}</span>
             </div>
 
             {loading && <div className="text-sm text-gray-400">{t("loading")}</div>}

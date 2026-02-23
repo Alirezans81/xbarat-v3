@@ -89,11 +89,15 @@
     "status": "Status",
     "liquidityPoolNotFound": "Liquidity Pool not found"
   },
+  "Deposit": {
+    "deposit": "Deposit"
+  },
   "Wallet": {
     "Wallet": "Wallet",
     "deposit": "Deposit",
     "withdrawal": "Withdrawal",
     "transfer": "Transfer",
+    "exchange": "Exchange",
     "amount": "Amount",
     "balance": "Balance",
     "currency": "Currency",
@@ -102,6 +106,8 @@
     "details": "Details",
     "no-reports-found": "No Reports Found...",
     "loading": "Loading...",
+    "type": "Type",
+    "all": "All",
     "currencies": "Currencies",
     "submit": "Submit",
     "payment-channel": "Payment Channel",
