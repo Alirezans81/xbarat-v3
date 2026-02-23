@@ -94,6 +94,8 @@
   },
   "Wallet": {
     "Wallet": "Wallet",
+    "available_balance": "Available Balance",
+    "portfolio": "Portfolio",
     "deposit": "Deposit",
     "withdrawal": "Withdrawal",
     "transfer": "Transfer",

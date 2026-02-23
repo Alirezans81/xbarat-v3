@@ -27,7 +27,7 @@ import { Withdrawal } from "@/types/front/wallet/withdrawal";
 import { Exchange } from "@/types/front/wallet/exchange";
 import { Transfer } from "@/types/front/wallet/transfer";
 import { Currency } from "@/types/front/currency";
-
+import { redirect } from "next/navigation";
 type Props = {
   className?: string;
   currencies: Currency[];
@@ -37,7 +37,7 @@ type TransactionType = "all" | "deposit" | "withdrawal" | "exchange" | "transfer
 
 type ReportRow = {
   id: string;
-  type: Exclude<TransactionType, "ALL">;
+  type: Exclude<TransactionType, "all">;
   subject: string;
   paymentMethod: string;
   date: string;
@@ -290,6 +290,23 @@ const Report = ({ className, currencies }: Props) => {
     paymentChannel?.name,
   ]);
 
+  function getUrl(id: string, type: string) {
+    const base =
+      typeof window !== "undefined"
+        ? window.location.href
+        : process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000";
+
+    const url = new URL(base);
+    const currentPath = url.pathname.replace(/\/+$/, "");
+    url.pathname = `${currentPath}/${type}/${id}`;
+    return url.toString();
+  }
+
+  function redirecting(row: ReportRow) {
+    const url = getUrl(row.id, row.type);
+    redirect(url);
+  }
+
   const renderRow = (row: ReportRow) => (
     <div
       key={`${row.type}-${row.id}`}
@@ -309,7 +326,7 @@ const Report = ({ className, currencies }: Props) => {
       <div className="w-1/6 h-10 rounded-xl border border-white/20 bg-white/[0.03] px-3 flex items-center justify-center text-base text-gray-300">
         {row.date}
       </div>
-      <Button variant={"ghost"} className="w-1/12 flex justify-center text-[#0665ff] hover:text-[#2b7bff] transition-colors">
+      <Button onClick={() => redirecting(row)} variant={"ghost"} className="w-1/12 flex justify-center text-[#0665ff] hover:text-[#2b7bff] transition-colors">
         <FileText size={18} />
       </Button>
     </div>
@@ -385,7 +402,7 @@ const Report = ({ className, currencies }: Props) => {
                   onClick={() => setCurrencyDraft(null)}
                   className="hover:bg-card-context/40 rounded-lg"
                 >
-                  {t("All")}
+                  {t("all")}
                 </DropdownMenuItem>
                 {currencies.map((item) => (
                   <DropdownMenuItem
@@ -428,7 +445,7 @@ const Report = ({ className, currencies }: Props) => {
                   onClick={() => setPaymentChannelDraft(null)}
                   className="hover:bg-card-context/40 rounded-lg"
                 >
-                  ALL
+                  {t("all")}
                 </DropdownMenuItem>
                 {paymentChannels.map((item) => (
                   <DropdownMenuItem

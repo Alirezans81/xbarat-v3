@@ -18,3 +18,17 @@ export const getDeposits = async (): Promise<Deposit[]> => {
 
   return apiFetch(api["deposit"], { method: "GET", token });
 };
+
+export const getDepositById = async (id: string): Promise<Deposit> => {
+  const cookieStore = await cookies();
+  const tokenCookie = cookieStore.get("token");
+  const parsedToken = tokenCookie
+    ? (JSON.parse(tokenCookie.value) as Token)
+    : null;
+  const token: Token = parsedToken || defaultToken;
+
+  return apiFetch(`${api["deposit"]}/${id}`, {
+    method: "GET",
+    token,
+  });
+};

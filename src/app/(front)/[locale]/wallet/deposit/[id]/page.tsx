@@ -1,15 +1,22 @@
 import React from 'react'
 import { getTranslations } from 'next-intl/server'
 import Image from 'next/image';
-import DepositIcon from "../../../../../../public/Wallet/deposit.svg"
+import DepositIcon from "../../../../../../../public/Wallet/deposit.svg";
 import { Card } from '@/components/ui/card';
 import { Progress } from "@/components/ui/progress"
+import { getDepositById } from "@/api/wallet/deposit/action";
 
-type deposit = {
-    name: string;
-} | null;
+type PageProps = {
+    params: {
+        id: string
+    }
+}
 
-export default async function Deposit({ deposit }) {
+export default async function Deposit({ params }: PageProps) {
+
+    const { id } = await params;
+    const deposit = await getDepositById(id);
+    console.log(deposit);
     const t = await getTranslations("Deposit");
     const all_status = [
         { name: "Enter Information" },
@@ -20,7 +27,7 @@ export default async function Deposit({ deposit }) {
     ];
     const currentStep = 0;
     const progressValue = (currentStep / (all_status.length - 1)) * 100;
-
+    console.log()
     return (
         <div className='w-full h-full flex justify-center items-center'>
             <Card className='w-11/12 h-11/12 p-5 flex flex-col bg-transparent border-0'>
@@ -66,7 +73,6 @@ export default async function Deposit({ deposit }) {
 
 
                 {/* Different Status */}
-
 
                 {/* Enter Information, Create Deposit */}
                 <div className={currentStep !== 0 ? "hidden" : 'w-full h-full flex flex-col'}>
