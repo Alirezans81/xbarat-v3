@@ -1,6 +1,7 @@
 "use client";
 
 import DeleteDepositDialog from "@/components/dialog/wallet/deposit/delete-deposit-dialog";
+import EditDepositDialog from "@/components/dialog/wallet/deposit/edit-deposit-dialog";
 import UploadDepositDocument from "@/components/dialog/wallet/deposit/upload-deposit-document";
 import {
   Table,
@@ -37,14 +38,10 @@ export default function DepositTable({ data }: Props) {
               {deposit.wallet.currency.code}
             </TableCell>
             <TableCell>
-              {deposit.wallet.currency.symbol +
-                " " +
-                (+deposit.amount).toLocaleString()}
+              {deposit.wallet.currency.symbol + " " + deposit.amount}
             </TableCell>
             <TableCell>
-              {deposit.wallet.currency.symbol +
-                " " +
-                (+deposit.fee).toLocaleString()}
+              {deposit.wallet.currency.symbol + " " + deposit.fee}
             </TableCell>
             <TableCell>
               {new Date(deposit.createdAt).toDateString() +

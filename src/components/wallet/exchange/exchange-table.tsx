@@ -57,7 +57,7 @@ export default function ExchangeTable({ data }: Props) {
               {"- " +
                 exchange.currencyPair.fromCurrency.symbol +
                 " " +
-                (+exchange.fee).toLocaleString()}
+                (+exchange.fromAmount).toLocaleString()}
             </TableCell>
             <TableCell>
               {new Date(exchange.createdAt).toDateString() +

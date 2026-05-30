@@ -11,6 +11,8 @@ import {
 } from "@/components/ui/table";
 import { Wallet } from "@/types/front/wallet";
 import AddWalletDepositDialog from "../dialog/wallet/deposit/add-wallet-deposit-dialog";
+import AddWithdrawalDialog from "../dialog/wallet/withdrawal/add-withdrawal-dialog";
+import AddTransferDialog from "../dialog/wallet/transfer/add-transfer-dialog";
 import AddWalletWithdrawalDialog from "../dialog/wallet/withdrawal/add-wallet-withdrawal-dialog";
 
 interface Props {

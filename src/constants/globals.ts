@@ -45,11 +45,11 @@ export const loggedInNavabarItems = [
   //   url: "/dashboard",
   //   icon: LayoutDashboard,
   // },
-  {
-    title: "profile",
-    url: "/profile",
-    icon: User,
-  },
+  // {
+  //   title: "profile",
+  //   url: "/profile",
+  //   icon: User,
+  // },
 ];
 export const adminLoggedInNavbarItems = [
   {
@@ -67,11 +67,11 @@ export const adminLoggedInNavbarItems = [
     url: "/wallet",
     icon: Wallet,
   },
-  {
-    title: "profile",
-    url: "/profile",
-    icon: User,
-  },
+  // {
+  //   title: "profile",
+  //   url: "/profile",
+  //   icon: User,
+  // },
   // {
   //   title: "report",
   //   url: "/report",

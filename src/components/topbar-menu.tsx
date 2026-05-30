@@ -59,7 +59,7 @@ export default function TopbarMenu() {
               </NavigationMenuLink>
             </NavigationMenuItem>
           )}
-          <NavigationMenuItem>
+          {/* <NavigationMenuItem>
             <NavigationMenuLink href="/profile" asChild className="px-4">
               <Link
                 href="/profile"
@@ -68,7 +68,7 @@ export default function TopbarMenu() {
                 {t("profile")}
               </Link>
             </NavigationMenuLink>
-          </NavigationMenuItem>
+          </NavigationMenuItem> */}
         </NavigationMenuList>
       </NavigationMenu>
     );
