@@ -7,6 +7,13 @@
     "dark": "dark",
     "system": "System"
   },
+  "Exchange": {
+    "latest-transaction": "Latest Transaction",
+    "quantity": "Quantity",
+    "rate": "Rate",
+    "amount": "Amount",
+    "list-all-order-books": "List of all Order Books"
+  },
   "LoginSignupDialog": {
     "logIn": "Log In",
     "signUp": "Sign Up",
@@ -58,7 +65,8 @@
   },
   "HomePage": {
     "title": "Hello world!",
-    "about": "Go to the about page"
+    "about": "Go to the about page",
+    "slogan": "You Are Enough!"
   },
   "LiquidityPool": {
     "currencies": "CURRENCIES",
@@ -81,14 +89,58 @@
     "status": "Status",
     "liquidityPoolNotFound": "Liquidity Pool not found"
   },
-  "WalletPage": {
-    "Wallet": "Wallet"
+  "Wallet": {
+    "Wallet": "Wallet",
+    "deposit": "Deposit",
+    "amount": "Amount",
+    "currencies": "Currencies",
+    "submit": "Submit",
+    "payment-channel": "Payment Channel",
+    "payment-channels": "Payment Channels",
+    "report": "Report",
+    "status": "Status",
+    "payment_method": "Payment Method"
   },
   "ApiErrors": {
     "serverError": "An error has occurred, Please try again later.",
     "wrongEmailPassword": "Wrong email or password.",
     "unauthorized": "You are unauthorized.",
     "userNotFound": "User not found"
+  },
+  "Profile": {
+    "tickets": "Tickets",
+    "email": "Email",
+    "phone-number": "Phone Number",
+    "date-of-birth": "Date of Birth",
+    "document-number": "Document Number",
+    "document": "Document",
+    "country": "Country",
+    "state": "State",
+    "city": "City",
+    "postal-code": "Postal Code",
+    "address": "Address",
+    "number": "Number",
+    "Account": "Account",
+    "account-number-address": "Account Number/Address",
+    "type-of-account": "Type of Account",
+    "cardholders-name": "Cardholder's Name",
+    "something-went-wrong": "Something went wrong!",
+    "referral": "Referral",
+    "coming-soon": "Comming Soon!",
+    "invite-friends-text": "Invite friends and earn rewards once referrals go live.",
+    "currencies": "Currencies",
+    "add-cards": "Add Cards",
+    "edit": "Edit",
+    "no-cards": "You Currently Do not have any Cards!",
+    "promo-banner": "Promo Banner",
+    "no-campaign-now": "We Do not have any active Campaigns At the Momment!",
+    "campaign-notify": "In the Event of a Campaign You will See the Banner here first hand!",
+    "subject": "Subject",
+    "upload-limit": "Upload Your Files Here Upload Limit: 5 MB",
+    "list-tickets": "List of Tickets",
+    "status": "Status",
+    "date-time": "Date & Time",
+    "unread": "Unread"
   },
   "Other": {
     "mustLoginAgain": "Your session has expired. Please log in again."

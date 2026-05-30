@@ -6,18 +6,27 @@ import PromoBanner from "@/components/profile/promo-banner";
 import { getTickets } from "@/api/ticket/action";
 import { getCurrencies } from "@/api/currency/action";
 export default async function Profile() {
-  const tickets = await getTickets();
-  const currencies = await getCurrencies();
+  const [ticketsResult, currenciesResult] = await Promise.allSettled([
+    getTickets(),
+    getCurrencies(),
+  ]);
+
+  if (ticketsResult.status === "rejected" || currenciesResult.status === "rejected") {
+    return <div>Something went wrong!</div>;
+  }
+
+  const tickets = ticketsResult.value;
+  const currencies = currenciesResult.value;
+
   return (
     <div className="w-full h-full flex justify-center items-center">
       {/* mobile: vertical stack */}
-      <div className="flex flex-col gap-4 sm:hidden">
+      <div className="flex flex-col gap-4 sm:hidden p-3">
+        <PromoBanner />
         <ProfileCard />
+        <CardsCard currencies={currencies} />
         <ReferralCard />
         <TicketCard previousTickets={tickets} />
-        <CardsCard currencies={currencies} />
-        <PromoBanner />
-        {/* <TicketHistory /> */}
       </div>
 
       {/* tablet: md layout */}
@@ -27,7 +36,6 @@ export default async function Profile() {
         <TicketCard previousTickets={tickets} />
         <CardsCard className="col-span-2" currencies={currencies} />
         <PromoBanner className="col-span-2" />
-        {/* <TicketHistory className="col-span-2" /> */}
       </div>
 
       {/* desktop: lga and bigger layout */}

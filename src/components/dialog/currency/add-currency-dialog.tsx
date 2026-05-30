@@ -197,7 +197,7 @@ export default function AddCurrencyDialog() {
                           ]);
                         } else {
                           setSelectedChannels(
-                            selectedChannels.filter((id) => id !== channel.id)
+                            selectedChannels.filter((id) => id !== channel.id),
                           );
                         }
                       }}

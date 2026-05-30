@@ -14,7 +14,7 @@ export type Deposit = Omit<
   failedAt: string;
   completedAt: string;
 } & {
-  user: Pick<User, "fullName">;
+  user: Pick<User, "fullName" | "email">;
 } & {
   wallet: {
     currency: Pick<Currency, "code" | "symbol" | "paymentChannels">;

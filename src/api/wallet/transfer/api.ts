@@ -3,6 +3,7 @@ import { apiFetch } from "@/lib/front/utils/apiFetch";
 import { Token } from "@/types/front/globals";
 import {
   CreateTransfer,
+  GetTransfersFilters,
   Transfer,
   UpdateTransfer,
 } from "@/types/front/wallet/transfer";
@@ -11,7 +12,7 @@ const api = routes();
 
 export const getTransfers = (
   token: Token,
-  filters?: { userId?: string }
+  filters?: GetTransfersFilters
 ) => {
   return apiFetch<Transfer[]>(api["transfer"], {
     method: "GET",

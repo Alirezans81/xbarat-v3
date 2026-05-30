@@ -53,7 +53,7 @@ export const useGetPaymentChannels = () => {
           });
       });
     },
-    [checkTokenExpiration, t, token]
+    [checkTokenExpiration, t, token],
   );
 
   return fetch;

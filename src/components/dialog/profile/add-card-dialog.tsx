@@ -14,7 +14,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 
 import Image from "next/image";
-import DropdownArrow from "../../../../public/Profile/DropdownArrow.svg";
+import DropdownArrow from "../../../../public/Common/DropdownArrow.svg";
 import { Currency } from "@/types/front/currency";
 
 type Props = {

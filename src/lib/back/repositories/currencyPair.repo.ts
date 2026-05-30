@@ -15,6 +15,7 @@ export const currencyPairRepository = {
         rate: data.rate,
         isInverseRate: data.isInverseRate,
         isActive: data.isActive,
+        feePercentage: data.feePercentage,
       },
     });
   },
@@ -112,7 +113,7 @@ export const currencyPairRepository = {
 
   updateById: async (
     id: string,
-    data: UpdateCurrencyPair
+    data: UpdateCurrencyPair,
   ): Promise<CurrencyPair> => {
     return prisma.currencyPair.update({
       where: { id },

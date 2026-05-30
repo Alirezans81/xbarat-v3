@@ -14,12 +14,13 @@ import {
   DropdownMenuItem,
 } from "../ui/dropdown-menu";
 import EditCardDialog from "../dialog/profile/edit-card-dialog";
-import DropdownArrow from "../../../public/Profile/DropdownArrow.svg";
+import DropdownArrow from "../../../public/Common/DropdownArrow.svg";
 import { Button } from "../ui/button";
 import Cookies from "js-cookie";
 import Image from "next/image";
 import { Card } from "../ui/card";
 import { useState } from "react";
+import { useTranslations } from "next-intl";
 type Props = {
   className?: string;
   currencies: Currency[];
@@ -87,7 +88,7 @@ export default function CardsCard({ className, currencies }: Props) {
   const [showAddModal, setShowAddModal] = useState(false);
   const [editingCard, setEditingCard] = useState<UserCard | null>(null);
   const [showEditModal, setShowEditModal] = useState(false);
-
+  const t = useTranslations("Profile");
   return (
     <section className={cn(className)}>
       <Glass className="rounded-lg w-full h-full max-h-72">
@@ -118,7 +119,7 @@ export default function CardsCard({ className, currencies }: Props) {
                 </DropdownMenuTrigger>
                 <DropdownMenuContent className="w-full h-full">
                   <DropdownMenuLabel className="text-lg">
-                    Currencies
+                    {t("currencies")}
                   </DropdownMenuLabel>
                   <DropdownMenuSeparator />
                   {currencies.map((currency, index) => (
@@ -140,23 +141,22 @@ export default function CardsCard({ className, currencies }: Props) {
               variant={"default"}
               onClick={() => setShowAddModal(true)}
             >
-              Add Cards +
+              {t("add-cards") + " + "}
             </Button>
           </div>
 
           <div
-            className={`${
-              cards.length === 0
-                ? "hidden"
-                : "w-full h-full flex flex-col gap-4"
-            }`}
+            className={`${cards.length === 0
+              ? "hidden"
+              : "w-full h-full flex flex-col gap-4"
+              }`}
           >
             {/* Header */}
             <div className="grid grid-cols-[80px_1fr_1fr_1fr] gap-4 text-xs text-muted-foreground mb-3 px-2">
               <span />
-              <span>Account Number/Address</span>
-              <span>Type of Account</span>
-              <span>Cardholder&apos;s Name</span>
+              <span>{t("account-number-address")}</span>
+              <span>{t("type-of-account")}</span>
+              <span>{t("cardholder-name")}</span>
             </div>
 
             {/* Rows */}
@@ -175,7 +175,7 @@ export default function CardsCard({ className, currencies }: Props) {
                     variant={"ghost"}
                     className="bg-transparent text-primary text-sm hover:underline"
                   >
-                    Edit
+                    {t("edit")}
                   </Button>
 
                   {/* Account */}
@@ -198,13 +198,12 @@ export default function CardsCard({ className, currencies }: Props) {
           </div>
 
           <div
-            className={`${
-              currency && cards.length === 0
-                ? "w-full h-full flex justify-center items-center text-card-foreground text-2xl"
-                : "hidden"
-            }`}
+            className={`${currency && cards.length === 0
+              ? "w-full h-full flex justify-center items-center text-card-foreground text-2xl"
+              : "hidden"
+              }`}
           >
-            You Currently Do not have any Cards!
+            {t("no-cards")}
           </div>
         </Card>
       </Glass>
@@ -218,7 +217,7 @@ export default function CardsCard({ className, currencies }: Props) {
             bank_name: data.bankName,
             account_number: data.accountNumber,
             account_type: data.accountType,
-            is_Default: false,
+            is_Default: false
           });
         }}
       />

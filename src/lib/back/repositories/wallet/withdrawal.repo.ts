@@ -58,6 +58,7 @@ export const withdrawalRepository = {
         user: {
           select: {
             fullName: true,
+            email: true,
           },
         },
         wallet: {
@@ -98,7 +99,7 @@ export const withdrawalRepository = {
 
   updateById: async (
     id: string,
-    newValue: UpdateWithdrawal
+    newValue: UpdateWithdrawal,
   ): Promise<Withdrawal> => {
     return prisma.$transaction(async (tx) => {
       const previous = await tx.withdrawal.findUnique({
@@ -113,10 +114,7 @@ export const withdrawalRepository = {
         data: newValue,
       });
 
-      if (
-        updated.status === "COMPLETED" &&
-        previous.status !== "COMPLETED"
-      ) {
+      if (updated.status === "COMPLETED" && previous.status !== "COMPLETED") {
         const wallet = await tx.wallet.findUnique({
           where: { id: updated.walletId },
           select: { frozen: true },
@@ -145,7 +143,7 @@ export const withdrawalRepository = {
             data: {
               frozen: Math.max(
                 0,
-                +(liquidityPool?.frozen ?? 0) - +updated.amount
+                +(liquidityPool?.frozen ?? 0) - +updated.amount,
               ),
             },
           });

@@ -1,102 +1,155 @@
 {
   "Navbar": {
-    "xbarat": "ایکس برات"
+    "xbarat": "ایکس‌برات"
   },
   "ThemeToggle": {
-    "light": "روز",
-    "dark": "شب",
+    "light": "روشن",
+    "dark": "تاریک",
     "system": "سیستم"
+  },
+  "Exchange": {
+    "latest-transaction": "آخرین تراکنش",
+    "quantity": "مقدار",
+    "rate": "نرخ",
+    "amount": "مبلغ",
+    "list-all-order-books": "لیست تمام سفارش‌ها"
   },
   "LoginSignupDialog": {
     "logIn": "ورود",
-    "signUp": "ثبت نام",
+    "signUp": "ثبت‌نام",
     "email": "ایمیل",
     "password": "رمز عبور",
-    "confirmPassword": "تایید رمز عبور",
+    "confirmPassword": "تکرار رمز عبور",
     "firstName": "نام",
     "lastName": "نام خانوادگی",
     "phoneNumber": "شماره تلفن",
     "emailRequired": "ایمیل الزامی است",
-    "invalidEmail": "ایمیل نامعتبر است",
+    "invalidEmail": "آدرس ایمیل نامعتبر است",
     "passwordRequired": "رمز عبور الزامی است",
-    "passwordStrength": "رمز عبور باید حداقل 8 کاراکتر باشد و شامل حداقل یک حرف بزرگ، یک حرف کوچک، یک عدد و یک کاراکتر خاص باشد.",
-    "confirmPasswordRequired": "تایید رمز عبور الزامی است",
-    "passwordsDoNotMatch": "رمزهای عبور مطابقت ندارند",
+    "passwordStrength": "رمز عبور باید حداقل ۸ کاراکتر و شامل حداقل یک حرف بزرگ، یک حرف کوچک، یک عدد و یک کاراکتر خاص باشد.",
+    "confirmPasswordRequired": "تکرار رمز عبور الزامی است",
+    "passwordsDoNotMatch": "رمز عبور و تکرار آن مطابقت ندارند",
     "firstNameRequired": "نام الزامی است",
     "lastNameRequired": "نام خانوادگی الزامی است",
     "countryCodeRequired": "کد کشور الزامی است",
     "phoneNumberRequired": "شماره تلفن الزامی است",
     "invalidPhoneNumber": "شماره تلفن نامعتبر است",
-    "submit": "تایید"
+    "submit": "ارسال"
   },
   "Sidebar": {
     "menu": "منو",
-    "home": "صفحه اصلی",
+    "home": "خانه",
     "wallet": "کیف پول",
     "deposit": "واریز",
     "withdrawal": "برداشت",
+    "profile": "پروفایل",
     "report": "گزارشات",
     "dashboard": "داشبورد",
     "panelAdmin": "پنل مدیریت",
     "liquidityPool": "استخر نقدینگی",
-    "logout": "خروج از حساب",
-    "socialMedia": "شبکه های اجتماعی",
+    "logout": "خروج",
+    "socialMedia": "شبکه‌های اجتماعی",
     "instagram": "اینستاگرام",
-    "whatsApp": "واتساپ",
+    "whatsApp": "واتس‌اپ",
     "telegram": "تلگرام",
     "x": "ایکس"
   },
   "Status": {
-    "PENDING": "در حال انتظار",
-    "PAYMENT": "پرداخت",
+    "PENDING": "در انتظار",
+    "PAYMENT": "در انتظار پرداخت",
     "FAILED": "ناموفق",
     "REJECTED": "رد شده",
     "COMPLETED": "تکمیل شده",
-    "APPROVED": "تأیید شده",
-    "CHECK": "بررسی"
+    "APPROVED": "تایید شده",
+    "CHECK": "در حال بررسی"
   },
   "HomePage": {
     "title": "سلام دنیا!",
-    "about": "رفتن به صفحه درباره"
+    "about": "برو به صفحه درباره ما",
+    "slogan": "تو به اندازه کافی هستی!"
   },
   "LiquidityPool": {
     "currencies": "ارزها",
     "loading": "در حال بارگذاری...",
-    "selectCurrency": "لطفاً ارزی که می‌خواهید ارائه دهید را انتخاب کنید.",
-    "currencyNotFound": "ارز پیدا نشد.",
-    "tableFooter": "لیست استخرهای نقدینگی.",
+    "selectCurrency": "ارز مورد نظر خود را انتخاب کنید!",
+    "currencyNotFound": "ارز مورد نظر یافت نشد!",
+    "tableFooter": "لیست استخرهای نقدینگی",
     "address": "آدرس",
     "balance": "موجودی",
     "frozen": "مسدود شده",
-    "updatedAt": "آخرین بروزرسانی",
+    "updatedAt": "آخرین به‌روزرسانی",
     "payments": "پرداخت‌ها",
-    "paymentTableFooter": "لیست پرداخت‌ها.",
+    "paymentTableFooter": "لیست پرداخت‌ها",
     "type": "نوع",
     "deposit": "واریز",
     "withdrawal": "برداشت",
-    "amount": "مقدار",
+    "amount": "مبلغ",
     "from": "از",
     "to": "به",
     "status": "وضعیت",
-    "liquidityPoolNotFound": "استخر نقدینگی پیدا نشد"
+    "liquidityPoolNotFound": "استخر نقدینگی یافت نشد"
   },
-  "WalletPage": {
-    "Wallet": "کیف پول"
+  "Wallet": {
+    "Wallet": "کیف پول",
+    "deposit": "واریز",
+    "amount": "مبلغ",
+    "currencies": "ارزها",
+    "submit": "ارسال",
+    "payment-channel": "درگاه پرداخت",
+    "payment-channels": "درگاه‌های پرداخت",
+    "report": "گزارش",
+    "status": "وضعیت",
+    "payment_method": "روش پرداخت"
   },
   "ApiErrors": {
-    "serverError": "خطایی رخ داده است. لطفاً بعداً دوباره تلاش کنید.",
+    "serverError": "خطایی رخ داده است، لطفاً دوباره تلاش کنید.",
     "wrongEmailPassword": "ایمیل یا رمز عبور اشتباه است.",
-    "unauthorized": "شما مجاز نیستید.",
-    "userNotFound": "کاربر پیدا نشد."
+    "unauthorized": "شما دسترسی غیرمجاز دارید.",
+    "userNotFound": "کاربر یافت نشد"
+  },
+  "Profile": {
+    "tickets": "تیکت‌ها",
+    "email": "ایمیل",
+    "phone-number": "شماره تلفن",
+    "date-of-birth": "تاریخ تولد",
+    "document-number": "شماره مدرک",
+    "document": "مدرک",
+    "country": "کشور",
+    "state": "استان",
+    "city": "شهر",
+    "postal-code": "کد پستی",
+    "address": "آدرس",
+    "number": "پلاک",
+    "Account": "حساب",
+    "account-number-address": "شماره حساب/آدرس",
+    "type-of-account": "نوع حساب",
+    "cardholders-name": "نام دارنده کارت",
+    "something-went-wrong": "مشکلی پیش آمد!",
+    "referral": "دعوت از دوستان",
+    "coming-soon": "به زودی!",
+    "invite-friends-text": "دوستان خود را دعوت کنید و پس از فعال شدن، پاداش بگیرید.",
+    "currencies": "ارزها",
+    "add-cards": "افزودن کارت",
+    "edit": "ویرایش",
+    "no-cards": "شما در حال حاضر هیچ کارتی ندارید!",
+    "promo-banner": "بنر تبلیغاتی",
+    "no-campaign-now": "در حال حاضر هیچ کمپین فعالی نداریم!",
+    "campaign-notify": "در صورت برگزاری کمپین، بنر آن را اولین بار اینجا خواهید دید!",
+    "subject": "موضوع",
+    "upload-limit": "فایل‌های خود را آپلود کنید. محدودیت آپلود: ۵ مگابایت",
+    "list-tickets": "لیست تیکت‌ها",
+    "status": "وضعیت",
+    "date-time": "تاریخ و ساعت",
+    "unread": "خوانده نشده"
   },
   "Other": {
-    "mustLoginAgain": "نشست شما به پایان رسیده است. لطفاً دوباره وارد شوید."
+    "mustLoginAgain": "نشست شما منقضی شده است. لطفاً دوباره وارد شوید."
   },
   "Footer": {
-    "xbarat": "ایکس برات",
-    "slogan": "وقتی خودت کافی هستی!",
+    "xbarat": "ایکس‌برات",
+    "slogan": "تو به اندازه کافی هستی!",
     "instagram": "اینستاگرام",
-    "whatsApp": "واتساپ",
+    "whatsApp": "واتس‌اپ",
     "telegram": "تلگرام",
     "x": "ایکس"
   }

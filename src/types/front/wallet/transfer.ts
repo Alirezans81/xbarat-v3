@@ -1,5 +1,6 @@
 import { Transfer as DatabaseTransfer } from "@/generated/prisma";
 import { Currency } from "../currency";
+import { TransferStatus } from "@/generated/prisma";
 
 export type Transfer = Omit<
   DatabaseTransfer,
@@ -18,6 +19,13 @@ export type CreateTransfer = {
   amount: number;
   walletId?: string;
   paymentChannelId: string;
+};
+
+export type GetTransfersFilters = {
+  userId?: string;
+  currencyId?: string;
+  paymentChannelId?: string;
+  status?: TransferStatus;
 };
 
 export type UpdateTransfer = {

@@ -30,6 +30,7 @@ export const depositRepository = {
         user: {
           select: {
             fullName: true,
+            email: true,
           },
         },
         wallet: {
@@ -75,10 +76,7 @@ export const depositRepository = {
         data: newValue,
       });
 
-      if (
-        updated.status === "COMPLETED" &&
-        previous.status !== "COMPLETED"
-      ) {
+      if (updated.status === "COMPLETED" && previous.status !== "COMPLETED") {
         await tx.wallet.update({
           where: { id: updated.walletId },
           data: {

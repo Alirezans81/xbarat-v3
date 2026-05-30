@@ -14,11 +14,13 @@ import { User } from "@/generated/prisma";
 import { Button } from "../ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
 import { usePutUser } from "@/api/user/profile/hook";
+import { useTranslations } from "next-intl";
 type Props = {
   className?: string;
 };
 
 export default function ProfileCard({ className }: Props) {
+  const t = useTranslations("Profile");
   const { user, setUser } = useAuthStore();
   const putUser = usePutUser();
   const [editing, setEditing] = useState<string>("");
@@ -116,8 +118,8 @@ export default function ProfileCard({ className }: Props) {
                   tempVariable === null
                     ? ""
                     : tempVariable instanceof Date
-                    ? tempVariable.toISOString().slice(0, 10)
-                    : String(tempVariable)
+                      ? tempVariable.toISOString().slice(0, 10)
+                      : String(tempVariable)
                 }
                 onChange={(e) => setTempVariable(e.target.value)}
                 onBlur={() => handleBlur("fullName")}
@@ -131,7 +133,7 @@ export default function ProfileCard({ className }: Props) {
           <div className="grid grid-rows-4 grid-cols-12 p-2 gap-2">
             {/* First Row */}
             <div className="col-span-6 row-span-1 w-full h-full flex flex-col justify-center bg-accent/50 rounded-2xl p-2 items-center">
-              <span>Email</span>
+              <span>{t('email')}</span>
               <span className="w-full px-2 overflow-x-auto whitespace-nowrap text-center text-sm">
                 {user?.email}
               </span>
@@ -162,8 +164,8 @@ export default function ProfileCard({ className }: Props) {
                     tempVariable === null
                       ? ""
                       : tempVariable instanceof Date
-                      ? tempVariable.toISOString().slice(0, 10)
-                      : String(tempVariable)
+                        ? tempVariable.toISOString().slice(0, 10)
+                        : String(tempVariable)
                   }
                   onChange={(e) => setTempVariable(e.target.value)}
                   onBlur={() => handleBlur("phoneNumber")}
@@ -175,21 +177,21 @@ export default function ProfileCard({ className }: Props) {
 
             {/* Second Row */}
             <div className="col-span-4 row-span-1 w-full h-full flex flex-col justify-center bg-accent/50 rounded-2xl p-2 items-center text-sm">
-              <span>Date of Birth</span>
+              <span>{t('date-of-birth')}</span>
               <span className="w-full px-2 overflow-x-auto whitespace-nowrap text-center text-base text-foreground">
                 {user?.dateOfBirth ? user?.dateOfBirth.toString() : "No Data!"}
               </span>
             </div>
 
             <div className="col-span-4 row-span-1 w-full h-full flex flex-col justify-center bg-accent/50 rounded-2xl p-2 items-center text-sm">
-              <span className="text-center">Document Number</span>
+              <span className="text-center">{t('document-number')}</span>
               <span className="w-full px-2 overflow-x-auto whitespace-nowrap text-center text-base text-foreground">
                 {user?.documentNumber ? user?.documentNumber : "No Data!"}
               </span>
             </div>
 
             <div className="col-span-4 row-span-1 w-full h-full flex flex-col justify-center bg-accent/50 rounded-2xl p-2 items-center text-sm">
-              <span>Document</span>
+              <span>{t('document')}</span>
               <Image
                 src={Document}
                 alt="Icon for Photo Upload"
@@ -201,8 +203,8 @@ export default function ProfileCard({ className }: Props) {
 
             {/* Third Row */}
             <div className="col-span-4 row-span-1 w-full h-full flex flex-col justify-center bg-accent/50 rounded-2xl p-2 items-center">
-              <div className="w-full h-fit flex flex-row items-center justify-center gap-2">
-                <span>Country</span>
+              <div className="w-full h-fit flex flex-row items-center justify-center gap-0 lg:gap-2">
+                <span>{t('country')}</span>
                 <Button
                   onClick={() => setEditing("countryCode")}
                   className="w-fit h-fit p-2"
@@ -225,8 +227,8 @@ export default function ProfileCard({ className }: Props) {
                     tempVariable === null
                       ? ""
                       : tempVariable instanceof Date
-                      ? tempVariable.toISOString().slice(0, 10)
-                      : String(tempVariable)
+                        ? tempVariable.toISOString().slice(0, 10)
+                        : String(tempVariable)
                   }
                   onChange={(e) => setTempVariable(e.target.value)}
                   onBlur={() => handleBlur("countryCode")}
@@ -238,7 +240,7 @@ export default function ProfileCard({ className }: Props) {
 
             <div className="col-span-4 row-span-1 w-full h-full flex flex-col justify-center bg-accent/50 rounded-2xl p-2 items-center">
               <div className="w-full h-fit flex flex-row items-center justify-center gap-2">
-                <span>State</span>
+                <span>{t('state')}</span>
                 <Button
                   onClick={() => handleEdit("state")}
                   className="w-fit h-fit p-0"
@@ -261,8 +263,8 @@ export default function ProfileCard({ className }: Props) {
                     tempVariable === null
                       ? ""
                       : tempVariable instanceof Date
-                      ? tempVariable.toISOString().slice(0, 10)
-                      : String(tempVariable)
+                        ? tempVariable.toISOString().slice(0, 10)
+                        : String(tempVariable)
                   }
                   onChange={(e) => setTempVariable(e.target.value)}
                   onBlur={() => handleBlur("state")}
@@ -276,7 +278,7 @@ export default function ProfileCard({ className }: Props) {
 
             <div className="col-span-4 row-span-1 w-full h-full flex flex-col justify-center bg-accent/50 rounded-2xl p-2 items-center">
               <div className="w-full h-fit flex flex-row items-center justify-center gap-2">
-                <span>City</span>
+                <span>{t('city')}</span>
                 <Button
                   onClick={() => handleEdit("city")}
                   className="w-fit h-fit p-0"
@@ -299,8 +301,8 @@ export default function ProfileCard({ className }: Props) {
                     tempVariable === null
                       ? ""
                       : tempVariable instanceof Date
-                      ? tempVariable.toISOString().slice(0, 10)
-                      : String(tempVariable)
+                        ? tempVariable.toISOString().slice(0, 10)
+                        : String(tempVariable)
                   }
                   onChange={(e) => setTempVariable(e.target.value)}
                   onBlur={() => handleBlur("city")}
@@ -315,7 +317,7 @@ export default function ProfileCard({ className }: Props) {
             {/* Fourth Row */}
             <div className="col-span-4 row-span-1 w-full h-full flex flex-col justify-center bg-accent/50 rounded-2xl p-2 items-center">
               <div className="w-full h-fit flex flex-row items-center justify-center gap-2">
-                <span>Postal Code</span>
+                <span>{t('postal-code')}</span>
                 <Button
                   onClick={() => handleEdit("postalCode")}
                   className="w-fit h-fit p-0"
@@ -338,8 +340,8 @@ export default function ProfileCard({ className }: Props) {
                     tempVariable === null
                       ? ""
                       : tempVariable instanceof Date
-                      ? tempVariable.toISOString().slice(0, 10)
-                      : String(tempVariable)
+                        ? tempVariable.toISOString().slice(0, 10)
+                        : String(tempVariable)
                   }
                   onChange={(e) => setTempVariable(e.target.value)}
                   onBlur={() => handleBlur("postalCode")}
@@ -353,7 +355,7 @@ export default function ProfileCard({ className }: Props) {
 
             <div className="col-span-8 row-span-1 w-full h-full flex flex-col justify-center bg-accent/50 rounded-2xl p-2 items-center">
               <div className="w-full h-fit flex flex-row items-center justify-center gap-2">
-                <span>Address</span>
+                <span>{t('address')}</span>
                 <Button
                   onClick={() => handleEdit("address")}
                   className="w-fit h-fit p-0"
@@ -376,8 +378,8 @@ export default function ProfileCard({ className }: Props) {
                     tempVariable === null
                       ? ""
                       : tempVariable instanceof Date
-                      ? tempVariable.toISOString().slice(0, 10)
-                      : String(tempVariable)
+                        ? tempVariable.toISOString().slice(0, 10)
+                        : String(tempVariable)
                   }
                   onChange={(e) => setTempVariable(e.target.value)}
                   onBlur={() => handleBlur("address")}

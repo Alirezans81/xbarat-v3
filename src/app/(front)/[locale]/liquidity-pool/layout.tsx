@@ -31,7 +31,7 @@ export default async function layout({
               </Link>
             ))}
           </div>
-          <div className="col-span-9">{children}</div>
+          <div className="col-span-9 bg-card p-5 rounded-2xl">{children}</div>
         </div>
       </div>
     );

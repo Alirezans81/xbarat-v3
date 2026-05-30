@@ -7,7 +7,7 @@ import { routing } from "@/i18n/routing";
 import Navbar from "@/components/navbar";
 import { getFontByLocale } from "@/fonts/fonts";
 import { SidebarProvider } from "@/components/ui/sidebar";
-import { AppSidebar } from "@/components/app-sidebar";
+import { AppMobileNavbar, AppSidebar } from "@/components/app-sidebar";
 import { Toaster } from "@/components/ui/sonner";
 import HandleCookies from "@/components/handle-cookies";
 import { rtlLocales } from "@/lib/front/constants";
@@ -49,12 +49,14 @@ export default async function RootLayout({
             <Toaster />
             <HandleCookies />
             <SidebarProvider defaultOpen={false}>
-              <AppSidebar
-                side={rtlLocales.includes(locale) ? "right" : "left"}
-              />
+              <div className="hidden md:block">
+                <AppSidebar
+                  side={rtlLocales.includes(locale) ? "right" : "left"}
+                />
+              </div>
               <div className="w-full bg-background overflow-x-hidden">
                 <div
-                  className="w-full h-full flex flex-col"
+                  className="w-full h-full flex flex-col pb-20 sm:pb-0"
                   style={{
                     backgroundImage: "url('/background.svg')",
                     backgroundRepeat: "no-repeat",
@@ -69,6 +71,7 @@ export default async function RootLayout({
                   </div>
                 </div>
               </div>
+              <AppMobileNavbar />
             </SidebarProvider>
           </ThemeProvider>
         </NextIntlClientProvider>

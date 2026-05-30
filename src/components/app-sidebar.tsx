@@ -11,6 +11,7 @@ import {
   SidebarMenuItem,
 } from "@/components/ui/sidebar";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { useTranslations } from "next-intl";
 import { useAuthStore } from "@/lib/front/stores/auth";
 import LocaleToggle from "./locale-toggle";
@@ -28,22 +29,27 @@ import {
   providerLoggedInNavbarItems,
 } from "@/constants/globals";
 import Image from "next/image";
+import Glass from "./ui/glass";
 
 interface Props {
   side?: "right" | "left";
 }
-export function AppSidebar({ side }: Props) {
+
+function useSidebarItems() {
   const { isLoggedIn, user } = useAuthStore();
 
-  const t = useTranslations("Sidebar");
-
-  const items = isLoggedIn
+  return isLoggedIn
     ? user?.role === "ADMIN"
       ? adminLoggedInNavbarItems
       : user?.role === "PROVIDER"
-      ? providerLoggedInNavbarItems
-      : loggedInNavabarItems
+        ? providerLoggedInNavbarItems
+        : loggedInNavabarItems
     : notLoggedInNavbarItems;
+}
+
+export function AppSidebar({ side }: Props) {
+  const t = useTranslations("Sidebar");
+  const items = useSidebarItems();
 
   return (
     <Sidebar side={side}>
@@ -146,5 +152,43 @@ export function AppSidebar({ side }: Props) {
         </div>
       </SidebarContent>
     </Sidebar>
+  );
+}
+
+export function AppMobileNavbar() {
+  const pathname = usePathname();
+  const t = useTranslations("Sidebar");
+  const items = useSidebarItems();
+  return (
+    <nav className="sm:hidden fixed bottom-0 inset-x-0 z-40 p-0 bg-transparent">
+      <div className="w-full h-full flex justify-center items-center p-3">
+        <Glass className="w-full h-full rounded-full">
+          <ul className="grid w-full rounded-full auto-cols-fr grid-flow-col px-2 pt-2 pb-[calc(env(safe-area-inset-bottom)+0.5rem)]">
+            {items.map((item) => {
+              const isActive =
+                item.url === "/"
+                  ? pathname === "/" || pathname.split("/").length <= 2
+                  : pathname === item.url || pathname.endsWith(item.url);
+
+              return (
+                <li key={`mobile-${item.title}`} className="min-w-0">
+                  <Link
+                    href={item.url}
+                    className={`flex min-w-0 flex-col items-center justify-center gap-1 rounded-md px-2 py-1.5 text-[11px] transition-colors ${
+                      isActive
+                        ? "text-primary"
+                        : "text-muted-foreground hover:text-foreground"
+                    }`}
+                  >
+                    <item.icon className="size-4" />
+                    <span className="truncate">{t(item.title)}</span>
+                  </Link>
+                </li>
+              );
+            })}
+          </ul>
+        </Glass>
+      </div>
+    </nav>
   );
 }

@@ -1,11 +1,8 @@
 import {
-  FileStack,
-  Home,
-  LayoutDashboard,
-  MonitorCog,
+  Home, MonitorCog,
   Wallet,
   WavesLadder,
-  // User
+  User
 } from "lucide-react";
 import { CountryCode } from "../types/front/globals";
 
@@ -29,14 +26,14 @@ export const notLoggedInNavbarItems = [
 ];
 export const loggedInNavabarItems = [
   {
-    title: "home",
-    url: "/",
-    icon: Home,
-  },
-  {
     title: "wallet",
     url: "/wallet",
     icon: Wallet,
+  },
+  {
+    title: "home",
+    url: "/",
+    icon: Home,
   },
   // {
   //   title: "report",
@@ -48,11 +45,11 @@ export const loggedInNavabarItems = [
   //   url: "/dashboard",
   //   icon: LayoutDashboard,
   // },
-  // {
-  //   title: "profile",
-  //   url: "/profile",
-  //   icon: User,
-  // },
+  {
+    title: "profile",
+    url: "/profile",
+    icon: User,
+  },
 ];
 export const adminLoggedInNavbarItems = [
   {
@@ -69,6 +66,11 @@ export const adminLoggedInNavbarItems = [
     title: "wallet",
     url: "/wallet",
     icon: Wallet,
+  },
+  {
+    title: "profile",
+    url: "/profile",
+    icon: User,
   },
   // {
   //   title: "report",
@@ -92,19 +94,19 @@ export const providerLoggedInNavbarItems = [
     url: "/liquidity-pool",
     icon: WavesLadder,
   },
-  {
-    title: "wallet",
-    url: "/wallet",
-    icon: Wallet,
-  },
-  {
-    title: "report",
-    url: "/report",
-    icon: FileStack,
-  },
-  {
-    title: "dashboard",
-    url: "/dashboard",
-    icon: LayoutDashboard,
-  },
+  // {
+  //   title: "wallet",
+  //   url: "/wallet",
+  //   icon: Wallet,
+  // },
+  // {
+  //   title: "report",
+  //   url: "/report",
+  //   icon: FileStack,
+  // },
+  // {
+  //   title: "dashboard",
+  //   url: "/dashboard",
+  //   icon: LayoutDashboard,
+  // },
 ];

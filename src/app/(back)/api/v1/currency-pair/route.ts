@@ -44,7 +44,7 @@ export async function POST(request: NextRequest) {
       !toCurrencyId ||
       !rate ||
       !feePercentage ||
-      !isActive
+      isActive === undefined
     )
       return MissingFieldsResponse;
 

@@ -1,14 +1,15 @@
 import { withdrawalService } from "@/lib/back/services/wallet/withdrawal.service";
 import {
+  NotFoundResponse,
   ServerErrorResponse,
   UnauthorizedResponse,
 } from "@/lib/back/utils/globalResponses.utils";
 import { jwtUtils } from "@/lib/back/utils/jwt.utils";
 import { NextRequest, NextResponse } from "next/server";
 
-export async function PUT(
+export async function GET(
   request: NextRequest,
-  { params }: { params: Promise<{ id: string }> }
+  { params }: { params: Promise<{ id: string }> },
 ) {
   try {
     const token = request.headers.get("authorization")?.split(" ")[1];
@@ -21,7 +22,36 @@ export async function PUT(
 
     const userOwnsWithdrawal = await withdrawalService.userOwnsTheWithdrawal(
       payload.id,
-      id
+      id,
+    );
+    if (!userOwnsWithdrawal) return UnauthorizedResponse;
+
+    const foundWithdrawal = await withdrawalService.getById(id);
+    if (!foundWithdrawal) return NotFoundResponse;
+
+    return NextResponse.json(foundWithdrawal, { status: 200 });
+  } catch (error) {
+    console.error("[UPDATE_WITHDRAWAL]", error);
+    return ServerErrorResponse;
+  }
+}
+
+export async function PUT(
+  request: NextRequest,
+  { params }: { params: Promise<{ id: string }> },
+) {
+  try {
+    const token = request.headers.get("authorization")?.split(" ")[1];
+    if (!token) return UnauthorizedResponse;
+
+    const payload = jwtUtils.verify(token);
+    if (!payload) return UnauthorizedResponse;
+
+    const { id } = await params;
+
+    const userOwnsWithdrawal = await withdrawalService.userOwnsTheWithdrawal(
+      payload.id,
+      id,
     );
     if (!userOwnsWithdrawal) return UnauthorizedResponse;
 
@@ -43,7 +73,7 @@ export async function PUT(
 
 export async function DELETE(
   request: NextRequest,
-  { params }: { params: Promise<{ id: string }> }
+  { params }: { params: Promise<{ id: string }> },
 ) {
   try {
     const token = request.headers.get("authorization")?.split(" ")[1];
@@ -56,7 +86,7 @@ export async function DELETE(
 
     const userOwnsWithdrawal = await withdrawalService.userOwnsTheWithdrawal(
       payload.id,
-      id
+      id,
     );
     if (!userOwnsWithdrawal) return UnauthorizedResponse;
 
